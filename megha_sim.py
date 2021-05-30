@@ -328,8 +328,9 @@ class GM(object):
 				task_id=record[1]
 				for index in range(0,len(self.jobs_scheduled)):
 					job=self.jobs_scheduled[index]
-					task=job.tasks[task_id]
+							
 					if job.id==job_id:
+						task=job.tasks[task_id]
 						job.completed_tasks.append(task)
 						if len(job.tasks) == len(job.completed_tasks): #no more tasks left
 							job.completion_time=task.end_time
@@ -343,6 +344,8 @@ class GM(object):
 						# print("Tasks before deletion: ",len(job.tasks))
 						del job.tasks[task.task_id]
 						# print("Tasks after deletion: ",len(job.tasks))
+				
+						
 
 		self.schedule_tasks(current_time)
 				
@@ -440,6 +443,7 @@ class GM(object):
 		# print("Exit scheduling loop for now")
 
 	def queue_job(self,job,current_time):
+		print(current_time,",","JobArrivalEvent",",",job.id,",",self.GM_id)
 		job.gm=self
 		self.job_queue.append(job)
 		if(len(self.job_queue)==1):#first job
