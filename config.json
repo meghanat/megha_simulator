@@ -4,24 +4,24 @@
             "LM_id":"1",
             "partitions":{
                "1": {
-                    "partiton_id":"1",
+                    "partition_id":"1",
                     "nodes":{
                         "1":{
-                            "node_id":"1",
+                            
                             "CPU":1,
                             "RAM":1,
                             "Disk":1,
                             "constraints":[]
                         },
                         "2":{
-                            "node_id":"2",
+                                
                             "CPU":1,
                             "RAM":1,
                             "Disk":1,
                             "constraints":[]
                         },
                         "3":{
-                            "node_id":"3",
+                            
                             "CPU":1,
                             "RAM":1,
                             "Disk":1,
@@ -30,24 +30,24 @@
                     }
                 },
                 "2":{
-                    "partiton_id":"2",
+                    "partition_id":"2",
                     "nodes":{
                         "4":{
-                            "node_id":"1",
+                            
                             "CPU":1,
                             "RAM":1,
                             "Disk":1,
                             "constraints":[]
                         },
                         "5":{
-                            "node_id":"2",
+                            
                             "CPU":1,
                             "RAM":1,
                             "Disk":1,
                             "constraints":[]
                         },
                         "6":{
-                            "node_id":"3",
+                            
                             "CPU":1,
                             "RAM":1,
                             "Disk":1,
@@ -56,24 +56,24 @@
                     }
                 },
                "3": {
-                    "partiton_id":"3",
+                    "partition_id":"3",
                     "nodes":{
                         "7":{
-                            "node_id":"1",
+                            
                             "CPU":1,
                             "RAM":1,
                             "Disk":1,
                             "constraints":[]
                         },
                         "8":{
-                            "node_id":"2",
+                            
                             "CPU":1,
                             "RAM":1,
                             "Disk":1,
                             "constraints":[]
                         },
                         "9":{
-                            "node_id":"3",
+                            
                             "CPU":1,
                             "RAM":1,
                             "Disk":1,
@@ -87,24 +87,24 @@
             "LM_id": "2",
             "partitions":{
                "1": {
-                    "partiton_id":"1",
+                    "partition_id":"1",
                     "nodes":{
                         "10":{
-                            "node_id":"1",
+                            
                             "CPU":1,
                             "RAM":1,
                             "Disk":1,
                             "constraints":[]
                         },
                         "11":{
-                            "node_id":"2",
+                            
                             "CPU":1,
                             "RAM":1,
                             "Disk":1,
                             "constraints":[]
                         },
                         "12":{
-                            "node_id":"3",
+                            
                             "CPU":1,
                             "RAM":1,
                             "Disk":1,
@@ -113,24 +113,24 @@
                     }
                 },
                 "2":{
-                    "partiton_id":"2",
+                    "partition_id":"2",
                     "nodes":{
                         "13":{
-                            "node_id":"1",
+                            
                             "CPU":1,
                             "RAM":1,
                             "Disk":1,
                             "constraints":[]
                         },
                         "14":{
-                            "node_id":"2",
+                            
                             "CPU":1,
                             "RAM":1,
                             "Disk":1,
                             "constraints":[]
                         },
                         "15":{
-                            "node_id":"3",
+                            
                             "CPU":1,
                             "RAM":1,
                             "Disk":1,
@@ -139,24 +139,24 @@
                     }
                 },
                "3": {
-                    "partiton_id":"3",
+                    "partition_id":"3",
                     "nodes":{
                         "16":{
-                            "node_id":"1",
+                            
                             "CPU":1,
                             "RAM":1,
                             "Disk":1,
                             "constraints":[]
                         },
                         "17":{
-                            "node_id":"2",
+                            
                             "CPU":1,
                             "RAM":1,
                             "Disk":1,
                             "constraints":[]
                         },
                         "18":{
-                            "node_id":"3",
+                            
                             "CPU":1,
                             "RAM":1,
                             "Disk":1,
