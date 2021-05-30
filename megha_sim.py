@@ -80,6 +80,12 @@ class InconsistencyEvent(Event):
 		self.gm.unschedule_job(self.task.job)
 		self.simulation.event_queue.put((current_time+NETWORK_DELAY,LMUpdateEvent(self.simulation,periodic=False)))
 
+		#***********************************************************************#
+		#  NEED TO CHECK THIS AND SEE IF IT CAN BE MODIFIED SUCH				#
+		# THAT THE UNSCHEDULE OPERATION IS CALLED JUST BEFORE CONFIG IS UPDATED #
+		#  THIS IS TO ENSURE THE DELAY DUE TO INCONSISTENCY IS REFLECTED		#
+		#***********************************************************************#
+
 
 #####################################################################################################################
 #####################################################################################################################
