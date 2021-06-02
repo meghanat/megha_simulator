@@ -9,6 +9,9 @@ import collections
 import json
 import copy
 import pickle
+
+
+#####################################################################################################################
 LM_HEARTBEAT_INTERVAL=30
 
 class TaskDurationDistributions:
@@ -32,7 +35,7 @@ class Event(object):
 #####################################################################################################################
 #####################################################################################################################
 
-
+#created when a task completes
 class TaskEndEvent(Event):
 	def __init__(self,task):
 		self.task=task
@@ -40,13 +43,13 @@ class TaskEndEvent(Event):
 		return True
 
 	def run(self, current_time):
-		print(current_time,",","TaskEndEvent",",",self.task.job.id+"_"+self.task.task_id)
+		print(current_time,",","TaskEndEvent",",",self.task.job.job_id+"_"+self.task.task_id)
 		self.task.end_time=current_time
 		self.task.lm.task_completed(self.task)
 
 #####################################################################################################################
 #####################################################################################################################
-	
+#created after LM verifies GM request
 class LaunchOnnodeEvent(Event):
 
 	def __init__(self,task,simulation):
@@ -54,14 +57,14 @@ class LaunchOnnodeEvent(Event):
 		self.simulation=simulation
 
 	def run(self, current_time):
-		print(current_time,",","LaunchOnnodeEvent",",",self.task.job.id+"_"+self.task.task_id,",",self.task.partition_id+"_"+self.task.node_id)
-		self.simulation.event_queue.put((current_time+self.task.duration+NETWORK_DELAY,TaskEndEvent(self.task)))
+		print(current_time,",","LaunchOnnodeEvent",",",self.task.job.job_id+"_"+self.task.task_id,",",self.task.partition_id+"_"+self.task.node_id)
+		self.simulation.event_queue.put((current_time+self.task.duration+NETWORK_DELAY,TaskEndEvent(self.task)))#launching requires network transfer
 
 
 #####################################################################################################################
 #####################################################################################################################
 
-
+#if GM has outdated info, LM creates this event
 class InconsistencyEvent(Event):
 	def __init__(self,task,gm,type,simulation):
 		self.task=task
@@ -72,7 +75,7 @@ class InconsistencyEvent(Event):
 	def run(self, current_time):
 		if(self.type==0):#internal inconsistency
 			print(current_time,",","InternalInconsistencyEvent")
-		else:
+		else:# external inconsistency
 			print(current_time,",","ExternalInconsistencyEvent")
 		self.task.scheduled=False
 
@@ -89,6 +92,7 @@ class InconsistencyEvent(Event):
 
 #####################################################################################################################
 #####################################################################################################################
+#created when GM finds a match
 class MatchFoundEvent(Event):
 	def __init__(self,task, gm,lm,node_id,current_time,external_partition=None):
 		self.task=task
@@ -100,12 +104,12 @@ class MatchFoundEvent(Event):
 
 	def run(self, current_time):
 		#add network delay to LM, similar to sparrow: 
-		print(current_time,",","MatchFoundEvent",",",self.task.job.id+"_"+self.task.task_id,",",self.gm.GM_id+"_"+str(self.node_id))
+		print(current_time,",","MatchFoundEvent",",",self.task.job.job_id+"_"+self.task.task_id,",",self.gm.GM_id+"_"+str(self.node_id))
 		self.lm.verify_request(self.task,self.gm,self.node_id,current_time+NETWORK_DELAY,external_partition=self.external_partition)
 
 #####################################################################################################################
 #####################################################################################################################
-
+#created periodically or when LM needs to piggyback update on response
 class  LMUpdateEvent(Event):
 	
 	def __init__(self,simulation,periodic=True):
@@ -114,14 +118,14 @@ class  LMUpdateEvent(Event):
 	def run(self,current_time):
 		print(current_time,",","LMUpdateEvent",",",self.periodic)
 		for GM_id in self.simulation.gms:
-			self.simulation.gms[GM_id].update_status(current_time)
+			self.simulation.gms[GM_id].update_status(current_time+NETWORK_DELAY)
 
 		if(self.periodic and not self.simulation.event_queue.empty()):
-			self.simulation.event_queue.put((current_time + LM_HEARTBEAT_INTERVAL,self))
+			self.simulation.event_queue.put((current_time + LM_HEARTBEAT_INTERVAL+NETWORK_DELAY,self))#add the next heartbeat
 		
 #####################################################################################################################
 #####################################################################################################################
-
+#created for each job
 class JobArrival(Event):
 
 	gm_counter=0
@@ -141,9 +145,6 @@ class JobArrival(Event):
 		#needs to be assigned to a GM - RR
 		JobArrival.gm_counter=(JobArrival.gm_counter)%self.simulation.NUM_GMS+1
 		assigned_GM=self.simulation.gms[str(JobArrival.gm_counter)]
-		Job.per_job_task_info[self.job.id] = {}
-		for tasknr in range(0,self.job.num_tasks):
-			Job.per_job_task_info[self.job.id][tasknr] =- 1 
 		#GM needs to add job to its queue
 		assigned_GM.queue_job(self.job,current_time)
 
@@ -177,10 +178,11 @@ class Task(object):
 		self.lm=None
 		self.scheduled=False
 
-class Job(object):
-	job_count = 1
-	per_job_task_info = {}
+#####################################################################################################################
+#####################################################################################################################
 
+class Job(object):
+	job_count = 1 # to assign ids
 
 	def __init__(self, task_distribution, line,simulation):
 		global job_start_tstamps
@@ -194,7 +196,7 @@ class Job(object):
 		self.completed_tasks=[]
 		self.gm=None
 		
-		
+		#retaining below logic as-is to compare with Sparrow.
 		#dephase the incoming job in case it has the exact submission time as another already submitted job
 		if self.start_time not in job_start_tstamps:
 			job_start_tstamps[self.start_time] = self.start_time
@@ -202,19 +204,16 @@ class Job(object):
 			job_start_tstamps[self.start_time] += 0.01
 			self.start_time = job_start_tstamps[self.start_time]
 		
-		self.id = str(Job.job_count)
+		self.job_id = str(Job.job_count)
 		Job.job_count += 1
-		self.completed_tasks_count = 0
+		
 		self.end_time = self.start_time
 		
-
-		
+		#in case we need to explore other distr- retaining Sparrow code as-is
 		if	task_distribution == TaskDurationDistributions.FROM_FILE: 
 			self.file_task_execution_time(job_args)
-		# elif task_distribution == TaskDurationDistributions.CONSTANT:
-		# 	while len(self.unscheduled_tasks) < self.num_tasks:
-		# 		self.unscheduled_tasks.appendleft(mean_task_duration)
 		
+	#checks if job's tasks have all been scheduled.	
 	def fully_scheduled(self):
 		
 		for task_id in self.tasks:
@@ -223,29 +222,15 @@ class Job(object):
 		return True
 
 
-	#Job class	 """ Returns true if the job has completed, and false otherwise. """
-	def update_task_completion_details(self, completion_time):
-		self.completed_tasks_count += 1
-		self.end_time = max(completion_time, self.end_time)
-		assert self.completed_tasks_count <= self.num_tasks
-		return self.num_tasks == self.completed_tasks_count
-
-
-	#Job class
+	#Job class - parse file line
 	def file_task_execution_time(self, job_args):
 		for task_duration in (job_args[3:]):
 			duration=int(float(task_duration))	
 			self.task_counter+=1
 			self.tasks[str(self.task_counter)]=Task(str(self.task_counter),self,duration)
-		
 
-	#Job class
-	def update_remaining_time(self):
-		self.remaining_exec_time -= self.estimated_task_duration
-		#assert(self.remaining_exec_time >=0)
-		if (len(self.unscheduled_tasks) == 0): #Improvement
-			self.remaining_exec_time = -1
-
+#####################################################################################################################
+#####################################################################################################################
 
 class LM(object):
 
@@ -261,14 +246,15 @@ class LM(object):
 
 	def get_status(self,gm):
 
+		#deep copy to ensure GM's copy and LM's copy are separate
 		response=[ json.dumps(self.LM_config),json.dumps(self.tasks_completed[gm.GM_id])]
 		self.tasks_completed[gm.GM_id]=[]
 		return response
 
+	#LM checks if GM's request is valid
 	def verify_request(self,task,gm,node_id,current_time,external_partition=None):
 
 		#check if repartitioning
-		print("external_partition:",external_partition)
 		if(external_partition is not None):
 			if(self.LM_config["partitions"][external_partition]["nodes"][node_id]["CPU"]==1):
 				self.LM_config["partitions"][external_partition]["nodes"][node_id]["CPU"]=0
@@ -278,10 +264,9 @@ class LM(object):
 				task.GM_id=gm.GM_id
 				self.simulation.event_queue.put((current_time+NETWORK_DELAY,LaunchOnnodeEvent(task,self.simulation)))
 				return True
-			else:
-				
+			else:# if inconsistent	
 				self.simulation.event_queue.put((current_time+NETWORK_DELAY,InconsistencyEvent(task,gm,0,self.simulation)))
-		
+		#internal partition
 		else:
 			if(self.LM_config["partitions"][gm.GM_id]["nodes"][node_id]["CPU"]==1):
 				#allot node to task
@@ -291,18 +276,19 @@ class LM(object):
 				task.GM_id=gm.GM_id
 				task.lm=self
 				self.simulation.event_queue.put((current_time+NETWORK_DELAY,LaunchOnnodeEvent(task,self.simulation)))
-			else:
+			else:# if inconsistent	
 				self.simulation.event_queue.put((current_time+NETWORK_DELAY,InconsistencyEvent(task,gm,1,self.simulation)))
 
 
 	def task_completed(self,task):
-
+		#reclaim resources
 		self.LM_config["partitions"][task.partition_id]["nodes"][task.node_id]["CPU"]=1
-		self.tasks_completed[task.GM_id].append((task.job.id,task.task_id)) #note GM_id used here, not partition, in case of repartitioning
-
+		self.tasks_completed[task.GM_id].append((task.job.job_id,task.task_id)) #note GM_id used here, not partition, in case of repartitioning
+		#update from node to LM - 1 NETWORK_DELAY + update from LM to GM - 1 NETWORK DELAY = 2 NETWORK_DELAYS
 		self.simulation.event_queue.put((task.end_time+(2*NETWORK_DELAY),LMUpdateEvent(self.simulation,periodic=False)))
 
-
+#####################################################################################################################
+#####################################################################################################################
 
 class GM(object):
 	def __init__(self,simulation,GM_id,config):
@@ -319,6 +305,7 @@ class GM(object):
 
 		print("GM",self.GM_id," initialised")
 
+	#updates global view of GM by getting partial updates from each LM
 	def update_status(self,current_time):
 		global jobs_completed
 
@@ -335,39 +322,21 @@ class GM(object):
 				for index in range(0,len(self.jobs_scheduled)):
 					job=self.jobs_scheduled[index]
 							
-					if job.id==job_id:
+					if job.job_id==job_id:
 						task=job.tasks[task_id]
 						job.completed_tasks.append(task)
 						if len(job.tasks) == len(job.completed_tasks): #no more tasks left
-							job.completion_time=task.end_time
-							# print("Before app:",len(jobs_completed))
+							job.completion_time=task.end_time#job completion time= end time of last task
 							jobs_completed.append(job)
-							# print("After app:",len(jobs_completed))
-							# print("Queue before:",len(self.jobs_scheduled))
 							self.jobs_scheduled.remove(job)
-							# print("Queue after:",len(self.jobs_scheduled))
 						break
-						# print("Tasks before deletion: ",len(job.tasks))
-						del job.tasks[task.task_id]
-						# print("Tasks after deletion: ",len(job.tasks))
-				
-						
 
 		self.schedule_tasks(current_time)
-				
-				#Check timestamps everywhere
-				#Should all events be returned? Can be modified later
-				#Repartition- if no internal resources available
-				#Need to clear tasks_completed in LM after update - done
-				#Need to make GM call schedule_tasks again - done
-				#Work it out by hand
-				#See if all network delays are accounted for.
-				#External and Internal inconsistencies handling.
 
 	def unschedule_job(self,unverified_job):
 
 		for index in range(0,len(self.jobs_scheduled)):
-			if unverified_job.id==self.jobs_scheduled[index].id:
+			if unverified_job.job_id==self.jobs_scheduled[index].job_id:
 				#remove job from list and add to front of job_queue
 				self.job_queue.insert(0,self.jobs_scheduled.pop(index))
 
@@ -381,7 +350,7 @@ class GM(object):
 			else:
 				while len(self.job_queue)>0:
 					job=self.job_queue[0]# get job from head of queue
-					# print("Scheduling Tasks from Job: ",job.id)
+					# print("Scheduling Tasks from Job: ",job.job_id)
 					
 					for task_id in job.tasks:
 						task=job.tasks[task_id]
@@ -401,7 +370,7 @@ class GM(object):
 								job.tasks[task_id].scheduled=True
 								if(job.fully_scheduled()):
 									self.jobs_scheduled.append(self.job_queue.pop(0))
-								print(current_time,"RepartitionEvent",self.GM_id,",",GM_id,",",job.id+"_"+task.task_id)
+								print(current_time,"RepartitionEvent",self.GM_id,",",GM_id,",",job.job_id+"_"+task.task_id)
 								self.simulation.event_queue.put((current_time,MatchFoundEvent(job.tasks[task_id],self,self.simulation.lms[LM_id],node_id,current_time,external_partition=GM_id)))#may need to add processing overhead here if required
 								matchfound=True
 								break
@@ -417,21 +386,17 @@ class GM(object):
 		
 		while len(self.job_queue)>0:
 			job=self.job_queue[0]# get job from head of queue
-			# print("Scheduling Tasks from Job: ",job.id)
-			
 			for task_id in job.tasks:
 				if(job.tasks[task_id].scheduled):
 					continue
 				matchfound=False
-				# print("Scheduling Task:",task_id)
 				#which LM?
 				LM_id=str(self.RR_counter%self.simulation.NUM_LMS+1)
 				self.RR_counter+=1
 				#search in internal partitions
 				for node_id in self.global_view[LM_id]["partitions"][self.GM_id]["nodes"]:
 					node=self.global_view[LM_id]["partitions"][self.GM_id]["nodes"][node_id]
-					if node["CPU"]==1:# node unoccupied
-						# print("Match found in internal partitions")
+					if node["CPU"]==1:# node available
 						node["CPU"]=0
 						job.tasks[task_id].scheduled=True
 						if(job.fully_scheduled()):
@@ -444,16 +409,18 @@ class GM(object):
 				else:
 					#repartition
 					self.repartition(current_time)
-					# print("GM ",self.GM_id," out of resources")
 					return
-		# print("Exit scheduling loop for now")
+		
 
 	def queue_job(self,job,current_time):
-		print(current_time,",","JobArrivalEvent",",",job.id,",",self.GM_id)
+		print(current_time,",","JobArrivalEvent",",",job.job_id,",",self.GM_id)
 		job.gm=self
 		self.job_queue.append(job)
 		if(len(self.job_queue)==1):#first job
 			self.schedule_tasks(current_time)
+
+#####################################################################################################################
+#####################################################################################################################
 
 class Simulation(object):
 	def __init__(self, workload, config, NUM_GMS, NUM_LMS,PARTITION_SIZE,cpu,memory,storage):
@@ -466,11 +433,15 @@ class Simulation(object):
 		
 		self.jobs = {}
 		self.event_queue = queue.PriorityQueue()
+		
+		#initialise GMs
 		self.gms={}
 		counter=1
 		while len(self.gms)<self.NUM_GMS:
 			self.gms[str(counter)]=GM(self,str(counter),pickle.loads(pickle.dumps(self.config)))
 			counter+=1
+
+		#initialise LMs
 		self.lms={}
 		counter=1
 
@@ -493,12 +464,13 @@ class Simulation(object):
 
 		self.task_distribution = TaskDurationDistributions.FROM_FILE
 
-		line = self.jobs_file.readline()
+		line = self.jobs_file.readline()#first job
 		new_job = Job(self.task_distribution,line,self)
 		self.event_queue.put((float(line.split()[0]), JobArrival(self, self.task_distribution, new_job, self.jobs_file)))
-		self.event_queue.put((float(line.split()[0]), LMUpdateEvent(self)))
+		self.event_queue.put((float(line.split()[0]), LMUpdateEvent(self)))#starting the periodic LM updates
 		self.jobs_scheduled = 1
 
+		#start processing events
 		while (not self.event_queue.empty()):
 			current_time, event = self.event_queue.get()
 			assert current_time >= last_time
@@ -524,14 +496,14 @@ CONFIG_FILE=sys.argv[2]
 NUM_GMS	=int(sys.argv[3])
 NUM_LMS=int(sys.argv[4])
 PARTITION_SIZE=int(sys.argv[5])
-SERVER_CPU=float(sys.argv[6])
-SERVER_RAM=float(sys.argv[7])
-SERVER_STORAGE=float(sys.argv[8])
+SERVER_CPU=float(sys.argv[6])# currently set to 1 because of comparison with Sparrow
+SERVER_RAM=float(sys.argv[7])# ditto
+SERVER_STORAGE=float(sys.argv[8])# ditto
 
 NETWORK_DELAY = 0.0005 #same as sparrow
 
 
-t1 = time.time()
+t1 = time.time() # not simulation's virtual time. This is just to understand how long the program takes
 s = Simulation(WORKLOAD_FILE,CONFIG_FILE,NUM_GMS,NUM_LMS,PARTITION_SIZE,SERVER_CPU,SERVER_RAM,SERVER_STORAGE)
 print("Simulation running")
 s.run()
