@@ -21,6 +21,8 @@ class EstimationErrorDistribution:
 
 #####################################################################################################################
 #####################################################################################################################
+
+# Event class is an Abstract class
 class Event(object):
 	def __init__(self):
 		raise NotImplementedError("Event is an abstract class and cannot be instantiated directly")
@@ -37,7 +39,7 @@ class Event(object):
 
 #created when a task completes
 class TaskEndEvent(Event):
-	def __init__(self,task):
+	def __init__(self, task):
 		self.task=task
 	def __lt__(self, other):
 		return True
@@ -73,9 +75,9 @@ class InconsistencyEvent(Event):
 		self.simulation=simulation
 
 	def run(self, current_time):
-		if(self.type==0):#internal inconsistency
+		if(self.type==0):#internal inconsistency -> failed to place task on external parition
 			print(current_time,",","InternalInconsistencyEvent")
-		else:# external inconsistency
+		else:# external inconsistency  -> failed to place task on internal partition
 			print(current_time,",","ExternalInconsistencyEvent")
 		self.task.scheduled=False
 
@@ -92,7 +94,7 @@ class InconsistencyEvent(Event):
 
 #####################################################################################################################
 #####################################################################################################################
-#created when GM finds a match
+#created when GM finds a match in the external or internal partition
 class MatchFoundEvent(Event):
 	def __init__(self,task, gm,lm,node_id,current_time,external_partition=None):
 		self.task=task
@@ -134,7 +136,7 @@ class JobArrival(Event):
 		self.simulation = simulation
 		self.task_distribution = task_distribution
 		self.job = job
-		self.jobs_file = jobs_file
+		self.jobs_file = jobs_file  # Jobs file (input trace file) handler
 
 	def __lt__(self, other):
 		return True
@@ -144,6 +146,7 @@ class JobArrival(Event):
 		new_events = []
 		#needs to be assigned to a GM - RR
 		JobArrival.gm_counter=(JobArrival.gm_counter)%self.simulation.NUM_GMS+1
+        # assigned_GM --> Handle to the global master object
 		assigned_GM=self.simulation.gms[str(JobArrival.gm_counter)]
 		#GM needs to add job to its queue
 		assigned_GM.queue_job(self.job,current_time)
@@ -163,6 +166,7 @@ class JobArrival(Event):
 #####################################################################################################################
 #####################################################################################################################
 
+# This is just like a struct or Plain Old Data format
 class Task(object):
 
 	def __init__(self,task_id,job,duration):
@@ -198,11 +202,11 @@ class Job(object):
 		
 		#retaining below logic as-is to compare with Sparrow.
 		#dephase the incoming job in case it has the exact submission time as another already submitted job
-		if self.start_time not in job_start_tstamps:
-			job_start_tstamps[self.start_time] = self.start_time
-		else:
-			job_start_tstamps[self.start_time] += 0.01
-			self.start_time = job_start_tstamps[self.start_time]
+		if self.start_time not in job_start_tstamps:  # IF the job's start_time has never been seen before
+			job_start_tstamps[self.start_time] = self.start_time  # Add it to the dict of start time stamps
+		else:  # If the job's start_time has been seen before
+			job_start_tstamps[self.start_time] += 0.01  # Shift the start time of the jobs with this duplicate start time by 0.01s forward to prevent a clash
+			self.start_time = job_start_tstamps[self.start_time]  # Assign this shifted time stamp to the job start time
 		
 		self.job_id = str(Job.job_count)
 		Job.job_count += 1
@@ -224,7 +228,7 @@ class Job(object):
 
 	#Job class - parse file line
 	def file_task_execution_time(self, job_args):
-		for task_duration in (job_args[3:]):
+		for task_duration in (job_args[3:]):  # Adding each of the tasks to the dict
 			duration=int(float(task_duration))	
 			self.task_counter+=1
 			self.tasks[str(self.task_counter)]=Task(str(self.task_counter),self,duration)
@@ -240,12 +244,19 @@ class LM(object):
 		self.LM_config=LM_config
 		print("LM ",LM_id,"initialised")
 		self.simulation=simulation
-		self.tasks_completed={}
+		self.tasks_completed={}  # we hold the key-value pairs of the list of tasks completed (value) for each GM (key)
 		for GM_id in self.simulation.gms:
 			self.tasks_completed[GM_id]=[]
 
 	def get_status(self,gm):
+        # """
+        # One we have sent the response, the LM clears the list of tasks the LM has completed for the particular GM.
 
+        # :param gm: The handle to the GM object
+        # :type gm: GM
+        # :return: List of the LM config and the tasks completed by the LM from that GM
+        # :rtype: List[str, str]
+        # """
 		#deep copy to ensure GM's copy and LM's copy are separate
 		response=[ json.dumps(self.LM_config),json.dumps(self.tasks_completed[gm.GM_id])]
 		self.tasks_completed[gm.GM_id]=[]
@@ -262,6 +273,8 @@ class LM(object):
 				task.partition_id=external_partition
 				task.lm=self
 				task.GM_id=gm.GM_id
+
+                # network delay as the request has to be sent from the LM to the selected worker node
 				self.simulation.event_queue.put((current_time+NETWORK_DELAY,LaunchOnnodeEvent(task,self.simulation)))
 				return True
 			else:# if inconsistent	
@@ -283,6 +296,8 @@ class LM(object):
 	def task_completed(self,task):
 		#reclaim resources
 		self.LM_config["partitions"][task.partition_id]["nodes"][task.node_id]["CPU"]=1
+
+        # Append the details of the task that was just completed to the list of tasks completed for the corresponding GM that sent it
 		self.tasks_completed[task.GM_id].append((task.job.job_id,task.task_id)) #note GM_id used here, not partition, in case of repartitioning
 		#update from node to LM - 1 NETWORK_DELAY + update from LM to GM - 1 NETWORK DELAY = 2 NETWORK_DELAYS
 		self.simulation.event_queue.put((task.end_time+(2*NETWORK_DELAY),LMUpdateEvent(self.simulation,periodic=False)))
@@ -316,7 +331,7 @@ class GM(object):
 			tasks_completed=json.loads(p_tasks_completed)
 			self.global_view[lm.LM_id]=partial_status
 			#Through Job object delete task
-			for record in tasks_completed:
+			for record in tasks_completed:  # Iterate over the tasks completed and update each job's status
 				job_id=record[0]
 				task_id=record[1]
 				for index in range(0,len(self.jobs_scheduled)):
@@ -326,7 +341,7 @@ class GM(object):
 						task=job.tasks[task_id]
 						job.completed_tasks.append(task)
 						if len(job.tasks) == len(job.completed_tasks): #no more tasks left
-							job.completion_time=task.end_time#job completion time= end time of last task
+							job.completion_time=task.end_time  # NOTE:job completion time = end time of last task
 							jobs_completed.append(job)
 							self.jobs_scheduled.remove(job)
 						break
@@ -334,35 +349,41 @@ class GM(object):
 		self.schedule_tasks(current_time)
 
 	def unschedule_job(self,unverified_job):
+        # """
+        # The job is inserted back into the job_queue of the GM from the job_scheduled queue of the GM
 
+        # :param unverified_job: The job that needs to be moved, as it was assigned on a worker node
+        #  not actually available at that time
+        # :type unverified_job: Job
+        # """
 		for index in range(0,len(self.jobs_scheduled)):
 			if unverified_job.job_id==self.jobs_scheduled[index].job_id:
 				#remove job from list and add to front of job_queue
 				self.job_queue.insert(0,self.jobs_scheduled.pop(index))
 
 
-
+    # searches the external partitions
 	def repartition(self,current_time):
 		#search in external partitions:
 		for GM_id in self.simulation.gms:
-			if GM_id == self.GM_id:
+			if GM_id == self.GM_id:  # Skip the parition of the GM searcing for a woker node in a external partition 
 				continue
 			else:
-				while len(self.job_queue)>0:
+				while len(self.job_queue)>0:  # While the job_queue for the current GM is not empty
 					job=self.job_queue[0]# get job from head of queue
 					# print("Scheduling Tasks from Job: ",job.job_id)
 					
-					for task_id in job.tasks:
+					for task_id in job.tasks:  # Go over the tasks for the job
 						task=job.tasks[task_id]
-						if(job.tasks[task_id].scheduled):
+						if(job.tasks[task_id].scheduled):  # If the task is already scheduled then, there is nothing to do
 							continue
 						matchfound=False
 						# print("Scheduling Task:",task_id)
-						#which LM?
+						#which LM? searching the LMs in RR fashion
 						LM_id=str(self.RR_counter%self.simulation.NUM_LMS+1)
 						self.RR_counter+=1
 						#search in internal partitions
-						for node_id in self.global_view[LM_id]["partitions"][GM_id]["nodes"]:
+						for node_id in self.global_view[LM_id]["partitions"][GM_id]["nodes"]:  # iterating over a dict
 							node=self.global_view[LM_id]["partitions"][GM_id]["nodes"][node_id]
 							if node["CPU"]==1:# node unoccupied
 								# print("Match found in internal partitions")
@@ -374,7 +395,7 @@ class GM(object):
 								self.simulation.event_queue.put((current_time,MatchFoundEvent(job.tasks[task_id],self,self.simulation.lms[LM_id],node_id,current_time,external_partition=GM_id)))#may need to add processing overhead here if required
 								matchfound=True
 								break
-						if(matchfound):
+						if(matchfound):  # If this task was successfully placed then, move on to the next task
 							continue 
 						else:
 							print(current_time,"No resources available in cluster")
@@ -384,17 +405,17 @@ class GM(object):
 	#search internal partitions
 	def schedule_tasks(self,current_time):
 		
-		while len(self.job_queue)>0:
+		while len(self.job_queue)>0:  # While the job_queue for the current GM is not empty
 			job=self.job_queue[0]# get job from head of queue
-			for task_id in job.tasks:
-				if(job.tasks[task_id].scheduled):
+			for task_id in job.tasks:  # Go over the tasks for the job
+				if(job.tasks[task_id].scheduled):  # If the task is already scheduled then, there is nothing to do
 					continue
 				matchfound=False
-				#which LM?
+				#which LM? searching the LMs in RR fashion
 				LM_id=str(self.RR_counter%self.simulation.NUM_LMS+1)
 				self.RR_counter+=1
 				#search in internal partitions
-				for node_id in self.global_view[LM_id]["partitions"][self.GM_id]["nodes"]:
+				for node_id in self.global_view[LM_id]["partitions"][self.GM_id]["nodes"]:   # iterating over a dict
 					node=self.global_view[LM_id]["partitions"][self.GM_id]["nodes"][node_id]
 					if node["CPU"]==1:# node available
 						node["CPU"]=0
@@ -404,7 +425,7 @@ class GM(object):
 						self.simulation.event_queue.put((current_time,MatchFoundEvent(job.tasks[task_id],self,self.simulation.lms[LM_id],node_id,current_time)))#may need to add processing overhead here if required
 						matchfound=True
 						break
-				if(matchfound):
+				if(matchfound):  # If this task was successfully placed then, move on to the next task
 					continue 
 				else:
 					#repartition
@@ -425,6 +446,10 @@ class GM(object):
 class Simulation(object):
 	def __init__(self, workload, config, NUM_GMS, NUM_LMS,PARTITION_SIZE,cpu,memory,storage):
 
+        # Each localmaster has one partition per global master so the total number of partitions in the cluster are:
+        # NUM_GMS * NUM_LMS
+        # Given the number of worker nodes per partition is PARTITION_SIZE
+        # so the totoal_nodes are NUM_GMS*NUM_LMS*PARTITION_SIZE
 		self.total_nodes=NUM_GMS*NUM_LMS*PARTITION_SIZE;
 		self.NUM_GMS=NUM_GMS
 		self.NUM_LMS=NUM_LMS
