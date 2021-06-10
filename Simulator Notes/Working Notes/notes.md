@@ -28,7 +28,7 @@ Considering the $size$ to be 64, as it is common for modern processors to be 64 
 | Time Complexity for finding a node that Matches the Task Placement Constraints | Red |
 | Time Complexity for finding a node that Matches the Number Resource Requirements Constraints | Blue |
 
-![](time_complexities_comparison.png)
+![](../Media/Images/time_complexities_comparison.png)
 
 ---
 
