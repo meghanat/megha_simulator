@@ -1,3 +1,4 @@
+from typing import List, Optional
 import sys
 import time
 import logging
@@ -15,9 +16,15 @@ import pickle
 LM_HEARTBEAT_INTERVAL=30
 
 class TaskDurationDistributions:
-	CONSTANT, MEAN, FROM_FILE  = range(3)
+    CONSTANT : int
+    MEAN : int
+    FROM_FILE : int
+    CONSTANT, MEAN, FROM_FILE  = range(3)
 class EstimationErrorDistribution:
-	CONSTANT, RANDOM, MEAN  = range(3)
+    CONSTANT : int
+    RANDOM : int
+    MEAN : int
+    CONSTANT, RANDOM, MEAN = range(3)
 
 #####################################################################################################################
 #####################################################################################################################
@@ -75,7 +82,7 @@ class InconsistencyEvent(Event):
 		self.simulation=simulation
 
 	def run(self, current_time):
-		if(self.type==0):#internal inconsistency -> failed to place task on external parition
+		if(self.type==0):#internal inconsistency -> failed to place task on external partition
 			print(current_time,",","InternalInconsistencyEvent")
 		else:# external inconsistency  -> failed to place task on internal partition
 			print(current_time,",","ExternalInconsistencyEvent")
@@ -116,16 +123,22 @@ class  LMUpdateEvent(Event):
 	
 	def __init__(self,simulation,periodic=True,gm=None):
 		self.simulation=simulation
-		self.periodic=periodic
-		self.gm=gm
+		self.periodic : bool = periodic
+		self.gm : Optional[GM] = gm
+
+		if self.periodic is True:
+			assert self.gm is None, "LMUpdateEvent.__init__: Periodic is set to false so GM must be None!"
+		elif self.periodic is False:
+			assert self.gm is not None, "LMUpdateEvent.__init__: Periodic is set to true so GM must not be None!"
+
 	def run(self,current_time):
 		print(current_time,",","LMUpdateEvent",",",self.periodic)
 		
 		#update only that GM which is inconsistent
-		if(not self.periodic):
+		if not self.periodic:
 			self.gm.update_status(current_time+NETWORK_DELAY)
 
-		if(self.periodic and not self.simulation.event_queue.empty()):
+		if self.periodic and not self.simulation.event_queue.empty():
 			for GM_id in self.simulation.gms:
 				self.simulation.gms[GM_id].update_status(current_time+NETWORK_DELAY)
 			self.simulation.event_queue.put((current_time + LM_HEARTBEAT_INTERVAL+NETWORK_DELAY,self))#add the next heartbeat, network delay added because intuitively we do not include it in the LM_HEARTBEAT INTERVAL
@@ -135,7 +148,7 @@ class  LMUpdateEvent(Event):
 #created for each job
 class JobArrival(Event):
 
-	gm_counter=0
+	gm_counter : int = 0
 
 	def __init__(self, simulation, task_distribution, job, jobs_file):
 		self.simulation = simulation
@@ -143,12 +156,12 @@ class JobArrival(Event):
 		self.job = job
 		self.jobs_file = jobs_file  # Jobs file (input trace file) handler
 
-	def __lt__(self, other):
+	def __lt__(self, other) -> bool:
 		return True
 
 
 	def run(self, current_time):
-		new_events = []
+		new_events : List[Event] = []
 		#needs to be assigned to a GM - RR
 		JobArrival.gm_counter=(JobArrival.gm_counter)%self.simulation.NUM_GMS+1
         # assigned_GM --> Handle to the global master object
@@ -203,7 +216,7 @@ class Job(object):
 		self.tasks={}
 		self.task_counter=0
 		self.completed_tasks=[]
-		self.gm=None
+		self.gm : Optional[GM] = None
 		
 		#retaining below logic as-is to compare with Sparrow.
 		#dephase the incoming job in case it has the exact submission time as another already submitted job
@@ -323,7 +336,7 @@ class GM(object):
 		for LM_id in config["LMs"]:
 			self.global_view[LM_id]=config["LMs"][LM_id]
 
-		print("GM",self.GM_id," initialised")
+		print("GM", self.GM_id, "initialised")
 
 	#updates global view of GM by getting partial updates from each LM
 	def update_status(self,current_time):
@@ -372,7 +385,7 @@ class GM(object):
 	def repartition(self,current_time):
 		#search in external partitions:
 		for GM_id in self.simulation.gms:
-			if GM_id == self.GM_id:  # Skip the parition of the GM searcing for a woker node in a external partition 
+			if GM_id == self.GM_id:  # Skip the partition of the GM searching for a worker node in a external partition 
 				continue
 			else:
 				while len(self.job_queue)>0:  # While the job_queue for the current GM is not empty
@@ -439,9 +452,9 @@ class GM(object):
 					return
 		
 
-	def queue_job(self,job,current_time):
+	def queue_job(self, job,current_time):
 		print(current_time,",","JobArrivalEvent",",",job.job_id,",",self.GM_id)
-		job.gm=self
+		job.gm = self
 		self.job_queue.append(job)
 		if(len(self.job_queue)==1):#first job
 			self.schedule_tasks(current_time)
@@ -455,7 +468,7 @@ class Simulation(object):
         # Each localmaster has one partition per global master so the total number of partitions in the cluster are:
         # NUM_GMS * NUM_LMS
         # Given the number of worker nodes per partition is PARTITION_SIZE
-        # so the totoal_nodes are NUM_GMS*NUM_LMS*PARTITION_SIZE
+        # so the total_nodes are NUM_GMS*NUM_LMS*PARTITION_SIZE
 		self.total_nodes=NUM_GMS*NUM_LMS*PARTITION_SIZE;
 		self.NUM_GMS=NUM_GMS
 		self.NUM_LMS=NUM_LMS
