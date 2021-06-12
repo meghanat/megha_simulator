@@ -83,7 +83,7 @@ class InconsistencyEvent(Event):
 
 		#if job already moved to jobs_scheduled queue, need to remove and add to front of queue
 		self.gm.unschedule_job(self.task.job)
-		self.simulation.event_queue.put((current_time+NETWORK_DELAY,LMUpdateEvent(self.simulation,periodic=False)))
+		self.simulation.event_queue.put((current_time,LMUpdateEvent(self.simulation,periodic=False)))
 
 		#***********************************************************************#
 		#  NEED TO CHECK THIS AND SEE IF IT CAN BE MODIFIED SUCH				#
