@@ -196,7 +196,7 @@ class Job(object):
 	def __init__(self, task_distribution, line,simulation):
 		global job_start_tstamps
 		
-		job_args= (line.split('\n'))[0].split()
+		job_args= line.strip().split()
 		self.start_time = float(job_args[0])
 		self.num_tasks= int(job_args[1])
 		self.simulation=simulation
@@ -283,7 +283,7 @@ class LM(object):
 				self.simulation.event_queue.put((current_time+NETWORK_DELAY,LaunchOnnodeEvent(task,self.simulation)))
 				return True
 			else:# if inconsistent	
-				self.simulation.event_queue.put((current_time+NETWORK_DELAY,InconsistencyEvent(task,gm,0,self.simulation)))
+				self.simulation.event_queue.put((current_time+NETWORK_DELAY,InconsistencyEvent(task,gm,1,self.simulation)))
 		#internal partition
 		else:
 			if(self.LM_config["partitions"][gm.GM_id]["nodes"][node_id]["CPU"]==1):
@@ -295,7 +295,7 @@ class LM(object):
 				task.lm=self
 				self.simulation.event_queue.put((current_time+NETWORK_DELAY,LaunchOnnodeEvent(task,self.simulation)))
 			else:# if inconsistent	
-				self.simulation.event_queue.put((current_time+NETWORK_DELAY,InconsistencyEvent(task,gm,1,self.simulation)))
+				self.simulation.event_queue.put((current_time+NETWORK_DELAY,InconsistencyEvent(task,gm,0,self.simulation)))
 
 
 	def task_completed(self,task):
@@ -305,7 +305,7 @@ class LM(object):
         # Append the details of the task that was just completed to the list of tasks completed for the corresponding GM that sent it
 		self.tasks_completed[task.GM_id].append((task.job.job_id,task.task_id)) #note GM_id used here, not partition, in case of repartitioning
 		#update from node to LM - 1 NETWORK_DELAY + update from LM to GM - 1 NETWORK DELAY = 2 NETWORK_DELAYS
-		self.simulation.event_queue.put((task.end_time+(2*NETWORK_DELAY),LMUpdateEvent(self.simulation,periodic=False)))
+		self.simulation.event_queue.put((task.end_time+NETWORK_DELAY,LMUpdateEvent(self.simulation,periodic=False)))
 
 #####################################################################################################################
 #####################################################################################################################
@@ -365,6 +365,7 @@ class GM(object):
 			if unverified_job.job_id==self.jobs_scheduled[index].job_id:
 				#remove job from list and add to front of job_queue
 				self.job_queue.insert(0,self.jobs_scheduled.pop(index))
+				break
 
 
     # searches the external partitions
@@ -387,7 +388,7 @@ class GM(object):
 						#which LM? searching the LMs in RR fashion
 						LM_id=str(self.RR_counter%self.simulation.NUM_LMS+1)
 						self.RR_counter+=1
-						#search in internal partitions
+						#search in external partitions
 						for node_id in self.global_view[LM_id]["partitions"][GM_id]["nodes"]:  # iterating over a dict
 							node=self.global_view[LM_id]["partitions"][GM_id]["nodes"][node_id]
 							if node["CPU"]==1:# node unoccupied
@@ -468,7 +469,7 @@ class Simulation(object):
 		self.gms={}
 		counter=1
 		while len(self.gms)<self.NUM_GMS:
-			self.gms[str(counter)]=GM(self,str(counter),pickle.loads(pickle.dumps(self.config)))
+			self.gms[str(counter)]=GM(self,str(counter),pickle.loads(pickle.dumps(self.config)))#create deep copy
 			counter+=1
 
 		#initialise LMs
@@ -476,7 +477,7 @@ class Simulation(object):
 		counter=1
 
 		while len(self.lms) < self.NUM_LMS:
-			self.lms[str(counter)]=LM(self,str(counter),PARTITION_SIZE,pickle.loads(pickle.dumps(self.config["LMs"][str(counter)])))
+			self.lms[str(counter)]=LM(self,str(counter),PARTITION_SIZE,pickle.loads(pickle.dumps(self.config["LMs"][str(counter)])))# create deep copy
 			counter+=1
 
 		self.shared_cluster_status = {}
