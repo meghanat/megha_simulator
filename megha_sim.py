@@ -83,7 +83,7 @@ class InconsistencyEvent(Event):
 
 		#if job already moved to jobs_scheduled queue, need to remove and add to front of queue
 		self.gm.unschedule_job(self.task.job)
-		self.simulation.event_queue.put((current_time,LMUpdateEvent(self.simulation,periodic=False)))
+		self.simulation.event_queue.put((current_time,LMUpdateEvent(self.simulation,periodic=False,gm=self.gm)))
 
 		#***********************************************************************#
 		#  NEED TO CHECK THIS AND SEE IF IT CAN BE MODIFIED SUCH				#
@@ -114,16 +114,21 @@ class MatchFoundEvent(Event):
 #created periodically or when LM needs to piggyback update on response
 class  LMUpdateEvent(Event):
 	
-	def __init__(self,simulation,periodic=True):
+	def __init__(self,simulation,periodic=True,gm=None):
 		self.simulation=simulation
 		self.periodic=periodic
+		self.gm=gm
 	def run(self,current_time):
 		print(current_time,",","LMUpdateEvent",",",self.periodic)
-		for GM_id in self.simulation.gms:
-			self.simulation.gms[GM_id].update_status(current_time+NETWORK_DELAY)
+		
+		#update only that GM which is inconsistent
+		if(not self.periodic):
+			self.gm.update_status(current_time+NETWORK_DELAY)
 
 		if(self.periodic and not self.simulation.event_queue.empty()):
-			self.simulation.event_queue.put((current_time + LM_HEARTBEAT_INTERVAL+NETWORK_DELAY,self))#add the next heartbeat
+			for GM_id in self.simulation.gms:
+				self.simulation.gms[GM_id].update_status(current_time+NETWORK_DELAY)
+			self.simulation.event_queue.put((current_time + LM_HEARTBEAT_INTERVAL+NETWORK_DELAY,self))#add the next heartbeat, network delay added because intuitively we do not include it in the LM_HEARTBEAT INTERVAL
 		
 #####################################################################################################################
 #####################################################################################################################
