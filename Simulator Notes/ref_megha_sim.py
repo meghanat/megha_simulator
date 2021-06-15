@@ -120,7 +120,7 @@ class  LMUpdateEvent(Event):
 	def run(self,current_time):
 		print(current_time,",","LMUpdateEvent",",",self.periodic)
 		for GM_id in self.simulation.gms:
-			self.simulation.gms[GM_id].update_status(current_time+NETWORK_DELAY)
+			self.simulation.gms[GM_id].update_status(current_time+NETWORK_DELAY) # AttributeError : 'NoneType' object has no attribute 'update_status'
 
 		if(self.periodic and not self.simulation.event_queue.empty()):
 			self.simulation.event_queue.put((current_time + LM_HEARTBEAT_INTERVAL+NETWORK_DELAY,self))#add the next heartbeat
