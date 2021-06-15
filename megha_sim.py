@@ -6,7 +6,6 @@ import logging
 import math
 import random
 import queue
-import copy
 import collections
 import json
 import copy
