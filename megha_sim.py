@@ -37,6 +37,12 @@ class EstimationErrorDistribution:
 
 # Event class is an Abstract class
 class Event(object):
+	"""
+	This is the abstract Event object class.
+
+	Args:
+		object (Object): Parent object class.
+	"""
 	def __init__(self):
 		raise NotImplementedError("Event is an abstract class and cannot be instantiated directly")
 
