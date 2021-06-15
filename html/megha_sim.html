@@ -1,0 +1,1830 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.9.2" />
+<title>megha_sim API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>megha_sim</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">from typing import List, Literal, Optional, Union
+from enum import Enum, unique
+import sys
+import time
+import logging
+import math
+import random
+import queue
+import copy
+import collections
+import json
+import copy
+import pickle
+
+#####################################################################################################################
+@unique
+class InconsistencyType(Enum):
+        INTERNAL_INCONSISTENCY = Literal[0]
+        EXTERNAL_INCONSISTENCY = Literal[1]
+
+#####################################################################################################################
+LM_HEARTBEAT_INTERVAL=30
+
+class TaskDurationDistributions:
+    CONSTANT : int
+    MEAN : int
+    FROM_FILE : int
+    CONSTANT, MEAN, FROM_FILE  = range(3)
+class EstimationErrorDistribution:
+    CONSTANT : int
+    RANDOM : int
+    MEAN : int
+    CONSTANT, RANDOM, MEAN = range(3)
+
+#####################################################################################################################
+#####################################################################################################################
+
+# Event class is an Abstract class
+class Event(object):
+        def __init__(self):
+                raise NotImplementedError(&#34;Event is an abstract class and cannot be instantiated directly&#34;)
+
+        def __lt__(self, other):
+                return True
+
+        def run(self, current_time):
+                &#34;&#34;&#34; Returns any events that should be added to the queue. &#34;&#34;&#34;
+                raise NotImplementedError(&#34;The run() method must be implemented by each class subclassing Event&#34;)
+
+#####################################################################################################################
+#####################################################################################################################
+
+#created when a task completes
+class TaskEndEvent(Event):
+        def __init__(self, task):
+                self.task=task
+        def __lt__(self, other):
+                return True
+
+        def run(self, current_time):
+                print(current_time,&#34;,&#34;,&#34;TaskEndEvent&#34;,&#34;,&#34;,self.task.job.job_id+&#34;_&#34;+self.task.task_id)
+                self.task.end_time=current_time
+                self.task.lm.task_completed(self.task)
+
+#####################################################################################################################
+#####################################################################################################################
+#created after LM verifies GM request
+class LaunchOnnodeEvent(Event):
+
+        def __init__(self,task,simulation):
+                self.task=task
+                self.simulation=simulation
+
+        def run(self, current_time):
+                print(current_time,&#34;,&#34;,&#34;LaunchOnnodeEvent&#34;,&#34;,&#34;,self.task.job.job_id+&#34;_&#34;+self.task.task_id,&#34;,&#34;,self.task.partition_id+&#34;_&#34;+self.task.node_id)
+                self.simulation.event_queue.put((current_time+self.task.duration+NETWORK_DELAY,TaskEndEvent(self.task)))#launching requires network transfer
+
+
+#####################################################################################################################
+#####################################################################################################################
+
+#if GM has outdated info, LM creates this event
+class InconsistencyEvent(Event):
+        def __init__(self, task, gm, type : Union[Literal[0], Literal[1]], simulation):
+                self.task=task
+                self.gm : GM = gm
+                self.type = type
+                self.simulation=simulation
+
+        def run(self, current_time):
+                if(self.type==InconsistencyType.INTERNAL_INCONSISTENCY):#internal inconsistency -&gt; failed to place task on external partition
+                        print(current_time,&#34;,&#34;,&#34;InternalInconsistencyEvent&#34;)
+                else:# external inconsistency  -&gt; failed to place task on internal partition
+                        print(current_time,&#34;,&#34;,&#34;ExternalInconsistencyEvent&#34;)
+                self.task.scheduled=False
+
+                #if job already moved to jobs_scheduled queue, need to remove and add to front of queue
+                self.gm.unschedule_job(self.task.job)
+                self.simulation.event_queue.put((current_time,LMUpdateEvent(self.simulation,periodic=False,gm=self.gm)))
+
+                #***********************************************************************#
+                #  NEED TO CHECK THIS AND SEE IF IT CAN BE MODIFIED SUCH                                #
+                # THAT THE UNSCHEDULE OPERATION IS CALLED JUST BEFORE CONFIG IS UPDATED #
+                #  THIS IS TO ENSURE THE DELAY DUE TO INCONSISTENCY IS REFLECTED                #
+                #***********************************************************************#
+
+
+#####################################################################################################################
+#####################################################################################################################
+#created when GM finds a match in the external or internal partition
+class MatchFoundEvent(Event):
+        def __init__(self,task, gm,lm,node_id,current_time,external_partition=None):
+                self.task=task
+                self.gm =gm
+                self.lm=lm
+                self.node_id=node_id
+                self.current_time=current_time
+                self.external_partition=external_partition
+
+        def run(self, current_time):
+                #add network delay to LM, similar to sparrow: 
+                print(current_time,&#34;,&#34;,&#34;MatchFoundEvent&#34;,&#34;,&#34;,self.task.job.job_id+&#34;_&#34;+self.task.task_id,&#34;,&#34;,self.gm.GM_id+&#34;_&#34;+str(self.node_id))
+                self.lm.verify_request(self.task,self.gm,self.node_id,current_time+NETWORK_DELAY,external_partition=self.external_partition)
+
+#####################################################################################################################
+#####################################################################################################################
+#created periodically or when LM needs to piggyback update on response
+class  LMUpdateEvent(Event):
+        
+        def __init__(self,simulation,periodic=True,gm=None):
+                self.simulation=simulation
+                self.periodic : bool = periodic
+                self.gm : Optional[GM] = gm
+
+                if self.periodic is True:
+                        assert self.gm is None, &#34;LMUpdateEvent.__init__: Periodic is set to true so self.gm must be None!&#34;
+                elif self.periodic is False:
+                        assert self.gm is not None, &#34;LMUpdateEvent.__init__: Periodic is set to false so self.gm must not be None!&#34;
+
+        def run(self,current_time):
+                print(current_time,&#34;,&#34;,&#34;LMUpdateEvent&#34;,&#34;,&#34;,self.periodic)
+                
+                #update only that GM which is inconsistent
+                if not self.periodic:
+                        self.gm.update_status(current_time+NETWORK_DELAY)
+
+                if self.periodic and not self.simulation.event_queue.empty():
+                        for GM_id in self.simulation.gms:
+                                self.simulation.gms[GM_id].update_status(current_time+NETWORK_DELAY)
+                        self.simulation.event_queue.put((current_time + LM_HEARTBEAT_INTERVAL+NETWORK_DELAY,self))#add the next heartbeat, network delay added because intuitively we do not include it in the LM_HEARTBEAT INTERVAL
+                
+#####################################################################################################################
+#####################################################################################################################
+#created for each job
+class JobArrival(Event):
+
+        gm_counter : int = 0
+
+        def __init__(self, simulation, task_distribution, job, jobs_file):
+                self.simulation = simulation
+                self.task_distribution = task_distribution
+                self.job = job
+                self.jobs_file = jobs_file  # Jobs file (input trace file) handler
+
+        def __lt__(self, other) -&gt; bool:
+                return True
+
+
+        def run(self, current_time):
+                new_events : List[Event] = []
+                #needs to be assigned to a GM - RR
+                JobArrival.gm_counter=(JobArrival.gm_counter)%self.simulation.NUM_GMS+1
+        # assigned_GM --&gt; Handle to the global master object
+                assigned_GM=self.simulation.gms[str(JobArrival.gm_counter)]
+                #GM needs to add job to its queue
+                assigned_GM.queue_job(self.job,current_time)
+
+
+                # Creating a new Job Arrival event for the next job in the trace
+                line = self.jobs_file.readline()
+                if (len(line)==0):
+                        self.simulation.scheduled_last_job = True
+                else:
+                        self.job = Job(self.task_distribution,line,self.simulation)
+                        new_events.append((self.job.start_time, self))
+                        self.simulation.jobs_scheduled += 1
+                return new_events
+
+
+#####################################################################################################################
+#####################################################################################################################
+
+# This is just like a struct or Plain Old Data format
+class Task(object):
+
+        def __init__(self,task_id,job,duration):
+                self.task_id=task_id
+                self.start_time=job.start_time
+                self.scheduled_time=None
+                self.end_time=None
+                self.job=job
+                self.duration=duration
+                self.node_id=None
+                self.partition_id=None #may differ from GM_id if repartitioning
+                self.GM_id=None
+                self.lm=None
+                self.scheduled=False
+
+#####################################################################################################################
+#####################################################################################################################
+
+class Job(object):
+        job_count = 1 # to assign ids
+
+        def __init__(self, task_distribution, line,simulation):
+                global job_start_tstamps
+                
+                job_args= line.strip().split()
+                self.start_time = float(job_args[0])
+                self.num_tasks= int(job_args[1])
+                self.simulation=simulation
+                self.tasks={}
+                self.task_counter=0
+                self.completed_tasks=[]
+                self.gm : Optional[GM] = None
+                
+                #retaining below logic as-is to compare with Sparrow.
+                #dephase the incoming job in case it has the exact submission time as another already submitted job
+                if self.start_time not in job_start_tstamps:  # IF the job&#39;s start_time has never been seen before
+                        job_start_tstamps[self.start_time] = self.start_time  # Add it to the dict of start time stamps
+                else:  # If the job&#39;s start_time has been seen before
+                        job_start_tstamps[self.start_time] += 0.01  # Shift the start time of the jobs with this duplicate start time by 0.01s forward to prevent a clash
+                        self.start_time = job_start_tstamps[self.start_time]  # Assign this shifted time stamp to the job start time
+                
+                self.job_id = str(Job.job_count)
+                Job.job_count += 1
+                
+                self.end_time = self.start_time
+                
+                #in case we need to explore other distr- retaining Sparrow code as-is
+                if      task_distribution == TaskDurationDistributions.FROM_FILE: 
+                        self.file_task_execution_time(job_args)
+                
+        #checks if job&#39;s tasks have all been scheduled. 
+        def fully_scheduled(self):
+                
+                for task_id in self.tasks:
+                        if not self.tasks[task_id].scheduled:
+                                return False
+                return True
+
+
+        #Job class - parse file line
+        def file_task_execution_time(self, job_args):
+                for task_duration in (job_args[3:]):  # Adding each of the tasks to the dict
+                        duration=int(float(task_duration))      
+                        self.task_counter+=1
+                        self.tasks[str(self.task_counter)]=Task(str(self.task_counter),self,duration)
+
+#####################################################################################################################
+#####################################################################################################################
+
+class LM(object):
+
+        def __init__(self,simulation,LM_id,partiton_size,LM_config):
+                self.LM_id=LM_id
+                self.partiton_size=partiton_size
+                self.LM_config=LM_config
+                print(&#34;LM &#34;,LM_id,&#34;initialised&#34;)
+                self.simulation=simulation
+                self.tasks_completed={}  # we hold the key-value pairs of the list of tasks completed (value) for each GM (key)
+                for GM_id in self.simulation.gms:
+                        self.tasks_completed[GM_id]=[]
+
+        def get_status(self,gm):
+        # &#34;&#34;&#34;
+        # One we have sent the response, the LM clears the list of tasks the LM has completed for the particular GM.
+
+        # :param gm: The handle to the GM object
+        # :type gm: GM
+        # :return: List of the LM config and the tasks completed by the LM from that GM
+        # :rtype: List[str, str]
+        # &#34;&#34;&#34;
+                #deep copy to ensure GM&#39;s copy and LM&#39;s copy are separate
+                response=[ json.dumps(self.LM_config),json.dumps(self.tasks_completed[gm.GM_id])]
+                self.tasks_completed[gm.GM_id]=[]
+                return response
+
+        #LM checks if GM&#39;s request is valid
+        def verify_request(self,task,gm,node_id,current_time,external_partition=None):
+
+                #check if repartitioning
+                if(external_partition is not None):
+                        if(self.LM_config[&#34;partitions&#34;][external_partition][&#34;nodes&#34;][node_id][&#34;CPU&#34;]==1):
+                                self.LM_config[&#34;partitions&#34;][external_partition][&#34;nodes&#34;][node_id][&#34;CPU&#34;]=0
+                                task.node_id=node_id
+                                task.partition_id=external_partition
+                                task.lm=self
+                                task.GM_id=gm.GM_id
+
+                # network delay as the request has to be sent from the LM to the selected worker node
+                                self.simulation.event_queue.put((current_time+NETWORK_DELAY,LaunchOnnodeEvent(task,self.simulation)))
+                                return True
+                        else:# if inconsistent  
+                                self.simulation.event_queue.put((current_time+NETWORK_DELAY,InconsistencyEvent(task,gm,InconsistencyType.EXTERNAL_INCONSISTENCY,self.simulation)))
+                #internal partition
+                else:
+                        if(self.LM_config[&#34;partitions&#34;][gm.GM_id][&#34;nodes&#34;][node_id][&#34;CPU&#34;]==1):
+                                #allot node to task
+                                self.LM_config[&#34;partitions&#34;][gm.GM_id][&#34;nodes&#34;][node_id][&#34;CPU&#34;]=0
+                                task.node_id=node_id
+                                task.partition_id=gm.GM_id
+                                task.GM_id=gm.GM_id
+                                task.lm=self
+                                self.simulation.event_queue.put((current_time+NETWORK_DELAY,LaunchOnnodeEvent(task,self.simulation)))
+                        else:# if inconsistent  
+                                self.simulation.event_queue.put((current_time+NETWORK_DELAY,InconsistencyEvent(task,gm,InconsistencyType.INTERNAL_INCONSISTENCY,self.simulation)))
+
+
+        def task_completed(self,task):
+                #reclaim resources
+                self.LM_config[&#34;partitions&#34;][task.partition_id][&#34;nodes&#34;][task.node_id][&#34;CPU&#34;]=1
+
+        # Append the details of the task that was just completed to the list of tasks completed for the corresponding GM that sent it
+                self.tasks_completed[task.GM_id].append((task.job.job_id,task.task_id)) #note GM_id used here, not partition, in case of repartitioning
+                #update from node to LM - 1 NETWORK_DELAY + update from LM to GM - 1 NETWORK DELAY = 2 NETWORK_DELAYS
+                self.simulation.event_queue.put((task.end_time+NETWORK_DELAY,LMUpdateEvent(self.simulation,periodic=False, gm=self.simulation.gms[task.GM_id])))
+
+#####################################################################################################################
+#####################################################################################################################
+
+class GM(object):
+        def __init__(self,simulation,GM_id,config):
+                self.GM_id=GM_id
+                self.simulation=simulation
+                self.RR_counter : int = 0
+                self.global_view={}
+                self.job_queue : List[Job] = []
+                self.jobs_scheduled : List[Job] = []
+
+                #populate internal_partitions info
+                for LM_id in config[&#34;LMs&#34;]:
+                        self.global_view[LM_id]=config[&#34;LMs&#34;][LM_id]
+
+                print(&#34;GM&#34;, self.GM_id, &#34;initialised&#34;)
+
+        #updates global view of GM by getting partial updates from each LM
+        def update_status(self,current_time):
+                global jobs_completed
+
+                for LM_id in self.simulation.lms:
+                        lm=self.simulation.lms[LM_id]
+                        p_partial_status,p_tasks_completed=lm.get_status(self)
+                        partial_status=json.loads(p_partial_status)
+                        tasks_completed=json.loads(p_tasks_completed)
+                        self.global_view[lm.LM_id]=partial_status
+                        #Through Job object delete task
+                        for record in tasks_completed:  # Iterate over the tasks completed and update each job&#39;s status
+                                job_id=record[0]
+                                task_id=record[1]
+                                for index in range(0,len(self.jobs_scheduled)):
+                                        job=self.jobs_scheduled[index]
+                                                        
+                                        if job.job_id==job_id:
+                                                task=job.tasks[task_id]
+                                                job.completed_tasks.append(task)
+                                                if len(job.tasks) == len(job.completed_tasks): #no more tasks left
+                                                        job.completion_time=task.end_time  # NOTE:job completion time = end time of last task
+                                                        jobs_completed.append(job)
+                                                        self.jobs_scheduled.remove(job)
+                                                break
+
+                self.schedule_tasks(current_time)
+
+        def unschedule_job(self,unverified_job):
+        # &#34;&#34;&#34;
+        # The job is inserted back into the job_queue of the GM from the job_scheduled queue of the GM
+
+        # :param unverified_job: The job that needs to be moved, as it was assigned on a worker node
+        #  not actually available at that time
+        # :type unverified_job: Job
+        # &#34;&#34;&#34;
+                for index in range(0,len(self.jobs_scheduled)):
+                        if unverified_job.job_id==self.jobs_scheduled[index].job_id:
+                                #remove job from list and add to front of job_queue
+                                self.job_queue.insert(0,self.jobs_scheduled.pop(index))
+                                break
+
+
+    # searches the external partitions
+        def repartition(self,current_time):
+                #search in external partitions:
+                for GM_id in self.simulation.gms:
+                        if GM_id == self.GM_id:  # Skip the partition of the GM searching for a worker node in a external partition 
+                                continue
+                        else:
+                                while len(self.job_queue)&gt;0:  # While the job_queue for the current GM is not empty
+                                        job=self.job_queue[0]# get job from head of queue
+                                        # print(&#34;Scheduling Tasks from Job: &#34;,job.job_id)
+                                        
+                                        for task_id in job.tasks:  # Go over the tasks for the job
+                                                task=job.tasks[task_id]
+                                                if(job.tasks[task_id].scheduled):  # If the task is already scheduled then, there is nothing to do
+                                                        continue
+                                                matchfound=False
+                                                # print(&#34;Scheduling Task:&#34;,task_id)
+                                                #which LM? searching the LMs in RR fashion
+                                                LM_id=str(self.RR_counter%self.simulation.NUM_LMS+1)
+                                                self.RR_counter+=1
+                                                #search in external partitions
+                                                for node_id in self.global_view[LM_id][&#34;partitions&#34;][GM_id][&#34;nodes&#34;]:  # iterating over a dict
+                                                        node=self.global_view[LM_id][&#34;partitions&#34;][GM_id][&#34;nodes&#34;][node_id]
+                                                        if node[&#34;CPU&#34;]==1:# node unoccupied
+                                                                # print(&#34;Match found in internal partitions&#34;)
+                                                                node[&#34;CPU&#34;]=0
+                                                                job.tasks[task_id].scheduled=True
+                                                                if(job.fully_scheduled()):
+                                                                        self.jobs_scheduled.append(self.job_queue.pop(0))
+                                                                print(current_time,&#34;RepartitionEvent&#34;,self.GM_id,&#34;,&#34;,GM_id,&#34;,&#34;,job.job_id+&#34;_&#34;+task.task_id)
+                                                                self.simulation.event_queue.put((current_time,MatchFoundEvent(job.tasks[task_id],self,self.simulation.lms[LM_id],node_id,current_time,external_partition=GM_id)))#may need to add processing overhead here if required
+                                                                matchfound=True
+                                                                break
+                                                if(matchfound):  # If this task was successfully placed then, move on to the next task
+                                                        continue 
+                                                else:
+                                                        print(current_time,&#34;No resources available in cluster&#34;)
+                                                        return
+                                # print(&#34;Exit scheduling loop for now&#34;)
+
+        #search internal partitions
+        def schedule_tasks(self,current_time):
+                
+                while len(self.job_queue)&gt;0:  # While the job_queue for the current GM is not empty
+                        job=self.job_queue[0]# get job from head of queue
+                        for task_id in job.tasks:  # Go over the tasks for the job
+                                if(job.tasks[task_id].scheduled):  # If the task is already scheduled then, there is nothing to do
+                                        continue
+                                matchfound=False
+                                #which LM? searching the LMs in RR fashion
+                                LM_id=str(self.RR_counter%self.simulation.NUM_LMS+1)
+                                self.RR_counter+=1
+                                #search in internal partitions
+                                for node_id in self.global_view[LM_id][&#34;partitions&#34;][self.GM_id][&#34;nodes&#34;]:   # iterating over a dict
+                                        node=self.global_view[LM_id][&#34;partitions&#34;][self.GM_id][&#34;nodes&#34;][node_id]
+                                        if node[&#34;CPU&#34;]==1:# node available
+                                                node[&#34;CPU&#34;]=0
+                                                job.tasks[task_id].scheduled=True
+                                                if(job.fully_scheduled()):
+                                                        self.jobs_scheduled.append(self.job_queue.pop(0))
+                                                self.simulation.event_queue.put((current_time,MatchFoundEvent(job.tasks[task_id],self,self.simulation.lms[LM_id],node_id,current_time)))#may need to add processing overhead here if required
+                                                matchfound=True
+                                                break
+                                if(matchfound):  # If this task was successfully placed then, move on to the next task
+                                        continue 
+                                else:
+                                        #repartition
+                                        self.repartition(current_time)
+                                        return
+                
+
+        def queue_job(self, job,current_time):
+                print(current_time,&#34;,&#34;,&#34;JobArrivalEvent&#34;,&#34;,&#34;,job.job_id,&#34;,&#34;,self.GM_id)
+                job.gm = self
+                self.job_queue.append(job)
+                if(len(self.job_queue)==1):#first job
+                        self.schedule_tasks(current_time)
+
+#####################################################################################################################
+#####################################################################################################################
+
+class Simulation(object):
+        def __init__(self, workload, config, NUM_GMS, NUM_LMS,PARTITION_SIZE,cpu,memory,storage):
+
+        # Each localmaster has one partition per global master so the total number of partitions in the cluster are:
+        # NUM_GMS * NUM_LMS
+        # Given the number of worker nodes per partition is PARTITION_SIZE
+        # so the total_nodes are NUM_GMS*NUM_LMS*PARTITION_SIZE
+                self.total_nodes=NUM_GMS*NUM_LMS*PARTITION_SIZE;
+                self.NUM_GMS=NUM_GMS
+                self.NUM_LMS=NUM_LMS
+                self.config=json.load(open(config))
+                self.WORKLOAD_FILE=workload
+                
+                self.jobs = {}
+                self.event_queue = queue.PriorityQueue()
+                
+                #initialise GMs
+                self.gms={}
+                counter=1
+                while len(self.gms)&lt;self.NUM_GMS:
+                        self.gms[str(counter)]=GM(self,str(counter),pickle.loads(pickle.dumps(self.config)))#create deep copy
+                        counter+=1
+
+                #initialise LMs
+                self.lms={}
+                counter=1
+
+                while len(self.lms) &lt; self.NUM_LMS:
+                        self.lms[str(counter)]=LM(self,str(counter),PARTITION_SIZE,pickle.loads(pickle.dumps(self.config[&#34;LMs&#34;][str(counter)])))# create deep copy
+                        counter+=1
+
+                self.shared_cluster_status = {}
+ 
+                self.jobs_scheduled = 0
+                self.jobs_completed = 0
+                self.scheduled_last_job = False
+                print(&#34;Simulation instantiated&#34;)
+
+         #Simulation class
+        def run(self):
+                last_time = 0
+
+                self.jobs_file = open(self.WORKLOAD_FILE, &#39;r&#39;)
+
+                self.task_distribution = TaskDurationDistributions.FROM_FILE
+
+                line = self.jobs_file.readline()#first job
+                new_job = Job(self.task_distribution,line,self)
+                self.event_queue.put((float(line.split()[0]), JobArrival(self, self.task_distribution, new_job, self.jobs_file)))
+                self.event_queue.put((float(line.split()[0]), LMUpdateEvent(self)))#starting the periodic LM updates
+                self.jobs_scheduled = 1
+
+                #start processing events
+                while (not self.event_queue.empty()):
+                        current_time, event = self.event_queue.get()
+                        assert current_time &gt;= last_time
+                        last_time = current_time
+                        new_events = event.run(current_time)
+                        if(new_events is  None):
+                                continue
+                        for new_event in new_events:
+                                if(new_event is  None):
+                                        continue
+                                self.event_queue.put(new_event)
+
+                print( &#34;Simulation ending, no more events&#34;)
+                self.jobs_file.close()
+
+#################MAIN########################
+
+job_start_tstamps = {}
+jobs_completed=[]
+
+
+if __name__ == &#34;__main__&#34;:
+    WORKLOAD_FILE= sys.argv[1]
+    CONFIG_FILE=sys.argv[2]
+    NUM_GMS     =int(sys.argv[3])
+    NUM_LMS=int(sys.argv[4])
+    PARTITION_SIZE=int(sys.argv[5])
+    SERVER_CPU=float(sys.argv[6])# currently set to 1 because of comparison with Sparrow
+    SERVER_RAM=float(sys.argv[7])# ditto
+    SERVER_STORAGE=float(sys.argv[8])# ditto
+
+    NETWORK_DELAY = 0.0005 #same as sparrow
+
+
+    t1 = time.time() # not simulation&#39;s virtual time. This is just to understand how long the program takes
+    s = Simulation(WORKLOAD_FILE,CONFIG_FILE,NUM_GMS,NUM_LMS,PARTITION_SIZE,SERVER_CPU,SERVER_RAM,SERVER_STORAGE)
+    print(&#34;Simulation running&#34;)
+    s.run()
+    print (&#34;Simulation ended in &#34;, (time.time() - t1), &#34; s &#34;)
+
+    print(jobs_completed)</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="megha_sim.EstimationErrorDistribution"><code class="flex name class">
+<span>class <span class="ident">EstimationErrorDistribution</span></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class EstimationErrorDistribution:
+    CONSTANT : int
+    RANDOM : int
+    MEAN : int
+    CONSTANT, RANDOM, MEAN = range(3)</code></pre>
+</details>
+<h3>Class variables</h3>
+<dl>
+<dt id="megha_sim.EstimationErrorDistribution.CONSTANT"><code class="name">var <span class="ident">CONSTANT</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="megha_sim.EstimationErrorDistribution.MEAN"><code class="name">var <span class="ident">MEAN</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="megha_sim.EstimationErrorDistribution.RANDOM"><code class="name">var <span class="ident">RANDOM</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="megha_sim.Event"><code class="flex name class">
+<span>class <span class="ident">Event</span></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Event(object):
+        def __init__(self):
+                raise NotImplementedError(&#34;Event is an abstract class and cannot be instantiated directly&#34;)
+
+        def __lt__(self, other):
+                return True
+
+        def run(self, current_time):
+                &#34;&#34;&#34; Returns any events that should be added to the queue. &#34;&#34;&#34;
+                raise NotImplementedError(&#34;The run() method must be implemented by each class subclassing Event&#34;)</code></pre>
+</details>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="megha_sim.InconsistencyEvent" href="#megha_sim.InconsistencyEvent">InconsistencyEvent</a></li>
+<li><a title="megha_sim.JobArrival" href="#megha_sim.JobArrival">JobArrival</a></li>
+<li><a title="megha_sim.LMUpdateEvent" href="#megha_sim.LMUpdateEvent">LMUpdateEvent</a></li>
+<li><a title="megha_sim.LaunchOnnodeEvent" href="#megha_sim.LaunchOnnodeEvent">LaunchOnnodeEvent</a></li>
+<li><a title="megha_sim.MatchFoundEvent" href="#megha_sim.MatchFoundEvent">MatchFoundEvent</a></li>
+<li><a title="megha_sim.TaskEndEvent" href="#megha_sim.TaskEndEvent">TaskEndEvent</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="megha_sim.Event.run"><code class="name flex">
+<span>def <span class="ident">run</span></span>(<span>self, current_time)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns any events that should be added to the queue.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def run(self, current_time):
+        &#34;&#34;&#34; Returns any events that should be added to the queue. &#34;&#34;&#34;
+        raise NotImplementedError(&#34;The run() method must be implemented by each class subclassing Event&#34;)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="megha_sim.GM"><code class="flex name class">
+<span>class <span class="ident">GM</span></span>
+<span>(</span><span>simulation, GM_id, config)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class GM(object):
+        def __init__(self,simulation,GM_id,config):
+                self.GM_id=GM_id
+                self.simulation=simulation
+                self.RR_counter : int = 0
+                self.global_view={}
+                self.job_queue : List[Job] = []
+                self.jobs_scheduled : List[Job] = []
+
+                #populate internal_partitions info
+                for LM_id in config[&#34;LMs&#34;]:
+                        self.global_view[LM_id]=config[&#34;LMs&#34;][LM_id]
+
+                print(&#34;GM&#34;, self.GM_id, &#34;initialised&#34;)
+
+        #updates global view of GM by getting partial updates from each LM
+        def update_status(self,current_time):
+                global jobs_completed
+
+                for LM_id in self.simulation.lms:
+                        lm=self.simulation.lms[LM_id]
+                        p_partial_status,p_tasks_completed=lm.get_status(self)
+                        partial_status=json.loads(p_partial_status)
+                        tasks_completed=json.loads(p_tasks_completed)
+                        self.global_view[lm.LM_id]=partial_status
+                        #Through Job object delete task
+                        for record in tasks_completed:  # Iterate over the tasks completed and update each job&#39;s status
+                                job_id=record[0]
+                                task_id=record[1]
+                                for index in range(0,len(self.jobs_scheduled)):
+                                        job=self.jobs_scheduled[index]
+                                                        
+                                        if job.job_id==job_id:
+                                                task=job.tasks[task_id]
+                                                job.completed_tasks.append(task)
+                                                if len(job.tasks) == len(job.completed_tasks): #no more tasks left
+                                                        job.completion_time=task.end_time  # NOTE:job completion time = end time of last task
+                                                        jobs_completed.append(job)
+                                                        self.jobs_scheduled.remove(job)
+                                                break
+
+                self.schedule_tasks(current_time)
+
+        def unschedule_job(self,unverified_job):
+        # &#34;&#34;&#34;
+        # The job is inserted back into the job_queue of the GM from the job_scheduled queue of the GM
+
+        # :param unverified_job: The job that needs to be moved, as it was assigned on a worker node
+        #  not actually available at that time
+        # :type unverified_job: Job
+        # &#34;&#34;&#34;
+                for index in range(0,len(self.jobs_scheduled)):
+                        if unverified_job.job_id==self.jobs_scheduled[index].job_id:
+                                #remove job from list and add to front of job_queue
+                                self.job_queue.insert(0,self.jobs_scheduled.pop(index))
+                                break
+
+
+    # searches the external partitions
+        def repartition(self,current_time):
+                #search in external partitions:
+                for GM_id in self.simulation.gms:
+                        if GM_id == self.GM_id:  # Skip the partition of the GM searching for a worker node in a external partition 
+                                continue
+                        else:
+                                while len(self.job_queue)&gt;0:  # While the job_queue for the current GM is not empty
+                                        job=self.job_queue[0]# get job from head of queue
+                                        # print(&#34;Scheduling Tasks from Job: &#34;,job.job_id)
+                                        
+                                        for task_id in job.tasks:  # Go over the tasks for the job
+                                                task=job.tasks[task_id]
+                                                if(job.tasks[task_id].scheduled):  # If the task is already scheduled then, there is nothing to do
+                                                        continue
+                                                matchfound=False
+                                                # print(&#34;Scheduling Task:&#34;,task_id)
+                                                #which LM? searching the LMs in RR fashion
+                                                LM_id=str(self.RR_counter%self.simulation.NUM_LMS+1)
+                                                self.RR_counter+=1
+                                                #search in external partitions
+                                                for node_id in self.global_view[LM_id][&#34;partitions&#34;][GM_id][&#34;nodes&#34;]:  # iterating over a dict
+                                                        node=self.global_view[LM_id][&#34;partitions&#34;][GM_id][&#34;nodes&#34;][node_id]
+                                                        if node[&#34;CPU&#34;]==1:# node unoccupied
+                                                                # print(&#34;Match found in internal partitions&#34;)
+                                                                node[&#34;CPU&#34;]=0
+                                                                job.tasks[task_id].scheduled=True
+                                                                if(job.fully_scheduled()):
+                                                                        self.jobs_scheduled.append(self.job_queue.pop(0))
+                                                                print(current_time,&#34;RepartitionEvent&#34;,self.GM_id,&#34;,&#34;,GM_id,&#34;,&#34;,job.job_id+&#34;_&#34;+task.task_id)
+                                                                self.simulation.event_queue.put((current_time,MatchFoundEvent(job.tasks[task_id],self,self.simulation.lms[LM_id],node_id,current_time,external_partition=GM_id)))#may need to add processing overhead here if required
+                                                                matchfound=True
+                                                                break
+                                                if(matchfound):  # If this task was successfully placed then, move on to the next task
+                                                        continue 
+                                                else:
+                                                        print(current_time,&#34;No resources available in cluster&#34;)
+                                                        return
+                                # print(&#34;Exit scheduling loop for now&#34;)
+
+        #search internal partitions
+        def schedule_tasks(self,current_time):
+                
+                while len(self.job_queue)&gt;0:  # While the job_queue for the current GM is not empty
+                        job=self.job_queue[0]# get job from head of queue
+                        for task_id in job.tasks:  # Go over the tasks for the job
+                                if(job.tasks[task_id].scheduled):  # If the task is already scheduled then, there is nothing to do
+                                        continue
+                                matchfound=False
+                                #which LM? searching the LMs in RR fashion
+                                LM_id=str(self.RR_counter%self.simulation.NUM_LMS+1)
+                                self.RR_counter+=1
+                                #search in internal partitions
+                                for node_id in self.global_view[LM_id][&#34;partitions&#34;][self.GM_id][&#34;nodes&#34;]:   # iterating over a dict
+                                        node=self.global_view[LM_id][&#34;partitions&#34;][self.GM_id][&#34;nodes&#34;][node_id]
+                                        if node[&#34;CPU&#34;]==1:# node available
+                                                node[&#34;CPU&#34;]=0
+                                                job.tasks[task_id].scheduled=True
+                                                if(job.fully_scheduled()):
+                                                        self.jobs_scheduled.append(self.job_queue.pop(0))
+                                                self.simulation.event_queue.put((current_time,MatchFoundEvent(job.tasks[task_id],self,self.simulation.lms[LM_id],node_id,current_time)))#may need to add processing overhead here if required
+                                                matchfound=True
+                                                break
+                                if(matchfound):  # If this task was successfully placed then, move on to the next task
+                                        continue 
+                                else:
+                                        #repartition
+                                        self.repartition(current_time)
+                                        return
+                
+
+        def queue_job(self, job,current_time):
+                print(current_time,&#34;,&#34;,&#34;JobArrivalEvent&#34;,&#34;,&#34;,job.job_id,&#34;,&#34;,self.GM_id)
+                job.gm = self
+                self.job_queue.append(job)
+                if(len(self.job_queue)==1):#first job
+                        self.schedule_tasks(current_time)</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="megha_sim.GM.queue_job"><code class="name flex">
+<span>def <span class="ident">queue_job</span></span>(<span>self, job, current_time)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def queue_job(self, job,current_time):
+        print(current_time,&#34;,&#34;,&#34;JobArrivalEvent&#34;,&#34;,&#34;,job.job_id,&#34;,&#34;,self.GM_id)
+        job.gm = self
+        self.job_queue.append(job)
+        if(len(self.job_queue)==1):#first job
+                self.schedule_tasks(current_time)</code></pre>
+</details>
+</dd>
+<dt id="megha_sim.GM.repartition"><code class="name flex">
+<span>def <span class="ident">repartition</span></span>(<span>self, current_time)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def repartition(self,current_time):
+        #search in external partitions:
+        for GM_id in self.simulation.gms:
+                if GM_id == self.GM_id:  # Skip the partition of the GM searching for a worker node in a external partition 
+                        continue
+                else:
+                        while len(self.job_queue)&gt;0:  # While the job_queue for the current GM is not empty
+                                job=self.job_queue[0]# get job from head of queue
+                                # print(&#34;Scheduling Tasks from Job: &#34;,job.job_id)
+                                
+                                for task_id in job.tasks:  # Go over the tasks for the job
+                                        task=job.tasks[task_id]
+                                        if(job.tasks[task_id].scheduled):  # If the task is already scheduled then, there is nothing to do
+                                                continue
+                                        matchfound=False
+                                        # print(&#34;Scheduling Task:&#34;,task_id)
+                                        #which LM? searching the LMs in RR fashion
+                                        LM_id=str(self.RR_counter%self.simulation.NUM_LMS+1)
+                                        self.RR_counter+=1
+                                        #search in external partitions
+                                        for node_id in self.global_view[LM_id][&#34;partitions&#34;][GM_id][&#34;nodes&#34;]:  # iterating over a dict
+                                                node=self.global_view[LM_id][&#34;partitions&#34;][GM_id][&#34;nodes&#34;][node_id]
+                                                if node[&#34;CPU&#34;]==1:# node unoccupied
+                                                        # print(&#34;Match found in internal partitions&#34;)
+                                                        node[&#34;CPU&#34;]=0
+                                                        job.tasks[task_id].scheduled=True
+                                                        if(job.fully_scheduled()):
+                                                                self.jobs_scheduled.append(self.job_queue.pop(0))
+                                                        print(current_time,&#34;RepartitionEvent&#34;,self.GM_id,&#34;,&#34;,GM_id,&#34;,&#34;,job.job_id+&#34;_&#34;+task.task_id)
+                                                        self.simulation.event_queue.put((current_time,MatchFoundEvent(job.tasks[task_id],self,self.simulation.lms[LM_id],node_id,current_time,external_partition=GM_id)))#may need to add processing overhead here if required
+                                                        matchfound=True
+                                                        break
+                                        if(matchfound):  # If this task was successfully placed then, move on to the next task
+                                                continue 
+                                        else:
+                                                print(current_time,&#34;No resources available in cluster&#34;)
+                                                return</code></pre>
+</details>
+</dd>
+<dt id="megha_sim.GM.schedule_tasks"><code class="name flex">
+<span>def <span class="ident">schedule_tasks</span></span>(<span>self, current_time)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def schedule_tasks(self,current_time):
+        
+        while len(self.job_queue)&gt;0:  # While the job_queue for the current GM is not empty
+                job=self.job_queue[0]# get job from head of queue
+                for task_id in job.tasks:  # Go over the tasks for the job
+                        if(job.tasks[task_id].scheduled):  # If the task is already scheduled then, there is nothing to do
+                                continue
+                        matchfound=False
+                        #which LM? searching the LMs in RR fashion
+                        LM_id=str(self.RR_counter%self.simulation.NUM_LMS+1)
+                        self.RR_counter+=1
+                        #search in internal partitions
+                        for node_id in self.global_view[LM_id][&#34;partitions&#34;][self.GM_id][&#34;nodes&#34;]:   # iterating over a dict
+                                node=self.global_view[LM_id][&#34;partitions&#34;][self.GM_id][&#34;nodes&#34;][node_id]
+                                if node[&#34;CPU&#34;]==1:# node available
+                                        node[&#34;CPU&#34;]=0
+                                        job.tasks[task_id].scheduled=True
+                                        if(job.fully_scheduled()):
+                                                self.jobs_scheduled.append(self.job_queue.pop(0))
+                                        self.simulation.event_queue.put((current_time,MatchFoundEvent(job.tasks[task_id],self,self.simulation.lms[LM_id],node_id,current_time)))#may need to add processing overhead here if required
+                                        matchfound=True
+                                        break
+                        if(matchfound):  # If this task was successfully placed then, move on to the next task
+                                continue 
+                        else:
+                                #repartition
+                                self.repartition(current_time)
+                                return</code></pre>
+</details>
+</dd>
+<dt id="megha_sim.GM.unschedule_job"><code class="name flex">
+<span>def <span class="ident">unschedule_job</span></span>(<span>self, unverified_job)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def unschedule_job(self,unverified_job):
+# &#34;&#34;&#34;
+# The job is inserted back into the job_queue of the GM from the job_scheduled queue of the GM
+
+# :param unverified_job: The job that needs to be moved, as it was assigned on a worker node
+#  not actually available at that time
+# :type unverified_job: Job
+# &#34;&#34;&#34;
+        for index in range(0,len(self.jobs_scheduled)):
+                if unverified_job.job_id==self.jobs_scheduled[index].job_id:
+                        #remove job from list and add to front of job_queue
+                        self.job_queue.insert(0,self.jobs_scheduled.pop(index))
+                        break</code></pre>
+</details>
+</dd>
+<dt id="megha_sim.GM.update_status"><code class="name flex">
+<span>def <span class="ident">update_status</span></span>(<span>self, current_time)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def update_status(self,current_time):
+        global jobs_completed
+
+        for LM_id in self.simulation.lms:
+                lm=self.simulation.lms[LM_id]
+                p_partial_status,p_tasks_completed=lm.get_status(self)
+                partial_status=json.loads(p_partial_status)
+                tasks_completed=json.loads(p_tasks_completed)
+                self.global_view[lm.LM_id]=partial_status
+                #Through Job object delete task
+                for record in tasks_completed:  # Iterate over the tasks completed and update each job&#39;s status
+                        job_id=record[0]
+                        task_id=record[1]
+                        for index in range(0,len(self.jobs_scheduled)):
+                                job=self.jobs_scheduled[index]
+                                                
+                                if job.job_id==job_id:
+                                        task=job.tasks[task_id]
+                                        job.completed_tasks.append(task)
+                                        if len(job.tasks) == len(job.completed_tasks): #no more tasks left
+                                                job.completion_time=task.end_time  # NOTE:job completion time = end time of last task
+                                                jobs_completed.append(job)
+                                                self.jobs_scheduled.remove(job)
+                                        break
+
+        self.schedule_tasks(current_time)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="megha_sim.InconsistencyEvent"><code class="flex name class">
+<span>class <span class="ident">InconsistencyEvent</span></span>
+<span>(</span><span>task, gm, type: Union[Literal[0], Literal[1]], simulation)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class InconsistencyEvent(Event):
+        def __init__(self, task, gm, type : Union[Literal[0], Literal[1]], simulation):
+                self.task=task
+                self.gm : GM = gm
+                self.type = type
+                self.simulation=simulation
+
+        def run(self, current_time):
+                if(self.type==InconsistencyType.INTERNAL_INCONSISTENCY):#internal inconsistency -&gt; failed to place task on external partition
+                        print(current_time,&#34;,&#34;,&#34;InternalInconsistencyEvent&#34;)
+                else:# external inconsistency  -&gt; failed to place task on internal partition
+                        print(current_time,&#34;,&#34;,&#34;ExternalInconsistencyEvent&#34;)
+                self.task.scheduled=False
+
+                #if job already moved to jobs_scheduled queue, need to remove and add to front of queue
+                self.gm.unschedule_job(self.task.job)
+                self.simulation.event_queue.put((current_time,LMUpdateEvent(self.simulation,periodic=False,gm=self.gm)))</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="megha_sim.Event" href="#megha_sim.Event">Event</a></li>
+</ul>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="megha_sim.Event" href="#megha_sim.Event">Event</a></b></code>:
+<ul class="hlist">
+<li><code><a title="megha_sim.Event.run" href="#megha_sim.Event.run">run</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="megha_sim.InconsistencyType"><code class="flex name class">
+<span>class <span class="ident">InconsistencyType</span></span>
+<span>(</span><span>value, names=None, *, module=None, qualname=None, type=None, start=1)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>An enumeration.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class InconsistencyType(Enum):
+        INTERNAL_INCONSISTENCY = Literal[0]
+        EXTERNAL_INCONSISTENCY = Literal[1]</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>enum.Enum</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="megha_sim.InconsistencyType.EXTERNAL_INCONSISTENCY"><code class="name">var <span class="ident">EXTERNAL_INCONSISTENCY</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="megha_sim.InconsistencyType.INTERNAL_INCONSISTENCY"><code class="name">var <span class="ident">INTERNAL_INCONSISTENCY</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="megha_sim.Job"><code class="flex name class">
+<span>class <span class="ident">Job</span></span>
+<span>(</span><span>task_distribution, line, simulation)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Job(object):
+        job_count = 1 # to assign ids
+
+        def __init__(self, task_distribution, line,simulation):
+                global job_start_tstamps
+                
+                job_args= line.strip().split()
+                self.start_time = float(job_args[0])
+                self.num_tasks= int(job_args[1])
+                self.simulation=simulation
+                self.tasks={}
+                self.task_counter=0
+                self.completed_tasks=[]
+                self.gm : Optional[GM] = None
+                
+                #retaining below logic as-is to compare with Sparrow.
+                #dephase the incoming job in case it has the exact submission time as another already submitted job
+                if self.start_time not in job_start_tstamps:  # IF the job&#39;s start_time has never been seen before
+                        job_start_tstamps[self.start_time] = self.start_time  # Add it to the dict of start time stamps
+                else:  # If the job&#39;s start_time has been seen before
+                        job_start_tstamps[self.start_time] += 0.01  # Shift the start time of the jobs with this duplicate start time by 0.01s forward to prevent a clash
+                        self.start_time = job_start_tstamps[self.start_time]  # Assign this shifted time stamp to the job start time
+                
+                self.job_id = str(Job.job_count)
+                Job.job_count += 1
+                
+                self.end_time = self.start_time
+                
+                #in case we need to explore other distr- retaining Sparrow code as-is
+                if      task_distribution == TaskDurationDistributions.FROM_FILE: 
+                        self.file_task_execution_time(job_args)
+                
+        #checks if job&#39;s tasks have all been scheduled. 
+        def fully_scheduled(self):
+                
+                for task_id in self.tasks:
+                        if not self.tasks[task_id].scheduled:
+                                return False
+                return True
+
+
+        #Job class - parse file line
+        def file_task_execution_time(self, job_args):
+                for task_duration in (job_args[3:]):  # Adding each of the tasks to the dict
+                        duration=int(float(task_duration))      
+                        self.task_counter+=1
+                        self.tasks[str(self.task_counter)]=Task(str(self.task_counter),self,duration)</code></pre>
+</details>
+<h3>Class variables</h3>
+<dl>
+<dt id="megha_sim.Job.job_count"><code class="name">var <span class="ident">job_count</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="megha_sim.Job.file_task_execution_time"><code class="name flex">
+<span>def <span class="ident">file_task_execution_time</span></span>(<span>self, job_args)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def file_task_execution_time(self, job_args):
+        for task_duration in (job_args[3:]):  # Adding each of the tasks to the dict
+                duration=int(float(task_duration))      
+                self.task_counter+=1
+                self.tasks[str(self.task_counter)]=Task(str(self.task_counter),self,duration)</code></pre>
+</details>
+</dd>
+<dt id="megha_sim.Job.fully_scheduled"><code class="name flex">
+<span>def <span class="ident">fully_scheduled</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def fully_scheduled(self):
+        
+        for task_id in self.tasks:
+                if not self.tasks[task_id].scheduled:
+                        return False
+        return True</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="megha_sim.JobArrival"><code class="flex name class">
+<span>class <span class="ident">JobArrival</span></span>
+<span>(</span><span>simulation, task_distribution, job, jobs_file)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class JobArrival(Event):
+
+        gm_counter : int = 0
+
+        def __init__(self, simulation, task_distribution, job, jobs_file):
+                self.simulation = simulation
+                self.task_distribution = task_distribution
+                self.job = job
+                self.jobs_file = jobs_file  # Jobs file (input trace file) handler
+
+        def __lt__(self, other) -&gt; bool:
+                return True
+
+
+        def run(self, current_time):
+                new_events : List[Event] = []
+                #needs to be assigned to a GM - RR
+                JobArrival.gm_counter=(JobArrival.gm_counter)%self.simulation.NUM_GMS+1
+        # assigned_GM --&gt; Handle to the global master object
+                assigned_GM=self.simulation.gms[str(JobArrival.gm_counter)]
+                #GM needs to add job to its queue
+                assigned_GM.queue_job(self.job,current_time)
+
+
+                # Creating a new Job Arrival event for the next job in the trace
+                line = self.jobs_file.readline()
+                if (len(line)==0):
+                        self.simulation.scheduled_last_job = True
+                else:
+                        self.job = Job(self.task_distribution,line,self.simulation)
+                        new_events.append((self.job.start_time, self))
+                        self.simulation.jobs_scheduled += 1
+                return new_events</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="megha_sim.Event" href="#megha_sim.Event">Event</a></li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="megha_sim.JobArrival.gm_counter"><code class="name">var <span class="ident">gm_counter</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="megha_sim.Event" href="#megha_sim.Event">Event</a></b></code>:
+<ul class="hlist">
+<li><code><a title="megha_sim.Event.run" href="#megha_sim.Event.run">run</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="megha_sim.LM"><code class="flex name class">
+<span>class <span class="ident">LM</span></span>
+<span>(</span><span>simulation, LM_id, partiton_size, LM_config)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class LM(object):
+
+        def __init__(self,simulation,LM_id,partiton_size,LM_config):
+                self.LM_id=LM_id
+                self.partiton_size=partiton_size
+                self.LM_config=LM_config
+                print(&#34;LM &#34;,LM_id,&#34;initialised&#34;)
+                self.simulation=simulation
+                self.tasks_completed={}  # we hold the key-value pairs of the list of tasks completed (value) for each GM (key)
+                for GM_id in self.simulation.gms:
+                        self.tasks_completed[GM_id]=[]
+
+        def get_status(self,gm):
+        # &#34;&#34;&#34;
+        # One we have sent the response, the LM clears the list of tasks the LM has completed for the particular GM.
+
+        # :param gm: The handle to the GM object
+        # :type gm: GM
+        # :return: List of the LM config and the tasks completed by the LM from that GM
+        # :rtype: List[str, str]
+        # &#34;&#34;&#34;
+                #deep copy to ensure GM&#39;s copy and LM&#39;s copy are separate
+                response=[ json.dumps(self.LM_config),json.dumps(self.tasks_completed[gm.GM_id])]
+                self.tasks_completed[gm.GM_id]=[]
+                return response
+
+        #LM checks if GM&#39;s request is valid
+        def verify_request(self,task,gm,node_id,current_time,external_partition=None):
+
+                #check if repartitioning
+                if(external_partition is not None):
+                        if(self.LM_config[&#34;partitions&#34;][external_partition][&#34;nodes&#34;][node_id][&#34;CPU&#34;]==1):
+                                self.LM_config[&#34;partitions&#34;][external_partition][&#34;nodes&#34;][node_id][&#34;CPU&#34;]=0
+                                task.node_id=node_id
+                                task.partition_id=external_partition
+                                task.lm=self
+                                task.GM_id=gm.GM_id
+
+                # network delay as the request has to be sent from the LM to the selected worker node
+                                self.simulation.event_queue.put((current_time+NETWORK_DELAY,LaunchOnnodeEvent(task,self.simulation)))
+                                return True
+                        else:# if inconsistent  
+                                self.simulation.event_queue.put((current_time+NETWORK_DELAY,InconsistencyEvent(task,gm,InconsistencyType.EXTERNAL_INCONSISTENCY,self.simulation)))
+                #internal partition
+                else:
+                        if(self.LM_config[&#34;partitions&#34;][gm.GM_id][&#34;nodes&#34;][node_id][&#34;CPU&#34;]==1):
+                                #allot node to task
+                                self.LM_config[&#34;partitions&#34;][gm.GM_id][&#34;nodes&#34;][node_id][&#34;CPU&#34;]=0
+                                task.node_id=node_id
+                                task.partition_id=gm.GM_id
+                                task.GM_id=gm.GM_id
+                                task.lm=self
+                                self.simulation.event_queue.put((current_time+NETWORK_DELAY,LaunchOnnodeEvent(task,self.simulation)))
+                        else:# if inconsistent  
+                                self.simulation.event_queue.put((current_time+NETWORK_DELAY,InconsistencyEvent(task,gm,InconsistencyType.INTERNAL_INCONSISTENCY,self.simulation)))
+
+
+        def task_completed(self,task):
+                #reclaim resources
+                self.LM_config[&#34;partitions&#34;][task.partition_id][&#34;nodes&#34;][task.node_id][&#34;CPU&#34;]=1
+
+        # Append the details of the task that was just completed to the list of tasks completed for the corresponding GM that sent it
+                self.tasks_completed[task.GM_id].append((task.job.job_id,task.task_id)) #note GM_id used here, not partition, in case of repartitioning
+                #update from node to LM - 1 NETWORK_DELAY + update from LM to GM - 1 NETWORK DELAY = 2 NETWORK_DELAYS
+                self.simulation.event_queue.put((task.end_time+NETWORK_DELAY,LMUpdateEvent(self.simulation,periodic=False, gm=self.simulation.gms[task.GM_id])))</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="megha_sim.LM.get_status"><code class="name flex">
+<span>def <span class="ident">get_status</span></span>(<span>self, gm)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_status(self,gm):
+# &#34;&#34;&#34;
+# One we have sent the response, the LM clears the list of tasks the LM has completed for the particular GM.
+
+# :param gm: The handle to the GM object
+# :type gm: GM
+# :return: List of the LM config and the tasks completed by the LM from that GM
+# :rtype: List[str, str]
+# &#34;&#34;&#34;
+        #deep copy to ensure GM&#39;s copy and LM&#39;s copy are separate
+        response=[ json.dumps(self.LM_config),json.dumps(self.tasks_completed[gm.GM_id])]
+        self.tasks_completed[gm.GM_id]=[]
+        return response</code></pre>
+</details>
+</dd>
+<dt id="megha_sim.LM.task_completed"><code class="name flex">
+<span>def <span class="ident">task_completed</span></span>(<span>self, task)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def task_completed(self,task):
+        #reclaim resources
+        self.LM_config[&#34;partitions&#34;][task.partition_id][&#34;nodes&#34;][task.node_id][&#34;CPU&#34;]=1
+
+# Append the details of the task that was just completed to the list of tasks completed for the corresponding GM that sent it
+        self.tasks_completed[task.GM_id].append((task.job.job_id,task.task_id)) #note GM_id used here, not partition, in case of repartitioning
+        #update from node to LM - 1 NETWORK_DELAY + update from LM to GM - 1 NETWORK DELAY = 2 NETWORK_DELAYS
+        self.simulation.event_queue.put((task.end_time+NETWORK_DELAY,LMUpdateEvent(self.simulation,periodic=False, gm=self.simulation.gms[task.GM_id])))</code></pre>
+</details>
+</dd>
+<dt id="megha_sim.LM.verify_request"><code class="name flex">
+<span>def <span class="ident">verify_request</span></span>(<span>self, task, gm, node_id, current_time, external_partition=None)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def verify_request(self,task,gm,node_id,current_time,external_partition=None):
+
+        #check if repartitioning
+        if(external_partition is not None):
+                if(self.LM_config[&#34;partitions&#34;][external_partition][&#34;nodes&#34;][node_id][&#34;CPU&#34;]==1):
+                        self.LM_config[&#34;partitions&#34;][external_partition][&#34;nodes&#34;][node_id][&#34;CPU&#34;]=0
+                        task.node_id=node_id
+                        task.partition_id=external_partition
+                        task.lm=self
+                        task.GM_id=gm.GM_id
+
+        # network delay as the request has to be sent from the LM to the selected worker node
+                        self.simulation.event_queue.put((current_time+NETWORK_DELAY,LaunchOnnodeEvent(task,self.simulation)))
+                        return True
+                else:# if inconsistent  
+                        self.simulation.event_queue.put((current_time+NETWORK_DELAY,InconsistencyEvent(task,gm,InconsistencyType.EXTERNAL_INCONSISTENCY,self.simulation)))
+        #internal partition
+        else:
+                if(self.LM_config[&#34;partitions&#34;][gm.GM_id][&#34;nodes&#34;][node_id][&#34;CPU&#34;]==1):
+                        #allot node to task
+                        self.LM_config[&#34;partitions&#34;][gm.GM_id][&#34;nodes&#34;][node_id][&#34;CPU&#34;]=0
+                        task.node_id=node_id
+                        task.partition_id=gm.GM_id
+                        task.GM_id=gm.GM_id
+                        task.lm=self
+                        self.simulation.event_queue.put((current_time+NETWORK_DELAY,LaunchOnnodeEvent(task,self.simulation)))
+                else:# if inconsistent  
+                        self.simulation.event_queue.put((current_time+NETWORK_DELAY,InconsistencyEvent(task,gm,InconsistencyType.INTERNAL_INCONSISTENCY,self.simulation)))</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="megha_sim.LMUpdateEvent"><code class="flex name class">
+<span>class <span class="ident">LMUpdateEvent</span></span>
+<span>(</span><span>simulation, periodic=True, gm=None)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class  LMUpdateEvent(Event):
+        
+        def __init__(self,simulation,periodic=True,gm=None):
+                self.simulation=simulation
+                self.periodic : bool = periodic
+                self.gm : Optional[GM] = gm
+
+                if self.periodic is True:
+                        assert self.gm is None, &#34;LMUpdateEvent.__init__: Periodic is set to true so self.gm must be None!&#34;
+                elif self.periodic is False:
+                        assert self.gm is not None, &#34;LMUpdateEvent.__init__: Periodic is set to false so self.gm must not be None!&#34;
+
+        def run(self,current_time):
+                print(current_time,&#34;,&#34;,&#34;LMUpdateEvent&#34;,&#34;,&#34;,self.periodic)
+                
+                #update only that GM which is inconsistent
+                if not self.periodic:
+                        self.gm.update_status(current_time+NETWORK_DELAY)
+
+                if self.periodic and not self.simulation.event_queue.empty():
+                        for GM_id in self.simulation.gms:
+                                self.simulation.gms[GM_id].update_status(current_time+NETWORK_DELAY)
+                        self.simulation.event_queue.put((current_time + LM_HEARTBEAT_INTERVAL+NETWORK_DELAY,self))#add the next heartbeat, network delay added because intuitively we do not include it in the LM_HEARTBEAT INTERVAL</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="megha_sim.Event" href="#megha_sim.Event">Event</a></li>
+</ul>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="megha_sim.Event" href="#megha_sim.Event">Event</a></b></code>:
+<ul class="hlist">
+<li><code><a title="megha_sim.Event.run" href="#megha_sim.Event.run">run</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="megha_sim.LaunchOnnodeEvent"><code class="flex name class">
+<span>class <span class="ident">LaunchOnnodeEvent</span></span>
+<span>(</span><span>task, simulation)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class LaunchOnnodeEvent(Event):
+
+        def __init__(self,task,simulation):
+                self.task=task
+                self.simulation=simulation
+
+        def run(self, current_time):
+                print(current_time,&#34;,&#34;,&#34;LaunchOnnodeEvent&#34;,&#34;,&#34;,self.task.job.job_id+&#34;_&#34;+self.task.task_id,&#34;,&#34;,self.task.partition_id+&#34;_&#34;+self.task.node_id)
+                self.simulation.event_queue.put((current_time+self.task.duration+NETWORK_DELAY,TaskEndEvent(self.task)))#launching requires network transfer</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="megha_sim.Event" href="#megha_sim.Event">Event</a></li>
+</ul>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="megha_sim.Event" href="#megha_sim.Event">Event</a></b></code>:
+<ul class="hlist">
+<li><code><a title="megha_sim.Event.run" href="#megha_sim.Event.run">run</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="megha_sim.MatchFoundEvent"><code class="flex name class">
+<span>class <span class="ident">MatchFoundEvent</span></span>
+<span>(</span><span>task, gm, lm, node_id, current_time, external_partition=None)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class MatchFoundEvent(Event):
+        def __init__(self,task, gm,lm,node_id,current_time,external_partition=None):
+                self.task=task
+                self.gm =gm
+                self.lm=lm
+                self.node_id=node_id
+                self.current_time=current_time
+                self.external_partition=external_partition
+
+        def run(self, current_time):
+                #add network delay to LM, similar to sparrow: 
+                print(current_time,&#34;,&#34;,&#34;MatchFoundEvent&#34;,&#34;,&#34;,self.task.job.job_id+&#34;_&#34;+self.task.task_id,&#34;,&#34;,self.gm.GM_id+&#34;_&#34;+str(self.node_id))
+                self.lm.verify_request(self.task,self.gm,self.node_id,current_time+NETWORK_DELAY,external_partition=self.external_partition)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="megha_sim.Event" href="#megha_sim.Event">Event</a></li>
+</ul>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="megha_sim.Event" href="#megha_sim.Event">Event</a></b></code>:
+<ul class="hlist">
+<li><code><a title="megha_sim.Event.run" href="#megha_sim.Event.run">run</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="megha_sim.Simulation"><code class="flex name class">
+<span>class <span class="ident">Simulation</span></span>
+<span>(</span><span>workload, config, NUM_GMS, NUM_LMS, PARTITION_SIZE, cpu, memory, storage)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Simulation(object):
+        def __init__(self, workload, config, NUM_GMS, NUM_LMS,PARTITION_SIZE,cpu,memory,storage):
+
+        # Each localmaster has one partition per global master so the total number of partitions in the cluster are:
+        # NUM_GMS * NUM_LMS
+        # Given the number of worker nodes per partition is PARTITION_SIZE
+        # so the total_nodes are NUM_GMS*NUM_LMS*PARTITION_SIZE
+                self.total_nodes=NUM_GMS*NUM_LMS*PARTITION_SIZE;
+                self.NUM_GMS=NUM_GMS
+                self.NUM_LMS=NUM_LMS
+                self.config=json.load(open(config))
+                self.WORKLOAD_FILE=workload
+                
+                self.jobs = {}
+                self.event_queue = queue.PriorityQueue()
+                
+                #initialise GMs
+                self.gms={}
+                counter=1
+                while len(self.gms)&lt;self.NUM_GMS:
+                        self.gms[str(counter)]=GM(self,str(counter),pickle.loads(pickle.dumps(self.config)))#create deep copy
+                        counter+=1
+
+                #initialise LMs
+                self.lms={}
+                counter=1
+
+                while len(self.lms) &lt; self.NUM_LMS:
+                        self.lms[str(counter)]=LM(self,str(counter),PARTITION_SIZE,pickle.loads(pickle.dumps(self.config[&#34;LMs&#34;][str(counter)])))# create deep copy
+                        counter+=1
+
+                self.shared_cluster_status = {}
+ 
+                self.jobs_scheduled = 0
+                self.jobs_completed = 0
+                self.scheduled_last_job = False
+                print(&#34;Simulation instantiated&#34;)
+
+         #Simulation class
+        def run(self):
+                last_time = 0
+
+                self.jobs_file = open(self.WORKLOAD_FILE, &#39;r&#39;)
+
+                self.task_distribution = TaskDurationDistributions.FROM_FILE
+
+                line = self.jobs_file.readline()#first job
+                new_job = Job(self.task_distribution,line,self)
+                self.event_queue.put((float(line.split()[0]), JobArrival(self, self.task_distribution, new_job, self.jobs_file)))
+                self.event_queue.put((float(line.split()[0]), LMUpdateEvent(self)))#starting the periodic LM updates
+                self.jobs_scheduled = 1
+
+                #start processing events
+                while (not self.event_queue.empty()):
+                        current_time, event = self.event_queue.get()
+                        assert current_time &gt;= last_time
+                        last_time = current_time
+                        new_events = event.run(current_time)
+                        if(new_events is  None):
+                                continue
+                        for new_event in new_events:
+                                if(new_event is  None):
+                                        continue
+                                self.event_queue.put(new_event)
+
+                print( &#34;Simulation ending, no more events&#34;)
+                self.jobs_file.close()</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="megha_sim.Simulation.run"><code class="name flex">
+<span>def <span class="ident">run</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def run(self):
+        last_time = 0
+
+        self.jobs_file = open(self.WORKLOAD_FILE, &#39;r&#39;)
+
+        self.task_distribution = TaskDurationDistributions.FROM_FILE
+
+        line = self.jobs_file.readline()#first job
+        new_job = Job(self.task_distribution,line,self)
+        self.event_queue.put((float(line.split()[0]), JobArrival(self, self.task_distribution, new_job, self.jobs_file)))
+        self.event_queue.put((float(line.split()[0]), LMUpdateEvent(self)))#starting the periodic LM updates
+        self.jobs_scheduled = 1
+
+        #start processing events
+        while (not self.event_queue.empty()):
+                current_time, event = self.event_queue.get()
+                assert current_time &gt;= last_time
+                last_time = current_time
+                new_events = event.run(current_time)
+                if(new_events is  None):
+                        continue
+                for new_event in new_events:
+                        if(new_event is  None):
+                                continue
+                        self.event_queue.put(new_event)
+
+        print( &#34;Simulation ending, no more events&#34;)
+        self.jobs_file.close()</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="megha_sim.Task"><code class="flex name class">
+<span>class <span class="ident">Task</span></span>
+<span>(</span><span>task_id, job, duration)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Task(object):
+
+        def __init__(self,task_id,job,duration):
+                self.task_id=task_id
+                self.start_time=job.start_time
+                self.scheduled_time=None
+                self.end_time=None
+                self.job=job
+                self.duration=duration
+                self.node_id=None
+                self.partition_id=None #may differ from GM_id if repartitioning
+                self.GM_id=None
+                self.lm=None
+                self.scheduled=False</code></pre>
+</details>
+</dd>
+<dt id="megha_sim.TaskDurationDistributions"><code class="flex name class">
+<span>class <span class="ident">TaskDurationDistributions</span></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class TaskDurationDistributions:
+    CONSTANT : int
+    MEAN : int
+    FROM_FILE : int
+    CONSTANT, MEAN, FROM_FILE  = range(3)</code></pre>
+</details>
+<h3>Class variables</h3>
+<dl>
+<dt id="megha_sim.TaskDurationDistributions.CONSTANT"><code class="name">var <span class="ident">CONSTANT</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="megha_sim.TaskDurationDistributions.FROM_FILE"><code class="name">var <span class="ident">FROM_FILE</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="megha_sim.TaskDurationDistributions.MEAN"><code class="name">var <span class="ident">MEAN</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="megha_sim.TaskEndEvent"><code class="flex name class">
+<span>class <span class="ident">TaskEndEvent</span></span>
+<span>(</span><span>task)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class TaskEndEvent(Event):
+        def __init__(self, task):
+                self.task=task
+        def __lt__(self, other):
+                return True
+
+        def run(self, current_time):
+                print(current_time,&#34;,&#34;,&#34;TaskEndEvent&#34;,&#34;,&#34;,self.task.job.job_id+&#34;_&#34;+self.task.task_id)
+                self.task.end_time=current_time
+                self.task.lm.task_completed(self.task)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="megha_sim.Event" href="#megha_sim.Event">Event</a></li>
+</ul>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="megha_sim.Event" href="#megha_sim.Event">Event</a></b></code>:
+<ul class="hlist">
+<li><code><a title="megha_sim.Event.run" href="#megha_sim.Event.run">run</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="megha_sim.EstimationErrorDistribution" href="#megha_sim.EstimationErrorDistribution">EstimationErrorDistribution</a></code></h4>
+<ul class="">
+<li><code><a title="megha_sim.EstimationErrorDistribution.CONSTANT" href="#megha_sim.EstimationErrorDistribution.CONSTANT">CONSTANT</a></code></li>
+<li><code><a title="megha_sim.EstimationErrorDistribution.MEAN" href="#megha_sim.EstimationErrorDistribution.MEAN">MEAN</a></code></li>
+<li><code><a title="megha_sim.EstimationErrorDistribution.RANDOM" href="#megha_sim.EstimationErrorDistribution.RANDOM">RANDOM</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="megha_sim.Event" href="#megha_sim.Event">Event</a></code></h4>
+<ul class="">
+<li><code><a title="megha_sim.Event.run" href="#megha_sim.Event.run">run</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="megha_sim.GM" href="#megha_sim.GM">GM</a></code></h4>
+<ul class="">
+<li><code><a title="megha_sim.GM.queue_job" href="#megha_sim.GM.queue_job">queue_job</a></code></li>
+<li><code><a title="megha_sim.GM.repartition" href="#megha_sim.GM.repartition">repartition</a></code></li>
+<li><code><a title="megha_sim.GM.schedule_tasks" href="#megha_sim.GM.schedule_tasks">schedule_tasks</a></code></li>
+<li><code><a title="megha_sim.GM.unschedule_job" href="#megha_sim.GM.unschedule_job">unschedule_job</a></code></li>
+<li><code><a title="megha_sim.GM.update_status" href="#megha_sim.GM.update_status">update_status</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="megha_sim.InconsistencyEvent" href="#megha_sim.InconsistencyEvent">InconsistencyEvent</a></code></h4>
+</li>
+<li>
+<h4><code><a title="megha_sim.InconsistencyType" href="#megha_sim.InconsistencyType">InconsistencyType</a></code></h4>
+<ul class="">
+<li><code><a title="megha_sim.InconsistencyType.EXTERNAL_INCONSISTENCY" href="#megha_sim.InconsistencyType.EXTERNAL_INCONSISTENCY">EXTERNAL_INCONSISTENCY</a></code></li>
+<li><code><a title="megha_sim.InconsistencyType.INTERNAL_INCONSISTENCY" href="#megha_sim.InconsistencyType.INTERNAL_INCONSISTENCY">INTERNAL_INCONSISTENCY</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="megha_sim.Job" href="#megha_sim.Job">Job</a></code></h4>
+<ul class="">
+<li><code><a title="megha_sim.Job.file_task_execution_time" href="#megha_sim.Job.file_task_execution_time">file_task_execution_time</a></code></li>
+<li><code><a title="megha_sim.Job.fully_scheduled" href="#megha_sim.Job.fully_scheduled">fully_scheduled</a></code></li>
+<li><code><a title="megha_sim.Job.job_count" href="#megha_sim.Job.job_count">job_count</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="megha_sim.JobArrival" href="#megha_sim.JobArrival">JobArrival</a></code></h4>
+<ul class="">
+<li><code><a title="megha_sim.JobArrival.gm_counter" href="#megha_sim.JobArrival.gm_counter">gm_counter</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="megha_sim.LM" href="#megha_sim.LM">LM</a></code></h4>
+<ul class="">
+<li><code><a title="megha_sim.LM.get_status" href="#megha_sim.LM.get_status">get_status</a></code></li>
+<li><code><a title="megha_sim.LM.task_completed" href="#megha_sim.LM.task_completed">task_completed</a></code></li>
+<li><code><a title="megha_sim.LM.verify_request" href="#megha_sim.LM.verify_request">verify_request</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="megha_sim.LMUpdateEvent" href="#megha_sim.LMUpdateEvent">LMUpdateEvent</a></code></h4>
+</li>
+<li>
+<h4><code><a title="megha_sim.LaunchOnnodeEvent" href="#megha_sim.LaunchOnnodeEvent">LaunchOnnodeEvent</a></code></h4>
+</li>
+<li>
+<h4><code><a title="megha_sim.MatchFoundEvent" href="#megha_sim.MatchFoundEvent">MatchFoundEvent</a></code></h4>
+</li>
+<li>
+<h4><code><a title="megha_sim.Simulation" href="#megha_sim.Simulation">Simulation</a></code></h4>
+<ul class="">
+<li><code><a title="megha_sim.Simulation.run" href="#megha_sim.Simulation.run">run</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="megha_sim.Task" href="#megha_sim.Task">Task</a></code></h4>
+</li>
+<li>
+<h4><code><a title="megha_sim.TaskDurationDistributions" href="#megha_sim.TaskDurationDistributions">TaskDurationDistributions</a></code></h4>
+<ul class="">
+<li><code><a title="megha_sim.TaskDurationDistributions.CONSTANT" href="#megha_sim.TaskDurationDistributions.CONSTANT">CONSTANT</a></code></li>
+<li><code><a title="megha_sim.TaskDurationDistributions.FROM_FILE" href="#megha_sim.TaskDurationDistributions.FROM_FILE">FROM_FILE</a></code></li>
+<li><code><a title="megha_sim.TaskDurationDistributions.MEAN" href="#megha_sim.TaskDurationDistributions.MEAN">MEAN</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="megha_sim.TaskEndEvent" href="#megha_sim.TaskEndEvent">TaskEndEvent</a></code></h4>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.2</a>.</p>
+</footer>
+</body>
+</html>
