@@ -15,8 +15,8 @@ import pickle
 #####################################################################################################################
 @unique
 class InconsistencyType(Enum):
-	INTERNAL_INCONSISTENCY : Literal[0]
-	EXTERNAL_INCONSISTENCY : Literal[1]
+	INTERNAL_INCONSISTENCY = Literal[0]
+	EXTERNAL_INCONSISTENCY = Literal[1]
 
 #####################################################################################################################
 LM_HEARTBEAT_INTERVAL=30
@@ -324,7 +324,7 @@ class LM(object):
         # Append the details of the task that was just completed to the list of tasks completed for the corresponding GM that sent it
 		self.tasks_completed[task.GM_id].append((task.job.job_id,task.task_id)) #note GM_id used here, not partition, in case of repartitioning
 		#update from node to LM - 1 NETWORK_DELAY + update from LM to GM - 1 NETWORK DELAY = 2 NETWORK_DELAYS
-		self.simulation.event_queue.put((task.end_time+NETWORK_DELAY,LMUpdateEvent(self.simulation,periodic=False)))
+		self.simulation.event_queue.put((task.end_time+NETWORK_DELAY,LMUpdateEvent(self.simulation,periodic=False, gm=self.simulation.gms[task.GM_id])))
 
 #####################################################################################################################
 #####################################################################################################################
