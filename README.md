@@ -29,3 +29,19 @@ $ sudo chmod u+x enter_dev_env.sh
         pip3 freeze > requirements.txt
         ```
 3. Once finished using the container, run the command `exit` inside the container to exit it.
+
+
+## How to Generate the Documentation
+
+1. Make the shell script `doc_gen.sh` executable using the command:
+```bash
+$ sudo chmod u+x doc_gen.sh
+```
+2. Run the shell script `doc_gen.sh` using the command:
+    ```bash
+    $ ./doc_gen.sh
+    ```
+    1. This will generate the documentation file called `megha_sim.html` in the folder `./html`
+    2. Open the file using any modern web browser to view the documentation.
+
+---
