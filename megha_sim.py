@@ -1,4 +1,5 @@
-from typing import List, Optional
+from typing import List, Literal, Optional, Union
+from enum import Enum, unique
 import sys
 import time
 import logging
@@ -11,6 +12,11 @@ import json
 import copy
 import pickle
 
+#####################################################################################################################
+@unique
+class InconsistencyType(Enum):
+	INTERNAL_INCONSISTENCY : Literal[0]
+	EXTERNAL_INCONSISTENCY : Literal[1]
 
 #####################################################################################################################
 LM_HEARTBEAT_INTERVAL=30
@@ -75,14 +81,14 @@ class LaunchOnnodeEvent(Event):
 
 #if GM has outdated info, LM creates this event
 class InconsistencyEvent(Event):
-	def __init__(self,task,gm,type,simulation):
+	def __init__(self, task, gm, type : Union[Literal[0], Literal[1]], simulation):
 		self.task=task
-		self.gm=gm
-		self.type=type
+		self.gm : GM = gm
+		self.type = type
 		self.simulation=simulation
 
 	def run(self, current_time):
-		if(self.type==0):#internal inconsistency -> failed to place task on external partition
+		if(self.type==InconsistencyType.INTERNAL_INCONSISTENCY):#internal inconsistency -> failed to place task on external partition
 			print(current_time,",","InternalInconsistencyEvent")
 		else:# external inconsistency  -> failed to place task on internal partition
 			print(current_time,",","ExternalInconsistencyEvent")
@@ -127,9 +133,9 @@ class  LMUpdateEvent(Event):
 		self.gm : Optional[GM] = gm
 
 		if self.periodic is True:
-			assert self.gm is None, "LMUpdateEvent.__init__: Periodic is set to false so GM must be None!"
+			assert self.gm is None, "LMUpdateEvent.__init__: Periodic is set to true so self.gm must be None!"
 		elif self.periodic is False:
-			assert self.gm is not None, "LMUpdateEvent.__init__: Periodic is set to true so GM must not be None!"
+			assert self.gm is not None, "LMUpdateEvent.__init__: Periodic is set to false so self.gm must not be None!"
 
 	def run(self,current_time):
 		print(current_time,",","LMUpdateEvent",",",self.periodic)
@@ -296,7 +302,7 @@ class LM(object):
 				self.simulation.event_queue.put((current_time+NETWORK_DELAY,LaunchOnnodeEvent(task,self.simulation)))
 				return True
 			else:# if inconsistent	
-				self.simulation.event_queue.put((current_time+NETWORK_DELAY,InconsistencyEvent(task,gm,1,self.simulation)))
+				self.simulation.event_queue.put((current_time+NETWORK_DELAY,InconsistencyEvent(task,gm,InconsistencyType.EXTERNAL_INCONSISTENCY,self.simulation)))
 		#internal partition
 		else:
 			if(self.LM_config["partitions"][gm.GM_id]["nodes"][node_id]["CPU"]==1):
@@ -308,7 +314,7 @@ class LM(object):
 				task.lm=self
 				self.simulation.event_queue.put((current_time+NETWORK_DELAY,LaunchOnnodeEvent(task,self.simulation)))
 			else:# if inconsistent	
-				self.simulation.event_queue.put((current_time+NETWORK_DELAY,InconsistencyEvent(task,gm,0,self.simulation)))
+				self.simulation.event_queue.put((current_time+NETWORK_DELAY,InconsistencyEvent(task,gm,InconsistencyType.INTERNAL_INCONSISTENCY,self.simulation)))
 
 
 	def task_completed(self,task):
@@ -327,10 +333,10 @@ class GM(object):
 	def __init__(self,simulation,GM_id,config):
 		self.GM_id=GM_id
 		self.simulation=simulation
-		self.RR_counter=0
+		self.RR_counter : int = 0
 		self.global_view={}
-		self.job_queue=[]
-		self.jobs_scheduled=[]
+		self.job_queue : List[Job] = []
+		self.jobs_scheduled : List[Job] = []
 
 		#populate internal_partitions info
 		for LM_id in config["LMs"]:
