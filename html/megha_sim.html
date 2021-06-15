@@ -26,7 +26,7 @@
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">from typing import List, Literal, Optional, Union
+<pre><code class="python">from typing import List, Optional, Union
 from enum import Enum, unique
 import sys
 import time
@@ -34,7 +34,6 @@ import logging
 import math
 import random
 import queue
-import copy
 import collections
 import json
 import copy
@@ -43,8 +42,8 @@ import pickle
 #####################################################################################################################
 @unique
 class InconsistencyType(Enum):
-        INTERNAL_INCONSISTENCY = Literal[0]
-        EXTERNAL_INCONSISTENCY = Literal[1]
+        INTERNAL_INCONSISTENCY = 0
+        EXTERNAL_INCONSISTENCY = 1
 
 #####################################################################################################################
 LM_HEARTBEAT_INTERVAL=30
@@ -65,6 +64,12 @@ class EstimationErrorDistribution:
 
 # Event class is an Abstract class
 class Event(object):
+        &#34;&#34;&#34;
+        This is the abstract Event object class.
+
+        Args:
+                object (Object): Parent object class.
+        &#34;&#34;&#34;
         def __init__(self):
                 raise NotImplementedError(&#34;Event is an abstract class and cannot be instantiated directly&#34;)
 
@@ -109,7 +114,7 @@ class LaunchOnnodeEvent(Event):
 
 #if GM has outdated info, LM creates this event
 class InconsistencyEvent(Event):
-        def __init__(self, task, gm, type : Union[Literal[0], Literal[1]], simulation):
+        def __init__(self, task, gm, type, simulation):
                 self.task=task
                 self.gm : GM = gm
                 self.type = type
@@ -636,12 +641,23 @@ if __name__ == &#34;__main__&#34;:
 <span>class <span class="ident">Event</span></span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>This is the abstract Event object class.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>object</code></strong> :&ensp;<code>Object</code></dt>
+<dd>Parent object class.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class Event(object):
+        &#34;&#34;&#34;
+        This is the abstract Event object class.
+
+        Args:
+                object (Object): Parent object class.
+        &#34;&#34;&#34;
         def __init__(self):
                 raise NotImplementedError(&#34;Event is an abstract class and cannot be instantiated directly&#34;)
 
@@ -996,16 +1012,21 @@ if __name__ == &#34;__main__&#34;:
 </dd>
 <dt id="megha_sim.InconsistencyEvent"><code class="flex name class">
 <span>class <span class="ident">InconsistencyEvent</span></span>
-<span>(</span><span>task, gm, type: Union[Literal[0], Literal[1]], simulation)</span>
+<span>(</span><span>task, gm, type, simulation)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>This is the abstract Event object class.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>object</code></strong> :&ensp;<code>Object</code></dt>
+<dd>Parent object class.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class InconsistencyEvent(Event):
-        def __init__(self, task, gm, type : Union[Literal[0], Literal[1]], simulation):
+        def __init__(self, task, gm, type, simulation):
                 self.task=task
                 self.gm : GM = gm
                 self.type = type
@@ -1046,8 +1067,8 @@ if __name__ == &#34;__main__&#34;:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class InconsistencyType(Enum):
-        INTERNAL_INCONSISTENCY = Literal[0]
-        EXTERNAL_INCONSISTENCY = Literal[1]</code></pre>
+        INTERNAL_INCONSISTENCY = 0
+        EXTERNAL_INCONSISTENCY = 1</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -1172,7 +1193,12 @@ if __name__ == &#34;__main__&#34;:
 <span>(</span><span>simulation, task_distribution, job, jobs_file)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>This is the abstract Event object class.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>object</code></strong> :&ensp;<code>Object</code></dt>
+<dd>Parent object class.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1398,7 +1424,12 @@ if __name__ == &#34;__main__&#34;:
 <span>(</span><span>simulation, periodic=True, gm=None)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>This is the abstract Event object class.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>object</code></strong> :&ensp;<code>Object</code></dt>
+<dd>Parent object class.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1445,7 +1476,12 @@ if __name__ == &#34;__main__&#34;:
 <span>(</span><span>task, simulation)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>This is the abstract Event object class.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>object</code></strong> :&ensp;<code>Object</code></dt>
+<dd>Parent object class.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1478,7 +1514,12 @@ if __name__ == &#34;__main__&#34;:
 <span>(</span><span>task, gm, lm, node_id, current_time, external_partition=None)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>This is the abstract Event object class.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>object</code></strong> :&ensp;<code>Object</code></dt>
+<dd>Parent object class.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1693,7 +1734,12 @@ if __name__ == &#34;__main__&#34;:
 <span>(</span><span>task)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>This is the abstract Event object class.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>object</code></strong> :&ensp;<code>Object</code></dt>
+<dd>Parent object class.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
