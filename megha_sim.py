@@ -15,8 +15,8 @@ import pickle
 #####################################################################################################################
 @unique
 class InconsistencyType(Enum):
-	INTERNAL_INCONSISTENCY = Literal[0]
-	EXTERNAL_INCONSISTENCY = Literal[1]
+	INTERNAL_INCONSISTENCY = 0
+	EXTERNAL_INCONSISTENCY = 1
 
 #####################################################################################################################
 LM_HEARTBEAT_INTERVAL=30
