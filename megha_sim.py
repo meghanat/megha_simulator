@@ -70,14 +70,14 @@ class TaskEndEvent(Event):
 #####################################################################################################################
 #####################################################################################################################
 #created after LM verifies GM request
-class LaunchOnnodeEvent(Event):
+class LaunchOnNodeEvent(Event):
 
 	def __init__(self,task,simulation):
 		self.task=task
 		self.simulation=simulation
 
 	def run(self, current_time):
-		print(current_time,",","LaunchOnnodeEvent",",",self.task.job.job_id+"_"+self.task.task_id,",",self.task.partition_id+"_"+self.task.node_id)
+		print(current_time,",","LaunchOnNodeEvent",",",self.task.job.job_id+"_"+self.task.task_id,",",self.task.partition_id+"_"+self.task.node_id)
 		self.simulation.event_queue.put((current_time+self.task.duration+NETWORK_DELAY,TaskEndEvent(self.task)))#launching requires network transfer
 
 
@@ -304,7 +304,7 @@ class LM(object):
 				task.GM_id=gm.GM_id
 
                 # network delay as the request has to be sent from the LM to the selected worker node
-				self.simulation.event_queue.put((current_time+NETWORK_DELAY,LaunchOnnodeEvent(task,self.simulation)))
+				self.simulation.event_queue.put((current_time+NETWORK_DELAY,LaunchOnNodeEvent(task,self.simulation)))
 				return True
 			else:# if inconsistent	
 				self.simulation.event_queue.put((current_time+NETWORK_DELAY,InconsistencyEvent(task,gm,InconsistencyType.EXTERNAL_INCONSISTENCY,self.simulation)))
@@ -317,7 +317,7 @@ class LM(object):
 				task.partition_id=gm.GM_id
 				task.GM_id=gm.GM_id
 				task.lm=self
-				self.simulation.event_queue.put((current_time+NETWORK_DELAY,LaunchOnnodeEvent(task,self.simulation)))
+				self.simulation.event_queue.put((current_time+NETWORK_DELAY,LaunchOnNodeEvent(task,self.simulation)))
 			else:# if inconsistent	
 				self.simulation.event_queue.put((current_time+NETWORK_DELAY,InconsistencyEvent(task,gm,InconsistencyType.INTERNAL_INCONSISTENCY,self.simulation)))
 
