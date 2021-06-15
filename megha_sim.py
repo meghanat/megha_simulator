@@ -1,4 +1,4 @@
-from typing import List, Literal, Optional, Union
+from typing import List, Optional, Union
 from enum import Enum, unique
 import sys
 import time
@@ -87,7 +87,7 @@ class LaunchOnnodeEvent(Event):
 
 #if GM has outdated info, LM creates this event
 class InconsistencyEvent(Event):
-	def __init__(self, task, gm, type : Union[Literal[0], Literal[1]], simulation):
+	def __init__(self, task, gm, type, simulation):
 		self.task=task
 		self.gm : GM = gm
 		self.type = type
