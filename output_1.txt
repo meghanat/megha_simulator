@@ -1,0 +1,18 @@
+ 
+GM 1 initialised
+GM 2 initialised
+GM 3 initialised
+LM  1 initialised
+LM  2 initialised
+Simulation instantiated
+Simulation running
+1.0 , LMUpdateEvent , True
+1.0 , JobArrivalEvent , 1 , 1
+1.0 , MatchFoundEvent , 1_1 , 1_1
+1.001 , LaunchOnNodeEvent , 1_1 , 1_1
+14.0015 , TaskEndEvent , 1_1
+14.002 , LMUpdateEvent , False
+31.0005 , LMUpdateEvent , True
+Simulation ending, no more events
+Simulation ended in  0.001878976821899414  s 
+[<__main__.Job object at 0x7f39ba8a93d0>]
