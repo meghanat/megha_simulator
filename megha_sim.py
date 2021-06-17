@@ -1,4 +1,4 @@
-from typing import List, Optional, Union
+from typing import List, Optional, Tuple, Union, Final, Literal
 from enum import Enum, unique
 import sys
 import time
@@ -14,21 +14,21 @@ import pickle
 #####################################################################################################################
 @unique
 class InconsistencyType(Enum):
-	INTERNAL_INCONSISTENCY = 0
-	EXTERNAL_INCONSISTENCY = 1
+	INTERNAL_INCONSISTENCY = Literal[0]
+	EXTERNAL_INCONSISTENCY = Literal[1]
 
 #####################################################################################################################
 LM_HEARTBEAT_INTERVAL=30
 
 class TaskDurationDistributions:
-    CONSTANT : int
-    MEAN : int
-    FROM_FILE : int
+    CONSTANT : Final[int]
+    MEAN : Final[int]
+    FROM_FILE : Final[int]
     CONSTANT, MEAN, FROM_FILE  = range(3)
 class EstimationErrorDistribution:
-    CONSTANT : int
-    RANDOM : int
-    MEAN : int
+    CONSTANT : Final[int]
+    RANDOM : Final[int]
+    MEAN : Final[int]
     CONSTANT, RANDOM, MEAN = range(3)
 
 #####################################################################################################################
@@ -45,7 +45,7 @@ class Event(object):
 	def __init__(self):
 		raise NotImplementedError("Event is an abstract class and cannot be instantiated directly")
 
-	def __lt__(self, other):
+	def __lt__(self, other) -> bool:
 		return True
 
 	def run(self, current_time):
@@ -58,14 +58,15 @@ class Event(object):
 #created when a task completes
 class TaskEndEvent(Event):
 	def __init__(self, task):
-		self.task=task
-	def __lt__(self, other):
+		self.task : Task = task
+	def __lt__(self, other) -> bool:
 		return True
 
 	def run(self, current_time):
-		print(current_time,",","TaskEndEvent",",",self.task.job.job_id+"_"+self.task.task_id)
+		print(current_time,",","TaskEndEvent",",",self.task.job.job_id+"_"+self.task.task_id+"___",self.task.duration)
 		self.task.end_time=current_time
-		self.task.lm.task_completed(self.task)
+		if self.task.lm is not None:
+			self.task.lm.task_completed(self.task)
 
 #####################################################################################################################
 #####################################################################################################################
@@ -89,7 +90,7 @@ class InconsistencyEvent(Event):
 	def __init__(self, task, gm, type, simulation):
 		self.task=task
 		self.gm : GM = gm
-		self.type = type
+		self.type : Final = type
 		self.simulation=simulation
 
 	def run(self, current_time):
@@ -124,7 +125,7 @@ class MatchFoundEvent(Event):
 
 	def run(self, current_time):
 		#add network delay to LM, similar to sparrow: 
-		print(current_time,",","MatchFoundEvent",",",self.task.job.job_id+"_"+self.task.task_id,",",self.gm.GM_id+"_"+str(self.node_id))
+		print(current_time,",","MatchFoundEvent",",",self.task.job.job_id+"_"+self.task.task_id,",",self.gm.GM_id+"_"+str(self.node_id),"_",self.lm.LM_id)
 		self.lm.verify_request(self.task,self.gm,self.node_id,current_time+NETWORK_DELAY,external_partition=self.external_partition)
 
 #####################################################################################################################
@@ -145,7 +146,7 @@ class  LMUpdateEvent(Event):
 	def run(self,current_time):
 		print(current_time,",","LMUpdateEvent",",",self.periodic)
 		
-		#update only that GM which is inconsistent
+		#update only that GM which is inconsistent or if the GM's task has completed
 		if not self.periodic:
 			self.gm.update_status(current_time+NETWORK_DELAY)
 
@@ -172,13 +173,13 @@ class JobArrival(Event):
 
 
 	def run(self, current_time):
-		new_events : List[Event] = []
+		new_events : List[Tuple[float, Event]] = []
 		#needs to be assigned to a GM - RR
 		JobArrival.gm_counter=(JobArrival.gm_counter)%self.simulation.NUM_GMS+1
         # assigned_GM --> Handle to the global master object
-		assigned_GM=self.simulation.gms[str(JobArrival.gm_counter)]
+		assigned_GM : GM =self.simulation.gms[str(JobArrival.gm_counter)]
 		#GM needs to add job to its queue
-		assigned_GM.queue_job(self.job,current_time)
+		assigned_GM.queue_job(self.job, current_time)
 
 
 		# Creating a new Job Arrival event for the next job in the trace
@@ -258,7 +259,7 @@ class Job(object):
 	#Job class - parse file line
 	def file_task_execution_time(self, job_args):
 		for task_duration in (job_args[3:]):  # Adding each of the tasks to the dict
-			duration=int(float(task_duration))	
+			duration=int(float(task_duration))	 # Same as eagle_simulation.py, This is done to read the floating point value from the string
 			self.task_counter+=1
 			self.tasks[str(self.task_counter)]=Task(str(self.task_counter),self,duration)
 
@@ -369,7 +370,8 @@ class GM(object):
 						task=job.tasks[task_id]
 						job.completed_tasks.append(task)
 						if len(job.tasks) == len(job.completed_tasks): #no more tasks left
-							job.completion_time=task.end_time  # NOTE:job completion time = end time of last task
+							job.completion_time=task.end_time  # NOTE:job completion time = end time of last task === max of the task duration for a job
+							print(job.completion_time)
 							jobs_completed.append(job)
 							self.jobs_scheduled.remove(job)
 						break
