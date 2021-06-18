@@ -1,4 +1,4 @@
-from typing import List, Literal, Optional, Union
+from typing import List, Optional, Tuple, Union, Final, Literal
 from enum import Enum, unique
 import sys
 import time
@@ -6,7 +6,6 @@ import logging
 import math
 import random
 import queue
-import copy
 import collections
 import json
 import copy
@@ -22,14 +21,14 @@ class InconsistencyType(Enum):
 LM_HEARTBEAT_INTERVAL=30
 
 class TaskDurationDistributions:
-    CONSTANT : int
-    MEAN : int
-    FROM_FILE : int
+    CONSTANT : Final[int]
+    MEAN : Final[int]
+    FROM_FILE : Final[int]
     CONSTANT, MEAN, FROM_FILE  = range(3)
 class EstimationErrorDistribution:
-    CONSTANT : int
-    RANDOM : int
-    MEAN : int
+    CONSTANT : Final[int]
+    RANDOM : Final[int]
+    MEAN : Final[int]
     CONSTANT, RANDOM, MEAN = range(3)
 
 #####################################################################################################################
@@ -37,10 +36,16 @@ class EstimationErrorDistribution:
 
 # Event class is an Abstract class
 class Event(object):
+	"""
+	This is the abstract Event object class.
+
+	Args:
+		object (Object): Parent object class.
+	"""
 	def __init__(self):
 		raise NotImplementedError("Event is an abstract class and cannot be instantiated directly")
 
-	def __lt__(self, other):
+	def __lt__(self, other) -> bool:
 		return True
 
 	def run(self, current_time):
@@ -53,26 +58,27 @@ class Event(object):
 #created when a task completes
 class TaskEndEvent(Event):
 	def __init__(self, task):
-		self.task=task
-	def __lt__(self, other):
+		self.task : Task = task
+	def __lt__(self, other) -> bool:
 		return True
 
 	def run(self, current_time):
-		print(current_time,",","TaskEndEvent",",",self.task.job.job_id+"_"+self.task.task_id)
+		print(current_time,",","TaskEndEvent",",",self.task.job.job_id+"_"+self.task.task_id+"___",self.task.duration)
 		self.task.end_time=current_time
-		self.task.lm.task_completed(self.task)
+		if self.task.lm is not None:
+			self.task.lm.task_completed(self.task)
 
 #####################################################################################################################
 #####################################################################################################################
 #created after LM verifies GM request
-class LaunchOnnodeEvent(Event):
+class LaunchOnNodeEvent(Event):
 
 	def __init__(self,task,simulation):
 		self.task=task
 		self.simulation=simulation
 
 	def run(self, current_time):
-		print(current_time,",","LaunchOnnodeEvent",",",self.task.job.job_id+"_"+self.task.task_id,",",self.task.partition_id+"_"+self.task.node_id)
+		print(current_time,",","LaunchOnNodeEvent",",",self.task.job.job_id+"_"+self.task.task_id,",",self.task.partition_id+"_"+self.task.node_id)
 		self.simulation.event_queue.put((current_time+self.task.duration+NETWORK_DELAY,TaskEndEvent(self.task)))#launching requires network transfer
 
 
@@ -81,10 +87,10 @@ class LaunchOnnodeEvent(Event):
 
 #if GM has outdated info, LM creates this event
 class InconsistencyEvent(Event):
-	def __init__(self, task, gm, type : Union[Literal[0], Literal[1]], simulation):
+	def __init__(self, task, gm, type, simulation):
 		self.task=task
 		self.gm : GM = gm
-		self.type = type
+		self.type : Final = type
 		self.simulation=simulation
 
 	def run(self, current_time):
@@ -119,7 +125,7 @@ class MatchFoundEvent(Event):
 
 	def run(self, current_time):
 		#add network delay to LM, similar to sparrow: 
-		print(current_time,",","MatchFoundEvent",",",self.task.job.job_id+"_"+self.task.task_id,",",self.gm.GM_id+"_"+str(self.node_id))
+		print(current_time,",","MatchFoundEvent",",",self.task.job.job_id+"_"+self.task.task_id,",",self.gm.GM_id+"_"+str(self.node_id),"_",self.lm.LM_id)
 		self.lm.verify_request(self.task,self.gm,self.node_id,current_time+NETWORK_DELAY,external_partition=self.external_partition)
 
 #####################################################################################################################
@@ -140,7 +146,7 @@ class  LMUpdateEvent(Event):
 	def run(self,current_time):
 		print(current_time,",","LMUpdateEvent",",",self.periodic)
 		
-		#update only that GM which is inconsistent
+		#update only that GM which is inconsistent or if the GM's task has completed
 		if not self.periodic:
 			self.gm.update_status(current_time+NETWORK_DELAY)
 
@@ -167,13 +173,13 @@ class JobArrival(Event):
 
 
 	def run(self, current_time):
-		new_events : List[Event] = []
+		new_events : List[Tuple[float, Event]] = []
 		#needs to be assigned to a GM - RR
 		JobArrival.gm_counter=(JobArrival.gm_counter)%self.simulation.NUM_GMS+1
         # assigned_GM --> Handle to the global master object
-		assigned_GM=self.simulation.gms[str(JobArrival.gm_counter)]
+		assigned_GM : GM =self.simulation.gms[str(JobArrival.gm_counter)]
 		#GM needs to add job to its queue
-		assigned_GM.queue_job(self.job,current_time)
+		assigned_GM.queue_job(self.job, current_time)
 
 
 		# Creating a new Job Arrival event for the next job in the trace
@@ -253,7 +259,7 @@ class Job(object):
 	#Job class - parse file line
 	def file_task_execution_time(self, job_args):
 		for task_duration in (job_args[3:]):  # Adding each of the tasks to the dict
-			duration=int(float(task_duration))	
+			duration=int(float(task_duration))	 # Same as eagle_simulation.py, This is done to read the floating point value from the string
 			self.task_counter+=1
 			self.tasks[str(self.task_counter)]=Task(str(self.task_counter),self,duration)
 
@@ -299,7 +305,7 @@ class LM(object):
 				task.GM_id=gm.GM_id
 
                 # network delay as the request has to be sent from the LM to the selected worker node
-				self.simulation.event_queue.put((current_time+NETWORK_DELAY,LaunchOnnodeEvent(task,self.simulation)))
+				self.simulation.event_queue.put((current_time+NETWORK_DELAY,LaunchOnNodeEvent(task,self.simulation)))
 				return True
 			else:# if inconsistent	
 				self.simulation.event_queue.put((current_time+NETWORK_DELAY,InconsistencyEvent(task,gm,InconsistencyType.EXTERNAL_INCONSISTENCY,self.simulation)))
@@ -312,7 +318,7 @@ class LM(object):
 				task.partition_id=gm.GM_id
 				task.GM_id=gm.GM_id
 				task.lm=self
-				self.simulation.event_queue.put((current_time+NETWORK_DELAY,LaunchOnnodeEvent(task,self.simulation)))
+				self.simulation.event_queue.put((current_time+NETWORK_DELAY,LaunchOnNodeEvent(task,self.simulation)))
 			else:# if inconsistent	
 				self.simulation.event_queue.put((current_time+NETWORK_DELAY,InconsistencyEvent(task,gm,InconsistencyType.INTERNAL_INCONSISTENCY,self.simulation)))
 
@@ -323,7 +329,6 @@ class LM(object):
 
         # Append the details of the task that was just completed to the list of tasks completed for the corresponding GM that sent it
 		self.tasks_completed[task.GM_id].append((task.job.job_id,task.task_id)) #note GM_id used here, not partition, in case of repartitioning
-		#update from node to LM - 1 NETWORK_DELAY + update from LM to GM - 1 NETWORK DELAY = 2 NETWORK_DELAYS
 		self.simulation.event_queue.put((task.end_time+NETWORK_DELAY,LMUpdateEvent(self.simulation,periodic=False, gm=self.simulation.gms[task.GM_id])))
 
 #####################################################################################################################
@@ -365,7 +370,8 @@ class GM(object):
 						task=job.tasks[task_id]
 						job.completed_tasks.append(task)
 						if len(job.tasks) == len(job.completed_tasks): #no more tasks left
-							job.completion_time=task.end_time  # NOTE:job completion time = end time of last task
+							job.completion_time=task.end_time  # NOTE:job completion time = end time of last task === max of the task duration for a job
+							print(job.completion_time)
 							jobs_completed.append(job)
 							self.jobs_scheduled.remove(job)
 						break
@@ -541,22 +547,24 @@ class Simulation(object):
 job_start_tstamps = {}
 jobs_completed=[]
 
-WORKLOAD_FILE= sys.argv[1]
-CONFIG_FILE=sys.argv[2]
-NUM_GMS	=int(sys.argv[3])
-NUM_LMS=int(sys.argv[4])
-PARTITION_SIZE=int(sys.argv[5])
-SERVER_CPU=float(sys.argv[6])# currently set to 1 because of comparison with Sparrow
-SERVER_RAM=float(sys.argv[7])# ditto
-SERVER_STORAGE=float(sys.argv[8])# ditto
 
-NETWORK_DELAY = 0.0005 #same as sparrow
+if __name__ == "__main__":
+    WORKLOAD_FILE= sys.argv[1]
+    CONFIG_FILE=sys.argv[2]
+    NUM_GMS	=int(sys.argv[3])
+    NUM_LMS=int(sys.argv[4])
+    PARTITION_SIZE=int(sys.argv[5])
+    SERVER_CPU=float(sys.argv[6])# currently set to 1 because of comparison with Sparrow
+    SERVER_RAM=float(sys.argv[7])# ditto
+    SERVER_STORAGE=float(sys.argv[8])# ditto
+
+    NETWORK_DELAY = 0.0005 #same as sparrow
 
 
-t1 = time.time() # not simulation's virtual time. This is just to understand how long the program takes
-s = Simulation(WORKLOAD_FILE,CONFIG_FILE,NUM_GMS,NUM_LMS,PARTITION_SIZE,SERVER_CPU,SERVER_RAM,SERVER_STORAGE)
-print("Simulation running")
-s.run()
-print ("Simulation ended in ", (time.time() - t1), " s ")
+    t1 = time.time() # not simulation's virtual time. This is just to understand how long the program takes
+    s = Simulation(WORKLOAD_FILE,CONFIG_FILE,NUM_GMS,NUM_LMS,PARTITION_SIZE,SERVER_CPU,SERVER_RAM,SERVER_STORAGE)
+    print("Simulation running")
+    s.run()
+    print ("Simulation ended in ", (time.time() - t1), " s ")
 
-print(jobs_completed)
+    print(jobs_completed)
