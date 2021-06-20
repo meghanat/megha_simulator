@@ -57,9 +57,30 @@ class Event(object):
 
 #created when a task completes
 class TaskEndEvent(Event):
+	"""
+	This event is created when a task has completed. The `end_time` is set as the `current_time` of running the event.
+
+	Args:
+		Event (Event): Parent Event class.
+	"""
 	def __init__(self, task):
+		"""
+		Initialise the TaskEndEvent class with the task object.
+
+		Args:
+			task (Task): The task object representing the task which has completed.
+		"""
 		self.task : Task = task
-	def __lt__(self, other) -> bool:
+	def __lt__(self, other : Event) -> bool:
+		"""
+		Compare the TaskEndEvent Object with another object of Event class.
+
+		Args:
+			other (Event): The object to compare with.
+
+		Returns:
+			bool: The TaskEndEvent object is always lesser than the object it is compared with.
+		"""
 		return True
 
 	def run(self, current_time):
@@ -72,6 +93,12 @@ class TaskEndEvent(Event):
 #####################################################################################################################
 #created after LM verifies GM request
 class LaunchOnNodeEvent(Event):
+	"""
+	This event is created when a task is sent to a particular worker node in a particular partition, selected by the global master and verified by the local master.
+
+	Args:
+		Event (Event): Parent Event class.
+	"""
 
 	def __init__(self,task,simulation):
 		self.task=task
@@ -221,9 +248,9 @@ class Job(object):
 	def __init__(self, task_distribution, line,simulation):
 		global job_start_tstamps
 		
-		job_args= line.strip().split()
-		self.start_time = float(job_args[0])
-		self.num_tasks= int(job_args[1])
+		job_args : List[str]= line.strip().split()
+		self.start_time : float = float(job_args[0])
+		self.num_tasks : int= int(job_args[1])
 		self.simulation=simulation
 		self.tasks={}
 		self.task_counter=0
@@ -259,7 +286,7 @@ class Job(object):
 	#Job class - parse file line
 	def file_task_execution_time(self, job_args):
 		for task_duration in (job_args[3:]):  # Adding each of the tasks to the dict
-			duration=int(float(task_duration))	 # Same as eagle_simulation.py, This is done to read the floating point value from the string
+			duration=int(float(task_duration))	 # Same as eagle_simulation.py, This is done to read the floating point value from the string and then convert it to an int
 			self.task_counter+=1
 			self.tasks[str(self.task_counter)]=Task(str(self.task_counter),self,duration)
 
