@@ -79,7 +79,7 @@ class LaunchOnNodeEvent(Event):
 
 	def run(self, current_time):
 		print(current_time,",","LaunchOnNodeEvent",",",self.task.job.job_id+"_"+self.task.task_id,",",self.task.partition_id+"_"+self.task.node_id)
-		self.simulation.event_queue.put((current_time+self.task.duration+NETWORK_DELAY,TaskEndEvent(self.task)))#launching requires network transfer
+		self.simulation.event_queue.put((current_time+self.task.duration,TaskEndEvent(self.task)))#launching requires network transfer
 
 
 #####################################################################################################################
