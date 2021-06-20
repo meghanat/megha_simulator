@@ -44,4 +44,8 @@ $ sudo chmod u+x doc_gen.sh
     1. This will generate the documentation file called `megha_sim.html` in the folder `./html`
     2. Open the file using any modern web browser to view the documentation.
 
+## Dependency Graph
+
+![Project's Dependency Graph](./src.png)
+
 ---
