@@ -9,7 +9,7 @@ A simple simulator for the Megha Federated Scheduling Framework. This simulator 
 Sample command to run with 3 GMs and 2 LMs, and PARTITION_SIZE 3:
 
 ```
-python3 megha_sim.py YH.tr config.json 3 2 3 1 1 1 
+python3 ./src/runner.py ./Traces/YH.tr ./Simulator_Config/config.json 3 2 3 1 1 1 
 ```
 
 ## Using the Development Environment Container
