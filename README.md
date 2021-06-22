@@ -46,6 +46,6 @@ $ sudo chmod u+x doc_gen.sh
 
 ## Dependency Graph
 
-![Project's Dependency Graph](./src.png)
+![Project's Dependency Graph](./megha_sim_dep_graph.png)
 
 ---
