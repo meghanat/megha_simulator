@@ -1,20 +1,19 @@
 from typing import List, Optional, TYPE_CHECKING
 
 from task import Task
-from globals import job_start_tstamps
-from values import TaskDurationDistributions
+from simulator_utils.globals import job_start_tstamps
+from simulator_utils.values import TaskDurationDistributions
 
 # Imports used only for type checking go here to avoid circular imports
 if TYPE_CHECKING:
-    from gm import GM
-    from simulation import Simulation
+    from global_master import GM
 
 
 class Job(object):
     job_count = 1  # to assign ids
 
     def __init__(self, task_distribution: TaskDurationDistributions, line: str,
-                 simulation: Simulation):
+                 simulation):
         """
         Retaining below logic as-is to compare with Sparrow.
 

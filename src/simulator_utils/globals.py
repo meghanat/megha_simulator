@@ -1,2 +1,2 @@
 job_start_tstamps = {}
-jobs_completed=[]
+jobs_completed = []
