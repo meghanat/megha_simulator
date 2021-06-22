@@ -1,2 +1,2 @@
 #!/bin/bash
-pdoc --html --force megha_sim.py
+pdoc --html --force src
