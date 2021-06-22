@@ -7,13 +7,30 @@ from values import TaskDurationDistributions
 # Imports used only for type checking go here to avoid circular imports
 if TYPE_CHECKING:
     from gm import GM
+    from simulation import Simulation
 
 
 class Job(object):
     job_count = 1  # to assign ids
 
-    def __init__(self, task_distribution, line, simulation):
-        global job_start_tstamps
+    def __init__(self, task_distribution: TaskDurationDistributions, line: str,
+                 simulation: Simulation):
+        """
+        Retaining below logic as-is to compare with Sparrow.
+
+        During initialization of the object, we dephase the incoming job in
+        case it has the exact submission time as another already submitted job
+
+        Args:
+            task_distribution (TaskDurationDistributions): In case we need to
+            explore other task distribution methods. This is retained from the
+            Sparrow code as-is.
+            line (str): Line from the input trace file
+            simulation (Simulation): The object of the simulation class. This
+            is not currently begin used in the class's internal implementation.
+        """
+
+        # global job_start_tstamps
 
         job_args: List[str] = line.strip().split()
         self.start_time: float = float(job_args[0])
@@ -25,13 +42,13 @@ class Job(object):
         self.gm: Optional[GM] = None
         self.completion_time = -1
 
-        # retaining below logic as-is to compare with Sparrow.
-        # dephase the incoming job in case it has the exact submission time as another already submitted job
-        if self.start_time not in job_start_tstamps:  # IF the job's start_time has never been seen before
+        # IF the job's start_time has never been seen before
+        if self.start_time not in job_start_tstamps:
             # Add it to the dict of start time stamps
             job_start_tstamps[self.start_time] = self.start_time
         else:  # If the job's start_time has been seen before
-            # Shift the start time of the jobs with this duplicate start time by 0.01s forward to prevent a clash
+            # Shift the start time of the jobs with this duplicate start time by 0.01s forward to prevent
+            # a clash
             job_start_tstamps[self.start_time] += 0.01
             # Assign this shifted time stamp to the job start time
             self.start_time = job_start_tstamps[self.start_time]
@@ -58,7 +75,8 @@ class Job(object):
     def file_task_execution_time(self, job_args):
         # Adding each of the tasks to the dict
         for task_duration in (job_args[3:]):
-            # Same as eagle_simulation.py, This is done to read the floating point value from the string and then convert it to an int
+            # Same as eagle_simulation.py, This is done to read the floating point value from the string
+            # and then convert it to an int
             duration = int(float(task_duration))
             self.task_counter += 1
             self.tasks[str(self.task_counter)] = Task(
