@@ -1,8 +1,8 @@
 import sys
 import time
 
-from simulation.simulation import Simulation
-from simulator_utils.globals import jobs_completed
+from megha_sim.simulation import Simulation
+from megha_sim.simulator_utils.globals import jobs_completed
 
 #################MAIN########################
 

@@ -17,14 +17,14 @@ NETWORK_DELAY = 0.0005  # Same as the Sparrow simulator
 
 
 class TaskDurationDistributions:
-    CONSTANT: Final[int]
-    MEAN: Final[int]
-    FROM_FILE: Final[int]
-    CONSTANT, MEAN, FROM_FILE = range(3)
+    CONSTANT: Final[int] = 0
+    MEAN: Final[int] = 1
+    FROM_FILE: Final[int] = 2
+    # CONSTANT, MEAN, FROM_FILE = range(3)
 
 
 class EstimationErrorDistribution:
-    CONSTANT: Final[int]
-    RANDOM: Final[int]
-    MEAN: Final[int]
-    CONSTANT, RANDOM, MEAN = range(3)
+    CONSTANT: Final[int] = 0
+    RANDOM: Final[int] = 1
+    MEAN: Final[int] = 2
+    # CONSTANT, RANDOM, MEAN = range(3)

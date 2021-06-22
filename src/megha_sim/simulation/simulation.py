@@ -2,6 +2,7 @@ import pickle
 import queue
 import json
 
+
 from local_master import LM
 from global_master import GM
 from job import Job
