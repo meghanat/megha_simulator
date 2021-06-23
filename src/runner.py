@@ -2,7 +2,7 @@ import sys
 import time
 
 from megha_sim.simulation import Simulation
-from megha_sim.simulator_utils.globals import jobs_completed
+import simulator_utils.globals
 
 #################MAIN########################
 
@@ -27,4 +27,4 @@ if __name__ == "__main__":
     s.run()
     print("Simulation ended in ", (time.time() - t1), " s ")
 
-    print(jobs_completed)
+    print(simulator_utils.globals.jobs_completed)

@@ -2,7 +2,8 @@ import json
 from typing import List, TYPE_CHECKING
 
 from events import MatchFoundEvent
-from simulator_utils.globals import jobs_completed
+import simulator_utils.globals
+
 
 # Imports used only for type checking go here to avoid circular imports
 if TYPE_CHECKING:
@@ -26,7 +27,7 @@ class GM(object):
 
     # updates global view of GM by getting partial updates from each LM
     def update_status(self, current_time):
-        global jobs_completed
+        # global jobs_completed
 
         for LM_id in self.simulation.lms:
             lm = self.simulation.lms[LM_id]
@@ -48,7 +49,7 @@ class GM(object):
                             # NOTE:job completion time = end time of last task === max of the task duration for a job
                             job.completion_time = task.end_time
                             print(job.completion_time)
-                            jobs_completed.append(job)
+                            simulator_utils.globals.jobs_completed.append(job)
                             self.jobs_scheduled.remove(job)
                         break
 
