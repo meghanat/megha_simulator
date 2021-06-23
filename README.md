@@ -80,7 +80,7 @@ $ sudo chmod u+x doc_gen.sh
 
 ## Dependency Graph
 
-![Project's Dependency Graph](./megha_sim_dep_graph.png)
+![Project's Dependency Graph](./media/images/megha_sim_dep_graph.png)
 
 ## Link to the Paper
 
