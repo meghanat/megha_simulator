@@ -82,4 +82,7 @@ $ sudo chmod u+x doc_gen.sh
 
 ![Project's Dependency Graph](./megha_sim_dep_graph.png)
 
+## Link to the Paper
+
+- [Link to the preprint on arXiv.org](https://arxiv.org/abs/2103.08413)
 ---
