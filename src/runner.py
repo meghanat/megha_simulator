@@ -1,10 +1,16 @@
+"""
+Program to run the simulator based on the parameters provided by the user.
+
+This program uses the `megha_sim` module to run the simulator as per the
+Megha architecture and display/log the actions and results of the simulation.
+"""
+
 import sys
 import time
 
 from megha_sim.simulation import Simulation
 import simulator_utils.globals
 
-#################MAIN########################
 
 if __name__ == "__main__":
     WORKLOAD_FILE = sys.argv[1]
@@ -19,7 +25,8 @@ if __name__ == "__main__":
 
     NETWORK_DELAY = 0.0005  # same as sparrow
 
-    # not simulation's virtual time. This is just to understand how long the program takes
+    # This is not the simulation's virtual time. This is just to
+    # understand how long the program takes
     t1 = time.time()
     s = Simulation(WORKLOAD_FILE, CONFIG_FILE, NUM_GMS, NUM_LMS,
                    PARTITION_SIZE, SERVER_CPU, SERVER_RAM, SERVER_STORAGE)
