@@ -52,5 +52,7 @@ jobs:
 #         pytest
     - name: Run on trace dataset
       run: |
-        echo "::set-env name=PYTHONPATH::home/runner/work/megha_simulator/src/megha_sim/"
+        PYTHONPATH="${PWD}/src/megha_sim/"
         python ./src/runner.py ./traces/input/YH.tr ./simulator_config/config.json 3 2 3 1 1 1
+
+          
