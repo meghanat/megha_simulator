@@ -1,7 +1,14 @@
-from typing import List, Optional, TYPE_CHECKING
+"""
+This file contains the implementation of the Job class.
+
+The Job class is used to describe a job that is input to the scheduler.
+A job consists of one or more tasks. The instance of the Job class keeps
+track of various paramters related to task assignment and completion.
+"""
+
+from typing import Dict, List, Optional, TYPE_CHECKING
 
 from task import Task
-from simulator_utils.globals import job_start_tstamps
 from simulator_utils.values import TaskDurationDistributions
 
 # Imports used only for type checking go here to avoid circular imports
@@ -10,7 +17,8 @@ if TYPE_CHECKING:
 
 
 class Job(object):
-    job_count = 1  # to assign ids
+    job_count = 1  # To assign IDs
+    job_start_tstamps: Dict[float, float] = {}
 
     def __init__(self, task_distribution: TaskDurationDistributions, line: str,
                  simulation):
@@ -29,28 +37,26 @@ class Job(object):
             is not currently begin used in the class's internal implementation.
         """
 
-        # global job_start_tstamps
-
         job_args: List[str] = line.strip().split()
         self.start_time: float = float(job_args[0])
         self.num_tasks: int = int(job_args[1])
         self.simulation = simulation
-        self.tasks = {}
+        self.tasks: Dict[str, Task] = {}
         self.task_counter = 0
         self.completed_tasks = []
         self.gm: Optional[GM] = None
         self.completion_time = -1
 
         # IF the job's start_time has never been seen before
-        if self.start_time not in job_start_tstamps:
+        if self.start_time not in self.job_start_tstamps:
             # Add it to the dict of start time stamps
-            job_start_tstamps[self.start_time] = self.start_time
+            self.job_start_tstamps[self.start_time] = self.start_time
         else:  # If the job's start_time has been seen before
             # Shift the start time of the jobs with this duplicate start time by 0.01s forward to prevent
             # a clash
-            job_start_tstamps[self.start_time] += 0.01
+            self.job_start_tstamps[self.start_time] += 0.01
             # Assign this shifted time stamp to the job start time
-            self.start_time = job_start_tstamps[self.start_time]
+            self.start_time = self.job_start_tstamps[self.start_time]
 
         self.job_id = str(Job.job_count)
         Job.job_count += 1
@@ -62,7 +68,7 @@ class Job(object):
             self.file_task_execution_time(job_args)
 
     # checks if job's tasks have all been scheduled.
-    def fully_scheduled(self):
+    def fully_scheduled(self) -> bool:
 
         for task_id in self.tasks:
             if not self.tasks[task_id].scheduled:
@@ -74,8 +80,8 @@ class Job(object):
     def file_task_execution_time(self, job_args):
         # Adding each of the tasks to the dict
         for task_duration in (job_args[3:]):
-            # Same as eagle_simulation.py, This is done to read the floating point value from the string
-            # and then convert it to an int
+            # Same as eagle_simulation.py, This is done to read the floating
+            # point value from the string and then convert it to an int
             duration = int(float(task_duration))
             self.task_counter += 1
             self.tasks[str(self.task_counter)] = Task(

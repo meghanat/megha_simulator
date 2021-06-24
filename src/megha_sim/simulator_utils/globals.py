@@ -7,10 +7,9 @@ the simulator from the trace file.
 """
 
 from __future__ import annotations
-from typing import Dict, List, TYPE_CHECKING
+from typing import List, TYPE_CHECKING
 
 if TYPE_CHECKING:
     from job import Job
 
-job_start_tstamps: Dict[float, float] = {}
 jobs_completed: List[Job] = []
