@@ -1,5 +1,7 @@
 # Megha Simulator
 
+[![CodeFactor](https://www.codefactor.io/repository/github/meghanat/megha_simulator/badge?s=b4713b1b5ed4c6ec220be93cad0e696a6aa34bb2)](https://www.codefactor.io/repository/github/meghanat/megha_simulator)
+
 ## About
 A simple simulator for the Megha Federated Scheduling Framework. This simulator enables comparison with other frameworks such as Sparrow, Eagle and Pigeon for which simulators already exist.
 
