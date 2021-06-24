@@ -52,7 +52,6 @@ jobs:
 #         pytest
     - name: Run on trace dataset
       run: |
-        PYTHONPATH="${PWD}/src/megha_sim/"
+        echo "PYTHONPATH=./src/megha_sim/"" >> $GITHUB_ENV
+        echo $PYTHONPATH
         python ./src/runner.py ./traces/input/YH.tr ./simulator_config/config.json 3 2 3 1 1 1
-
-          
