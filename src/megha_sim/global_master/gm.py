@@ -1,5 +1,5 @@
 import json
-from typing import List, TYPE_CHECKING
+from typing import List, Dict, TYPE_CHECKING, TypedDict
 
 from events import MatchFoundEvent
 import simulator_utils.globals
@@ -10,12 +10,29 @@ if TYPE_CHECKING:
     from job import Job
 
 
+class NodeResources(TypedDict):
+    CPU: int
+    RAM: int
+    Disk: int
+    constraints: List[int]
+
+
+class PartitionResources(TypedDict):
+    partition_id: str
+    nodes: Dict[str, NodeResources]
+
+
+class LMResources(TypedDict):
+    LM_id: str
+    partitions: Dict[str, PartitionResources]
+
+
 class GM(object):
     def __init__(self, simulation, GM_id, config):
         self.GM_id = GM_id
         self.simulation = simulation
         self.RR_counter: int = 0
-        self.global_view = {}
+        self.global_view: Dict[str, LMResources] = {}
         self.job_queue: List[Job] = []
         self.jobs_scheduled: List[Job] = []
 
@@ -94,7 +111,8 @@ class GM(object):
                         self.RR_counter += 1
                         # search in external partitions
                         # iterating over a dict
-                        for node_id in self.global_view[LM_id]["partitions"][GM_id]["nodes"]:
+                        for node_id in (self.global_view[LM_id]["partitions"]
+                                        [GM_id]["nodes"]):
                             node = self.global_view[LM_id]["partitions"][GM_id]["nodes"][node_id]
                             if node["CPU"] == 1:  # node unoccupied
                                 # print("Match found in internal partitions")
