@@ -25,7 +25,7 @@ jobs:
     - name: Run the Docker container with the shell script ./quick_run.sh
       run: |
         docker run -it -d --rm --name megha_dev_env -v "${PWD}":/Megha_Dev megha_dev_env:latest bash
-        docker exec -d megha_dev_env ./quick_run.sh
+        docker exec -it megha_dev_env ./quick_run.sh
         docker container stop megha_dev_env
 
   shell-script:
@@ -44,10 +44,10 @@ jobs:
     - name: Run the Docker container with the shell script ./build_dep_graph.sh
       run: |
         docker run -it -d --rm --name megha_dev_env -v "${PWD}":/Megha_Dev megha_dev_env:latest bash
-        docker exec -d megha_dev_env ./build_dep_graph.sh
+        docker exec -it megha_dev_env ./build_dep_graph.sh
         docker container stop megha_dev_env
     - name: Run the Docker container with the shell script ./build_doc.sh
       run: |
         docker run -it -d --rm --name megha_dev_env -v "${PWD}":/Megha_Dev megha_dev_env:latest bash
-        docker exec -d megha_dev_env ./build_doc.sh
+        docker exec -it megha_dev_env ./build_doc.sh
         docker container stop megha_dev_env
