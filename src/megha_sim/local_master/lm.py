@@ -3,6 +3,7 @@ import json
 from simulator_utils.values import NETWORK_DELAY, InconsistencyType
 from events import LaunchOnNodeEvent, InconsistencyEvent, LMUpdateEvent
 
+
 class LM(object):
 
     def __init__(self, simulation, LM_id, partiton_size, LM_config):
@@ -11,14 +12,16 @@ class LM(object):
         self.LM_config = LM_config
         print("LM ", LM_id, "initialised")
         self.simulation = simulation
-        # we hold the key-value pairs of the list of tasks completed (value) for each GM (key)
+        # we hold the key-value pairs of the list of tasks completed (value)
+        # for each GM (key)
         self.tasks_completed = {}
         for GM_id in self.simulation.gms:
             self.tasks_completed[GM_id] = []
 
     def get_status(self, gm):
         # """
-        # One we have sent the response, the LM clears the list of tasks the LM has completed for the particular GM.
+        # One we have sent the response, the LM clears the list of tasks the LM
+        # has completed for the particular GM.
 
         # :param gm: The handle to the GM object
         # :type gm: GM
@@ -32,7 +35,13 @@ class LM(object):
         return response
 
     # LM checks if GM's request is valid
-    def verify_request(self, task, gm, node_id, current_time, external_partition=None):
+    def verify_request(
+            self,
+            task,
+            gm,
+            node_id,
+            current_time,
+            external_partition=None):
 
         # check if repartitioning
         if(external_partition is not None):
@@ -43,9 +52,10 @@ class LM(object):
                 task.lm = self
                 task.GM_id = gm.GM_id
 
-        # network delay as the request has to be sent from the LM to the selected worker node
+        # network delay as the request has to be sent from the LM to the
+        # selected worker node
                 self.simulation.event_queue.put(
-                    (current_time+NETWORK_DELAY, LaunchOnNodeEvent(task, self.simulation)))
+                    (current_time + NETWORK_DELAY, LaunchOnNodeEvent(task, self.simulation)))
                 return True
             else:  # if inconsistent
                 self.simulation.event_queue.put((current_time, InconsistencyEvent(
@@ -60,7 +70,7 @@ class LM(object):
                 task.GM_id = gm.GM_id
                 task.lm = self
                 self.simulation.event_queue.put(
-                    (current_time+NETWORK_DELAY, LaunchOnNodeEvent(task, self.simulation)))
+                    (current_time + NETWORK_DELAY, LaunchOnNodeEvent(task, self.simulation)))
             else:  # if inconsistent
                 self.simulation.event_queue.put((current_time, InconsistencyEvent(
                     task, gm, InconsistencyType.INTERNAL_INCONSISTENCY, self.simulation)))
@@ -73,5 +83,5 @@ class LM(object):
         # note GM_id used here, not partition, in case of repartitioning
         self.tasks_completed[task.GM_id].append(
             (task.job.job_id, task.task_id))
-        self.simulation.event_queue.put((task.end_time+NETWORK_DELAY, LMUpdateEvent(
+        self.simulation.event_queue.put((task.end_time + NETWORK_DELAY, LMUpdateEvent(
             self.simulation, periodic=False, gm=self.simulation.gms[task.GM_id])))
