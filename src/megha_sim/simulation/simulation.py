@@ -11,13 +11,22 @@ from events import JobArrival, LMUpdateEvent
 
 
 class Simulation(object):
-    def __init__(self, workload, config, NUM_GMS, NUM_LMS, PARTITION_SIZE, cpu, memory, storage):
+    def __init__(
+            self,
+            workload,
+            config,
+            NUM_GMS,
+            NUM_LMS,
+            PARTITION_SIZE,
+            cpu,
+            memory,
+            storage):
 
         # Each localmaster has one partition per global master so the total number of partitions in the cluster are:
         # NUM_GMS * NUM_LMS
         # Given the number of worker nodes per partition is PARTITION_SIZE
         # so the total_nodes are NUM_GMS*NUM_LMS*PARTITION_SIZE
-        self.total_nodes = NUM_GMS*NUM_LMS*PARTITION_SIZE
+        self.total_nodes = NUM_GMS * NUM_LMS * PARTITION_SIZE
         self.NUM_GMS = NUM_GMS
         self.NUM_LMS = NUM_LMS
         self.config = json.load(open(config))

@@ -62,8 +62,11 @@ class GM(object):
                     if job.job_id == job_id:
                         task = job.tasks[task_id]
                         job.completed_tasks.append(task)
-                        if len(job.tasks) == len(job.completed_tasks):  # no more tasks left
-                            # NOTE:job completion time = end time of last task === max of the task duration for a job
+                        if len(
+                                job.tasks) == len(
+                                job.completed_tasks):  # no more tasks left
+                            # NOTE:job completion time = end time of last task
+                            # === max of the task duration for a job
                             job.completion_time = task.end_time
                             print(job.completion_time)
                             simulator_utils.globals.jobs_completed.append(job)
@@ -74,7 +77,8 @@ class GM(object):
 
     def unschedule_job(self, unverified_job):
         # """
-        # The job is inserted back into the job_queue of the GM from the job_scheduled queue of the GM
+        # The job is inserted back into the job_queue of the GM from the
+        # job_scheduled queue of the GM
 
         # :param unverified_job: The job that needs to be moved, as it was assigned on a worker node
         #  not actually available at that time
@@ -100,14 +104,15 @@ class GM(object):
 
                     for task_id in job.tasks:  # Go over the tasks for the job
                         task = job.tasks[task_id]
-                        # If the task is already scheduled then, there is nothing to do
+                        # If the task is already scheduled then, there is
+                        # nothing to do
                         if(job.tasks[task_id].scheduled):
                             continue
                         matchfound = False
                         # print("Scheduling Task:",task_id)
                         # which LM? searching the LMs in RR fashion
                         LM_id = str(self.RR_counter %
-                                    self.simulation.NUM_LMS+1)
+                                    self.simulation.NUM_LMS + 1)
                         self.RR_counter += 1
                         # search in external partitions
                         # iterating over a dict
@@ -121,11 +126,27 @@ class GM(object):
                                 if(job.fully_scheduled()):
                                     self.jobs_scheduled.append(
                                         self.job_queue.pop(0))
-                                print(current_time, "RepartitionEvent", self.GM_id,
-                                      ",", GM_id, ",", job.job_id+"_"+task.task_id)
-                                # may need to add processing overhead here if required
-                                self.simulation.event_queue.put((current_time, MatchFoundEvent(
-                                    job.tasks[task_id], self, self.simulation.lms[LM_id], node_id, current_time, external_partition=GM_id)))
+                                print(
+                                    current_time,
+                                    "RepartitionEvent",
+                                    self.GM_id,
+                                    ",",
+                                    GM_id,
+                                    ",",
+                                    job.job_id +
+                                    "_" +
+                                    task.task_id)
+                                # may need to add processing overhead here if
+                                # required
+                                self.simulation.event_queue.put(
+                                    (current_time,
+                                     MatchFoundEvent(
+                                         job.tasks[task_id],
+                                         self,
+                                         self.simulation.lms[LM_id],
+                                         node_id,
+                                         current_time,
+                                         external_partition=GM_id)))
                                 matchfound = True
                                 break
                         if matchfound:  # If this task was successfully placed then, move on to the next task
@@ -139,7 +160,8 @@ class GM(object):
     # search internal partitions
     def schedule_tasks(self, current_time):
 
-        while len(self.job_queue) > 0:  # While the job_queue for the current GM is not empty
+        while len(
+                self.job_queue) > 0:  # While the job_queue for the current GM is not empty
             job = self.job_queue[0]  # get job from head of queue
             for task_id in job.tasks:  # Go over the tasks for the job
                 # If the task is already scheduled then, there is nothing to do
@@ -147,7 +169,7 @@ class GM(object):
                     continue
                 matchfound = False
                 # which LM? searching the LMs in RR fashion
-                LM_id = str(self.RR_counter % self.simulation.NUM_LMS+1)
+                LM_id = str(self.RR_counter % self.simulation.NUM_LMS + 1)
                 self.RR_counter += 1
                 # search in internal partitions
                 # iterating over a dict
@@ -159,8 +181,14 @@ class GM(object):
                         if(job.fully_scheduled()):
                             self.jobs_scheduled.append(self.job_queue.pop(0))
                         # may need to add processing overhead here if required
-                        self.simulation.event_queue.put((current_time, MatchFoundEvent(
-                            job.tasks[task_id], self, self.simulation.lms[LM_id], node_id, current_time)))
+                        self.simulation.event_queue.put(
+                            (current_time,
+                             MatchFoundEvent(
+                                 job.tasks[task_id],
+                                 self,
+                                 self.simulation.lms[LM_id],
+                                 node_id,
+                                 current_time)))
                         matchfound = True
                         break
                 if matchfound:  # If this task was successfully placed then, move on to the next task
