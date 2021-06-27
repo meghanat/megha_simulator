@@ -1,0 +1,59 @@
+# This workflow will install Python dependencies, run tests and lint with a single version of Python
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
+
+name: Scripts Check
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-docs-script:
+    name: Test the build_docs.sh script
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9
+    - name: Install dependencies
+      run: |
+        sudo apt-get install -y graphviz
+        python -m pip install --upgrade pip
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+        echo "PYTHONPATH=./src/megha_sim/" >> $GITHUB_ENV
+        echo $PYTHONPATH
+    - name: Make the shell script executable
+      run: |
+        chmod u+x ./build_doc.sh
+    - name: Run the shell script
+      run: |
+        ./build_doc.sh
+
+  build-dep-graph-script:
+    name: Test the build_dep_graph.sh script
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9
+    - name: Install dependencies
+      run: |
+        sudo apt-get install -y graphviz
+        python -m pip install --upgrade pip
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+        echo "PYTHONPATH=./src/megha_sim/" >> $GITHUB_ENV
+        echo $PYTHONPATH
+    - name: Make the shell script executable
+      run: |
+        chmod u+x ./build_dep_graph.sh
+    - name: Run the shell script
+      run: |
+        ./build_dep_graph.sh

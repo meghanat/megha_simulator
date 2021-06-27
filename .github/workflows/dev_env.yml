@@ -1,0 +1,53 @@
+# This workflow will install Python dependencies, run tests and lint with a single version of Python
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
+
+name: Development Environment Check
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  run-test:
+    name: Run the project in the Docker container
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build the Docker image
+      run: |
+        docker build -t megha_dev_env .
+    - name: Make the shell script executable
+      run: |
+        chmod u+x ./quick_run.sh
+    - name: Run the Docker container with the shell script ./quick_run.sh
+      run: |
+        docker run -it -d --rm --name megha_dev_env -v "${PWD}":/Megha_Dev megha_dev_env:latest bash
+        docker exec megha_dev_env ./quick_run.sh
+        docker container stop megha_dev_env
+
+  shell-script:
+    name: Test the shell scripts in the Docker container
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build the Docker image
+      run: |
+        docker build -t megha_dev_env .
+    - name: Make the shell scripts executable
+      run: |
+        chmod u+x ./build_dep_graph.sh
+        chmod u+x ./build_doc.sh
+    - name: Run the Docker container with the shell script ./build_dep_graph.sh
+      run: |
+        docker run -it -d --rm --name megha_dev_env -v "${PWD}":/Megha_Dev megha_dev_env:latest bash
+        docker exec megha_dev_env ./build_dep_graph.sh
+        docker container stop megha_dev_env
+    - name: Run the Docker container with the shell script ./build_doc.sh
+      run: |
+        docker run -it -d --rm --name megha_dev_env -v "${PWD}":/Megha_Dev megha_dev_env:latest bash
+        docker exec megha_dev_env ./build_doc.sh
+        docker container stop megha_dev_env

@@ -1,0 +1,48 @@
+matrix:
+- name: Check all Markdown files
+  aspell:
+    lang: en
+    d: en_GB
+  dictionary:
+    encoding: utf-8
+    wordlists:
+    - .markdown_wordlist.txt
+    - .wordlist.txt
+  pipeline:
+  - pyspelling.filters.markdown:
+  sources:
+  - '**/*.md|!Simulator\ Notes/**'
+  default_encoding: utf-8
+
+- name: Check all HTML files
+  aspell:
+    lang: en
+    d: en_GB
+  dictionary:
+    encoding: utf-8
+    wordlists:
+    - .html_wordlist.txt
+    - .wordlist.txt
+  pipeline:
+  - pyspelling.filters.html:
+      comments: true
+  sources:
+  - '**/*.html|!Simulator\ Notes/**'
+  default_encoding: utf-8
+
+- name: Check all Python files
+  aspell:
+    lang: en
+    d: en_GB
+  dictionary:
+    encoding: utf-8
+    wordlists:
+    - .python_wordlist.txt
+    - .wordlist.txt
+  pipeline:
+  - pyspelling.filters.python:
+      strings: true
+      comments: true
+  sources:
+  - '**/*.py|!Simulator\ Notes/**|!eagle_sim/**'
+  default_encoding: utf-8

@@ -3,7 +3,7 @@
 ## Rishit Chaudhary:
 - MatchFoundEvent
 - InconsistencyEvent
-- LaunchOnnodeEvent
+- LaunchOnNodeEvent
 - TaskEndEvent
 - Event
 - TaskDurationDistributions
