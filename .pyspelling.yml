@@ -11,7 +11,7 @@ matrix:
   pipeline:
   - pyspelling.filters.markdown:
   sources:
-  - '**/*.md|!Simulator\ Notes/**'
+  - '**/*.md|!Simulator\ Notes/**|!roughpad/**'
   default_encoding: utf-8
 
 - name: Check all HTML files
@@ -27,7 +27,7 @@ matrix:
   - pyspelling.filters.html:
       comments: true
   sources:
-  - '**/*.html|!Simulator\ Notes/**'
+  - '**/*.html|!Simulator\ Notes/**|!roughpad/**'
   default_encoding: utf-8
 
 - name: Check all Python files
@@ -44,5 +44,5 @@ matrix:
       strings: true
       comments: true
   sources:
-  - '**/*.py|!Simulator\ Notes/**|!eagle_sim/**'
+  - '**/*.py|!Simulator\ Notes/**|!eagle_sim/**|!roughpad/**'
   default_encoding: utf-8
