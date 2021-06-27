@@ -26,10 +26,10 @@ jobs:
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     - name: Make the shell script executable
       run: |
-        chmod u+x ./doc_gen.sh
+        chmod u+x ./build_doc.sh
     - name: Run the shell script
       run: |
-        ./doc_gen.sh
+        ./build_doc.sh
 
   build-dep-graph-script:
     name: Test the build_dep_graph.sh script
