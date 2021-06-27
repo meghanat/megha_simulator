@@ -7,7 +7,8 @@ ENV PYTHONPATH="$PYTHONPATH:./src/megha_sim"
 
 # This is need for creating the dependency graph of the project
 RUN apt-get update && apt-get install -y \
-    graphviz
+    graphviz \
+    && rm -rf /var/lib/apt/lists/*
 
 COPY ./requirements.txt /Megha_Dev/requirements.txt
 
