@@ -5,6 +5,7 @@ jobs:
   greet:
     name: Greet the new user
     runs-on: ubuntu-latest
+
     steps:
     - name: Greet
     - uses: actions/first-interaction@v1
