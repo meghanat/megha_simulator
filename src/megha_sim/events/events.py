@@ -30,8 +30,8 @@ class Event(object):
         raise NotImplementedError(
             "The run() method must be implemented by each class subclassing Event")
 
-#####################################################################################################################
-#####################################################################################################################
+##########################################################################
+##########################################################################
 
 # created when a task completes
 
@@ -67,7 +67,7 @@ class TaskEndEvent(Event):
 
     def run(self, current_time):
         print(current_time, ",", "TaskEndEvent", ",", self.task.job.job_id +
-              "_"+self.task.task_id+"___", self.task.duration)
+              "_" + self.task.task_id + "___", self.task.duration)
         self.task.end_time = current_time
         if self.task.lm is not None:
             self.task.lm.task_completed(self.task)
@@ -90,15 +90,25 @@ class LaunchOnNodeEvent(Event):
         self.simulation = simulation
 
     def run(self, current_time):
-        print(current_time, ",", "LaunchOnNodeEvent", ",", self.task.job.job_id +
-              "_"+self.task.task_id, ",", self.task.partition_id+"_"+self.task.node_id)
+        print(
+            current_time,
+            ",",
+            "LaunchOnNodeEvent",
+            ",",
+            self.task.job.job_id +
+            "_" +
+            self.task.task_id,
+            ",",
+            self.task.partition_id +
+            "_" +
+            self.task.node_id)
         # launching requires network transfer
         self.simulation.event_queue.put(
-            (current_time+self.task.duration, TaskEndEvent(self.task)))
+            (current_time + self.task.duration, TaskEndEvent(self.task)))
 
 
-#####################################################################################################################
-#####################################################################################################################
+##########################################################################
+##########################################################################
 
 # if GM has outdated info, LM creates this event
 class InconsistencyEvent(Event):
@@ -116,10 +126,12 @@ class InconsistencyEvent(Event):
             print(current_time, ",", "ExternalInconsistencyEvent")
         self.task.scheduled = False
 
-        # if job already moved to jobs_scheduled queue, need to remove and add to front of queue
+        # if job already moved to jobs_scheduled queue, need to remove and add
+        # to front of queue
         self.gm.unschedule_job(self.task.job)
         self.simulation.event_queue.put(
-            (current_time, LMUpdateEvent(self.simulation, periodic=False, gm=self.gm)))
+            (current_time, LMUpdateEvent(
+                self.simulation, periodic=False, gm=self.gm)))
 
         #***********************************************************************#
         #  NEED TO CHECK THIS AND SEE IF IT CAN BE MODIFIED SUCH				#
@@ -128,11 +140,18 @@ class InconsistencyEvent(Event):
         #***********************************************************************#
 
 
-#####################################################################################################################
-#####################################################################################################################
+##########################################################################
+##########################################################################
 # created when GM finds a match in the external or internal partition
 class MatchFoundEvent(Event):
-    def __init__(self, task, gm, lm, node_id, current_time, external_partition=None):
+    def __init__(
+            self,
+            task,
+            gm,
+            lm,
+            node_id,
+            current_time,
+            external_partition=None):
         self.task = task
         self.gm = gm
         self.lm = lm
@@ -142,13 +161,25 @@ class MatchFoundEvent(Event):
 
     def run(self, current_time):
         # add network delay to LM, similar to sparrow:
-        print(current_time, ",", "MatchFoundEvent", ",", self.task.job.job_id+"_" +
-              self.task.task_id, ",", self.gm.GM_id+"_"+str(self.node_id), "_", self.lm.LM_id)
-        self.lm.verify_request(self.task, self.gm, self.node_id, current_time +
-                               NETWORK_DELAY, external_partition=self.external_partition)
+        print(current_time,
+              ",",
+              "MatchFoundEvent",
+              ",",
+              self.task.job.job_id + "_" + self.task.task_id,
+              ",",
+              self.gm.GM_id + "_" + str(self.node_id),
+              "_",
+              self.lm.LM_id)
+        self.lm.verify_request(
+            self.task,
+            self.gm,
+            self.node_id,
+            current_time +
+            NETWORK_DELAY,
+            external_partition=self.external_partition)
 
-#####################################################################################################################
-#####################################################################################################################
+##########################################################################
+##########################################################################
 # created periodically or when LM needs to piggyback update on response
 
 
@@ -167,20 +198,22 @@ class LMUpdateEvent(Event):
     def run(self, current_time):
         print(current_time, ",", "LMUpdateEvent", ",", self.periodic)
 
-        # update only that GM which is inconsistent or if the GM's task has completed
+        # update only that GM which is inconsistent or if the GM's task has
+        # completed
         if not self.periodic:
-            self.gm.update_status(current_time+NETWORK_DELAY)
+            self.gm.update_status(current_time + NETWORK_DELAY)
 
         if self.periodic and not self.simulation.event_queue.empty():
             for GM_id in self.simulation.gms:
                 self.simulation.gms[GM_id].update_status(
-                    current_time+NETWORK_DELAY)
-            # add the next heartbeat, network delay added because intuitively we do not include it in the LM_HEARTBEAT INTERVAL
+                    current_time + NETWORK_DELAY)
+            # add the next heartbeat, network delay added because intuitively
+            # we do not include it in the LM_HEARTBEAT INTERVAL
             self.simulation.event_queue.put(
-                (current_time + LM_HEARTBEAT_INTERVAL+NETWORK_DELAY, self))
+                (current_time + LM_HEARTBEAT_INTERVAL + NETWORK_DELAY, self))
 
-#####################################################################################################################
-#####################################################################################################################
+##########################################################################
+##########################################################################
 # created for each job
 
 
@@ -201,7 +234,7 @@ class JobArrival(Event):
         new_events: List[Tuple[float, Event]] = []
         # needs to be assigned to a GM - RR
         JobArrival.gm_counter = (
-            JobArrival.gm_counter) % self.simulation.NUM_GMS+1
+            JobArrival.gm_counter) % self.simulation.NUM_GMS + 1
     # assigned_GM --> Handle to the global master object
         assigned_GM: GM = self.simulation.gms[str(JobArrival.gm_counter)]
         # GM needs to add job to its queue
