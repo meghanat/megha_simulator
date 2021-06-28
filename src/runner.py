@@ -9,7 +9,7 @@ import sys
 import time
 
 from megha_sim import Simulation, simulator_globals
-
+from megha_sim import SimulatorLogger
 
 if __name__ == "__main__":
     WORKLOAD_FILE = sys.argv[1]
@@ -21,6 +21,9 @@ if __name__ == "__main__":
     SERVER_CPU = float(sys.argv[6])
     SERVER_RAM = float(sys.argv[7])  # ditto
     SERVER_STORAGE = float(sys.argv[8])  # ditto
+
+    logger = SimulatorLogger(__name__).get_logger()
+    logger.info("Received CMD line arguments.")
 
     NETWORK_DELAY = 0.0005  # same as sparrow
 
