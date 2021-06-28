@@ -56,6 +56,22 @@ class GM(object):
             for record in tasks_completed:  # Iterate over the tasks completed and update each job's status
                 job_id = record[0]
                 task_id = record[1]
+
+                job_unscheduled=False
+
+                # if not all tasks in the job have been scheduled
+                for index in range(0, len(self.job_queue)):
+                    job = self.job_queue[index]
+                    if job.job_id == job_id:
+                        job_unscheduled=True
+                        task = job.tasks[task_id]
+                        job.completed_tasks.append(task)
+                        break
+
+                if(job_unscheduled):
+                    continue
+
+                #if all tasks in the job have been scheduled already
                 for index in range(0, len(self.jobs_scheduled)):
                     job = self.jobs_scheduled[index]
 
