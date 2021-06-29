@@ -1,7 +1,9 @@
+from __future__ import annotations
 from typing import List, Optional, Tuple, Final, TYPE_CHECKING
 
 from job import Job
 from task import Task
+from simulation_logger import SimulatorLogger
 from simulator_utils.values import (LM_HEARTBEAT_INTERVAL, NETWORK_DELAY,
                                     InconsistencyType)
 
@@ -9,6 +11,8 @@ from simulator_utils.values import (LM_HEARTBEAT_INTERVAL, NETWORK_DELAY,
 if TYPE_CHECKING:
     from global_master import GM
 
+
+logger = SimulatorLogger(__name__).get_logger()
 
 class Event(object):
     """
@@ -22,11 +26,11 @@ class Event(object):
         raise NotImplementedError(
             "Event is an abstract class and cannot be instantiated directly")
 
-    def __lt__(self, other) -> bool:
+    def __lt__(self, other: Event) -> bool:
         return True
 
     def run(self, current_time):
-        """ Returns any events that should be added to the queue. """
+        """Return any events that should be added to the queue."""
         raise NotImplementedError(
             "The run() method must be implemented by each class subclassing Event")
 
@@ -38,18 +42,21 @@ class Event(object):
 
 class TaskEndEvent(Event):
     """
-    This event is created when a task has completed. The `end_time` is set as the `current_time` of running the event.
+    This event is created when a task has completed.
+
+    The `end_time` is set as the `current_time` of running the event.
 
     Args:
             Event (Event): Parent Event class.
     """
 
-    def __init__(self, task):
+    def __init__(self, task: Task):
         """
         Initialise the TaskEndEvent class with the task object.
 
         Args:
-                task (Task): The task object representing the task which has completed.
+                task (Task): The task object representing the task which has
+                completed.
         """
         self.task: Task = task
 
