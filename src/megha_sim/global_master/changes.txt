@@ -1,0 +1,14 @@
+90 - insert to the end
+
+102 - it is accessing the first job in the queue. Make it access the last one
+
+126 - if it is fully scheduled, something is happening
+I think what's happening is that while iterating over the tasks of a job, you assign a task somewhere and then check again if the job has been fully_scheduled. If it has, then you can remove it from the job_queue.
+Need to change it to end of queue
+
+165 - remove the end
+
+182 - same as 126
+Need to pop from end of queue
+
+205 - appending job to end of queue. Probably don't have to change anything here
