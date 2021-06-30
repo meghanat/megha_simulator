@@ -22,6 +22,7 @@ github
 href
 html
 https
+HH
 img
 intellisense
 io
@@ -40,6 +41,7 @@ sudo
 text
 txt
 ul
+YYYY
 www
 Adarsh
 Arun
