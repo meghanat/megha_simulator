@@ -28,6 +28,7 @@ bool
 CONFIG
 UNSCHEDULE
 subclassing
+struct
 init
 InternalInconsistencyEvent
 LaunchOnNodeEvent
