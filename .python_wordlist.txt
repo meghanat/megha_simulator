@@ -3,6 +3,8 @@ Megha
 GMS
 LMS
 NUM
+LMs
+GMs
 localmaster
 paramters
 LM's
@@ -13,3 +15,4 @@ TaskDurationDistributions
 dephase
 initialization
 str
+distr
