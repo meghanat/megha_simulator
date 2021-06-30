@@ -7,6 +7,8 @@ LMs
 GMs
 localmaster
 paramters
+param
+rtype
 LM's
 repartitioning
 globals
@@ -24,9 +26,12 @@ TaskEndEvent
 bool
 CONFIG
 UNSCHEDULE
+subclassing
+init
 InternalInconsistencyEvent
 LaunchOnNodeEvent
 TaskEndEvent
 ExternalInconsistencyEvent
 MatchFoundEvent
 RepartitionEvent
+JobArrivalEvent
