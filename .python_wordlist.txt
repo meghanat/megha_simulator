@@ -12,6 +12,7 @@ rtype
 LM's
 CMD
 repartitioning
+repartition
 globals
 utils
 TaskDurationDistributions
