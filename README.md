@@ -81,16 +81,42 @@ $ sudo chmod u+x enter_dev_env.sh
 
 ## How to Generate the Documentation
 
-1. Make the shell script `doc_gen.sh` executable using the command:
+1. Make the shell script `build_doc.sh` executable using the command:
 ```bash
-$ sudo chmod u+x doc_gen.sh
+$ sudo chmod u+x build_doc.sh
 ```
-2. Run the shell script `doc_gen.sh` using the command:
+2. Run the shell script `build_doc.sh` using the command:
     ```bash
-    $ ./doc_gen.sh
+    $ ./build_doc.sh
     ```
-    1. This will generate the documentation file called `megha_sim.html` in the folder `./html`
-    2. Open the file using any modern web browser to view the documentation.
+    1. This will generate the documentation file called `runner.html` inside the folder `./html`.
+        1. This file contains the generated documentation for the `./src/runner.py` file.
+        2. Open this file using any modern web browser to view the documentation for the `./src/runner.py` file.
+    2. This command will also generate the folder called `megha_sim` inside the folder `./html`.
+        1. This folder will contain the file called `index.html`.
+        2. Open this file using any modern web browser to view the documentation for the entire `megha_sim` module.
+
+## How to Generate the Dependency Graph
+
+1. Make the shell script `build_dep_graph.sh` executable using the command:
+```bash
+$ sudo chmod u+x build_dep_graph.sh
+```
+2. Run the shell script `build_dep_graph.sh` using the command:
+    ```bash
+    $ ./build_dep_graph.sh
+    ```
+    1. This will generate the image of the dependency graph called `megha_sim_dep_graph.png` in the folder `./media/images/`
+    2. To see the image of the dependency graph generated, open the file using any image viewing tool.
+3. Updating the dependency graph automatically updates the dependency graph shown in this `README.md` file
+
+**NOTE:**
+
+The dependency graph may not show some classes in the project. For example, the `TaskEndEvent` will not show in the dependency graph because it is not imported into any other file/module in the project.
+
+This rule applies to all other such classes and code as well. Below is the reason from the `pydeps` project which we are using:
+
+> `pydeps` finds imports by looking for import-opcodes in python bytecodes (think `.pyc` files). Therefore, only imported files will be found *(ie. `pydeps` will not look at files in your directory that are not imported).*
 
 ## Dependency Graph
 
