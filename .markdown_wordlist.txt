@@ -2,9 +2,12 @@ CodeFactor
 GMs
 LMs
 Megha
+megha
 MacOS
 PYTHONPATH
 YH
+aa
+bb
 arXiv
 arxiv
 bashrc
@@ -12,6 +15,8 @@ chmod
 codefactor
 config
 dev
+dep
+ec
 env
 github
 href
