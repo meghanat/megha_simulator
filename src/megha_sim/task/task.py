@@ -32,8 +32,10 @@ class Task(object):
         self.end_time: Optional[float] = None
         self.job = job
         self.duration = duration
-        self.node_id = None
-        self.partition_id = None  # May differ from GM_id if repartitioning
+        self.node_id: Optional[str] = None
+
+        # Partition ID may differ from GM_id if repartitioning
+        self.partition_id: Optional[str] = None
         self.GM_id = None
         self.lm = None
         self.scheduled = False

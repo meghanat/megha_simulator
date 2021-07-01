@@ -28,7 +28,7 @@ class LMResources(TypedDict):
 
 
 class GM(object):
-    def __init__(self, simulation, GM_id, config):
+    def __init__(self, simulation, GM_id: str, config):
         self.GM_id = GM_id
         self.simulation = simulation
         self.RR_counter: int = 0
@@ -70,6 +70,8 @@ class GM(object):
 
                 if(job_unscheduled):
                     continue
+
+                #if all tasks in the job have been scheduled already
 
                 for index in range(0, len(self.jobs_scheduled)):
                     job = self.jobs_scheduled[index]

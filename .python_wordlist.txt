@@ -45,3 +45,9 @@ ExternalInconsistencyEvent
 MatchFoundEvent
 RepartitionEvent
 JobArrivalEvent
+NotImplementedError
+InconsistencyEvent
+InconsistencyType
+lm
+JobArrival
+TextIOWrapper

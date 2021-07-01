@@ -39,9 +39,8 @@ Megha architecture and display/log the actions and results of the simulation.
 import sys
 import time
 
-from megha_sim.simulation import Simulation
-import simulator_utils.globals
-
+from megha_sim import Simulation, simulator_globals
+from megha_sim import SimulatorLogger
 
 if __name__ == &#34;__main__&#34;:
     WORKLOAD_FILE = sys.argv[1]
@@ -54,6 +53,9 @@ if __name__ == &#34;__main__&#34;:
     SERVER_RAM = float(sys.argv[7])  # ditto
     SERVER_STORAGE = float(sys.argv[8])  # ditto
 
+    logger = SimulatorLogger(__name__).get_logger()
+    logger.info(&#34;Received CMD line arguments.&#34;)
+
     NETWORK_DELAY = 0.0005  # same as sparrow
 
     # This is not the simulation&#39;s virtual time. This is just to
@@ -65,7 +67,8 @@ if __name__ == &#34;__main__&#34;:
     s.run()
     print(&#34;Simulation ended in &#34;, (time.time() - t1), &#34; s &#34;)
 
-    print(simulator_utils.globals.jobs_completed)</code></pre>
+    # print(simulator_utils.globals.jobs_completed)
+    print(simulator_globals.jobs_completed)</code></pre>
 </details>
 </section>
 <section>

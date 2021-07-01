@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.9.2" />
-<title>megha_sim.task.task API documentation</title>
-<meta name="description" content="The `Task` class is just like a struct or Plain Old Data format." />
+<title>megha_sim.simulation_logger.logger API documentation</title>
+<meta name="description" content="Create the logging object to use in the different components of the simulator …" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
 <link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
@@ -19,55 +19,60 @@
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>megha_sim.task.task</code></h1>
+<h1 class="title">Module <code>megha_sim.simulation_logger.logger</code></h1>
 </header>
 <section id="section-intro">
-<p>The <code><a title="megha_sim.task.task.Task" href="#megha_sim.task.task.Task">Task</a></code> class is just like a struct or Plain Old Data format.</p>
+<p>Create the logging object to use in the different components of the simulator.</p>
+<p>The logging object is used to log different events in the scheduler in a
+detailed and uniform manner for analysis.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">&#34;&#34;&#34;The `Task` class is just like a struct or Plain Old Data format.&#34;&#34;&#34;
-from __future__ import annotations
-from typing import Optional, TYPE_CHECKING
+<pre><code class="python">&#34;&#34;&#34;
+Create the logging object to use in the different components of the simulator.
+
+The logging object is used to log different events in the scheduler in a
+detailed and uniform manner for analysis.
+&#34;&#34;&#34;
+import logging
+from pathlib import Path
+from datetime import datetime
 
 
-if TYPE_CHECKING:
-    from job import Job
+class SimulatorLogger:
+    &#34;&#34;&#34;This class is to define and create instances of the logging class.&#34;&#34;&#34;
 
+    LOG_FILE_PATH = Path(&#34;logs&#34;)
+    LOG_FORMAT = (&#34;%(asctime)s : %(module)s : %(filename)s : %(funcName)s : &#34;
+                  &#34;%(lineno)d : %(levelname)s : %(message)s&#34;)
 
-class Task(object):
-    &#34;&#34;&#34;
-    The Task class is just like a struct in languages such as C.
-
-    This is otherwise known as the Plain Old Data format.
-
-    Args:
-        object (object): This is the parent object class
-    &#34;&#34;&#34;
-
-    def __init__(self, task_id: str, job: Job, duration: int):
+    def __init__(self, module_name: str):
         &#34;&#34;&#34;
-        Initialise the instance of the Task class.
+        Initialize the object with the name of the caller code&#39;s module name.
 
         Args:
-            task_id (str): The task identifier.
-            job (Job): The instance of the Job to which the Task belongs.
-            duration (int): Duration of the task.
+            module_name (str): Name of the caller code&#39;s module
         &#34;&#34;&#34;
-        self.task_id = task_id
-        self.start_time = job.start_time
-        self.scheduled_time = None
-        self.end_time: Optional[float] = None
-        self.job = job
-        self.duration = duration
-        self.node_id: Optional[str] = None
+        self.module_name = module_name
+        self.LOG_FILE_NAME = self.LOG_FILE_PATH / (datetime.now()
+                                                   .strftime(&#34;record-%Y-%m-%d-&#34;
+                                                             &#34;%H-%M-%S.log&#34;))
+        with open(self.LOG_FILE_NAME, &#34;a&#34;):
+            ...
+        logging.basicConfig(filename=self.LOG_FILE_NAME,
+                            format=self.LOG_FORMAT,
+                            # encoding=&#39;utf-8&#39;,  # Only for Python &gt;= 3.9
+                            level=logging.INFO)
 
-        # Partition ID may differ from GM_id if repartitioning
-        self.partition_id: Optional[str] = None
-        self.GM_id = None
-        self.lm = None
-        self.scheduled = False</code></pre>
+    def get_logger(self) -&gt; logging.Logger:
+        &#34;&#34;&#34;
+        Return a configured instance of the logging class to the caller.
+
+        Returns:
+            logging.Logger: Object used for logging runtime information.
+        &#34;&#34;&#34;
+        return logging.getLogger(self.module_name)</code></pre>
 </details>
 </section>
 <section>
@@ -79,65 +84,94 @@ class Task(object):
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
-<dt id="megha_sim.task.task.Task"><code class="flex name class">
-<span>class <span class="ident">Task</span></span>
-<span>(</span><span>task_id: str, job: Job, duration: int)</span>
+<dt id="megha_sim.simulation_logger.logger.SimulatorLogger"><code class="flex name class">
+<span>class <span class="ident">SimulatorLogger</span></span>
+<span>(</span><span>module_name: str)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>The Task class is just like a struct in languages such as C.</p>
-<p>This is otherwise known as the Plain Old Data format.</p>
+<div class="desc"><p>This class is to define and create instances of the logging class.</p>
+<p>Initialize the object with the name of the caller code's module name.</p>
 <h2 id="args">Args</h2>
 <dl>
-<dt><strong><code>object</code></strong> :&ensp;<code>object</code></dt>
-<dd>This is the parent object class</dd>
-</dl>
-<p>Initialise the instance of the Task class.</p>
-<h2 id="args_1">Args</h2>
-<dl>
-<dt><strong><code>task_id</code></strong> :&ensp;<code>str</code></dt>
-<dd>The task identifier.</dd>
-<dt><strong><code>job</code></strong> :&ensp;<code>Job</code></dt>
-<dd>The instance of the Job to which the Task belongs.</dd>
-<dt><strong><code>duration</code></strong> :&ensp;<code>int</code></dt>
-<dd>Duration of the task.</dd>
+<dt><strong><code>module_name</code></strong> :&ensp;<code>str</code></dt>
+<dd>Name of the caller code's module</dd>
 </dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class Task(object):
-    &#34;&#34;&#34;
-    The Task class is just like a struct in languages such as C.
+<pre><code class="python">class SimulatorLogger:
+    &#34;&#34;&#34;This class is to define and create instances of the logging class.&#34;&#34;&#34;
 
-    This is otherwise known as the Plain Old Data format.
+    LOG_FILE_PATH = Path(&#34;logs&#34;)
+    LOG_FORMAT = (&#34;%(asctime)s : %(module)s : %(filename)s : %(funcName)s : &#34;
+                  &#34;%(lineno)d : %(levelname)s : %(message)s&#34;)
 
-    Args:
-        object (object): This is the parent object class
-    &#34;&#34;&#34;
-
-    def __init__(self, task_id: str, job: Job, duration: int):
+    def __init__(self, module_name: str):
         &#34;&#34;&#34;
-        Initialise the instance of the Task class.
+        Initialize the object with the name of the caller code&#39;s module name.
 
         Args:
-            task_id (str): The task identifier.
-            job (Job): The instance of the Job to which the Task belongs.
-            duration (int): Duration of the task.
+            module_name (str): Name of the caller code&#39;s module
         &#34;&#34;&#34;
-        self.task_id = task_id
-        self.start_time = job.start_time
-        self.scheduled_time = None
-        self.end_time: Optional[float] = None
-        self.job = job
-        self.duration = duration
-        self.node_id: Optional[str] = None
+        self.module_name = module_name
+        self.LOG_FILE_NAME = self.LOG_FILE_PATH / (datetime.now()
+                                                   .strftime(&#34;record-%Y-%m-%d-&#34;
+                                                             &#34;%H-%M-%S.log&#34;))
+        with open(self.LOG_FILE_NAME, &#34;a&#34;):
+            ...
+        logging.basicConfig(filename=self.LOG_FILE_NAME,
+                            format=self.LOG_FORMAT,
+                            # encoding=&#39;utf-8&#39;,  # Only for Python &gt;= 3.9
+                            level=logging.INFO)
 
-        # Partition ID may differ from GM_id if repartitioning
-        self.partition_id: Optional[str] = None
-        self.GM_id = None
-        self.lm = None
-        self.scheduled = False</code></pre>
+    def get_logger(self) -&gt; logging.Logger:
+        &#34;&#34;&#34;
+        Return a configured instance of the logging class to the caller.
+
+        Returns:
+            logging.Logger: Object used for logging runtime information.
+        &#34;&#34;&#34;
+        return logging.getLogger(self.module_name)</code></pre>
 </details>
+<h3>Class variables</h3>
+<dl>
+<dt id="megha_sim.simulation_logger.logger.SimulatorLogger.LOG_FILE_PATH"><code class="name">var <span class="ident">LOG_FILE_PATH</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="megha_sim.simulation_logger.logger.SimulatorLogger.LOG_FORMAT"><code class="name">var <span class="ident">LOG_FORMAT</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="megha_sim.simulation_logger.logger.SimulatorLogger.get_logger"><code class="name flex">
+<span>def <span class="ident">get_logger</span></span>(<span>self) ‑> logging.Logger</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return a configured instance of the logging class to the caller.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>logging.Logger</code></dt>
+<dd>Object used for logging runtime information.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_logger(self) -&gt; logging.Logger:
+    &#34;&#34;&#34;
+    Return a configured instance of the logging class to the caller.
+
+    Returns:
+        logging.Logger: Object used for logging runtime information.
+    &#34;&#34;&#34;
+    return logging.getLogger(self.module_name)</code></pre>
+</details>
+</dd>
+</dl>
 </dd>
 </dl>
 </section>
@@ -150,13 +184,18 @@ class Task(object):
 <ul id="index">
 <li><h3>Super-module</h3>
 <ul>
-<li><code><a title="megha_sim.task" href="index.html">megha_sim.task</a></code></li>
+<li><code><a title="megha_sim.simulation_logger" href="index.html">megha_sim.simulation_logger</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
 <li>
-<h4><code><a title="megha_sim.task.task.Task" href="#megha_sim.task.task.Task">Task</a></code></h4>
+<h4><code><a title="megha_sim.simulation_logger.logger.SimulatorLogger" href="#megha_sim.simulation_logger.logger.SimulatorLogger">SimulatorLogger</a></code></h4>
+<ul class="">
+<li><code><a title="megha_sim.simulation_logger.logger.SimulatorLogger.LOG_FILE_PATH" href="#megha_sim.simulation_logger.logger.SimulatorLogger.LOG_FILE_PATH">LOG_FILE_PATH</a></code></li>
+<li><code><a title="megha_sim.simulation_logger.logger.SimulatorLogger.LOG_FORMAT" href="#megha_sim.simulation_logger.logger.SimulatorLogger.LOG_FORMAT">LOG_FORMAT</a></code></li>
+<li><code><a title="megha_sim.simulation_logger.logger.SimulatorLogger.get_logger" href="#megha_sim.simulation_logger.logger.SimulatorLogger.get_logger">get_logger</a></code></li>
+</ul>
 </li>
 </ul>
 </li>
