@@ -63,4 +63,3 @@ repartition
 Megha
 argv
 sys
-paramters
