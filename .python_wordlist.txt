@@ -51,3 +51,7 @@ InconsistencyType
 lm
 JobArrival
 TextIOWrapper
+SJF
+LIFO
+FIFO
+len
