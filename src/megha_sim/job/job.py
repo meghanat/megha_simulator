@@ -40,6 +40,7 @@ class Job(object):
         job_args: List[str] = line.strip().split()
         self.start_time: float = float(job_args[0])
         self.num_tasks: int = int(job_args[1])
+        self.avg_task_duration = float(job_args[2])
         self.simulation = simulation
         self.tasks: Dict[str, Task] = {}
         self.task_counter = 0

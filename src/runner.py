@@ -37,4 +37,4 @@ if __name__ == "__main__":
     print("Simulation ended in ", (time.time() - t1), " s ")
 
     # print(simulator_utils.globals.jobs_completed)
-    print(simulator_globals.jobs_completed)
+    print(len(simulator_globals.jobs_completed))
