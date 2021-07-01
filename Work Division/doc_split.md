@@ -1,23 +1,23 @@
 # Code Documentation Split:
 
-## Rishit Chaudhary:
+## Rishit Chaudhary: [DONE]
 - MatchFoundEvent
 - InconsistencyEvent
 - LaunchOnNodeEvent
+- Task
+- JobArrival
 - TaskEndEvent
 - Event
+- LMUpdateEvent
 - TaskDurationDistributions
 - EstimationErrorDistribution
 - InconsistencyType
 
 ## Saurav Nayak:
-- LMUpdateEvent
-- JobArrival
-- Task
+- LM
 
 ## Esha Arun:
 - Job
-- LM
 
 ## Adarsh Shetty:
 - GM
