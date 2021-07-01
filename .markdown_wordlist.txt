@@ -68,3 +68,7 @@ ie
 md
 pyc
 pydeps
+PRs
+eng
+svg
+yml
