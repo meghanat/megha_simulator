@@ -110,12 +110,12 @@ class GM(object):
 
                 # LIFO
                 # remove the job from job_scheduled list and add it to the end of job_queue
-                self.job_queue.insert(len(self.job_queue), self.jobs_scheduled.pop(index))
+                # self.job_queue.insert(len(self.job_queue), self.jobs_scheduled.pop(index))
 
-                # SJF
+                # SJF(Sorted job first)
                 # Need to sort it
-                # self.job_queue.insert(0, self.jobs_scheduled.pop(index))
-                # sorted(self.job_queue, key=lambda x: x.avg_task_duration)   # Sort by Average task duration
+                self.job_queue.insert(0, self.jobs_scheduled.pop(index))
+                sorted(self.job_queue, key=lambda x: x.avg_task_duration)   # Sort by Average task duration
                 break
 
     # searches the external partitions
@@ -131,10 +131,10 @@ class GM(object):
                     # job = self.job_queue[0]  # get job from head of queue
                     
                     # LIFO
-                    job = self.job_queue[-1]    # get the last job from the queue
+                    # job = self.job_queue[-1]    # get the last job from the queue
 
                     # SJF
-                    # job = self.job_queue[0]
+                    job = self.job_queue[0]
                     # print("Scheduling Tasks from Job: ",job.job_id)
 
                     for task_id in job.tasks:  # Go over the tasks for the job
@@ -166,13 +166,13 @@ class GM(object):
 
                                     # LIFO
                                     # Pop the last element
-                                    self.jobs_scheduled.append(
-                                        self.job_queue.pop())
+                                    # self.jobs_scheduled.append(
+                                    #     self.job_queue.pop())
 
                                     # SJF
                                     # Pop the first element
-                                    # self.jobs_scheduled.append(
-                                    #     self.job_queue.pop(0))
+                                    self.jobs_scheduled.append(
+                                        self.job_queue.pop(0))
                                 print(
                                     current_time,
                                     "RepartitionEvent",
@@ -213,10 +213,10 @@ class GM(object):
             # job = self.job_queue[0]  # get job from head of queue
 
             # LIFO
-            job = self.job_queue[-1]    # get job from end of queue
+            # job = self.job_queue[-1]    # get job from end of queue
 
             # SJF
-            # job = self.job_queue[0]
+            job = self.job_queue[0]
             for task_id in job.tasks:  # Go over the tasks for the job
                 # If the task is already scheduled then, there is nothing to do
                 if(job.tasks[task_id].scheduled):
@@ -237,10 +237,10 @@ class GM(object):
                             # self.jobs_scheduled.append(self.job_queue.pop(0))
 
                             # LIFO
-                            self.jobs_scheduled.append(self.job_queue.pop())    # Pop last element
+                            # self.jobs_scheduled.append(self.job_queue.pop())    # Pop last element
 
                             # SJF
-                            # self.jobs_scheduled.append(self.job_queue.pop(0))
+                            self.jobs_scheduled.append(self.job_queue.pop(0))
                         # may need to add processing overhead here if required
                         self.simulation.event_queue.put(
                             (current_time,
@@ -264,11 +264,11 @@ class GM(object):
               ",", job.job_id, ",", self.GM_id)
         job.gm = self
         # FIFO and LIFO
-        self.job_queue.append(job)
+        # self.job_queue.append(job)
 
         # SJF
-        # self.job_queue.append(job)
-        # sorted(self.job_queue, key=lambda x: x.avg_task_duration)   # Sort by Average task duration
+        self.job_queue.append(job)
+        sorted(self.job_queue, key=lambda x: x.avg_task_duration)   # Sort by Average task duration
 
         if(len(self.job_queue) == 1):  # first job
             self.schedule_tasks(current_time)
