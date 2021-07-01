@@ -28,7 +28,7 @@ class LMResources(TypedDict):
 
 
 class GM(object):
-    def __init__(self, simulation, GM_id, config):
+    def __init__(self, simulation, GM_id: str, config):
         self.GM_id = GM_id
         self.simulation = simulation
         self.RR_counter: int = 0
