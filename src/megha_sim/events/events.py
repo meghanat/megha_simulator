@@ -38,7 +38,7 @@ class Event(object):
 
     def __init__(self):
         """
-        One cannot initialize the object of the abstract class `Event`.
+        One cannot initialise the object of the abstract class `Event`.
 
         This raises a `NotImplementedError` on attempting to create \
         an object of the class.
@@ -196,7 +196,7 @@ class InconsistencyEvent(Event):
     """
     Event created when the Global Master tries placing a task on a busy node.
 
-    This happends when the Global Master has outdated information about the
+    This happens when the Global Master has outdated information about the
     cluster. This event is created by the Local Master.
 
     Args:
@@ -414,7 +414,7 @@ class JobArrival(Event):
                  job: Job,
                  jobs_file: TextIOWrapper):
         """
-        Initialize the instance of the `JobArrival` class.
+        Initialise the instance of the `JobArrival` class.
 
         Args:
             simulation (Simulation): The simulation object to insert events \
