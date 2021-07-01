@@ -18,7 +18,7 @@ class SimulatorLogger:
 
     def __init__(self, module_name: str):
         """
-        Initialize the object with the name of the caller code's module name.
+        Initialise the object with the name of the caller code's module name.
 
         Args:
             module_name (str): Name of the caller code's module

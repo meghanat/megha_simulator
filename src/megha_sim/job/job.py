@@ -25,7 +25,7 @@ class Job(object):
         """
         Retaining below logic as-is to compare with Sparrow.
 
-        During initialization of the object, we dephase the incoming job in
+        During initialisation of the object, we dephase the incoming job in
         case it has the exact submission time as another already submitted job
 
         Args:
