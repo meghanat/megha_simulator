@@ -74,3 +74,16 @@ getLogger
 levelname
 lineno
 initialize
+TextIOWrapper
+CMD
+io
+runtime
+funcName
+strftime
+utf
+pathlib
+TypedDict
+builtins
+initialized
+iterable
+kwargs
