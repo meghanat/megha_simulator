@@ -2,6 +2,7 @@
 
 ## Rishit Chaudhary: [DONE]
 - MatchFoundEvent
+- SimulatorLogger
 - InconsistencyEvent
 - LaunchOnNodeEvent
 - Task
