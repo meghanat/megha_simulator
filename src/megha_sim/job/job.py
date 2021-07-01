@@ -11,7 +11,7 @@ from typing import Dict, List, Optional, TYPE_CHECKING
 from task import Task
 from simulator_utils.values import TaskDurationDistributions
 
-# For job optimization
+# For job optimisation
 import statistics
 
 # Imports used only for type checking go here to avoid circular imports
@@ -50,7 +50,7 @@ class Job(object):
         self.gm: Optional[GM] = None
         self.completion_time = -1
 
-        # For job optimization
+        # For job optimisation
         self.job_task_durations = [float(i) for i in job_args[3:]]
         self.avg_task_duration = float(job_args[2])
         self.total_job_duration = sum(self.job_task_durations)
