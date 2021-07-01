@@ -1,7 +1,7 @@
 """
 File for constants and name constants.
 
-This file contains the various constants and named constants used thoughout\
+This file contains the various constants and named constants used throughout\
  the project.
 """
 
@@ -38,7 +38,7 @@ class TaskDurationDistributions:
     Named constants for selecting the Task Duration Distributions.
 
     Named constants for expressing the type of distribution to consider for \
-    the task durations.
+    the task duration.
     """
 
     CONSTANT: Final[int] = 0
