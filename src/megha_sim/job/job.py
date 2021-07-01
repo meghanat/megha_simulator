@@ -11,6 +11,9 @@ from typing import Dict, List, Optional, TYPE_CHECKING
 from task import Task
 from simulator_utils.values import TaskDurationDistributions
 
+# For job optimization
+import statistics
+
 # Imports used only for type checking go here to avoid circular imports
 if TYPE_CHECKING:
     from global_master import GM
@@ -40,13 +43,26 @@ class Job(object):
         job_args: List[str] = line.strip().split()
         self.start_time: float = float(job_args[0])
         self.num_tasks: int = int(job_args[1])
-        self.avg_task_duration = float(job_args[2])
         self.simulation = simulation
         self.tasks: Dict[str, Task] = {}
         self.task_counter = 0
         self.completed_tasks = []
         self.gm: Optional[GM] = None
         self.completion_time = -1
+
+        # For job optimization
+        self.job_task_durations = [float(i) for i in job_args[3:]]
+        self.avg_task_duration = float(job_args[2])
+        self.total_job_duration = sum(self.job_task_durations)
+        self.job_standard_deviation = statistics.stdev(self.job_task_durations)
+        self.job_percentiles = statistics.quantiles(self.job_task_durations, n=100)
+
+        self.job_median = self.job_percentiles[49]
+        self.job_nnpercent = self.job_percentiles[-1]
+
+        print(self.job_standard_deviation)
+        print(self.job_median)
+        print(self.job_nnpercent)
 
         # IF the job's start_time has never been seen before
         if self.start_time not in self.job_start_tstamps:
