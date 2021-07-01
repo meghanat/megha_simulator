@@ -2,6 +2,15 @@
 
 [![CodeFactor](https://www.codefactor.io/repository/github/meghanat/megha_simulator/badge?s=b4713b1b5ed4c6ec220be93cad0e696a6aa34bb2)](https://www.codefactor.io/repository/github/meghanat/megha_simulator)
 
+[![Development Environment Check](https://github.com/meghanat/megha_simulator/actions/workflows/dev_env.yml/badge.svg)](https://github.com/meghanat/megha_simulator/actions/workflows/dev_env.yml)
+[![Python application](https://github.com/meghanat/megha_simulator/actions/workflows/python-app.yml/badge.svg)](https://github.com/meghanat/megha_simulator/actions/workflows/python-app.yml)
+[![Scripts Check](https://github.com/meghanat/megha_simulator/actions/workflows/scripts_check.yml/badge.svg)](https://github.com/meghanat/megha_simulator/actions/workflows/scripts_check.yml)
+[![Spellcheck Action](https://github.com/meghanat/megha_simulator/actions/workflows/spelling_action.yml/badge.svg)](https://github.com/meghanat/megha_simulator/actions/workflows/spelling_action.yml)
+
+[![Close stale issues and PRs](https://github.com/meghanat/megha_simulator/actions/workflows/anchor.yml/badge.svg)](https://github.com/meghanat/megha_simulator/actions/workflows/anchor.yml)
+[![First interaction greeter](https://github.com/meghanat/megha_simulator/actions/workflows/user_eng.yml/badge.svg)](https://github.com/meghanat/megha_simulator/actions/workflows/user_eng.yml)
+[![Format python code](https://github.com/meghanat/megha_simulator/actions/workflows/linting.yml/badge.svg)](https://github.com/meghanat/megha_simulator/actions/workflows/linting.yml)
+
 ## About
 A simple simulator for the Megha Federated Scheduling Framework. This simulator enables comparison with other frameworks such as Sparrow, Eagle and Pigeon for which simulators already exist.
 
