@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.9.2" />
 <title>megha_sim.simulator_utils.values API documentation</title>
-<meta name="description" content="" />
+<meta name="description" content="File for constants and name constants …" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
 <link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
@@ -22,16 +22,35 @@
 <h1 class="title">Module <code>megha_sim.simulator_utils.values</code></h1>
 </header>
 <section id="section-intro">
+<p>File for constants and name constants.</p>
+<p>This file contains the various constants and named constants used thoughout the project.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">from typing import Final, Literal
+<pre><code class="python">&#34;&#34;&#34;
+File for constants and name constants.
+
+This file contains the various constants and named constants used thoughout\
+ the project.
+&#34;&#34;&#34;
+
+from typing import Final, Literal
 from enum import Enum, unique
 
 
 @unique
 class InconsistencyType(Enum):
+    &#34;&#34;&#34;
+    Enum for expressing the type of inconsistency event.
+
+    This enum contains the named constants for identifying the type of \
+    inconsistency event.
+
+    Args:
+        Enum (Enum): The `Enum` parent class
+    &#34;&#34;&#34;
+
     INTERNAL_INCONSISTENCY = Literal[0]
     EXTERNAL_INCONSISTENCY = Literal[1]
 
@@ -45,17 +64,24 @@ NETWORK_DELAY = 0.0005  # Same as the Sparrow simulator
 
 
 class TaskDurationDistributions:
+    &#34;&#34;&#34;
+    Named constants for selecting the Task Duration Distributions.
+
+    Named constants for expressing the type of distribution to consider for \
+    the task durations.
+    &#34;&#34;&#34;
+
     CONSTANT: Final[int] = 0
     MEAN: Final[int] = 1
     FROM_FILE: Final[int] = 2
-    # CONSTANT, MEAN, FROM_FILE = range(3)
 
 
 class EstimationErrorDistribution:
+    &#34;&#34;&#34;Named constants for expressing the distribution of estimated error.&#34;&#34;&#34;
+
     CONSTANT: Final[int] = 0
     RANDOM: Final[int] = 1
-    MEAN: Final[int] = 2
-    # CONSTANT, RANDOM, MEAN = range(3)</code></pre>
+    MEAN: Final[int] = 2</code></pre>
 </details>
 </section>
 <section>
@@ -71,12 +97,14 @@ class EstimationErrorDistribution:
 <span>class <span class="ident">EstimationErrorDistribution</span></span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Named constants for expressing the distribution of estimated error.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class EstimationErrorDistribution:
+    &#34;&#34;&#34;Named constants for expressing the distribution of estimated error.&#34;&#34;&#34;
+
     CONSTANT: Final[int] = 0
     RANDOM: Final[int] = 1
     MEAN: Final[int] = 2</code></pre>
@@ -102,12 +130,29 @@ class EstimationErrorDistribution:
 <span>(</span><span>value, names=None, *, module=None, qualname=None, type=None, start=1)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>An enumeration.</p></div>
+<div class="desc"><p>Enum for expressing the type of inconsistency event.</p>
+<p>This enum contains the named constants for identifying the type of
+inconsistency event.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>Enum</code></strong> :&ensp;<code>Enum</code></dt>
+<dd>The <code>Enum</code> parent class</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class InconsistencyType(Enum):
+    &#34;&#34;&#34;
+    Enum for expressing the type of inconsistency event.
+
+    This enum contains the named constants for identifying the type of \
+    inconsistency event.
+
+    Args:
+        Enum (Enum): The `Enum` parent class
+    &#34;&#34;&#34;
+
     INTERNAL_INCONSISTENCY = Literal[0]
     EXTERNAL_INCONSISTENCY = Literal[1]</code></pre>
 </details>
@@ -131,12 +176,21 @@ class EstimationErrorDistribution:
 <span>class <span class="ident">TaskDurationDistributions</span></span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Named constants for selecting the Task Duration Distributions.</p>
+<p>Named constants for expressing the type of distribution to consider for
+the task durations.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class TaskDurationDistributions:
+    &#34;&#34;&#34;
+    Named constants for selecting the Task Duration Distributions.
+
+    Named constants for expressing the type of distribution to consider for \
+    the task durations.
+    &#34;&#34;&#34;
+
     CONSTANT: Final[int] = 0
     MEAN: Final[int] = 1
     FROM_FILE: Final[int] = 2</code></pre>
