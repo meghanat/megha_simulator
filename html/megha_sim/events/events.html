@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.9.2" />
 <title>megha_sim.events.events API documentation</title>
-<meta name="description" content="" />
+<meta name="description" content="This file contains the implementation of various `Events` in the simulator …" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
 <link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
@@ -22,145 +22,305 @@
 <h1 class="title">Module <code>megha_sim.events.events</code></h1>
 </header>
 <section id="section-intro">
+<p>This file contains the implementation of various <code>Events</code> in the simulator.</p>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>NotImplementedError</code></dt>
+<dd>This exception is raised when attempting to create
+an instance of the <code><a title="megha_sim.events.events.Event" href="#megha_sim.events.events.Event">Event</a></code> class.</dd>
+<dt><code>NotImplementedError</code></dt>
+<dd>This exception is raised when attempting to call
+<code>run</code> on an instance of the <code><a title="megha_sim.events.events.Event" href="#megha_sim.events.events.Event">Event</a></code> class.</dd>
+</dl>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">from typing import List, Optional, Tuple, Final, TYPE_CHECKING
+<pre><code class="python">&#34;&#34;&#34;
+This file contains the implementation of various `Events` in the simulator.
+
+Raises:
+    NotImplementedError: This exception is raised when attempting to create \
+    an instance of the `Event` class.
+    NotImplementedError: This exception is raised when attempting to call \
+    `run` on an instance of the `Event` class.
+&#34;&#34;&#34;
+from __future__ import annotations
+from io import TextIOWrapper
+from typing import List, Optional, Tuple, TYPE_CHECKING
 
 from job import Job
 from task import Task
+from simulation_logger import SimulatorLogger
 from simulator_utils.values import (LM_HEARTBEAT_INTERVAL, NETWORK_DELAY,
-                                    InconsistencyType)
+                                    InconsistencyType,
+                                    TaskDurationDistributions)
 
 # Imports used only for type checking go here to avoid circular imports
 if TYPE_CHECKING:
+    from local_master import LM
     from global_master import GM
+    from simulation import Simulation
+
+# Get the logger object for this module
+logger = SimulatorLogger(__name__).get_logger()
 
 
 class Event(object):
     &#34;&#34;&#34;
-    This is the abstract Event object class.
+    This is the abstract `Event` object class.
 
     Args:
-            object (Object): Parent object class.
+        object (Object): Parent object class.
     &#34;&#34;&#34;
 
     def __init__(self):
+        &#34;&#34;&#34;
+        One cannot initialize the object of the abstract class `Event`.
+
+        This raises a `NotImplementedError` on attempting to create \
+        an object of the class.
+
+        Raises:
+            NotImplementedError: This exception is raised when attempting to \
+            create an instance of the `Event` class.
+        &#34;&#34;&#34;
         raise NotImplementedError(
             &#34;Event is an abstract class and cannot be instantiated directly&#34;)
 
-    def __lt__(self, other) -&gt; bool:
+    def __lt__(self, other: Event) -&gt; bool:
+        &#34;&#34;&#34;
+        Compare the `Event` object with another object of `Event` class.
+
+        Args:
+            other (Event): The object to compare with.
+
+        Returns:
+            bool: The Event object is always lesser than the object it is \
+            compared with.
+        &#34;&#34;&#34;
         return True
 
-    def run(self, current_time):
-        &#34;&#34;&#34; Returns any events that should be added to the queue. &#34;&#34;&#34;
+    def run(self, current_time: float):
+        &#34;&#34;&#34;
+        Run the actions to handle the `Event`.
+
+        Args:
+            current_time (float): The current time in the simulation.
+
+        Raises:
+            NotImplementedError: This exception is raised when attempting to \
+            call `run` on an instance of the `Event` class.
+        &#34;&#34;&#34;
+        &#34;&#34;&#34;Return any events that should be added to the queue.&#34;&#34;&#34;
         raise NotImplementedError(
-            &#34;The run() method must be implemented by each class subclassing Event&#34;)
+            &#34;The run() method must be implemented by each class subclassing &#34;
+            &#34;Event&#34;)
 
-#####################################################################################################################
-#####################################################################################################################
 
-# created when a task completes
+##########################################################################
+##########################################################################
 
 
 class TaskEndEvent(Event):
     &#34;&#34;&#34;
-    This event is created when a task has completed. The `end_time` is set as the `current_time` of running the event.
+    This event is created when a task has completed.
+
+    The `end_time` is set as the `current_time` of running the event.
 
     Args:
             Event (Event): Parent Event class.
     &#34;&#34;&#34;
 
-    def __init__(self, task):
+    def __init__(self, task: Task):
         &#34;&#34;&#34;
-        Initialise the TaskEndEvent class with the task object.
+        Initialise the instance of the `TaskEndEvent` class.
 
         Args:
-                task (Task): The task object representing the task which has completed.
+                task (Task): The task object representing the task which has \
+                completed.
         &#34;&#34;&#34;
         self.task: Task = task
 
     def __lt__(self, other: Event) -&gt; bool:
         &#34;&#34;&#34;
-        Compare the TaskEndEvent Object with another object of Event class.
+        Compare the `TaskEndEvent` object with another object of Event class.
 
         Args:
                 other (Event): The object to compare with.
 
         Returns:
-                bool: The TaskEndEvent object is always lesser than the object it is compared with.
+                bool: The `TaskEndEvent` object is always lesser than the \
+                object it is compared with.
         &#34;&#34;&#34;
         return True
 
-    def run(self, current_time):
+    def run(self, current_time: float):
+        &#34;&#34;&#34;
+        Run the actions to perform on the event of task completion.
+
+        Args:
+            current_time (float): The current time in the simulation.
+        &#34;&#34;&#34;
         print(current_time, &#34;,&#34;, &#34;TaskEndEvent&#34;, &#34;,&#34;, self.task.job.job_id +
-              &#34;_&#34;+self.task.task_id+&#34;___&#34;, self.task.duration)
+              &#34;_&#34; + self.task.task_id + &#34;___&#34;, self.task.duration)
         self.task.end_time = current_time
         if self.task.lm is not None:
             self.task.lm.task_completed(self.task)
 
 ###############################################################################
 ###############################################################################
-# created after LM verifies GM request
 
 
 class LaunchOnNodeEvent(Event):
     &#34;&#34;&#34;
-    This event is created when a task is sent to a particular worker node in a particular partition, selected by the global master and verified by the local master.
+    Event created after the Local Master verifies the Global Master&#39;s request.
+
+    This event is created when a task is sent to a particular worker node in a
+    particular partition, selected by the global master and verified by the
+    local master.
 
     Args:
             Event (Event): Parent Event class.
     &#34;&#34;&#34;
 
-    def __init__(self, task, simulation):
+    def __init__(self, task: Task, simulation: Simulation):
+        &#34;&#34;&#34;
+        Initialise the instance of the `LaunchOnNodeEvent` class.
+
+        Args:
+            task (Task): The Task object to be launched on the selected node.
+            simulation (Simulation): The simulation object to insert events \
+            into.
+        &#34;&#34;&#34;
         self.task = task
         self.simulation = simulation
 
-    def run(self, current_time):
-        print(current_time, &#34;,&#34;, &#34;LaunchOnNodeEvent&#34;, &#34;,&#34;, self.task.job.job_id +
-              &#34;_&#34;+self.task.task_id, &#34;,&#34;, self.task.partition_id+&#34;_&#34;+self.task.node_id)
+    def run(self, current_time: float):
+        &#34;&#34;&#34;
+        Run the actions to handle a `LaunchOnNodeEvent`.
+
+        Run the actions to perform on the event of launching a task on the \
+        node.
+
+        Args:
+            current_time (float): The current time in the simulation.
+        &#34;&#34;&#34;
+        assert self.task.partition_id is not None
+        assert self.task.node_id is not None
+
+        print(
+            current_time,
+            &#34;,&#34;,
+            &#34;LaunchOnNodeEvent&#34;,
+            &#34;,&#34;,
+            self.task.job.job_id +
+            &#34;_&#34; +
+            self.task.task_id,
+            &#34;,&#34;,
+            self.task.partition_id +
+            &#34;_&#34; +
+            self.task.node_id)
         # launching requires network transfer
         self.simulation.event_queue.put(
-            (current_time+self.task.duration, TaskEndEvent(self.task)))
+            (current_time + self.task.duration, TaskEndEvent(self.task)))
 
 
-#####################################################################################################################
-#####################################################################################################################
+##########################################################################
+##########################################################################
 
-# if GM has outdated info, LM creates this event
+
 class InconsistencyEvent(Event):
-    def __init__(self, task, gm, type, simulation):
-        self.task = task
-        self.gm: GM = gm
-        self.type: Final = type
-        self.simulation = simulation
+    &#34;&#34;&#34;
+    Event created when the Global Master tries placing a task on a busy node.
 
-    def run(self, current_time):
-        # internal inconsistency -&gt; failed to place task on external partition
+    This happends when the Global Master has outdated information about the
+    cluster. This event is created by the Local Master.
+
+    Args:
+        Event (Event): Parent Event class.
+    &#34;&#34;&#34;
+
+    def __init__(self, task: Task, gm: GM, type: InconsistencyType,
+                 simulation: Simulation):
+        &#34;&#34;&#34;
+        Initialise the instance of the InconsistencyEvent class.
+
+        Args:
+            task (Task): The Task object that caused the inconsistency.
+            gm (GM): The Global Master responsible for the inconsistency.
+            type (InconsistencyType): The type of inconsistency caused.
+            simulation (Simulation): The simulation object to insert events \
+            into.
+        &#34;&#34;&#34;
+        self.task: Task = task
+        self.gm: GM = gm
+        self.type: InconsistencyType = type
+        self.simulation: Simulation = simulation
+
+    def run(self, current_time: float):
+        &#34;&#34;&#34;
+        Run the actions to handle the `InconsistencyEvent`.
+
+        Run the actions to perform on the event of the Global
+        Master requesting to place a task on a busy worker node.
+
+        Args:
+            current_time (float): The current time in the simulation.
+        &#34;&#34;&#34;
         if(self.type == InconsistencyType.INTERNAL_INCONSISTENCY):
+            &#34;&#34;&#34;Internal inconsistency -&gt; failed to place task on an internal
+               partition.&#34;&#34;&#34;
             print(current_time, &#34;,&#34;, &#34;InternalInconsistencyEvent&#34;)
-        else:  # external inconsistency  -&gt; failed to place task on internal partition
+        else:
+            &#34;&#34;&#34;External inconsistency -&gt; failed to place task on an external
+               partition.&#34;&#34;&#34;
             print(current_time, &#34;,&#34;, &#34;ExternalInconsistencyEvent&#34;)
         self.task.scheduled = False
 
-        # if job already moved to jobs_scheduled queue, need to remove and add to front of queue
+        &#34;&#34;&#34;
+        If the job is already moved to jobs_scheduled queue, then we need to
+        remove it and add it to the front of the queue.
+        &#34;&#34;&#34;
         self.gm.unschedule_job(self.task.job)
         self.simulation.event_queue.put(
-            (current_time, LMUpdateEvent(self.simulation, periodic=False, gm=self.gm)))
-
-        #***********************************************************************#
-        #  NEED TO CHECK THIS AND SEE IF IT CAN BE MODIFIED SUCH                                #
-        # THAT THE UNSCHEDULE OPERATION IS CALLED JUST BEFORE CONFIG IS UPDATED #
-        #  THIS IS TO ENSURE THE DELAY DUE TO INCONSISTENCY IS REFLECTED                #
-        #***********************************************************************#
+            (current_time, LMUpdateEvent(
+                self.simulation, periodic=False, gm=self.gm)))
 
 
-#####################################################################################################################
-#####################################################################################################################
+##########################################################################
+##########################################################################
 # created when GM finds a match in the external or internal partition
 class MatchFoundEvent(Event):
-    def __init__(self, task, gm, lm, node_id, current_time, external_partition=None):
+    &#34;&#34;&#34;
+    Event created when the Global Master finds a free worker node.
+
+    Args:
+        Event (Event): Parent Event class.
+    &#34;&#34;&#34;
+
+    def __init__(
+            self,
+            task: Task,
+            gm: GM,
+            lm: LM,
+            node_id: str,
+            current_time: float,
+            external_partition: Optional[str] = None):
+        &#34;&#34;&#34;
+        Initialise the instance of the `MatchFoundEvent` class.
+
+        Args:
+            task (Task): The task object to launch on the selected node.
+            gm (GM): The Global Master that wants to allocate the task to \
+            a worker node.
+            lm (LM): The Local Master, the selected worker node belongs to.
+            node_id (str): The identifier of the selected worker node.
+            current_time (float): The current time in the simulation.
+            external_partition (Optional[str], optional): Identifier of \
+            the Global Master to which the external partition (if selected) \
+            belongs to. Defaults to None.
+        &#34;&#34;&#34;
         self.task = task
         self.gm = gm
         self.lm = lm
@@ -168,76 +328,177 @@ class MatchFoundEvent(Event):
         self.current_time = current_time
         self.external_partition = external_partition
 
-    def run(self, current_time):
-        # add network delay to LM, similar to sparrow:
-        print(current_time, &#34;,&#34;, &#34;MatchFoundEvent&#34;, &#34;,&#34;, self.task.job.job_id+&#34;_&#34; +
-              self.task.task_id, &#34;,&#34;, self.gm.GM_id+&#34;_&#34;+str(self.node_id), &#34;_&#34;, self.lm.LM_id)
-        self.lm.verify_request(self.task, self.gm, self.node_id, current_time +
-                               NETWORK_DELAY, external_partition=self.external_partition)
+    def run(self, current_time: float):
+        &#34;&#34;&#34;
+        Run the actions to handle the `MatchFoundEvent`.
 
-#####################################################################################################################
-#####################################################################################################################
+        Request the Local Master to which the worker node belongs, to
+        verify if the worker node is indeed free to take up a task.
+
+        Args:
+            current_time (float): The current time in the simulation.
+        &#34;&#34;&#34;
+        # add network delay to LM, similar to sparrow:
+        print(current_time,
+              &#34;,&#34;,
+              &#34;MatchFoundEvent&#34;,
+              &#34;,&#34;,
+              self.task.job.job_id + &#34;_&#34; + self.task.task_id,
+              &#34;,&#34;,
+              self.gm.GM_id + &#34;_&#34; + self.node_id,
+              &#34;_&#34;,
+              self.lm.LM_id)
+        self.lm.verify_request(
+            self.task,
+            self.gm,
+            self.node_id,
+            current_time +
+            NETWORK_DELAY,
+            external_partition=self.external_partition)
+
+##########################################################################
+##########################################################################
 # created periodically or when LM needs to piggyback update on response
 
 
 class LMUpdateEvent(Event):
+    &#34;&#34;&#34;
+    Event created when Local Masters send updates to Global Masters.
 
-    def __init__(self, simulation, periodic=True, gm=None):
-        self.simulation = simulation
+    Event created when the Local Masters update the Global Master
+    about the status of the cluster.
+
+    Args:
+        Event (Event): Parent `Event` class.
+    &#34;&#34;&#34;
+
+    def __init__(self, simulation: Simulation,
+                 periodic: bool = True, gm: Optional[GM] = None):
+        &#34;&#34;&#34;
+        Initialise the instance of the `LMUpdateEvent` class.
+
+        Args:
+            simulation (Simulation): The simulation object to insert events \
+            into.
+            periodic (bool, optional): Whether the updates are periodic or not\
+            . Defaults to True.
+            gm (Optional[GM], optional): The Global Master that needs to be \
+            updated about the state of the cluster. Defaults to None.
+        &#34;&#34;&#34;
+        self.simulation: Simulation = simulation
         self.periodic: bool = periodic
         self.gm: Optional[GM] = gm
 
         if self.periodic is True:
-            assert self.gm is None, &#34;LMUpdateEvent.__init__: Periodic is set to true so self.gm must be None!&#34;
+            assert self.gm is None, (&#34;LMUpdateEvent.__init__: Periodic is set&#34;
+                                     &#34; to true so self.gm must be None!&#34;)
         elif self.periodic is False:
-            assert self.gm is not None, &#34;LMUpdateEvent.__init__: Periodic is set to false so self.gm must not be None!&#34;
+            assert self.gm is not None, (&#34;LMUpdateEvent.__init__: Periodic is&#34;
+                                         &#34; set to false so self.gm must not be&#34;
+                                         &#34; None!&#34;)
 
-    def run(self, current_time):
+    def run(self, current_time: float):
+        &#34;&#34;&#34;
+        Run the actions to handle the `LMUpdateEvent`.
+
+        If the update is **none periodic** then just call the \
+        `GM.update_status` on the particular Global Master.
+        If the update is **periodic** then call `GM.update_status` on each
+        and every Global Master and place another periodic `LMUpdateEvent`
+        to occur after `LM_HEARTBEAT_INTERVAL + NETWORK_DELAY` interval of \
+        time.
+
+        Args:
+            current_time (float): The current time in the simulation.
+        &#34;&#34;&#34;
         print(current_time, &#34;,&#34;, &#34;LMUpdateEvent&#34;, &#34;,&#34;, self.periodic)
 
-        # update only that GM which is inconsistent or if the GM&#39;s task has completed
+        # update only that GM which is inconsistent or if the GM&#39;s task has
+        # completed
         if not self.periodic:
-            self.gm.update_status(current_time+NETWORK_DELAY)
+            assert self.gm is not None, (&#34;LMUpdateEvent.run: Periodic is&#34;
+                                         &#34; set to false so self.gm must not be&#34;
+                                         &#34; None!&#34;)
+            self.gm.update_status(current_time + NETWORK_DELAY)
 
         if self.periodic and not self.simulation.event_queue.empty():
             for GM_id in self.simulation.gms:
                 self.simulation.gms[GM_id].update_status(
-                    current_time+NETWORK_DELAY)
-            # add the next heartbeat, network delay added because intuitively we do not include it in the LM_HEARTBEAT INTERVAL
+                    current_time + NETWORK_DELAY)
+            &#34;&#34;&#34;
+            Add the next heartbeat, network delay added because intuitively
+            we do not include it in the LM_HEARTBEAT INTERVAL.
+            &#34;&#34;&#34;
             self.simulation.event_queue.put(
-                (current_time + LM_HEARTBEAT_INTERVAL+NETWORK_DELAY, self))
+                (current_time + LM_HEARTBEAT_INTERVAL + NETWORK_DELAY, self))
 
-#####################################################################################################################
-#####################################################################################################################
+##########################################################################
+##########################################################################
 # created for each job
 
 
 class JobArrival(Event):
+    &#34;&#34;&#34;
+    Event created on the arrival of a `Job` into the user queue.
+
+    Args:
+        Event (Event): Parent `Event` class.
+    &#34;&#34;&#34;
 
     gm_counter: int = 0
 
-    def __init__(self, simulation, task_distribution, job, jobs_file):
+    def __init__(self, simulation: Simulation,
+                 task_distribution: TaskDurationDistributions,
+                 job: Job,
+                 jobs_file: TextIOWrapper):
+        &#34;&#34;&#34;
+        Initialize the instance of the `JobArrival` class.
+
+        Args:
+            simulation (Simulation): The simulation object to insert events \
+            into.
+            task_distribution (TaskDurationDistributions): Select the \
+            distribution of the duration/run-time of the tasks of the Job
+            job (Job): The Job object that has arrived into the user queue.
+            jobs_file (TextIOWrapper): File handle to the input trace file.
+        &#34;&#34;&#34;
         self.simulation = simulation
         self.task_distribution = task_distribution
         self.job = job
         self.jobs_file = jobs_file  # Jobs file (input trace file) handler
 
-    def __lt__(self, other) -&gt; bool:
+    def __lt__(self, other: Event) -&gt; bool:
+        &#34;&#34;&#34;
+        Compare the `JobArrival` object with another object of Event class.
+
+        Args:
+            other (Event): The object to compare with.
+
+        Returns:
+            bool: The `JobArrival` object is always lesser than the object \
+                  it is compared with.
+        &#34;&#34;&#34;
         return True
 
-    def run(self, current_time):
+    def run(self, current_time: float):
+        &#34;&#34;&#34;
+        Run the actions to handle the `JobArrival` event.
+
+        Args:
+            current_time (float): The current time in the simulation.
+        &#34;&#34;&#34;
         new_events: List[Tuple[float, Event]] = []
         # needs to be assigned to a GM - RR
         JobArrival.gm_counter = (
-            JobArrival.gm_counter) % self.simulation.NUM_GMS+1
-    # assigned_GM --&gt; Handle to the global master object
+            JobArrival.gm_counter % self.simulation.NUM_GMS + 1)
+        # assigned_GM --&gt; Handle to the global master object
         assigned_GM: GM = self.simulation.gms[str(JobArrival.gm_counter)]
         # GM needs to add job to its queue
         assigned_GM.queue_job(self.job, current_time)
 
         # Creating a new Job Arrival event for the next job in the trace
         line = self.jobs_file.readline()
-        if (len(line) == 0):
+        if len(line) == 0:
             self.simulation.scheduled_last_job = True
         else:
             self.job = Job(self.task_distribution, line, self.simulation)
@@ -259,11 +520,20 @@ class JobArrival(Event):
 <span>class <span class="ident">Event</span></span>
 </code></dt>
 <dd>
-<div class="desc"><p>This is the abstract Event object class.</p>
+<div class="desc"><p>This is the abstract <code><a title="megha_sim.events.events.Event" href="#megha_sim.events.events.Event">Event</a></code> object class.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>object</code></strong> :&ensp;<code>Object</code></dt>
 <dd>Parent object class.</dd>
+</dl>
+<p>One cannot initialize the object of the abstract class <code><a title="megha_sim.events.events.Event" href="#megha_sim.events.events.Event">Event</a></code>.</p>
+<p>This raises a <code>NotImplementedError</code> on attempting to create
+an object of the class.</p>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>NotImplementedError</code></dt>
+<dd>This exception is raised when attempting to
+create an instance of the <code><a title="megha_sim.events.events.Event" href="#megha_sim.events.events.Event">Event</a></code> class.</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -271,23 +541,54 @@ class JobArrival(Event):
 </summary>
 <pre><code class="python">class Event(object):
     &#34;&#34;&#34;
-    This is the abstract Event object class.
+    This is the abstract `Event` object class.
 
     Args:
-            object (Object): Parent object class.
+        object (Object): Parent object class.
     &#34;&#34;&#34;
 
     def __init__(self):
+        &#34;&#34;&#34;
+        One cannot initialize the object of the abstract class `Event`.
+
+        This raises a `NotImplementedError` on attempting to create \
+        an object of the class.
+
+        Raises:
+            NotImplementedError: This exception is raised when attempting to \
+            create an instance of the `Event` class.
+        &#34;&#34;&#34;
         raise NotImplementedError(
             &#34;Event is an abstract class and cannot be instantiated directly&#34;)
 
-    def __lt__(self, other) -&gt; bool:
+    def __lt__(self, other: Event) -&gt; bool:
+        &#34;&#34;&#34;
+        Compare the `Event` object with another object of `Event` class.
+
+        Args:
+            other (Event): The object to compare with.
+
+        Returns:
+            bool: The Event object is always lesser than the object it is \
+            compared with.
+        &#34;&#34;&#34;
         return True
 
-    def run(self, current_time):
-        &#34;&#34;&#34; Returns any events that should be added to the queue. &#34;&#34;&#34;
+    def run(self, current_time: float):
+        &#34;&#34;&#34;
+        Run the actions to handle the `Event`.
+
+        Args:
+            current_time (float): The current time in the simulation.
+
+        Raises:
+            NotImplementedError: This exception is raised when attempting to \
+            call `run` on an instance of the `Event` class.
+        &#34;&#34;&#34;
+        &#34;&#34;&#34;Return any events that should be added to the queue.&#34;&#34;&#34;
         raise NotImplementedError(
-            &#34;The run() method must be implemented by each class subclassing Event&#34;)</code></pre>
+            &#34;The run() method must be implemented by each class subclassing &#34;
+            &#34;Event&#34;)</code></pre>
 </details>
 <h3>Subclasses</h3>
 <ul class="hlist">
@@ -301,111 +602,276 @@ class JobArrival(Event):
 <h3>Methods</h3>
 <dl>
 <dt id="megha_sim.events.events.Event.run"><code class="name flex">
-<span>def <span class="ident">run</span></span>(<span>self, current_time)</span>
+<span>def <span class="ident">run</span></span>(<span>self, current_time: float)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Returns any events that should be added to the queue.</p></div>
+<div class="desc"><p>Run the actions to handle the <code><a title="megha_sim.events.events.Event" href="#megha_sim.events.events.Event">Event</a></code>.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>current_time</code></strong> :&ensp;<code>float</code></dt>
+<dd>The current time in the simulation.</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>NotImplementedError</code></dt>
+<dd>This exception is raised when attempting to
+call <code>run</code> on an instance of the <code><a title="megha_sim.events.events.Event" href="#megha_sim.events.events.Event">Event</a></code> class.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def run(self, current_time):
-    &#34;&#34;&#34; Returns any events that should be added to the queue. &#34;&#34;&#34;
+<pre><code class="python">def run(self, current_time: float):
+    &#34;&#34;&#34;
+    Run the actions to handle the `Event`.
+
+    Args:
+        current_time (float): The current time in the simulation.
+
+    Raises:
+        NotImplementedError: This exception is raised when attempting to \
+        call `run` on an instance of the `Event` class.
+    &#34;&#34;&#34;
+    &#34;&#34;&#34;Return any events that should be added to the queue.&#34;&#34;&#34;
     raise NotImplementedError(
-        &#34;The run() method must be implemented by each class subclassing Event&#34;)</code></pre>
+        &#34;The run() method must be implemented by each class subclassing &#34;
+        &#34;Event&#34;)</code></pre>
 </details>
 </dd>
 </dl>
 </dd>
 <dt id="megha_sim.events.events.InconsistencyEvent"><code class="flex name class">
 <span>class <span class="ident">InconsistencyEvent</span></span>
-<span>(</span><span>task, gm, type, simulation)</span>
+<span>(</span><span>task: Task, gm: GM, type: InconsistencyType, simulation: Simulation)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>This is the abstract Event object class.</p>
+<div class="desc"><p>Event created when the Global Master tries placing a task on a busy node.</p>
+<p>This happends when the Global Master has outdated information about the
+cluster. This event is created by the Local Master.</p>
 <h2 id="args">Args</h2>
 <dl>
-<dt><strong><code>object</code></strong> :&ensp;<code>Object</code></dt>
-<dd>Parent object class.</dd>
+<dt><strong><code>Event</code></strong> :&ensp;<code><a title="megha_sim.events.events.Event" href="#megha_sim.events.events.Event">Event</a></code></dt>
+<dd>Parent Event class.</dd>
+</dl>
+<p>Initialise the instance of the InconsistencyEvent class.</p>
+<h2 id="args_1">Args</h2>
+<dl>
+<dt><strong><code>task</code></strong> :&ensp;<code>Task</code></dt>
+<dd>The Task object that caused the inconsistency.</dd>
+<dt><strong><code>gm</code></strong> :&ensp;<code>GM</code></dt>
+<dd>The Global Master responsible for the inconsistency.</dd>
+<dt><strong><code>type</code></strong> :&ensp;<code>InconsistencyType</code></dt>
+<dd>The type of inconsistency caused.</dd>
+<dt><strong><code>simulation</code></strong> :&ensp;<code>Simulation</code></dt>
+<dd>The simulation object to insert events
+into.</dd>
 </dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class InconsistencyEvent(Event):
-    def __init__(self, task, gm, type, simulation):
-        self.task = task
-        self.gm: GM = gm
-        self.type: Final = type
-        self.simulation = simulation
+    &#34;&#34;&#34;
+    Event created when the Global Master tries placing a task on a busy node.
 
-    def run(self, current_time):
-        # internal inconsistency -&gt; failed to place task on external partition
+    This happends when the Global Master has outdated information about the
+    cluster. This event is created by the Local Master.
+
+    Args:
+        Event (Event): Parent Event class.
+    &#34;&#34;&#34;
+
+    def __init__(self, task: Task, gm: GM, type: InconsistencyType,
+                 simulation: Simulation):
+        &#34;&#34;&#34;
+        Initialise the instance of the InconsistencyEvent class.
+
+        Args:
+            task (Task): The Task object that caused the inconsistency.
+            gm (GM): The Global Master responsible for the inconsistency.
+            type (InconsistencyType): The type of inconsistency caused.
+            simulation (Simulation): The simulation object to insert events \
+            into.
+        &#34;&#34;&#34;
+        self.task: Task = task
+        self.gm: GM = gm
+        self.type: InconsistencyType = type
+        self.simulation: Simulation = simulation
+
+    def run(self, current_time: float):
+        &#34;&#34;&#34;
+        Run the actions to handle the `InconsistencyEvent`.
+
+        Run the actions to perform on the event of the Global
+        Master requesting to place a task on a busy worker node.
+
+        Args:
+            current_time (float): The current time in the simulation.
+        &#34;&#34;&#34;
         if(self.type == InconsistencyType.INTERNAL_INCONSISTENCY):
+            &#34;&#34;&#34;Internal inconsistency -&gt; failed to place task on an internal
+               partition.&#34;&#34;&#34;
             print(current_time, &#34;,&#34;, &#34;InternalInconsistencyEvent&#34;)
-        else:  # external inconsistency  -&gt; failed to place task on internal partition
+        else:
+            &#34;&#34;&#34;External inconsistency -&gt; failed to place task on an external
+               partition.&#34;&#34;&#34;
             print(current_time, &#34;,&#34;, &#34;ExternalInconsistencyEvent&#34;)
         self.task.scheduled = False
 
-        # if job already moved to jobs_scheduled queue, need to remove and add to front of queue
+        &#34;&#34;&#34;
+        If the job is already moved to jobs_scheduled queue, then we need to
+        remove it and add it to the front of the queue.
+        &#34;&#34;&#34;
         self.gm.unschedule_job(self.task.job)
         self.simulation.event_queue.put(
-            (current_time, LMUpdateEvent(self.simulation, periodic=False, gm=self.gm)))</code></pre>
+            (current_time, LMUpdateEvent(
+                self.simulation, periodic=False, gm=self.gm)))</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="megha_sim.events.events.Event" href="#megha_sim.events.events.Event">Event</a></li>
 </ul>
-<h3>Inherited members</h3>
-<ul class="hlist">
-<li><code><b><a title="megha_sim.events.events.Event" href="#megha_sim.events.events.Event">Event</a></b></code>:
-<ul class="hlist">
-<li><code><a title="megha_sim.events.events.Event.run" href="#megha_sim.events.events.Event.run">run</a></code></li>
-</ul>
-</li>
-</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="megha_sim.events.events.InconsistencyEvent.run"><code class="name flex">
+<span>def <span class="ident">run</span></span>(<span>self, current_time: float)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Run the actions to handle the <code><a title="megha_sim.events.events.InconsistencyEvent" href="#megha_sim.events.events.InconsistencyEvent">InconsistencyEvent</a></code>.</p>
+<p>Run the actions to perform on the event of the Global
+Master requesting to place a task on a busy worker node.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>current_time</code></strong> :&ensp;<code>float</code></dt>
+<dd>The current time in the simulation.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def run(self, current_time: float):
+    &#34;&#34;&#34;
+    Run the actions to handle the `InconsistencyEvent`.
+
+    Run the actions to perform on the event of the Global
+    Master requesting to place a task on a busy worker node.
+
+    Args:
+        current_time (float): The current time in the simulation.
+    &#34;&#34;&#34;
+    if(self.type == InconsistencyType.INTERNAL_INCONSISTENCY):
+        &#34;&#34;&#34;Internal inconsistency -&gt; failed to place task on an internal
+           partition.&#34;&#34;&#34;
+        print(current_time, &#34;,&#34;, &#34;InternalInconsistencyEvent&#34;)
+    else:
+        &#34;&#34;&#34;External inconsistency -&gt; failed to place task on an external
+           partition.&#34;&#34;&#34;
+        print(current_time, &#34;,&#34;, &#34;ExternalInconsistencyEvent&#34;)
+    self.task.scheduled = False
+
+    &#34;&#34;&#34;
+    If the job is already moved to jobs_scheduled queue, then we need to
+    remove it and add it to the front of the queue.
+    &#34;&#34;&#34;
+    self.gm.unschedule_job(self.task.job)
+    self.simulation.event_queue.put(
+        (current_time, LMUpdateEvent(
+            self.simulation, periodic=False, gm=self.gm)))</code></pre>
+</details>
+</dd>
+</dl>
 </dd>
 <dt id="megha_sim.events.events.JobArrival"><code class="flex name class">
 <span>class <span class="ident">JobArrival</span></span>
-<span>(</span><span>simulation, task_distribution, job, jobs_file)</span>
+<span>(</span><span>simulation: Simulation, task_distribution: TaskDurationDistributions, job: Job, jobs_file: TextIOWrapper)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>This is the abstract Event object class.</p>
+<div class="desc"><p>Event created on the arrival of a <code>Job</code> into the user queue.</p>
 <h2 id="args">Args</h2>
 <dl>
-<dt><strong><code>object</code></strong> :&ensp;<code>Object</code></dt>
-<dd>Parent object class.</dd>
+<dt><strong><code>Event</code></strong> :&ensp;<code><a title="megha_sim.events.events.Event" href="#megha_sim.events.events.Event">Event</a></code></dt>
+<dd>Parent <code><a title="megha_sim.events.events.Event" href="#megha_sim.events.events.Event">Event</a></code> class.</dd>
+</dl>
+<p>Initialize the instance of the <code><a title="megha_sim.events.events.JobArrival" href="#megha_sim.events.events.JobArrival">JobArrival</a></code> class.</p>
+<h2 id="args_1">Args</h2>
+<dl>
+<dt><strong><code>simulation</code></strong> :&ensp;<code>Simulation</code></dt>
+<dd>The simulation object to insert events
+into.</dd>
+<dt><strong><code>task_distribution</code></strong> :&ensp;<code>TaskDurationDistributions</code></dt>
+<dd>Select the
+distribution of the duration/run-time of the tasks of the Job</dd>
+<dt><strong><code>job</code></strong> :&ensp;<code>Job</code></dt>
+<dd>The Job object that has arrived into the user queue.</dd>
+<dt><strong><code>jobs_file</code></strong> :&ensp;<code>TextIOWrapper</code></dt>
+<dd>File handle to the input trace file.</dd>
 </dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class JobArrival(Event):
+    &#34;&#34;&#34;
+    Event created on the arrival of a `Job` into the user queue.
+
+    Args:
+        Event (Event): Parent `Event` class.
+    &#34;&#34;&#34;
 
     gm_counter: int = 0
 
-    def __init__(self, simulation, task_distribution, job, jobs_file):
+    def __init__(self, simulation: Simulation,
+                 task_distribution: TaskDurationDistributions,
+                 job: Job,
+                 jobs_file: TextIOWrapper):
+        &#34;&#34;&#34;
+        Initialize the instance of the `JobArrival` class.
+
+        Args:
+            simulation (Simulation): The simulation object to insert events \
+            into.
+            task_distribution (TaskDurationDistributions): Select the \
+            distribution of the duration/run-time of the tasks of the Job
+            job (Job): The Job object that has arrived into the user queue.
+            jobs_file (TextIOWrapper): File handle to the input trace file.
+        &#34;&#34;&#34;
         self.simulation = simulation
         self.task_distribution = task_distribution
         self.job = job
         self.jobs_file = jobs_file  # Jobs file (input trace file) handler
 
-    def __lt__(self, other) -&gt; bool:
+    def __lt__(self, other: Event) -&gt; bool:
+        &#34;&#34;&#34;
+        Compare the `JobArrival` object with another object of Event class.
+
+        Args:
+            other (Event): The object to compare with.
+
+        Returns:
+            bool: The `JobArrival` object is always lesser than the object \
+                  it is compared with.
+        &#34;&#34;&#34;
         return True
 
-    def run(self, current_time):
+    def run(self, current_time: float):
+        &#34;&#34;&#34;
+        Run the actions to handle the `JobArrival` event.
+
+        Args:
+            current_time (float): The current time in the simulation.
+        &#34;&#34;&#34;
         new_events: List[Tuple[float, Event]] = []
         # needs to be assigned to a GM - RR
         JobArrival.gm_counter = (
-            JobArrival.gm_counter) % self.simulation.NUM_GMS+1
-    # assigned_GM --&gt; Handle to the global master object
+            JobArrival.gm_counter % self.simulation.NUM_GMS + 1)
+        # assigned_GM --&gt; Handle to the global master object
         assigned_GM: GM = self.simulation.gms[str(JobArrival.gm_counter)]
         # GM needs to add job to its queue
         assigned_GM.queue_job(self.job, current_time)
 
         # Creating a new Job Arrival event for the next job in the trace
         line = self.jobs_file.readline()
-        if (len(line) == 0):
+        if len(line) == 0:
             self.simulation.scheduled_last_job = True
         else:
             self.job = Job(self.task_distribution, line, self.simulation)
@@ -424,80 +890,238 @@ class JobArrival(Event):
 <div class="desc"></div>
 </dd>
 </dl>
-<h3>Inherited members</h3>
-<ul class="hlist">
-<li><code><b><a title="megha_sim.events.events.Event" href="#megha_sim.events.events.Event">Event</a></b></code>:
-<ul class="hlist">
-<li><code><a title="megha_sim.events.events.Event.run" href="#megha_sim.events.events.Event.run">run</a></code></li>
-</ul>
-</li>
-</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="megha_sim.events.events.JobArrival.run"><code class="name flex">
+<span>def <span class="ident">run</span></span>(<span>self, current_time: float)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Run the actions to handle the <code><a title="megha_sim.events.events.JobArrival" href="#megha_sim.events.events.JobArrival">JobArrival</a></code> event.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>current_time</code></strong> :&ensp;<code>float</code></dt>
+<dd>The current time in the simulation.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def run(self, current_time: float):
+    &#34;&#34;&#34;
+    Run the actions to handle the `JobArrival` event.
+
+    Args:
+        current_time (float): The current time in the simulation.
+    &#34;&#34;&#34;
+    new_events: List[Tuple[float, Event]] = []
+    # needs to be assigned to a GM - RR
+    JobArrival.gm_counter = (
+        JobArrival.gm_counter % self.simulation.NUM_GMS + 1)
+    # assigned_GM --&gt; Handle to the global master object
+    assigned_GM: GM = self.simulation.gms[str(JobArrival.gm_counter)]
+    # GM needs to add job to its queue
+    assigned_GM.queue_job(self.job, current_time)
+
+    # Creating a new Job Arrival event for the next job in the trace
+    line = self.jobs_file.readline()
+    if len(line) == 0:
+        self.simulation.scheduled_last_job = True
+    else:
+        self.job = Job(self.task_distribution, line, self.simulation)
+        new_events.append((self.job.start_time, self))
+        self.simulation.jobs_scheduled += 1
+    return new_events</code></pre>
+</details>
+</dd>
+</dl>
 </dd>
 <dt id="megha_sim.events.events.LMUpdateEvent"><code class="flex name class">
 <span>class <span class="ident">LMUpdateEvent</span></span>
-<span>(</span><span>simulation, periodic=True, gm=None)</span>
+<span>(</span><span>simulation: Simulation, periodic: bool = True, gm: Optional[GM] = None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>This is the abstract Event object class.</p>
+<div class="desc"><p>Event created when Local Masters send updates to Global Masters.</p>
+<p>Event created when the Local Masters update the Global Master
+about the status of the cluster.</p>
 <h2 id="args">Args</h2>
 <dl>
-<dt><strong><code>object</code></strong> :&ensp;<code>Object</code></dt>
-<dd>Parent object class.</dd>
+<dt><strong><code>Event</code></strong> :&ensp;<code><a title="megha_sim.events.events.Event" href="#megha_sim.events.events.Event">Event</a></code></dt>
+<dd>Parent <code><a title="megha_sim.events.events.Event" href="#megha_sim.events.events.Event">Event</a></code> class.</dd>
+</dl>
+<p>Initialise the instance of the <code><a title="megha_sim.events.events.LMUpdateEvent" href="#megha_sim.events.events.LMUpdateEvent">LMUpdateEvent</a></code> class.</p>
+<h2 id="args_1">Args</h2>
+<dl>
+<dt><strong><code>simulation</code></strong> :&ensp;<code>Simulation</code></dt>
+<dd>The simulation object to insert events
+into.</dd>
+<dt><strong><code>periodic</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>Whether the updates are periodic or not
+. Defaults to True.</dd>
+<dt><strong><code>gm</code></strong> :&ensp;<code>Optional[GM]</code>, optional</dt>
+<dd>The Global Master that needs to be
+updated about the state of the cluster. Defaults to None.</dd>
 </dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class LMUpdateEvent(Event):
+    &#34;&#34;&#34;
+    Event created when Local Masters send updates to Global Masters.
 
-    def __init__(self, simulation, periodic=True, gm=None):
-        self.simulation = simulation
+    Event created when the Local Masters update the Global Master
+    about the status of the cluster.
+
+    Args:
+        Event (Event): Parent `Event` class.
+    &#34;&#34;&#34;
+
+    def __init__(self, simulation: Simulation,
+                 periodic: bool = True, gm: Optional[GM] = None):
+        &#34;&#34;&#34;
+        Initialise the instance of the `LMUpdateEvent` class.
+
+        Args:
+            simulation (Simulation): The simulation object to insert events \
+            into.
+            periodic (bool, optional): Whether the updates are periodic or not\
+            . Defaults to True.
+            gm (Optional[GM], optional): The Global Master that needs to be \
+            updated about the state of the cluster. Defaults to None.
+        &#34;&#34;&#34;
+        self.simulation: Simulation = simulation
         self.periodic: bool = periodic
         self.gm: Optional[GM] = gm
 
         if self.periodic is True:
-            assert self.gm is None, &#34;LMUpdateEvent.__init__: Periodic is set to true so self.gm must be None!&#34;
+            assert self.gm is None, (&#34;LMUpdateEvent.__init__: Periodic is set&#34;
+                                     &#34; to true so self.gm must be None!&#34;)
         elif self.periodic is False:
-            assert self.gm is not None, &#34;LMUpdateEvent.__init__: Periodic is set to false so self.gm must not be None!&#34;
+            assert self.gm is not None, (&#34;LMUpdateEvent.__init__: Periodic is&#34;
+                                         &#34; set to false so self.gm must not be&#34;
+                                         &#34; None!&#34;)
 
-    def run(self, current_time):
+    def run(self, current_time: float):
+        &#34;&#34;&#34;
+        Run the actions to handle the `LMUpdateEvent`.
+
+        If the update is **none periodic** then just call the \
+        `GM.update_status` on the particular Global Master.
+        If the update is **periodic** then call `GM.update_status` on each
+        and every Global Master and place another periodic `LMUpdateEvent`
+        to occur after `LM_HEARTBEAT_INTERVAL + NETWORK_DELAY` interval of \
+        time.
+
+        Args:
+            current_time (float): The current time in the simulation.
+        &#34;&#34;&#34;
         print(current_time, &#34;,&#34;, &#34;LMUpdateEvent&#34;, &#34;,&#34;, self.periodic)
 
-        # update only that GM which is inconsistent or if the GM&#39;s task has completed
+        # update only that GM which is inconsistent or if the GM&#39;s task has
+        # completed
         if not self.periodic:
-            self.gm.update_status(current_time+NETWORK_DELAY)
+            assert self.gm is not None, (&#34;LMUpdateEvent.run: Periodic is&#34;
+                                         &#34; set to false so self.gm must not be&#34;
+                                         &#34; None!&#34;)
+            self.gm.update_status(current_time + NETWORK_DELAY)
 
         if self.periodic and not self.simulation.event_queue.empty():
             for GM_id in self.simulation.gms:
                 self.simulation.gms[GM_id].update_status(
-                    current_time+NETWORK_DELAY)
-            # add the next heartbeat, network delay added because intuitively we do not include it in the LM_HEARTBEAT INTERVAL
+                    current_time + NETWORK_DELAY)
+            &#34;&#34;&#34;
+            Add the next heartbeat, network delay added because intuitively
+            we do not include it in the LM_HEARTBEAT INTERVAL.
+            &#34;&#34;&#34;
             self.simulation.event_queue.put(
-                (current_time + LM_HEARTBEAT_INTERVAL+NETWORK_DELAY, self))</code></pre>
+                (current_time + LM_HEARTBEAT_INTERVAL + NETWORK_DELAY, self))</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="megha_sim.events.events.Event" href="#megha_sim.events.events.Event">Event</a></li>
 </ul>
-<h3>Inherited members</h3>
-<ul class="hlist">
-<li><code><b><a title="megha_sim.events.events.Event" href="#megha_sim.events.events.Event">Event</a></b></code>:
-<ul class="hlist">
-<li><code><a title="megha_sim.events.events.Event.run" href="#megha_sim.events.events.Event.run">run</a></code></li>
-</ul>
-</li>
-</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="megha_sim.events.events.LMUpdateEvent.run"><code class="name flex">
+<span>def <span class="ident">run</span></span>(<span>self, current_time: float)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Run the actions to handle the <code><a title="megha_sim.events.events.LMUpdateEvent" href="#megha_sim.events.events.LMUpdateEvent">LMUpdateEvent</a></code>.</p>
+<p>If the update is <strong>none periodic</strong> then just call the
+<code>GM.update_status</code> on the particular Global Master.
+If the update is <strong>periodic</strong> then call <code>GM.update_status</code> on each
+and every Global Master and place another periodic <code><a title="megha_sim.events.events.LMUpdateEvent" href="#megha_sim.events.events.LMUpdateEvent">LMUpdateEvent</a></code>
+to occur after <code>LM_HEARTBEAT_INTERVAL + NETWORK_DELAY</code> interval of
+time.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>current_time</code></strong> :&ensp;<code>float</code></dt>
+<dd>The current time in the simulation.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def run(self, current_time: float):
+    &#34;&#34;&#34;
+    Run the actions to handle the `LMUpdateEvent`.
+
+    If the update is **none periodic** then just call the \
+    `GM.update_status` on the particular Global Master.
+    If the update is **periodic** then call `GM.update_status` on each
+    and every Global Master and place another periodic `LMUpdateEvent`
+    to occur after `LM_HEARTBEAT_INTERVAL + NETWORK_DELAY` interval of \
+    time.
+
+    Args:
+        current_time (float): The current time in the simulation.
+    &#34;&#34;&#34;
+    print(current_time, &#34;,&#34;, &#34;LMUpdateEvent&#34;, &#34;,&#34;, self.periodic)
+
+    # update only that GM which is inconsistent or if the GM&#39;s task has
+    # completed
+    if not self.periodic:
+        assert self.gm is not None, (&#34;LMUpdateEvent.run: Periodic is&#34;
+                                     &#34; set to false so self.gm must not be&#34;
+                                     &#34; None!&#34;)
+        self.gm.update_status(current_time + NETWORK_DELAY)
+
+    if self.periodic and not self.simulation.event_queue.empty():
+        for GM_id in self.simulation.gms:
+            self.simulation.gms[GM_id].update_status(
+                current_time + NETWORK_DELAY)
+        &#34;&#34;&#34;
+        Add the next heartbeat, network delay added because intuitively
+        we do not include it in the LM_HEARTBEAT INTERVAL.
+        &#34;&#34;&#34;
+        self.simulation.event_queue.put(
+            (current_time + LM_HEARTBEAT_INTERVAL + NETWORK_DELAY, self))</code></pre>
+</details>
+</dd>
+</dl>
 </dd>
 <dt id="megha_sim.events.events.LaunchOnNodeEvent"><code class="flex name class">
 <span>class <span class="ident">LaunchOnNodeEvent</span></span>
-<span>(</span><span>task, simulation)</span>
+<span>(</span><span>task: Task, simulation: Simulation)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>This event is created when a task is sent to a particular worker node in a particular partition, selected by the global master and verified by the local master.</p>
+<div class="desc"><p>Event created after the Local Master verifies the Global Master's request.</p>
+<p>This event is created when a task is sent to a particular worker node in a
+particular partition, selected by the global master and verified by the
+local master.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>Event</code></strong> :&ensp;<code><a title="megha_sim.events.events.Event" href="#megha_sim.events.events.Event">Event</a></code></dt>
 <dd>Parent Event class.</dd>
+</dl>
+<p>Initialise the instance of the <code><a title="megha_sim.events.events.LaunchOnNodeEvent" href="#megha_sim.events.events.LaunchOnNodeEvent">LaunchOnNodeEvent</a></code> class.</p>
+<h2 id="args_1">Args</h2>
+<dl>
+<dt><strong><code>task</code></strong> :&ensp;<code>Task</code></dt>
+<dd>The Task object to be launched on the selected node.</dd>
+<dt><strong><code>simulation</code></strong> :&ensp;<code>Simulation</code></dt>
+<dd>The simulation object to insert events
+into.</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -505,53 +1129,175 @@ class JobArrival(Event):
 </summary>
 <pre><code class="python">class LaunchOnNodeEvent(Event):
     &#34;&#34;&#34;
-    This event is created when a task is sent to a particular worker node in a particular partition, selected by the global master and verified by the local master.
+    Event created after the Local Master verifies the Global Master&#39;s request.
+
+    This event is created when a task is sent to a particular worker node in a
+    particular partition, selected by the global master and verified by the
+    local master.
 
     Args:
             Event (Event): Parent Event class.
     &#34;&#34;&#34;
 
-    def __init__(self, task, simulation):
+    def __init__(self, task: Task, simulation: Simulation):
+        &#34;&#34;&#34;
+        Initialise the instance of the `LaunchOnNodeEvent` class.
+
+        Args:
+            task (Task): The Task object to be launched on the selected node.
+            simulation (Simulation): The simulation object to insert events \
+            into.
+        &#34;&#34;&#34;
         self.task = task
         self.simulation = simulation
 
-    def run(self, current_time):
-        print(current_time, &#34;,&#34;, &#34;LaunchOnNodeEvent&#34;, &#34;,&#34;, self.task.job.job_id +
-              &#34;_&#34;+self.task.task_id, &#34;,&#34;, self.task.partition_id+&#34;_&#34;+self.task.node_id)
+    def run(self, current_time: float):
+        &#34;&#34;&#34;
+        Run the actions to handle a `LaunchOnNodeEvent`.
+
+        Run the actions to perform on the event of launching a task on the \
+        node.
+
+        Args:
+            current_time (float): The current time in the simulation.
+        &#34;&#34;&#34;
+        assert self.task.partition_id is not None
+        assert self.task.node_id is not None
+
+        print(
+            current_time,
+            &#34;,&#34;,
+            &#34;LaunchOnNodeEvent&#34;,
+            &#34;,&#34;,
+            self.task.job.job_id +
+            &#34;_&#34; +
+            self.task.task_id,
+            &#34;,&#34;,
+            self.task.partition_id +
+            &#34;_&#34; +
+            self.task.node_id)
         # launching requires network transfer
         self.simulation.event_queue.put(
-            (current_time+self.task.duration, TaskEndEvent(self.task)))</code></pre>
+            (current_time + self.task.duration, TaskEndEvent(self.task)))</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="megha_sim.events.events.Event" href="#megha_sim.events.events.Event">Event</a></li>
 </ul>
-<h3>Inherited members</h3>
-<ul class="hlist">
-<li><code><b><a title="megha_sim.events.events.Event" href="#megha_sim.events.events.Event">Event</a></b></code>:
-<ul class="hlist">
-<li><code><a title="megha_sim.events.events.Event.run" href="#megha_sim.events.events.Event.run">run</a></code></li>
-</ul>
-</li>
-</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="megha_sim.events.events.LaunchOnNodeEvent.run"><code class="name flex">
+<span>def <span class="ident">run</span></span>(<span>self, current_time: float)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Run the actions to handle a <code><a title="megha_sim.events.events.LaunchOnNodeEvent" href="#megha_sim.events.events.LaunchOnNodeEvent">LaunchOnNodeEvent</a></code>.</p>
+<p>Run the actions to perform on the event of launching a task on the
+node.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>current_time</code></strong> :&ensp;<code>float</code></dt>
+<dd>The current time in the simulation.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def run(self, current_time: float):
+    &#34;&#34;&#34;
+    Run the actions to handle a `LaunchOnNodeEvent`.
+
+    Run the actions to perform on the event of launching a task on the \
+    node.
+
+    Args:
+        current_time (float): The current time in the simulation.
+    &#34;&#34;&#34;
+    assert self.task.partition_id is not None
+    assert self.task.node_id is not None
+
+    print(
+        current_time,
+        &#34;,&#34;,
+        &#34;LaunchOnNodeEvent&#34;,
+        &#34;,&#34;,
+        self.task.job.job_id +
+        &#34;_&#34; +
+        self.task.task_id,
+        &#34;,&#34;,
+        self.task.partition_id +
+        &#34;_&#34; +
+        self.task.node_id)
+    # launching requires network transfer
+    self.simulation.event_queue.put(
+        (current_time + self.task.duration, TaskEndEvent(self.task)))</code></pre>
+</details>
+</dd>
+</dl>
 </dd>
 <dt id="megha_sim.events.events.MatchFoundEvent"><code class="flex name class">
 <span>class <span class="ident">MatchFoundEvent</span></span>
-<span>(</span><span>task, gm, lm, node_id, current_time, external_partition=None)</span>
+<span>(</span><span>task: Task, gm: GM, lm: LM, node_id: str, current_time: float, external_partition: Optional[str] = None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>This is the abstract Event object class.</p>
+<div class="desc"><p>Event created when the Global Master finds a free worker node.</p>
 <h2 id="args">Args</h2>
 <dl>
-<dt><strong><code>object</code></strong> :&ensp;<code>Object</code></dt>
-<dd>Parent object class.</dd>
+<dt><strong><code>Event</code></strong> :&ensp;<code><a title="megha_sim.events.events.Event" href="#megha_sim.events.events.Event">Event</a></code></dt>
+<dd>Parent Event class.</dd>
+</dl>
+<p>Initialise the instance of the <code><a title="megha_sim.events.events.MatchFoundEvent" href="#megha_sim.events.events.MatchFoundEvent">MatchFoundEvent</a></code> class.</p>
+<h2 id="args_1">Args</h2>
+<dl>
+<dt><strong><code>task</code></strong> :&ensp;<code>Task</code></dt>
+<dd>The task object to launch on the selected node.</dd>
+<dt><strong><code>gm</code></strong> :&ensp;<code>GM</code></dt>
+<dd>The Global Master that wants to allocate the task to
+a worker node.</dd>
+<dt><strong><code>lm</code></strong> :&ensp;<code>LM</code></dt>
+<dd>The Local Master, the selected worker node belongs to.</dd>
+<dt><strong><code>node_id</code></strong> :&ensp;<code>str</code></dt>
+<dd>The identifier of the selected worker node.</dd>
+<dt><strong><code>current_time</code></strong> :&ensp;<code>float</code></dt>
+<dd>The current time in the simulation.</dd>
+<dt><strong><code>external_partition</code></strong> :&ensp;<code>Optional[str]</code>, optional</dt>
+<dd>Identifier of
+the Global Master to which the external partition (if selected)
+belongs to. Defaults to None.</dd>
 </dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class MatchFoundEvent(Event):
-    def __init__(self, task, gm, lm, node_id, current_time, external_partition=None):
+    &#34;&#34;&#34;
+    Event created when the Global Master finds a free worker node.
+
+    Args:
+        Event (Event): Parent Event class.
+    &#34;&#34;&#34;
+
+    def __init__(
+            self,
+            task: Task,
+            gm: GM,
+            lm: LM,
+            node_id: str,
+            current_time: float,
+            external_partition: Optional[str] = None):
+        &#34;&#34;&#34;
+        Initialise the instance of the `MatchFoundEvent` class.
+
+        Args:
+            task (Task): The task object to launch on the selected node.
+            gm (GM): The Global Master that wants to allocate the task to \
+            a worker node.
+            lm (LM): The Local Master, the selected worker node belongs to.
+            node_id (str): The identifier of the selected worker node.
+            current_time (float): The current time in the simulation.
+            external_partition (Optional[str], optional): Identifier of \
+            the Global Master to which the external partition (if selected) \
+            belongs to. Defaults to None.
+        &#34;&#34;&#34;
         self.task = task
         self.gm = gm
         self.lm = lm
@@ -559,42 +1305,105 @@ class JobArrival(Event):
         self.current_time = current_time
         self.external_partition = external_partition
 
-    def run(self, current_time):
+    def run(self, current_time: float):
+        &#34;&#34;&#34;
+        Run the actions to handle the `MatchFoundEvent`.
+
+        Request the Local Master to which the worker node belongs, to
+        verify if the worker node is indeed free to take up a task.
+
+        Args:
+            current_time (float): The current time in the simulation.
+        &#34;&#34;&#34;
         # add network delay to LM, similar to sparrow:
-        print(current_time, &#34;,&#34;, &#34;MatchFoundEvent&#34;, &#34;,&#34;, self.task.job.job_id+&#34;_&#34; +
-              self.task.task_id, &#34;,&#34;, self.gm.GM_id+&#34;_&#34;+str(self.node_id), &#34;_&#34;, self.lm.LM_id)
-        self.lm.verify_request(self.task, self.gm, self.node_id, current_time +
-                               NETWORK_DELAY, external_partition=self.external_partition)</code></pre>
+        print(current_time,
+              &#34;,&#34;,
+              &#34;MatchFoundEvent&#34;,
+              &#34;,&#34;,
+              self.task.job.job_id + &#34;_&#34; + self.task.task_id,
+              &#34;,&#34;,
+              self.gm.GM_id + &#34;_&#34; + self.node_id,
+              &#34;_&#34;,
+              self.lm.LM_id)
+        self.lm.verify_request(
+            self.task,
+            self.gm,
+            self.node_id,
+            current_time +
+            NETWORK_DELAY,
+            external_partition=self.external_partition)</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="megha_sim.events.events.Event" href="#megha_sim.events.events.Event">Event</a></li>
 </ul>
-<h3>Inherited members</h3>
-<ul class="hlist">
-<li><code><b><a title="megha_sim.events.events.Event" href="#megha_sim.events.events.Event">Event</a></b></code>:
-<ul class="hlist">
-<li><code><a title="megha_sim.events.events.Event.run" href="#megha_sim.events.events.Event.run">run</a></code></li>
-</ul>
-</li>
-</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="megha_sim.events.events.MatchFoundEvent.run"><code class="name flex">
+<span>def <span class="ident">run</span></span>(<span>self, current_time: float)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Run the actions to handle the <code><a title="megha_sim.events.events.MatchFoundEvent" href="#megha_sim.events.events.MatchFoundEvent">MatchFoundEvent</a></code>.</p>
+<p>Request the Local Master to which the worker node belongs, to
+verify if the worker node is indeed free to take up a task.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>current_time</code></strong> :&ensp;<code>float</code></dt>
+<dd>The current time in the simulation.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def run(self, current_time: float):
+    &#34;&#34;&#34;
+    Run the actions to handle the `MatchFoundEvent`.
+
+    Request the Local Master to which the worker node belongs, to
+    verify if the worker node is indeed free to take up a task.
+
+    Args:
+        current_time (float): The current time in the simulation.
+    &#34;&#34;&#34;
+    # add network delay to LM, similar to sparrow:
+    print(current_time,
+          &#34;,&#34;,
+          &#34;MatchFoundEvent&#34;,
+          &#34;,&#34;,
+          self.task.job.job_id + &#34;_&#34; + self.task.task_id,
+          &#34;,&#34;,
+          self.gm.GM_id + &#34;_&#34; + self.node_id,
+          &#34;_&#34;,
+          self.lm.LM_id)
+    self.lm.verify_request(
+        self.task,
+        self.gm,
+        self.node_id,
+        current_time +
+        NETWORK_DELAY,
+        external_partition=self.external_partition)</code></pre>
+</details>
+</dd>
+</dl>
 </dd>
 <dt id="megha_sim.events.events.TaskEndEvent"><code class="flex name class">
 <span>class <span class="ident">TaskEndEvent</span></span>
-<span>(</span><span>task)</span>
+<span>(</span><span>task: Task)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>This event is created when a task has completed. The <code>end_time</code> is set as the <code>current_time</code> of running the event.</p>
+<div class="desc"><p>This event is created when a task has completed.</p>
+<p>The <code>end_time</code> is set as the <code>current_time</code> of running the event.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>Event</code></strong> :&ensp;<code><a title="megha_sim.events.events.Event" href="#megha_sim.events.events.Event">Event</a></code></dt>
 <dd>Parent Event class.</dd>
 </dl>
-<p>Initialise the TaskEndEvent class with the task object.</p>
+<p>Initialise the instance of the <code><a title="megha_sim.events.events.TaskEndEvent" href="#megha_sim.events.events.TaskEndEvent">TaskEndEvent</a></code> class.</p>
 <h2 id="args_1">Args</h2>
 <dl>
 <dt><strong><code>task</code></strong> :&ensp;<code>Task</code></dt>
-<dd>The task object representing the task which has completed.</dd>
+<dd>The task object representing the task which has
+completed.</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -602,36 +1411,46 @@ class JobArrival(Event):
 </summary>
 <pre><code class="python">class TaskEndEvent(Event):
     &#34;&#34;&#34;
-    This event is created when a task has completed. The `end_time` is set as the `current_time` of running the event.
+    This event is created when a task has completed.
+
+    The `end_time` is set as the `current_time` of running the event.
 
     Args:
             Event (Event): Parent Event class.
     &#34;&#34;&#34;
 
-    def __init__(self, task):
+    def __init__(self, task: Task):
         &#34;&#34;&#34;
-        Initialise the TaskEndEvent class with the task object.
+        Initialise the instance of the `TaskEndEvent` class.
 
         Args:
-                task (Task): The task object representing the task which has completed.
+                task (Task): The task object representing the task which has \
+                completed.
         &#34;&#34;&#34;
         self.task: Task = task
 
     def __lt__(self, other: Event) -&gt; bool:
         &#34;&#34;&#34;
-        Compare the TaskEndEvent Object with another object of Event class.
+        Compare the `TaskEndEvent` object with another object of Event class.
 
         Args:
                 other (Event): The object to compare with.
 
         Returns:
-                bool: The TaskEndEvent object is always lesser than the object it is compared with.
+                bool: The `TaskEndEvent` object is always lesser than the \
+                object it is compared with.
         &#34;&#34;&#34;
         return True
 
-    def run(self, current_time):
+    def run(self, current_time: float):
+        &#34;&#34;&#34;
+        Run the actions to perform on the event of task completion.
+
+        Args:
+            current_time (float): The current time in the simulation.
+        &#34;&#34;&#34;
         print(current_time, &#34;,&#34;, &#34;TaskEndEvent&#34;, &#34;,&#34;, self.task.job.job_id +
-              &#34;_&#34;+self.task.task_id+&#34;___&#34;, self.task.duration)
+              &#34;_&#34; + self.task.task_id + &#34;___&#34;, self.task.duration)
         self.task.end_time = current_time
         if self.task.lm is not None:
             self.task.lm.task_completed(self.task)</code></pre>
@@ -640,14 +1459,37 @@ class JobArrival(Event):
 <ul class="hlist">
 <li><a title="megha_sim.events.events.Event" href="#megha_sim.events.events.Event">Event</a></li>
 </ul>
-<h3>Inherited members</h3>
-<ul class="hlist">
-<li><code><b><a title="megha_sim.events.events.Event" href="#megha_sim.events.events.Event">Event</a></b></code>:
-<ul class="hlist">
-<li><code><a title="megha_sim.events.events.Event.run" href="#megha_sim.events.events.Event.run">run</a></code></li>
-</ul>
-</li>
-</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="megha_sim.events.events.TaskEndEvent.run"><code class="name flex">
+<span>def <span class="ident">run</span></span>(<span>self, current_time: float)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Run the actions to perform on the event of task completion.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>current_time</code></strong> :&ensp;<code>float</code></dt>
+<dd>The current time in the simulation.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def run(self, current_time: float):
+    &#34;&#34;&#34;
+    Run the actions to perform on the event of task completion.
+
+    Args:
+        current_time (float): The current time in the simulation.
+    &#34;&#34;&#34;
+    print(current_time, &#34;,&#34;, &#34;TaskEndEvent&#34;, &#34;,&#34;, self.task.job.job_id +
+          &#34;_&#34; + self.task.task_id + &#34;___&#34;, self.task.duration)
+    self.task.end_time = current_time
+    if self.task.lm is not None:
+        self.task.lm.task_completed(self.task)</code></pre>
+</details>
+</dd>
+</dl>
 </dd>
 </dl>
 </section>
@@ -673,24 +1515,40 @@ class JobArrival(Event):
 </li>
 <li>
 <h4><code><a title="megha_sim.events.events.InconsistencyEvent" href="#megha_sim.events.events.InconsistencyEvent">InconsistencyEvent</a></code></h4>
+<ul class="">
+<li><code><a title="megha_sim.events.events.InconsistencyEvent.run" href="#megha_sim.events.events.InconsistencyEvent.run">run</a></code></li>
+</ul>
 </li>
 <li>
 <h4><code><a title="megha_sim.events.events.JobArrival" href="#megha_sim.events.events.JobArrival">JobArrival</a></code></h4>
 <ul class="">
 <li><code><a title="megha_sim.events.events.JobArrival.gm_counter" href="#megha_sim.events.events.JobArrival.gm_counter">gm_counter</a></code></li>
+<li><code><a title="megha_sim.events.events.JobArrival.run" href="#megha_sim.events.events.JobArrival.run">run</a></code></li>
 </ul>
 </li>
 <li>
 <h4><code><a title="megha_sim.events.events.LMUpdateEvent" href="#megha_sim.events.events.LMUpdateEvent">LMUpdateEvent</a></code></h4>
+<ul class="">
+<li><code><a title="megha_sim.events.events.LMUpdateEvent.run" href="#megha_sim.events.events.LMUpdateEvent.run">run</a></code></li>
+</ul>
 </li>
 <li>
 <h4><code><a title="megha_sim.events.events.LaunchOnNodeEvent" href="#megha_sim.events.events.LaunchOnNodeEvent">LaunchOnNodeEvent</a></code></h4>
+<ul class="">
+<li><code><a title="megha_sim.events.events.LaunchOnNodeEvent.run" href="#megha_sim.events.events.LaunchOnNodeEvent.run">run</a></code></li>
+</ul>
 </li>
 <li>
 <h4><code><a title="megha_sim.events.events.MatchFoundEvent" href="#megha_sim.events.events.MatchFoundEvent">MatchFoundEvent</a></code></h4>
+<ul class="">
+<li><code><a title="megha_sim.events.events.MatchFoundEvent.run" href="#megha_sim.events.events.MatchFoundEvent.run">run</a></code></li>
+</ul>
 </li>
 <li>
 <h4><code><a title="megha_sim.events.events.TaskEndEvent" href="#megha_sim.events.events.TaskEndEvent">TaskEndEvent</a></code></h4>
+<ul class="">
+<li><code><a title="megha_sim.events.events.TaskEndEvent.run" href="#megha_sim.events.events.TaskEndEvent.run">run</a></code></li>
+</ul>
 </li>
 </ul>
 </li>
