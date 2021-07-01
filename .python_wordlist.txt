@@ -6,7 +6,7 @@ NUM
 LMs
 GMs
 localmaster
-paramters
+parameters
 param
 rtype
 LM's

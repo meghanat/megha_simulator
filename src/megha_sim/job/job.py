@@ -3,7 +3,7 @@ This file contains the implementation of the Job class.
 
 The Job class is used to describe a job that is input to the scheduler.
 A job consists of one or more tasks. The instance of the Job class keeps
-track of various paramters related to task assignment and completion.
+track of various parameters related to task assignment and completion.
 """
 
 from typing import Dict, List, Optional, TYPE_CHECKING
