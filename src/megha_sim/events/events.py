@@ -126,6 +126,7 @@ class TaskEndEvent(Event):
         """
         print(current_time, ",", "TaskEndEvent", ",", self.task.job.job_id +
               "_" + self.task.task_id + "___", self.task.duration)
+        logger.info("Task end event")  # Log the TaskEndEvent
         self.task.end_time = current_time
         if self.task.lm is not None:
             self.task.lm.task_completed(self.task)
