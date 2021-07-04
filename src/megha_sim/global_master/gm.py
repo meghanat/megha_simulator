@@ -180,33 +180,46 @@ class GM(object):
             # While the job_queue for the current GM is not empty
             job = self.job_queue[0]  # Get job from the head of queue
             for task_id in job.tasks:  # Go over the tasks for the job
-                # If the task is already scheduled then, there is nothing to do
                 if(job.tasks[task_id].scheduled):
+                    # If the task is already scheduled, then there is
+                    # nothing to do
                     continue
-                matchfound = False
-                # Which LM? searching the LMs in RR fashion
-                LM_id = str(self.RR_counter % self.simulation.NUM_LMS + 1)
-                self.RR_counter += 1
-                # Searching in the internal partitions
-                # iterating over a dict
-                for node_id in self.global_view[LM_id]["partitions"][self.GM_id]["nodes"]:
-                    node = self.global_view[LM_id]["partitions"][self.GM_id]["nodes"][node_id]
-                    if node["CPU"] == 1:  # Node is available
-                        node["CPU"] = 0
-                        job.tasks[task_id].scheduled = True
-                        if(job.fully_scheduled()):
-                            self.jobs_scheduled.append(self.job_queue.pop(0))
-                        # May need to add processing overhead here if required
-                        self.simulation.event_queue.put(
-                            (current_time,
-                             MatchFoundEvent(
-                                 job.tasks[task_id],
-                                 self,
-                                 self.simulation.lms[LM_id],
-                                 node_id,
-                                 current_time)))
-                        matchfound = True
+
+                matchfound: bool = False
+
+                # We search each of the GM's internal partitions in each LM
+                for _ in range(self.simulation.NUM_LMS):
+                    # Which LM? searching the LMs in RR fashion
+                    LM_id = str(self.RR_counter % self.simulation.NUM_LMS + 1)
+                    self.RR_counter += 1
+
+                    # Searching in the internal partition iterating over a dict
+                    for node_id in (self.global_view[LM_id]["partitions"]
+                                    [self.GM_id]["nodes"]):
+                        node = (self.global_view[LM_id]["partitions"]
+                                [self.GM_id]["nodes"][node_id])
+                        if node["CPU"] == 1:  # If the Node is available
+                            node["CPU"] = 0
+                            job.tasks[task_id].scheduled = True
+                            if job.fully_scheduled():
+                                self.jobs_scheduled.append(self.job_queue
+                                                           .pop(0))
+                            # May need to add processing overhead here if
+                            # required
+                            self.simulation.event_queue.put(
+                                (current_time,
+                                 MatchFoundEvent(
+                                                job.tasks[task_id],
+                                                self,
+                                                self.simulation.lms[LM_id],
+                                                node_id,
+                                                current_time)))
+                            matchfound = True
+                            break
+                    
+                    if matchfound is True:
                         break
+
                 if matchfound:
                     # If this task was successfully placed then, move
                     # on to the next task
