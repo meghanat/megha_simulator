@@ -98,15 +98,17 @@ class GM(object):
 
         self.schedule_tasks(current_time)
 
-    def unschedule_job(self, unverified_job):
-        # """
-        # The job is inserted back into the job_queue of the GM from the
-        # job_scheduled queue of the GM
+    def unschedule_job(self, unverified_job: Job):
+        """
+        Job is inserted back into the job_queue of the GM.
 
-        # :param unverified_job: The job that needs to be moved, as it was assigned on a worker node
-        #  not actually available at that time
-        # :type unverified_job: Job
-        # """
+        The job is inserted back into the job_queue of the GM from the \
+        job_scheduled queue of the GM.
+
+        Args:
+            unverified_job (Job): The job that needs to be moved, as it was \
+                assigned on a worker node not actually available at that time
+        """
         for index in range(0, len(self.jobs_scheduled)):
             if unverified_job.job_id == self.jobs_scheduled[index].job_id:
                 # remove job from list and add to front of job_queue
@@ -191,6 +193,9 @@ class GM(object):
                                                 current_time,
                                                 external_partition=GM_id)))
 
+                                    """We have found a free worker node and
+                                    hence, we do not need to search any
+                                    further."""
                                     matchfound = True
                                     break
 
