@@ -1,8 +1,9 @@
 import json
 from typing import List, Dict, TYPE_CHECKING, TypedDict
 
-from events import MatchFoundEvent
 import simulator_utils.globals
+from events import MatchFoundEvent
+from simulation_logger import SimulatorLogger
 
 
 # Imports used only for type checking go here to avoid circular imports
@@ -25,6 +26,9 @@ class PartitionResources(TypedDict):
 class LMResources(TypedDict):
     LM_id: str
     partitions: Dict[str, PartitionResources]
+
+
+logger = SimulatorLogger(__name__).get_logger()
 
 
 class GM(object):
@@ -128,7 +132,7 @@ class GM(object):
             for task_id in job.tasks:  # Go over the tasks for the job
                 task = job.tasks[task_id]
                 """If the task is already scheduled then, there is
-                   nothing to do."""
+                nothing to do."""
                 if(job.tasks[task_id].scheduled):
                     continue
 
@@ -139,11 +143,11 @@ class GM(object):
                 for GM_id in self.simulation.gms:
                     if GM_id == self.GM_id:
                         """Skip the partitions of the GM searching for a free
-                           worker node in the external partitions."""
+                        worker node in the external partitions."""
                         ...
                     else:
                         """We search each of the other GM's internal
-                           partitions in each LM, for a free worker node."""
+                        partitions in each LM, for a free worker node."""
                         for _ in range(self.simulation.NUM_LMS):
                             # Which LM? searching the LMs in RR fashion
                             LM_id = str(self.RR_counter %
@@ -151,11 +155,12 @@ class GM(object):
                             self.RR_counter += 1
 
                             """Search in external partitions, hence iterating
-                               over a dict."""
+                            over a dict."""
                             for node_id in (self.global_view[LM_id]
                                             ["partitions"]
                                             [GM_id]["nodes"]):
                                 node = self.__get_node(GM_id, LM_id, node_id)
+                                logger.info("Searching worker node.")
 
                                 # The worker node is unoccupied
                                 if node["CPU"] == 1:
@@ -191,17 +196,17 @@ class GM(object):
 
                             if matchfound is True:
                                 """If we found a free worker node then stop
-                                   searching any more LMs."""
+                                searching any more LMs."""
                                 break
 
                         if matchfound is True:
                             """If we found a free worker node then stop
-                               searching any more GMs."""
+                            searching any more GMs."""
                             break
 
                 if matchfound is True:
                     """If this task was successfully placed then, move on to
-                       the next task."""
+                    the next task."""
                     ...
                 else:
                     print(current_time, "No resources available in cluster")
@@ -235,6 +240,7 @@ class GM(object):
                     for node_id in (self.global_view[LM_id]["partitions"]
                                     [self.GM_id]["nodes"]):
                         node = self.__get_node(self.GM_id, LM_id, node_id)
+                        logger.info("Searching worker node.")
 
                         if node["CPU"] == 1:  # If the Node is available
                             node["CPU"] = 0
