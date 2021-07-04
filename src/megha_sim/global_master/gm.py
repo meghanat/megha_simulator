@@ -176,27 +176,27 @@ class GM(object):
     # search internal partitions
     def schedule_tasks(self, current_time):
 
-        while len(
-                self.job_queue) > 0:  # While the job_queue for the current GM is not empty
-            job = self.job_queue[0]  # get job from head of queue
+        while len(self.job_queue) > 0:
+            # While the job_queue for the current GM is not empty
+            job = self.job_queue[0]  # Get job from the head of queue
             for task_id in job.tasks:  # Go over the tasks for the job
                 # If the task is already scheduled then, there is nothing to do
                 if(job.tasks[task_id].scheduled):
                     continue
                 matchfound = False
-                # which LM? searching the LMs in RR fashion
+                # Which LM? searching the LMs in RR fashion
                 LM_id = str(self.RR_counter % self.simulation.NUM_LMS + 1)
                 self.RR_counter += 1
-                # search in internal partitions
+                # Searching in the internal partitions
                 # iterating over a dict
                 for node_id in self.global_view[LM_id]["partitions"][self.GM_id]["nodes"]:
                     node = self.global_view[LM_id]["partitions"][self.GM_id]["nodes"][node_id]
-                    if node["CPU"] == 1:  # node available
+                    if node["CPU"] == 1:  # Node is available
                         node["CPU"] = 0
                         job.tasks[task_id].scheduled = True
                         if(job.fully_scheduled()):
                             self.jobs_scheduled.append(self.job_queue.pop(0))
-                        # may need to add processing overhead here if required
+                        # May need to add processing overhead here if required
                         self.simulation.event_queue.put(
                             (current_time,
                              MatchFoundEvent(
@@ -207,7 +207,9 @@ class GM(object):
                                  current_time)))
                         matchfound = True
                         break
-                if matchfound:  # If this task was successfully placed then, move on to the next task
+                if matchfound:
+                    # If this task was successfully placed then, move
+                    # on to the next task
                     continue
                 else:
                     # repartition
