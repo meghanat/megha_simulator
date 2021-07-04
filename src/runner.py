@@ -23,7 +23,7 @@ if __name__ == "__main__":
     SERVER_STORAGE = float(sys.argv[8])  # ditto
 
     logger = SimulatorLogger(__name__).get_logger()
-    logger.info("Received CMD line arguments.")
+    # logger.info("Received CMD line arguments.")
 
     NETWORK_DELAY = 0.0005  # same as sparrow
 
@@ -37,3 +37,4 @@ if __name__ == "__main__":
     print("Simulation ended in ", (time.time() - t1), " s ")
 
     print(simulator_globals.jobs_completed)
+    print(f"Number of Jobs completed: {len(simulator_globals.jobs_completed)}")
