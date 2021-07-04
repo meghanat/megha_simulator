@@ -16,7 +16,7 @@ class Simulation(object):
             workload,
             config,
             NUM_GMS,
-            NUM_LMS,
+            NUM_LMS: int,
             PARTITION_SIZE,
             cpu,
             memory,
