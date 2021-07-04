@@ -27,8 +27,8 @@ class Simulation(object):
         # Given the number of worker nodes per partition is PARTITION_SIZE
         # so the total_nodes are NUM_GMS*NUM_LMS*PARTITION_SIZE
         self.total_nodes = NUM_GMS * NUM_LMS * PARTITION_SIZE
-        self.NUM_GMS = NUM_GMS
-        self.NUM_LMS = NUM_LMS
+        self.NUM_GMS: int = NUM_GMS
+        self.NUM_LMS: int = NUM_LMS
         self.config = json.load(open(config))
         self.WORKLOAD_FILE = workload
 
