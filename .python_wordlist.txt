@@ -58,3 +58,6 @@ len
 Initialise
 Enum
 enum
+FileNotFoundError
+NamedTuple
+namedtuple
