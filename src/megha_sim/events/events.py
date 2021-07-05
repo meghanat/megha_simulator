@@ -29,7 +29,7 @@ if TYPE_CHECKING:
 logger = SimulatorLogger(__name__).get_logger()
 
 
-logger = SimulatorLogger(__name__).get_logger()
+# logger = SimulatorLogger(__name__).get_logger()
 
 class Event(object):
     """
@@ -174,6 +174,9 @@ class LaunchOnNodeEvent(Event):
         """
         assert self.task.partition_id is not None
         assert self.task.node_id is not None
+
+        # For job optimisation
+        logger.info(f"LaunchOnNodeEvent: CurrentTime: {current_time} , JobID: {self.task.job.job_id} , TaskID: {self.task.task_id} , PartitionID: {self.task.partition_id}, NodeID: {self.task.node_id}, JobStartTime: {self.task.job.start_time}")
 
         print(
             current_time,
