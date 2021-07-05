@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import json
 from typing import List, Dict, TYPE_CHECKING, TypedDict
 
@@ -40,7 +42,7 @@ class GM(object):
         self.job_queue: List[Job] = []
         self.jobs_scheduled: List[Job] = []
 
-        # populate internal_partitions info
+        # Populate internal_partitions info
         for LM_id in config["LMs"]:
             self.global_view[LM_id] = config["LMs"][LM_id]
 
