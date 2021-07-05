@@ -164,7 +164,9 @@ class GM(object):
                                             ["partitions"]
                                             [GM_id]["nodes"]):
                                 node = self.__get_node(GM_id, LM_id, node_id)
-                                logger.info("Searching worker node.")
+                                logger.info(f"Checking worker node : "
+                                            f"{GM_id}_{LM_id}_{node_id} : "
+                                            f"{job.job_id}_{task_id}")
 
                                 # The worker node is unoccupied
                                 if node["CPU"] == 1:
@@ -247,7 +249,9 @@ class GM(object):
                     for node_id in (self.global_view[LM_id]["partitions"]
                                     [self.GM_id]["nodes"]):
                         node = self.__get_node(self.GM_id, LM_id, node_id)
-                        logger.info("Searching worker node.")
+                        logger.info(f"Checking worker node : "
+                                    f"{self.GM_id}_{LM_id}_{node_id} : "
+                                    f"{job.job_id}_{task_id}")
 
                         if node["CPU"] == 1:  # If the Node is available
                             node["CPU"] = 0
