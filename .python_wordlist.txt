@@ -61,3 +61,4 @@ enum
 FileNotFoundError
 NamedTuple
 namedtuple
+TypedDict
