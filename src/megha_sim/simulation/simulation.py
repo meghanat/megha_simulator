@@ -1,6 +1,7 @@
 import pickle
 import queue
 import json
+from typing import Dict
 
 
 from local_master import LM
@@ -44,7 +45,7 @@ class Simulation(object):
             counter += 1
 
         # initialise LMs
-        self.lms = {}
+        self.lms: Dict[str, LM] = {}
         counter = 1
 
         while len(self.lms) < self.NUM_LMS:
