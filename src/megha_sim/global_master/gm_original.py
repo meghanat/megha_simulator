@@ -1,8 +1,17 @@
+"""
+File containing the implementation of the Global master.
+
+The file contains the implementation of the Global master module of the \
+Megha scheduler architecture.
+"""
+from __future__ import annotations
+
 import json
 from typing import List, Dict, TYPE_CHECKING, TypedDict
 
-from events import MatchFoundEvent
 import simulator_utils.globals
+from events import MatchFoundEvent
+from simulation_logger import SimulatorLogger
 
 
 # Imports used only for type checking go here to avoid circular imports
@@ -27,6 +36,9 @@ class LMResources(TypedDict):
     partitions: Dict[str, PartitionResources]
 
 
+logger = SimulatorLogger(__name__).get_logger()
+
+
 class GM(object):
     def __init__(self, simulation, GM_id: str, config):
         self.GM_id = GM_id
@@ -36,16 +48,19 @@ class GM(object):
         self.job_queue: List[Job] = []
         self.jobs_scheduled: List[Job] = []
 
-        # populate internal_partitions info
+        # Populate internal_partitions info
         for LM_id in config["LMs"]:
             self.global_view[LM_id] = config["LMs"][LM_id]
 
         print("GM", self.GM_id, "initialised")
 
-    # updates global view of GM by getting partial updates from each LM
-    def update_status(self, current_time):
-        # global jobs_completed
+    def update_status(self, current_time: float):
+        """
+        Updates global view of GM by getting partial updates from each LM.
 
+        Args:
+            current_time (float): The current time in the simulation.
+        """
         for LM_id in self.simulation.lms:
             lm = self.simulation.lms[LM_id]
             p_partial_status, p_tasks_completed = lm.get_status(self)
@@ -57,13 +72,13 @@ class GM(object):
                 job_id = record[0]
                 task_id = record[1]
 
-                job_unscheduled=False
+                job_unscheduled = False
 
                 # if not all tasks in the job have been scheduled
                 for index in range(0, len(self.job_queue)):
                     job = self.job_queue[index]
                     if job.job_id == job_id:
-                        job_unscheduled=True
+                        job_unscheduled = True
                         task = job.tasks[task_id]
                         job.completed_tasks.append(task)
                         break
@@ -71,7 +86,7 @@ class GM(object):
                 if(job_unscheduled):
                     continue
 
-                #if all tasks in the job have been scheduled already
+                # If all tasks in the job have been scheduled already
                 for index in range(0, len(self.jobs_scheduled)):
                     job = self.jobs_scheduled[index]
 
@@ -91,91 +106,134 @@ class GM(object):
 
         self.schedule_tasks(current_time)
 
-    def unschedule_job(self, unverified_job):
-        # """
-        # The job is inserted back into the job_queue of the GM from the
-        # job_scheduled queue of the GM
+    def unschedule_job(self, unverified_job: Job):
+        """
+        Job is inserted back into the job_queue of the GM.
 
-        # :param unverified_job: The job that needs to be moved, as it was assigned on a worker node
-        #  not actually available at that time
-        # :type unverified_job: Job
-        # """
+        The job is inserted back into the job_queue of the GM from the \
+        job_scheduled queue of the GM.
+
+        Args:
+            unverified_job (Job): The job that needs to be moved, as it was \
+                assigned on a worker node not actually available at that time
+        """
         for index in range(0, len(self.jobs_scheduled)):
             if unverified_job.job_id == self.jobs_scheduled[index].job_id:
                 # remove job from list and add to front of job_queue
                 self.job_queue.insert(0, self.jobs_scheduled.pop(index))
                 break
 
-    # searches the external partitions
+    def __get_node(self, GM_id: str, LM_id: str, node_id: str) \
+            -> NodeResources:
+        return self.global_view[LM_id]["partitions"][GM_id]["nodes"][node_id]
+
     def repartition(self, current_time):
-        # search in external partitions:
-        for GM_id in self.simulation.gms:
-            if GM_id == self.GM_id:  # Skip the partition of the GM searching for a worker node in a external partition
-                continue
-            else:
-                # While the job_queue for the current GM is not empty
-                while len(self.job_queue) > 0:
-                    job = self.job_queue[0]  # get job from head of queue
-                    # print("Scheduling Tasks from Job: ",job.job_id)
+        """
+        Search the external partitions for a free worker node.
 
-                    for task_id in job.tasks:  # Go over the tasks for the job
-                        task = job.tasks[task_id]
-                        # If the task is already scheduled then, there is
-                        # nothing to do
-                        if(job.tasks[task_id].scheduled):
-                            continue
-                        matchfound = False
-                        # print("Scheduling Task:",task_id)
-                        # which LM? searching the LMs in RR fashion
-                        LM_id = str(self.RR_counter %
-                                    self.simulation.NUM_LMS + 1)
-                        self.RR_counter += 1
-                        # search in external partitions
-                        # iterating over a dict
-                        for node_id in (self.global_view[LM_id]["partitions"]
-                                        [GM_id]["nodes"]):
-                            node = self.global_view[LM_id]["partitions"][GM_id]["nodes"][node_id]
-                            if node["CPU"] == 1:  # node unoccupied
-                                # print("Match found in internal partitions")
-                                node["CPU"] = 0
-                                job.tasks[task_id].scheduled = True
-                                if(job.fully_scheduled()):
-                                    self.jobs_scheduled.append(
-                                        self.job_queue.pop(0))
-                                print(
-                                    current_time,
-                                    "RepartitionEvent",
-                                    self.GM_id,
-                                    ",",
-                                    GM_id,
-                                    ",",
-                                    job.job_id +
-                                    "_" +
-                                    task.task_id)
-                                # may need to add processing overhead here if
-                                # required
-                                self.simulation.event_queue.put(
-                                    (current_time,
-                                     MatchFoundEvent(
-                                         job.tasks[task_id],
-                                         self,
-                                         self.simulation.lms[LM_id],
-                                         node_id,
-                                         current_time,
-                                         external_partition=GM_id)))
-                                matchfound = True
+        Args:
+            current_time (float): The current time in the simulation.
+        """
+        # While the job_queue for the current GM is not empty
+        while len(self.job_queue) > 0:
+            job = self.job_queue[0]  # Get the Job from the head of the queue
+
+            # print("Scheduling Tasks from Job: ",job.job_id)
+            for task_id in job.tasks:  # Go over the tasks for the job
+                task = job.tasks[task_id]
+                """If the task is already scheduled then, there is
+                nothing to do."""
+                if(job.tasks[task_id].scheduled):
+                    continue
+
+                matchfound: bool = False
+                # print("Scheduling Task:", task_id)
+
+                # Search in the GM's external partitions:
+                for GM_id in self.simulation.gms:
+                    if GM_id == self.GM_id:
+                        """Skip the partitions of the GM searching for a free
+                        worker node in the external partitions."""
+                        ...
+                    else:
+                        """We search each of the other GM's internal
+                        partitions in each LM, for a free worker node."""
+                        for _ in range(self.simulation.NUM_LMS):
+                            # Which LM? searching the LMs in RR fashion
+                            LM_id = str(self.RR_counter %
+                                        self.simulation.NUM_LMS + 1)
+                            self.RR_counter += 1
+
+                            """Search in external partitions, hence iterating
+                            over a dict."""
+                            for node_id in (self.global_view[LM_id]
+                                            ["partitions"]
+                                            [GM_id]["nodes"]):
+                                node = self.__get_node(GM_id, LM_id, node_id)
+                                logger.info(f"Checking worker node , "
+                                            f"{GM_id}_{LM_id}_{node_id} , "
+                                            f"{job.job_id}_{task_id}")
+
+                                # The worker node is unoccupied
+                                if node["CPU"] == 1:
+                                    node["CPU"] = 0
+                                    job.tasks[task_id].scheduled = True
+                                    if(job.fully_scheduled()):
+                                        self.jobs_scheduled.append(
+                                            self.job_queue.pop(0))
+                                    print(
+                                        current_time,
+                                        "RepartitionEvent",
+                                        self.GM_id,
+                                        ",",
+                                        GM_id,
+                                        ",",
+                                        job.job_id +
+                                        "_" +
+                                        task.task_id)
+                                    # may need to add processing overhead here
+                                    # if required
+                                    self.simulation.event_queue.put(
+                                        (current_time,
+                                            MatchFoundEvent(
+                                                job.tasks[task_id],
+                                                self,
+                                                self.simulation.lms[LM_id],
+                                                node_id,
+                                                current_time,
+                                                external_partition=GM_id)))
+
+                                    """We have found a free worker node and
+                                    hence, we do not need to search any
+                                    further."""
+                                    matchfound = True
+                                    break
+
+                            if matchfound is True:
+                                """If we found a free worker node then stop
+                                searching any more LMs."""
                                 break
-                        if matchfound:  # If this task was successfully placed then, move on to the next task
-                            continue
-                        else:
-                            print(current_time,
-                                  "No resources available in cluster")
-                            return
-                # print("Exit scheduling loop for now")
 
-    # search internal partitions
-    def schedule_tasks(self, current_time):
+                        if matchfound is True:
+                            """If we found a free worker node then stop
+                            searching any more GMs."""
+                            break
 
+                if matchfound is True:
+                    """If this task was successfully placed then, move on to
+                    the next task."""
+                    ...
+                else:
+                    print(current_time, "No resources available in cluster")
+                    return
+
+    def schedule_tasks(self, current_time: float):
+        """
+        Search the internal partitions of the GM to find a free worker node.
+
+        Args:
+            current_time (float): The current time in the simulation.
+        """
         while len(self.job_queue) > 0:
             # While the job_queue for the current GM is not empty
             job = self.job_queue[0]  # Get job from the head of queue
@@ -196,8 +254,11 @@ class GM(object):
                     # Searching in the internal partition iterating over a dict
                     for node_id in (self.global_view[LM_id]["partitions"]
                                     [self.GM_id]["nodes"]):
-                        node = (self.global_view[LM_id]["partitions"]
-                                [self.GM_id]["nodes"][node_id])
+                        node = self.__get_node(self.GM_id, LM_id, node_id)
+                        logger.info(f"Checking worker node , "
+                                    f"{self.GM_id}_{LM_id}_{node_id} , "
+                                    f"{job.job_id}_{task_id}")
+
                         if node["CPU"] == 1:  # If the Node is available
                             node["CPU"] = 0
                             job.tasks[task_id].scheduled = True
@@ -209,14 +270,14 @@ class GM(object):
                             self.simulation.event_queue.put(
                                 (current_time,
                                  MatchFoundEvent(
-                                                job.tasks[task_id],
-                                                self,
-                                                self.simulation.lms[LM_id],
-                                                node_id,
-                                                current_time)))
+                                     job.tasks[task_id],
+                                     self,
+                                     self.simulation.lms[LM_id],
+                                     node_id,
+                                     current_time)))
                             matchfound = True
                             break
-                    
+
                     if matchfound is True:
                         break
 
