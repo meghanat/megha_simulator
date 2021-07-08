@@ -94,18 +94,46 @@ if os.path.isfile(FULL_LOG_PATH) is False:
 
 matching_logic_ops_count: int = 0
 tasks_completed_count: int = 0
+launch_on_node_count: int = 0
+internal_inconsistency_count: int = 0
+external_inconsistency_count: int = 0
+match_found_count: int = 0
+lm_update_periodic_count: int = 0
+lm_update_aperiodic_count: int = 0
+job_arrival: int = 0
 
 with open(FULL_LOG_PATH) as file_handler:
     for line in file_handler:
         logged_line = LogLineType(*(line.strip().split(" : ")))
+        # If the logging message is for processing delay
         if logged_line.message.startswith(MATCHING_LOGIC_MSG) is True:
             matching_logic_ops_count += 1
             matching_logic_details: List[str] = (logged_line
                                                  .message
                                                  .split(" , ")[1:])
             parse_matching_logic_stmt(matching_logic_details)
-        elif (logged_line.message.split(" , "))[1] == "TaskEndEvent":
-            tasks_completed_count += 1
+        else:  # The logging message if for an event in the simulator
+            # Get the event name from the log message
+            event_name = logged_line.message.split(" , ")[1]
+
+            if event_name == "TaskEndEvent":
+                tasks_completed_count += 1
+            elif event_name == "LaunchOnNodeEvent":
+                launch_on_node_count += 1
+            elif event_name == "InternalInconsistencyEvent":
+                internal_inconsistency_count += 1
+            elif event_name == "ExternalInconsistencyEvent":
+                external_inconsistency_count += 1
+            elif event_name == "MatchFoundEvent":
+                match_found_count += 1
+            elif event_name == "LMUpdateEvent":
+                is_periodic = logged_line.message.split(" , ")[2]
+                if is_periodic == "True":
+                    lm_update_periodic_count += 1
+                else:
+                    lm_update_aperiodic_count += 1
+            elif event_name == "JobArrival":
+                job_arrival += 1
 
 print(f"Matching logic operations taken: {TColors.BOLD}"
       f"{matching_logic_ops_count}{TColors.END}")
@@ -116,7 +144,26 @@ success_percent = sum(map(lambda task_id: 1 / (measurements[task_id]
                                                ["workers_searched"]),
                           measurements)) / len(measurements.keys())
 
-print(f"{success_percent=:%}")
+print("Percentage ratio of free worker found to number of workers searched"
+      f" = {success_percent=:%}")
+
+print("LaunchOnNodeEvent count: "
+      f"{TColors.BOLD}{launch_on_node_count}{TColors.END}")
+print("InternalInconsistencyEvent count: "
+      f" {TColors.BOLD}{internal_inconsistency_count}{TColors.END}")
+print("ExternalInconsistencyEvent count: "
+      f" {TColors.BOLD}{external_inconsistency_count}{TColors.END}")
+print("Total Inconsistency count: "
+      f"{internal_inconsistency_count + external_inconsistency_count}")
+print("MatchFoundEvent count: "
+      f"{TColors.BOLD}{match_found_count}{TColors.END}")
+print("Periodic LMUpdateEvent count: "
+      f"{TColors.BOLD}{lm_update_periodic_count}{TColors.END}")
+print("Aperiodic LMUpdateEvent count: "
+      f"{TColors.BOLD}{lm_update_aperiodic_count}{TColors.END}")
+print("JobArrival count: "
+      f"{TColors.BOLD}{job_arrival}{TColors.END}")
+
 
 print()
 print("-"*80)
