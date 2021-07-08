@@ -136,4 +136,15 @@ This rule applies to all other such classes and code as well. Below is the reaso
 ## Link to the Paper
 
 - [Link to the preprint on arXiv.org](https://arxiv.org/abs/2103.08413)
+
+## Link to the Trace Datasets
+
+- All credits go to the [**EPFL LABOS team**](https://github.com/epfl-labos) for making this link available to everyone
+  - [Link to the original repository](https://github.com/epfl-labos/eagle)
+- The traces used for evaluating Hawk and Eagle are at:
+  - [Dropbox link](https://www.dropbox.com/sh/bhk5zxreyplus73/AADxmp60oqxh7jq9qkCzoJX5a?dl=0)
+  - [Link to the original repository notes](https://github.com/epfl-labos/eagle/blob/master/simulation/LOCATION_OF_TRACES.txt)
+  - We do not own this link nor the data hosted on it.
+
+> **NOTE:** that these links may change in the future.
 ---
