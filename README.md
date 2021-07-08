@@ -11,7 +11,7 @@
 [![First interaction greeter](https://github.com/meghanat/megha_simulator/actions/workflows/user_eng.yml/badge.svg)](https://github.com/meghanat/megha_simulator/actions/workflows/user_eng.yml)
 [![Format python code](https://github.com/meghanat/megha_simulator/actions/workflows/linting.yml/badge.svg)](https://github.com/meghanat/megha_simulator/actions/workflows/linting.yml)
 
-![](https://estruyf-github.azurewebsites.net/api/VisitorHit?user=meghanat&repo=megha_simulator&countColorcountColor&countColor=%237B1E7A)
+![](https://estruyf-github.azurewebsites.net/api/VisitorHit?user=meghanat&repo=megha_simulator&countColorcountColor&countColor=%237B1E7A&label=VISITOR+COUNT)
 
 ## About
 A simple simulator for the Megha Federated Scheduling Framework. This simulator enables comparison with other frameworks such as Sparrow, Eagle and Pigeon for which simulators already exist.
