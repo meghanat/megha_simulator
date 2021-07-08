@@ -10,6 +10,17 @@ matrix:
     - .wordlist.txt
   pipeline:
   - pyspelling.filters.markdown:
+      markdown_extensions:
+      - markdown.extensions.extra:
+  - pyspelling.filters.html:
+        comments: true
+        attributes:
+        - title
+        - alt
+        ignores:
+        - ':matches(code, pre)'
+        - 'code'
+        - 'pre'
   sources:
   - '**/*.md|!Simulator\ Notes/**|!roughpad/**'
   default_encoding: utf-8
@@ -25,7 +36,14 @@ matrix:
     - .wordlist.txt
   pipeline:
   - pyspelling.filters.html:
-      comments: true
+        comments: true
+        attributes:
+        - title
+        - alt
+        ignores:
+        - ':matches(code, pre)'
+        - 'code'
+        - 'pre'
   sources:
   - '**/*.html|!Simulator\ Notes/**|!roughpad/**'
   default_encoding: utf-8
