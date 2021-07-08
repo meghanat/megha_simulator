@@ -13,6 +13,8 @@ import sys
 from pathlib import Path
 from typing import List, NamedTuple, Dict, TypedDict
 
+from simulation_logger.msg_list import MATCHING_LOGIC_MSG
+
 
 class TColors():
     """Class for declaring common ANSI escape sequences."""
@@ -96,13 +98,13 @@ tasks_completed_count: int = 0
 with open(FULL_LOG_PATH) as file_handler:
     for line in file_handler:
         logged_line = LogLineType(*(line.strip().split(" : ")))
-        if logged_line.message.startswith("Checking worker node") is True:
+        if logged_line.message.startswith(MATCHING_LOGIC_MSG) is True:
             matching_logic_ops_count += 1
             matching_logic_details: List[str] = (logged_line
                                                  .message
                                                  .split(" , ")[1:])
             parse_matching_logic_stmt(matching_logic_details)
-        elif logged_line.message.split(" , ")[1] == "TaskEndEvent":
+        elif (logged_line.message.split(" , "))[1] == "TaskEndEvent":
             tasks_completed_count += 1
 
 print(f"Matching logic operations taken: {TColors.BOLD}"
