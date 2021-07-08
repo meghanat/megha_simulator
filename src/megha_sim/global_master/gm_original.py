@@ -11,7 +11,7 @@ from typing import List, Dict, TYPE_CHECKING, TypedDict
 
 import simulator_utils.globals
 from events import MatchFoundEvent
-from simulation_logger import SimulatorLogger
+from simulation_logger import SimulatorLogger, MATCHING_LOGIC_MSG
 
 
 # Imports used only for type checking go here to avoid circular imports
@@ -170,7 +170,7 @@ class GM(object):
                                             ["partitions"]
                                             [GM_id]["nodes"]):
                                 node = self.__get_node(GM_id, LM_id, node_id)
-                                logger.info(f"Checking worker node , "
+                                logger.info(f"{MATCHING_LOGIC_MSG} , "
                                             f"{GM_id}_{LM_id}_{node_id} , "
                                             f"{job.job_id}_{task_id}")
 
@@ -255,7 +255,7 @@ class GM(object):
                     for node_id in (self.global_view[LM_id]["partitions"]
                                     [self.GM_id]["nodes"]):
                         node = self.__get_node(self.GM_id, LM_id, node_id)
-                        logger.info(f"Checking worker node , "
+                        logger.info(f"{MATCHING_LOGIC_MSG} , "
                                     f"{self.GM_id}_{LM_id}_{node_id} , "
                                     f"{job.job_id}_{task_id}")
 
