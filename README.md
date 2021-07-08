@@ -144,7 +144,7 @@ This rule applies to all other such classes and code as well. Below is the reaso
 - The traces used for evaluating Hawk and Eagle are at:
   - [Dropbox link](https://www.dropbox.com/sh/bhk5zxreyplus73/AADxmp60oqxh7jq9qkCzoJX5a?dl=0)
   - [Link to the original repository notes](https://github.com/epfl-labos/eagle/blob/master/simulation/LOCATION_OF_TRACES.txt)
-  - We do not own this link nor the data hosted on it.
+  - We do not own this (Dropbox) link nor the data hosted on it.
 
 > **NOTE:** that these links may change in the future.
 ---
