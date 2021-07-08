@@ -162,7 +162,7 @@ class GM:
                 # TODO: Check if the LM needs to be moved around
                 # Check if the partition is an internal partition
                 if gm_id == self.GM_id:
-                    # Check if the partition is an un-saturated partition
+                    # Check if the partition is an unsaturated partition
                     if key in self.internal_partitions.keys():
                         # Update each of the workers in the partition
                         is_saturated = \
@@ -192,7 +192,7 @@ class GM:
                                                   self.saturated_partitions,
                                                   self.internal_partitions)
                 else:  # The partition is an external partition
-                    # Check if the partition is an un-saturated partition
+                    # Check if the partition is an unsaturated partition
                     if key in self.external_partitions.keys():
                         # Update each of the workers in the partition
                         is_saturated = \
@@ -299,6 +299,10 @@ class GM:
             # print("Scheduling Tasks from Job: ",job.job_id)
             for task_id in job.tasks:  # Go over the tasks for the job
                 task = job.tasks[task_id]
+                """Make sure that the 2 sources for `task_id` agree with each
+                other"""
+                assert task.task_id == task_id
+
                 """If the task is already scheduled then, there is
                 nothing to do."""
                 if(job.tasks[task_id].scheduled):
@@ -311,8 +315,6 @@ class GM:
                     """
                     print(current_time, "No resources available in cluster")
                     return
-
-                logger.info(MATCHING_LOGIC_MSG)
 
                 # We randomly pick a non-saturated external partition
                 key_external_partition = random.choice(
@@ -351,6 +353,9 @@ class GM:
                       job.job_id +
                       "_" +
                       task.task_id)
+                logger.info(f"{MATCHING_LOGIC_MSG} , "
+                            f"{gm_id}_{lm_id}_{free_worker_id} , "
+                            f"{job.job_id}_{task.task_id}")
 
                 """If this external partition is now completely full then,
                 move it to the `saturated_partitions` list"""
@@ -482,6 +487,9 @@ class GM:
         while len(self.job_queue) > 0:
             job = self.job_queue[0]  # Get job from the head of queue
             for task_id in job.tasks:  # Go over the tasks for the job
+                """Make sure that the 2 sources for `task_id` agree with each
+                other"""
+                assert task_id == job.tasks[task_id].task_id
                 if(job.tasks[task_id].scheduled):
                     """If the task is already scheduled, then there is
                     nothing to do"""
@@ -494,8 +502,6 @@ class GM:
                     """
                     self.repartition(current_time)
                     return
-
-                logger.info(MATCHING_LOGIC_MSG)
 
                 # We randomly pick a non-saturated internal partition
                 key_internal_partition = random.choice(
@@ -535,6 +541,10 @@ class GM:
                     """Remove the internal partition from the
                     `internal_partitions` dictionary"""
                     del(self.internal_partitions[key_internal_partition])
+
+                logger.info(f"{MATCHING_LOGIC_MSG} , "
+                            f"{self.GM_id}_{lm_id}_{free_worker_id} , "
+                            f"{job.job_id}_{task_id}")
 
                 """May need to add processing overhead here if
                 required"""
