@@ -1,9 +1,13 @@
 import json
 
-num_nodes = 18
-num_lms = 2
-num_partitions = 3
-partition_size = 3
+num_nodes = 10_000
+num_lms = 10
+num_partitions = 10  # This value is always equal to the number of GMs
+
+assert num_nodes % (num_lms * num_partitions) == 0, ("Nodes cannot be equally "
+                                                     "divided amongst all "
+                                                     "partitions")
+partition_size = num_nodes // (num_lms * num_partitions)
 
 cluster_config = {}
 cluster_config["LMs"] = {}
