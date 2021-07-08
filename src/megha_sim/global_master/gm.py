@@ -24,7 +24,7 @@ if TYPE_CHECKING:
     from local_master import LM
 
 # Seed the random number generator
-random.seed()
+random.seed(47)
 
 
 logger = SimulatorLogger(__name__).get_logger()
