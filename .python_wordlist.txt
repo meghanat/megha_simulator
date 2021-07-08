@@ -62,3 +62,4 @@ FileNotFoundError
 NamedTuple
 namedtuple
 TypedDict
+json
