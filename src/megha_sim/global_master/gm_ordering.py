@@ -8,7 +8,7 @@ modified scheduler architecture.
 from __future__ import annotations
 import json
 import random
-from typing import List, Dict, TYPE_CHECKING
+from typing import List, Dict, TYPE_CHECKING, Tuple
 from sortedcontainers import SortedDict
 from operator import neg
 
@@ -70,6 +70,9 @@ class GM:
             Dict[FreeSlotsCount,
                  Dict[PartitionKey,
                       OrganizedPartitionResources]] = SortedDict(key=POLICY)
+
+        """All saturated partitions have no free worker slots, hence no extra
+        information needs to be saved here."""
         self.saturated_partitions: \
             Dict[PartitionKey,
                  OrganizedPartitionResources] = SortedDict(key=POLICY)
@@ -115,7 +118,8 @@ class GM:
 
     def __update_partition(self,
                            old_partition_data: OrganizedPartitionResources,
-                           new_partition_data: PartitionResources) -> bool:
+                           new_partition_data: PartitionResources) \
+            -> Tuple[bool, int]:
         # Initially assume that the partition is saturated
         is_saturated: bool = True
 
@@ -147,7 +151,7 @@ class GM:
                 dictionary"""
                 del(old_partition_data["busy_nodes"][node_id])
 
-        return is_saturated
+        return is_saturated, len(old_partition_data["free_nodes"])
 
     def __move_partition(self, key: PartitionKey,
                          from_partition:
