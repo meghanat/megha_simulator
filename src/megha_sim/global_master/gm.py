@@ -532,7 +532,7 @@ class GM:
                     self.jobs_scheduled.append(self.job_queue.pop(0))
 
                 """If this internal partition is now completely full then,
-                move it to the `saturated_partitions` list"""
+                move it to the `saturated_partitions` dictionary"""
                 if len(internal_partition["free_nodes"]) == 0:
                     self.saturated_partitions[key_internal_partition] = \
                         self.internal_partitions[key_internal_partition]
