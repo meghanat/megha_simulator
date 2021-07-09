@@ -99,9 +99,15 @@ class GM:
                 self.global_view[key] = free_slots_count
 
                 if partition_id == self.GM_id:
+                    # If this `free_slots_count` value has not been recorded
+                    if self.internal_partitions.get(free_slots_count) is None:
+                        self.internal_partitions[free_slots_count] = dict()
                     self.internal_partitions[free_slots_count][key] = \
                         partition_obj
                 else:
+                    # If this `free_slots_count` value has not been recorded
+                    if self.external_partitions.get(free_slots_count) is None:
+                        self.external_partitions[free_slots_count] = dict()
                     self.external_partitions[free_slots_count][key] = \
                         partition_obj
 
