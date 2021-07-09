@@ -1,4 +1,6 @@
-from typing import List, Dict, NamedTuple, Type, TypedDict
+from typing import (List, Dict, NamedTuple, Optional,
+                    Tuple, TypedDict, Generic,
+                    TypeVar)
 
 
 class NodeResources(TypedDict):
@@ -42,3 +44,32 @@ class PartitionKey(NamedTuple):
 
 
 FreeSlotsCount = int
+
+
+KT = TypeVar('KT')
+VT = TypeVar('VT')
+
+
+class MySortedDict(Generic[KT, VT]):
+    def __init__(self, key) -> None:
+        ...
+
+    def peekitem(self, index: int) -> Tuple[KT, VT]:
+        ...
+
+    def get(self, key: KT) -> Optional[VT]:
+        ...
+
+    def __setitem__(self, key: KT, value: VT) -> None:
+        ...
+
+    def __getitem__(self, key: KT) -> VT:
+        ...
+
+    def __delitem__(self, key: KT) -> None:
+        ...
+
+
+OrderedPartition = MySortedDict[FreeSlotsCount,
+                                Dict[PartitionKey,
+                                     OrganizedPartitionResources]]
