@@ -63,3 +63,4 @@ NamedTuple
 namedtuple
 TypedDict
 json
+SortedDict

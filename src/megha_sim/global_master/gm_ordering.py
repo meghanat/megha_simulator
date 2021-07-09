@@ -457,7 +457,7 @@ class GM:
 
         Select the worker node from the partition with most number of \
         free worker slots. This is aimed to help overcome (to a certain \
-        degree) the innaccuracies in the stale view of the cluster that the \
+        degree) the inaccuracies in the stale view of the cluster that the \
         GM has.
         """
         """We pick the dictionary of partitions with the most number of
