@@ -354,36 +354,14 @@ class GM:
                     print(current_time, "No resources available in cluster")
                     return
 
-                # We randomly pick a non-saturated external partition
-                key_external_partition = random.choice(
-                    list(self.external_partitions.keys()))
-                external_partition = (self.external_partitions
-                                      [key_external_partition])
-
-                # Get the LM id to verify with the LM later
-                lm_id = external_partition["lm_id"]
-
-                # We randomly pick a free worker node
-                free_worker_id = random.choice(
-                    list(external_partition["free_nodes"].keys()))
-
-                free_worker_node = (external_partition["free_nodes"]
-                                    [free_worker_id])
-                free_worker_node["CPU"] = 0
-
-                # Move the worker node to the `busy_nodes` dictionary
-                external_partition["busy_nodes"][free_worker_id] =\
-                    external_partition["free_nodes"][free_worker_id]
-
-                """Remove the worker node from the `free_nodes`
-                dictionary"""
-                del(external_partition["free_nodes"][free_worker_id])
+                # NOTE: This is not a type error
+                gm_id, lm_id, free_worker_id = self.__get_worker_node(
+                    self.external_partitions)
 
                 job.tasks[task_id].scheduled = True
                 if(job.fully_scheduled()):
                     self.jobs_scheduled.append(self.job_queue.pop(0))
 
-                gm_id = external_partition["partition_id"]
                 print(current_time, ", RepartitionEvent ,",
                       self.GM_id, ",",
                       gm_id,
@@ -394,16 +372,6 @@ class GM:
                 logger.info(f"{MATCHING_LOGIC_MSG} , "
                             f"{gm_id}_{lm_id}_{free_worker_id} , "
                             f"{job.job_id}_{task.task_id}")
-
-                """If this external partition is now completely full then,
-                move it to the `saturated_partitions` list"""
-                if len(external_partition["free_nodes"]) == 0:
-                    self.saturated_partitions[key_external_partition] = \
-                        self.external_partitions[key_external_partition]
-
-                    """Remove the external partition from the
-                    `external_partitions` dictionary"""
-                    del(self.external_partitions[key_external_partition])
 
                 """May need to add processing overhead here if required"""
                 self.simulation.event_queue.put(
@@ -417,7 +385,7 @@ class GM:
                             external_partition=gm_id)))
 
     def __get_worker_node(self, partition: OrderedPartition) \
-            -> Tuple[str, str]:
+            -> Tuple[str, str, str]:
         """
         Select the worker node with the highest chances of actually begin free.
 
@@ -433,6 +401,9 @@ class GM:
         # We randomly pick a non-saturated internal partition
         key_internal_partition = random.choice(list(partition_dict.keys()))
         internal_partition = partition_dict[key_internal_partition]
+
+        # Get the GM id to verify with the LM later
+        gm_id = internal_partition["partition_id"]
 
         # Get the LM id to verify with the LM later
         lm_id = internal_partition["lm_id"]
@@ -485,7 +456,7 @@ class GM:
         if len(partition[free_slot_key]) == 0:
             del(partition[free_slot_key])
 
-        return lm_id, free_worker_id
+        return gm_id, lm_id, free_worker_id
 
     def schedule_tasks(self, current_time: float):
         """
@@ -515,7 +486,7 @@ class GM:
                     return
 
                 # NOTE: This is not a type error
-                lm_id, free_worker_id = self\
+                _, lm_id, free_worker_id = self\
                     .__get_worker_node(self.internal_partitions)
 
                 job.tasks[task_id].scheduled = True
