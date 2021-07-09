@@ -17,7 +17,7 @@ from events import MatchFoundEvent
 from simulation_logger import SimulatorLogger, MATCHING_LOGIC_MSG
 from .gm_types import (PartitionKey, LMResources, ConfigFile,
                        OrganizedPartitionResources, NodeResources,
-                       PartitionResources)
+                       PartitionResources, FreeSlotsCount)
 
 # Imports used only for type checking go here to avoid circular imports
 if TYPE_CHECKING:
@@ -50,11 +50,11 @@ class GM:
 
         # 3 Dictionaries
         self.internal_partitions: \
-            Dict[PartitionKey,
-                 OrganizedPartitionResources] = SortedDict()
+            Dict[FreeSlotsCount, Dict[PartitionKey,
+                 OrganizedPartitionResources]] = SortedDict()
         self.external_partitions: \
-            Dict[PartitionKey,
-                 OrganizedPartitionResources] = SortedDict()
+            Dict[FreeSlotsCount, Dict[PartitionKey,
+                 OrganizedPartitionResources]] = SortedDict()
         self.saturated_partitions: \
             Dict[PartitionKey,
                  OrganizedPartitionResources] = SortedDict()

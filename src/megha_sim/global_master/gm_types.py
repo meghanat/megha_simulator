@@ -1,4 +1,4 @@
-from typing import List, Dict, NamedTuple, TypedDict
+from typing import List, Dict, NamedTuple, Type, TypedDict
 
 
 class NodeResources(TypedDict):
@@ -39,3 +39,6 @@ class ConfigFile(TypedDict):
 class PartitionKey(NamedTuple):
     gm_id: str
     lm_id: str
+
+
+FreeSlotsCount: Type[int] = int
