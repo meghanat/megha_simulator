@@ -41,4 +41,4 @@ class PartitionKey(NamedTuple):
     lm_id: str
 
 
-FreeSlotsCount: Type[int] = int
+FreeSlotsCount = int
