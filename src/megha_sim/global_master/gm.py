@@ -153,13 +153,13 @@ class GM:
 
             self.global_view[lm.LM_id] = partial_status  # Original
 
-            # TODO: Iterate over all the LMs partitions
+            # Iterate over all the LMs partitions
             for gm_id in partial_status["partitions"]:
-                # TODO: Find the partition in the 3 sets
+                # Find the partition in the 3 sets
                 key = PartitionKey(gm_id=gm_id, lm_id=LM_id)
 
-                # TODO: Update the data in the LM
-                # TODO: Check if the LM needs to be moved around
+                # Update the data in the LM
+                # Check if the LM needs to be moved around
                 # Check if the partition is an internal partition
                 if gm_id == self.GM_id:
                     # Check if the partition is an unsaturated partition
@@ -222,8 +222,6 @@ class GM:
                                                   self.saturated_partitions,
                                                   self.external_partitions)
             # -------------------------------------------
-
-            # TODO: Check comment "Through Job object delete task"
 
             # Iterate over the tasks completed and update each job's status
             for record in tasks_completed:
