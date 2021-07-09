@@ -10,7 +10,7 @@ import json
 import random
 from typing import List, Dict, TYPE_CHECKING
 from sortedcontainers import SortedDict
-
+from operator import neg
 
 import simulator_utils.globals
 from events import MatchFoundEvent
@@ -44,20 +44,35 @@ class GM:
         self.GM_id = GM_id
         self.simulation = simulation
         self.RR_counter: int = 0
-        self.global_view: Dict[str, LMResources] = {}
         self.job_queue: List[Job] = []
         self.jobs_scheduled: List[Job] = []
 
+        # Map the partition to the number of free slots in it
+        self.global_view: Dict[PartitionKey, FreeSlotsCount] = {}
+
+        """The current `POLICY` ensures that the first choice is
+        from amongst the partitions with the most number of free worker
+        slots."""
+        POLICY = neg
         # 3 Dictionaries
         self.internal_partitions: \
-            Dict[FreeSlotsCount, Dict[PartitionKey,
-                 OrganizedPartitionResources]] = SortedDict()
+            Dict[FreeSlotsCount,
+                 Dict[PartitionKey,
+                      OrganizedPartitionResources]] = SortedDict(key=POLICY)
+
+        """TODO: Experiment with ordering the external partition in reverse
+        so as to not clash with the GM who owns that partition.
+        NOTE: By 'reverse' I mean: start from the partition with the
+        least number of free worker slots and then move towards the ones
+        with the most number of free worker slots.
+        """
         self.external_partitions: \
-            Dict[FreeSlotsCount, Dict[PartitionKey,
-                 OrganizedPartitionResources]] = SortedDict()
+            Dict[FreeSlotsCount,
+                 Dict[PartitionKey,
+                      OrganizedPartitionResources]] = SortedDict(key=POLICY)
         self.saturated_partitions: \
             Dict[PartitionKey,
-                 OrganizedPartitionResources] = SortedDict()
+                 OrganizedPartitionResources] = SortedDict(key=POLICY)
 
         # Populate internal_partitions info
         # for LM_id in config["LMs"]:
@@ -78,11 +93,17 @@ class GM:
                                                 free_nodes=partition_nodes,
                                                 busy_nodes=dict())
 
+                free_slots_count = len(partition_obj["free_nodes"])
                 key = PartitionKey(gm_id=partition_id, lm_id=LM_id)
+
+                self.global_view[key] = free_slots_count
+
                 if partition_id == self.GM_id:
-                    self.internal_partitions[key] = partition_obj
+                    self.internal_partitions[free_slots_count][key] = \
+                        partition_obj
                 else:
-                    self.external_partitions[key] = partition_obj
+                    self.external_partitions[free_slots_count][key] = \
+                        partition_obj
 
         print("GM", self.GM_id, "initialised")
 
