@@ -17,7 +17,8 @@ from events import MatchFoundEvent
 from simulation_logger import SimulatorLogger, MATCHING_LOGIC_MSG
 from .gm_types import (PartitionKey, LMResources, ConfigFile,
                        OrganizedPartitionResources, NodeResources,
-                       PartitionResources, FreeSlotsCount)
+                       PartitionResources, FreeSlotsCount,
+                       OrderedPartition)
 
 # Imports used only for type checking go here to avoid circular imports
 if TYPE_CHECKING:
@@ -153,6 +154,7 @@ class GM:
 
         return is_saturated, len(old_partition_data["free_nodes"])
 
+    # TODO: Update this method
     def __move_partition(self, key: PartitionKey,
                          from_partition:
                              Dict[PartitionKey, OrganizedPartitionResources],
@@ -512,6 +514,77 @@ class GM:
                     print(current_time, "No resources available in cluster")
                     return
 
+    def __get_worker_node(self, partition: OrderedPartition) \
+            -> Tuple[str, str]:
+        """
+        Select the worker node with the highest chances of actually begin free.
+
+        Select the worker node from the partition with most number of \
+        free worker slots. This is aimed to help overcome (to a certain \
+        degree) the innaccuracies in the stale view of the cluster that the \
+        GM has.
+        """
+        """We pick the dictionary of partitions with the most number of
+        free worker slots."""
+        free_slot_key, partition_dict = partition.peekitem(index=0)
+
+        # We randomly pick a non-saturated internal partition
+        key_internal_partition = random.choice(list(partition_dict.keys()))
+        internal_partition = partition_dict[key_internal_partition]
+
+        # Get the LM id to verify with the LM later
+        lm_id = internal_partition["lm_id"]
+
+        # We randomly pick a free worker node
+        free_worker_id = random.choice(
+            list(internal_partition["free_nodes"].keys()))
+
+        free_worker_node = (internal_partition["free_nodes"]
+                            [free_worker_id])
+        free_worker_node["CPU"] = 0
+
+        # Move the worker node to the `busy_nodes` dictionary
+        internal_partition["busy_nodes"][free_worker_id] =\
+            internal_partition["free_nodes"][free_worker_id]
+
+        """Remove the worker node from the `free_nodes`
+        dictionary"""
+        del(internal_partition["free_nodes"][free_worker_id])
+
+        # Update the mapping of partition to the number of free slots in it
+        self.global_view[key_internal_partition] -= 1
+        free_slots_count = self.global_view[key_internal_partition]
+
+        """If this internal partition is now completely full then,
+        move it to the `saturated_partitions` dictionary"""
+        if free_slots_count == 0:
+            self.saturated_partitions[key_internal_partition] = \
+                partition[free_slot_key][key_internal_partition]
+
+            """Remove the internal partition from the
+            `internal_partitions` dictionary"""
+            del(partition[free_slot_key][key_internal_partition])
+        else:
+            """
+            Update the position of the node in the dictionary.
+            """
+            if partition.get(free_slots_count) is None:
+                partition[free_slots_count] = dict()
+
+            partition[free_slots_count][key_internal_partition] = \
+                partition[free_slot_key][key_internal_partition]
+
+            """Remove the internal partition from its previous
+            position in the `internal_partitions` dictionary"""
+            del(partition[free_slot_key][key_internal_partition])
+
+        """Check if there are any remaining partitions with `free_slot_key`
+        number of free slots"""
+        if len(partition[free_slot_key]) == 0:
+            del(partition[free_slot_key])
+
+        return lm_id, free_worker_id
+
     def schedule_tasks(self, current_time: float):
         """
         Search the internal partitions of the GM to find a free worker node.
@@ -539,44 +612,13 @@ class GM:
                     self.repartition(current_time)
                     return
 
-                # We randomly pick a non-saturated internal partition
-                key_internal_partition = random.choice(
-                    list(self.internal_partitions.keys()))
-                internal_partition = (self.internal_partitions
-                                      [key_internal_partition])
-
-                # Get the LM id to verify with the LM later
-                lm_id = internal_partition["lm_id"]
-
-                # We randomly pick a free worker node
-                free_worker_id = random.choice(
-                    list(internal_partition["free_nodes"].keys()))
-
-                free_worker_node = (internal_partition["free_nodes"]
-                                    [free_worker_id])
-                free_worker_node["CPU"] = 0
-
-                # Move the worker node to the `busy_nodes` dictionary
-                internal_partition["busy_nodes"][free_worker_id] =\
-                    internal_partition["free_nodes"][free_worker_id]
-
-                """Remove the worker node from the `free_nodes`
-                dictionary"""
-                del(internal_partition["free_nodes"][free_worker_id])
+                # NOTE: This is not a type error
+                lm_id, free_worker_id = self\
+                    .__get_worker_node(self.internal_partitions)
 
                 job.tasks[task_id].scheduled = True
                 if job.fully_scheduled():
                     self.jobs_scheduled.append(self.job_queue.pop(0))
-
-                """If this internal partition is now completely full then,
-                move it to the `saturated_partitions` list"""
-                if len(internal_partition["free_nodes"]) == 0:
-                    self.saturated_partitions[key_internal_partition] = \
-                        self.internal_partitions[key_internal_partition]
-
-                    """Remove the internal partition from the
-                    `internal_partitions` dictionary"""
-                    del(self.internal_partitions[key_internal_partition])
 
                 logger.info(f"{MATCHING_LOGIC_MSG} , "
                             f"{self.GM_id}_{lm_id}_{free_worker_id} , "
