@@ -80,7 +80,7 @@ class GM:
                 else:
                     self.external_partitions[key] = partition_obj
 
-        print("GM", self.GM_id, "initialised")
+        #print("GM", self.GM_id, "initialised")
 
     def __update_partition(self,
                            old_partition_data: OrganizedPartitionResources,
@@ -256,7 +256,7 @@ class GM:
                             # === max of the task duration for a job
                             job.completion_time = task.end_time
                             job.end_time = job.completion_time
-                            print(job.completion_time)
+                            # print(job.completion_time)
                             simulator_utils.globals.jobs_completed.append(job)
                             self.jobs_scheduled.remove(job)
                         break
@@ -312,7 +312,7 @@ class GM:
                     There are no free worker nodes in the external partitions
                     and hence we cannot allocate the task to any worker node.
                     """
-                    print(current_time, "No resources available in cluster")
+                    #print(current_time, "No resources available in cluster")
                     return
 
                 # We randomly pick a non-saturated external partition
@@ -345,16 +345,16 @@ class GM:
                     self.jobs_scheduled.append(self.job_queue.pop(0))
 
                 gm_id = external_partition["partition_id"]
-                print(current_time, ", RepartitionEvent ,",
-                      self.GM_id, ",",
-                      gm_id,
-                      ",",
-                      job.job_id +
-                      "_" +
-                      task.task_id)
-                logger.info(f"{MATCHING_LOGIC_MSG} , "
-                            f"{gm_id}_{lm_id}_{free_worker_id} , "
-                            f"{job.job_id}_{task.task_id}")
+                # print(current_time, ", RepartitionEvent ,",
+                #     self.GM_id, ",",
+                #    gm_id,
+                #   ",",
+                #  job.job_id +
+                # "_" +
+                # task.task_id)
+                # logger.info(f"{MATCHING_LOGIC_MSG} , "
+                #             f"{gm_id}_{lm_id}_{free_worker_id} , "
+                #             f"{job.job_id}_{task.task_id}")
 
                 """If this external partition is now completely full then,
                 move it to the `saturated_partitions` list"""
@@ -420,7 +420,7 @@ class GM:
                                             ["partitions"]
                                             [GM_id]["nodes"]):
                                 node = self.__get_node(GM_id, LM_id, node_id)
-                                logger.info("Searching worker node.")
+                                # logger.info("Searching worker node.")
 
                                 # The worker node is unoccupied
                                 if node["CPU"] == 1:
@@ -429,16 +429,16 @@ class GM:
                                     if(job.fully_scheduled()):
                                         self.jobs_scheduled.append(
                                             self.job_queue.pop(0))
-                                    print(
-                                        current_time,
-                                        "RepartitionEvent",
-                                        self.GM_id,
-                                        ",",
-                                        GM_id,
-                                        ",",
-                                        job.job_id +
-                                        "_" +
-                                        task.task_id)
+                                    # print(
+                                    #     current_time,
+                                    #     "RepartitionEvent",
+                                    #     self.GM_id,
+                                    #     ",",
+                                    #     GM_id,
+                                    #     ",",
+                                    #     job.job_id +
+                                    #     "_" +
+                                    #     task.task_id)
                                     # may need to add processing overhead here
                                     # if required
                                     self.simulation.event_queue.put(
@@ -472,7 +472,7 @@ class GM:
                     the next task."""
                     ...
                 else:
-                    print(current_time, "No resources available in cluster")
+                    # print(current_time, "No resources available in cluster")
                     return
 
     def schedule_tasks(self, current_time: float):
@@ -541,9 +541,9 @@ class GM:
                     `internal_partitions` dictionary"""
                     del(self.internal_partitions[key_internal_partition])
 
-                logger.info(f"{MATCHING_LOGIC_MSG} , "
-                            f"{self.GM_id}_{lm_id}_{free_worker_id} , "
-                            f"{job.job_id}_{task_id}")
+                # logger.info(f"{MATCHING_LOGIC_MSG} , "
+                #             f"{self.GM_id}_{lm_id}_{free_worker_id} , "
+                #             f"{job.job_id}_{task_id}")
 
                 """May need to add processing overhead here if
                 required"""
@@ -583,7 +583,7 @@ class GM:
                     for node_id in (self.global_view[LM_id]["partitions"]
                                     [self.GM_id]["nodes"]):
                         node = self.__get_node(self.GM_id, LM_id, node_id)
-                        logger.info("Searching worker node.")
+                        # logger.info("Searching worker node.")
 
                         if node["CPU"] == 1:  # If the Node is available
                             node["CPU"] = 0
@@ -617,8 +617,8 @@ class GM:
                     return
 
     def queue_job(self, job, current_time):
-        print(current_time, ",", "JobArrivalEvent",
-              ",", job.job_id, ",", self.GM_id)
+        # print(current_time, ",", "JobArrivalEvent",
+        #      ",", job.job_id, ",", self.GM_id)
         job.gm = self
         self.job_queue.append(job)
         if(len(self.job_queue) == 1):  # first job
