@@ -56,13 +56,13 @@ A simple simulator for the Megha Federated Scheduling Framework. This simulator 
 Sample command to run with 3 GMs and 2 LMs, and PARTITION_SIZE 3:
 
 ```bash
-$ python3 ./src/runner.py ./traces/input/YH.tr ./simulator_config/config.json 3 2 3 1 1 1 
+$ python3 ./src/runner.py ./traces/input/YH_small.tr ./simulator_config/config_original.json 3 2 3 1 1 1 
 ```
 
 By convention, the output of the simulator, after running on a trace must always be saved in the folder `traces/output`. In our example, to save the output of the simulator, after running it on the trace `YH.tr`, into the folder `traces/output`, use the command:
 
 ```bash
-$ python3 ./src/runner.py ./traces/input/YH.tr ./simulator_config/config.json 3 2 3 1 1 1 > traces/output/YH_OP.tr
+$ python3 ./src/runner.py ./traces/input/YH_small.tr ./simulator_config/config_original.json 3 2 3 1 1 1 > traces/output/YH_OP.tr
 ```
 
 **NOTE:** The general convention for naming the output of the simulator, after running it on the trace file is:
