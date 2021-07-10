@@ -58,7 +58,7 @@ class Simulation(object):
         self.jobs_scheduled = 0
         self.jobs_completed = 0
         self.scheduled_last_job = False
-        print("Simulation instantiated")
+        # print("Simulation instantiated")
 
  # Simulation class
     def run(self):
@@ -89,5 +89,5 @@ class Simulation(object):
                     continue
                 self.event_queue.put(new_event)
 
-        print("Simulation ending, no more events")
+        # print("Simulation ending, no more events")
         self.jobs_file.close()

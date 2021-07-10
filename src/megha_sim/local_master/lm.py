@@ -11,7 +11,7 @@ class LM(object):
         self.LM_id = LM_id
         self.partiton_size = partiton_size
         self.LM_config = LM_config
-        print("LM ", LM_id, "initialised")
+        # print("LM ", LM_id, "initialised")
         self.simulation = simulation
         # we hold the key-value pairs of the list of tasks completed (value)
         # for each GM (key)
