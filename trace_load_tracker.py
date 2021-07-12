@@ -20,7 +20,7 @@ if not os.path.exists(FULL_TRACE_FILE_PATH):
     exit(1)
 
 
-timeline: List[int] = [0]*1_000
+timeline: List[int] = [0] * 1_000
 
 with open(FULL_TRACE_FILE_PATH) as file_handler:
     for job in file_handler:
