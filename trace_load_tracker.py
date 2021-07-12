@@ -2,7 +2,6 @@
 
 import os
 import sys
-import json
 import pathlib
 from typing import List
 from math import ceil, floor
@@ -34,8 +33,14 @@ with open(FULL_TRACE_FILE_PATH) as file_handler:
             i_task_duration = ceil(float(task_duration))
             completion_time = i_arrival_time + i_task_duration
 
-            for time_point in range(i_arrival_time, completion_time + 1):
-                timeline[time_point - 1] += 1
+            timeline[i_arrival_time] += 1
+            timeline[completion_time + 1] -= 1
+
+
+runner: int = 0
+for i in range(len(timeline)):
+    runner += timeline[i]
+    timeline[i] = runner
 
 name_of_file, extension = NAME_OF_TRACE_FILE.split('.')
 NAME_OF_OUTPUT_FILE = f"{name_of_file}_demand_{extension}"
