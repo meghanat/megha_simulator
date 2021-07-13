@@ -32,9 +32,17 @@ if __name__ == "__main__":
     t1 = time.time()
     s = Simulation(WORKLOAD_FILE, CONFIG_FILE, NUM_GMS, NUM_LMS,
                    PARTITION_SIZE, SERVER_CPU, SERVER_RAM, SERVER_STORAGE)
-    print("Simulation running")
+    print("Simulator Info , Simulation running")
+    logger.info("Simulator Info , Simulation running")
     s.run()
-    print("Simulation ended in ", (time.time() - t1), " s ")
+    time_elapsed = time.time() - t1
+    print("Simulation ended in ", time_elapsed, " s ")
+    logger.info(f"Simulator Info , Simulation ended in {time_elapsed} s ")
 
     print(simulator_globals.jobs_completed)
+    logger.info(f"Simulator Info , {simulator_globals.jobs_completed=}")
+
     print(f"Number of Jobs completed: {len(simulator_globals.jobs_completed)}")
+    logger.info(
+        "Simulator Info , Number of Jobs completed: "
+        f"{len(simulator_globals.jobs_completed)}")
