@@ -166,7 +166,7 @@ print("JobArrival count: "
 
 
 print()
-print("-"*80)
+print("-" * 80)
 print(f"{TColors.BOLD}Log sanity checks:{TColors.END}")
 print()
 
