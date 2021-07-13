@@ -7,8 +7,12 @@ from typing import Dict
 from local_master import LM
 from global_master import GM
 from job import Job
+from simulation_logger import SimulatorLogger
 from simulator_utils.values import TaskDurationDistributions
 from events import JobArrival, LMUpdateEvent
+
+
+logger = SimulatorLogger(__name__).get_logger()
 
 
 class Simulation(object):
@@ -90,4 +94,5 @@ class Simulation(object):
                 self.event_queue.put(new_event)
 
         print("Simulation ending, no more events")
+        logger.info("Simulator Info , Simulation ending, no more events")
         self.jobs_file.close()
