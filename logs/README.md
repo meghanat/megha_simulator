@@ -7,4 +7,6 @@
 YYYY-MM-DD HH:MM:SS,milliseconds : Module Name : File Name : Function Name : Line No. : Log Level Name : message
 ```
 
+**NOTE:** The `message` column has its own format, with details separated by the string ' , '
+
 ---
