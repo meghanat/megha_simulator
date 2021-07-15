@@ -67,6 +67,9 @@ with open(FULL_TRACE_FILE_PATH) as file_handler:
             # Slice - 1
             duration_to_nearest_int_time = ceil(arrival_time) - arrival_time
 
+            # If duration_to_nearest_int_time is 0, i.e. arrival_time is
+            # an integer
+            # then this operation becomes a no-op
             set_timeline_value(timeline,
                                floor(arrival_time),
                                ceil(arrival_time),
