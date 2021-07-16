@@ -129,11 +129,12 @@ class GM:
                        else False)
 
             """A partition is actually saturated if each of its worker nodes
-            are busy (i.e. `not is_free`)"""
-            is_saturated = is_saturated and not is_free
+            are busy (i.e. `is_free` is False)"""
+            is_saturated = is_saturated and is_free is False
 
+            # If the worker node was earlier free but now it is busy
             if node_id in old_partition_data["free_nodes"].keys() and \
-               not is_free:
+               is_free is False:
                 # Move the worker node to the `busy_nodes` dictionary
                 old_partition_data["busy_nodes"][node_id] =\
                     old_partition_data["free_nodes"][node_id]
@@ -141,8 +142,10 @@ class GM:
                 """Remove the worker node from the `free_nodes`
                 dictionary"""
                 del(old_partition_data["free_nodes"][node_id])
+
+            # If the worker node was earlier busy but now it is free
             elif node_id in old_partition_data["busy_nodes"].keys() and \
-                    is_free:
+                    is_free is True:
                 # Move the worker node to `free_nodes` dictionary
                 old_partition_data["free_nodes"][node_id] =\
                     old_partition_data["busy_nodes"][node_id]
