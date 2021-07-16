@@ -176,22 +176,29 @@ class GM:
         assert from_partition.get(key) is None
         assert to_partition.get(key) is not None
 
-    def __relocate_partition(self, partition, old_free_slots_count,
-                             new_free_slots_count, key_internal_partition):
+    def __relocate_partition(self,
+                             partition: Dict[FreeSlotsCount,
+                                             Dict[PartitionKey,
+                                                  OrganizedPartitionResources
+                                                  ]
+                                             ],
+                             old_free_slots_count: FreeSlotsCount,
+                             new_free_slots_count: FreeSlotsCount,
+                             partition_key: PartitionKey):
         """Update the position of the node in the dictionary."""
         if partition.get(new_free_slots_count) is None:
             partition[new_free_slots_count] = dict()
 
-        partition[new_free_slots_count][key_internal_partition] = \
-            partition[old_free_slots_count][key_internal_partition]
+        partition[new_free_slots_count][partition_key] = \
+            partition[old_free_slots_count][partition_key]
 
-        """Remove the internal partition from its previous
-        position in the `internal_partitions` dictionary"""
-        del(partition[old_free_slots_count][key_internal_partition])
+        """Remove the partition from its previous
+        position in the `partitions` dictionary"""
+        del(partition[old_free_slots_count][partition_key])
 
         """Check if there are any remaining partitions with
         `old_free_slots_count` number of free slots"""
-        if len(partition[old_free_slots_count]) == 0:
+        if len(partition[old_free_slots_count].keys()) == 0:
             del(partition[old_free_slots_count])
 
     def update_status(self, current_time: float):
