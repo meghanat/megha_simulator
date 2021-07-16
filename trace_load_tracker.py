@@ -134,6 +134,8 @@ with open(PATH_TO_OUTPUT_FOLDER / NAME_OF_OUTPUT_FILE, "w") as file_handler:
         file_handler.write(f"{time_point}\n")
 
 print("The trace demand file has been generated!")
-print("NOTE: \tThe 1st line of the output file will represent time 0s")
-print("\tThis means that, the 7th line in the output file represents time 6s"
-      " and so on")
+print()
+print("NOTE: \tThe topmost/1st line of the output file will represent time"
+      " 0 s.")
+print("\tThis means that, the 7th line in the output file represents time 6 s"
+      " and so on.")
