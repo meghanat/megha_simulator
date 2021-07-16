@@ -51,9 +51,9 @@ class GM:
         # Map the partition to the number of free slots in it
         self.global_view: Dict[PartitionKey, FreeSlotsCount] = {}
 
-        """The current `POLICY` ensures that the first choice is
-        from amongst the partitions with the most number of free worker
-        slots."""
+        # The current `POLICY` ensures that the first choice is
+        # from amongst the partitions with the most number of free worker
+        # slots.
         POLICY = neg
         # 3 Dictionaries
         self.internal_partitions: \
@@ -61,27 +61,23 @@ class GM:
                  Dict[PartitionKey,
                       OrganizedPartitionResources]] = SortedDict(POLICY)
 
-        """TODO: Experiment with ordering the external partition in reverse
-        so as to not clash with the GM who owns that partition.
-        NOTE: By 'reverse' I mean: start from the partition with the
-        least number of free worker slots and then move towards the ones
-        with the most number of free worker slots.
-        """
+        # TODO: [DONE] Experiment with ordering the external partition in
+        # reverse so as to not clash with the GM who owns that partition.
+        # NOTE: By 'reverse' I mean: start from the partition with the
+        # least number of free worker slots and then move towards the ones
+        # with the most number of free worker slots.
         self.external_partitions: \
             Dict[FreeSlotsCount,
                  Dict[PartitionKey,
                       OrganizedPartitionResources]] = SortedDict()
         # SortedDict(POLICY)
 
-        """All saturated partitions have no free worker slots, hence no extra
-        information needs to be saved here."""
+        # All saturated partitions have no free worker slots, hence no extra
+        # information needs to be saved nor any ordering needs to be
+        # maintained.
         self.saturated_partitions: \
             Dict[PartitionKey,
                  OrganizedPartitionResources] = dict()
-
-        # Populate internal_partitions info
-        # for LM_id in config["LMs"]:
-        #     self.global_view[LM_id] = config["LMs"][LM_id]
 
         # Populate the 3 sets with the cluster information
         for LM_id in config["LMs"]:
@@ -105,12 +101,14 @@ class GM:
 
                 if partition_id == self.GM_id:
                     # If this `free_slots_count` value has not been recorded
+                    # before
                     if self.internal_partitions.get(free_slots_count) is None:
                         self.internal_partitions[free_slots_count] = dict()
                     self.internal_partitions[free_slots_count][key] = \
                         partition_obj
                 else:
                     # If this `free_slots_count` value has not been recorded
+                    # before
                     if self.external_partitions.get(free_slots_count) is None:
                         self.external_partitions[free_slots_count] = dict()
                     self.external_partitions[free_slots_count][key] = \
