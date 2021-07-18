@@ -16,6 +16,8 @@ class SimulatorLogger:
     LOG_FORMAT = ("%(asctime)s : %(module)s : %(filename)s : %(funcName)s : "
                   "%(lineno)d : %(levelname)s : %(message)s")
 
+    is_setup: bool = False
+
     def __init__(self, module_name: str):
         """
         Initialise the object with the name of the caller code's module name.
@@ -24,15 +26,21 @@ class SimulatorLogger:
             module_name (str): Name of the caller code's module
         """
         self.module_name = module_name
-        self.LOG_FILE_NAME = self.LOG_FILE_PATH / (datetime.now()
-                                                   .strftime("record-%Y-%m-%d-"
-                                                             "%H-%M-%S.log"))
-        with open(self.LOG_FILE_NAME, "a"):
-            ...
-        logging.basicConfig(filename=self.LOG_FILE_NAME,
-                            format=self.LOG_FORMAT,
-                            # encoding='utf-8',  # Only for Python >= 3.9
-                            level=logging.INFO)
+        if SimulatorLogger.is_setup is False:
+            # print(f'{datetime.now().strftime("record-%Y-%m-%d-%H-%M-%S.log")}'
+            # ' Hello')
+            self.LOG_FILE_NAME = (self.LOG_FILE_PATH /
+                                  datetime.now().strftime("record-%Y-%m-%d-"
+                                                          "%H-%M-%S.log"))
+            with open(self.LOG_FILE_NAME, "a"):
+                ...
+            logging.basicConfig(filename=self.LOG_FILE_NAME,
+                                format=self.LOG_FORMAT,
+                                # encoding='utf-8',  # Only for Python >= 3.9
+                                level=logging.INFO)
+
+            # Makes sure that the root logger is setup only once
+            SimulatorLogger.is_setup = True
 
     def get_logger(self) -> logging.Logger:
         """
