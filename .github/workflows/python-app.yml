@@ -54,4 +54,4 @@ jobs:
 #         pytest
     - name: Run on trace dataset
       run: |
-        python ./src/runner.py ./traces/input/YH.tr ./simulator_config/config.json 3 2 3 1 1 1
+        python ./src/runner.py ./traces/input/YH_small.tr ./simulator_config/config_original.json 3 2 3 1 1 1
