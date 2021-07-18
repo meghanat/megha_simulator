@@ -64,3 +64,5 @@ namedtuple
 TypedDict
 json
 SortedDict
+datetime
+strftime
