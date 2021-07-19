@@ -66,3 +66,4 @@ json
 SortedDict
 datetime
 strftime
+datefmt
