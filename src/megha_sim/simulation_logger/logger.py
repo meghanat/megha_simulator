@@ -37,7 +37,8 @@ class SimulatorLogger:
             logging.basicConfig(filename=self.LOG_FILE_NAME,
                                 format=self.LOG_FORMAT,
                                 # encoding='utf-8',  # Only for Python >= 3.9
-                                level=logging.INFO)
+                                level=logging.INFO,
+                                datefmt='%Y-%m-%d %H:%M:%S')
 
             # Makes sure that the root logger is setup only once
             SimulatorLogger.is_setup = True
