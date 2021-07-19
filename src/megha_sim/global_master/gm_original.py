@@ -56,7 +56,7 @@ class GM(object):
 
     def update_status(self, current_time: float):
         """
-        Updates global view of GM by getting partial updates from each LM.
+        Update global view of GM by getting partial updates from each LM.
 
         Args:
             current_time (float): The current time in the simulation.
