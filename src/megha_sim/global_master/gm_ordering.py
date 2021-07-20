@@ -227,36 +227,47 @@ class GM:
                 if gm_id == self.GM_id:
                     # Check if the partition is an unsaturated partition
                     if self.global_view[key] != 0:
-                        free_slot_key = self.global_view[key]
+                        free_slots_key = self.global_view[key]
+
                         # Update each of the workers in the partition
                         is_saturated, free_slots_count = \
                             self.__update_partition(
-                                self.internal_partitions[free_slot_key][key],
+                                self.internal_partitions[free_slots_key][key],
                                 partial_status["partitions"][gm_id]
                             )
 
-                        """Check if the partition needs to be moved to the
-                        `saturated_partitions` dictionary"""
+                        # Check if the partition needs to be moved to the
+                        # `saturated_partitions` dictionary
                         if is_saturated is True:
                             self.__move_partition(key,
                                                   (self.internal_partitions
-                                                   [free_slot_key]),
+                                                   [free_slots_key]),
                                                   self.saturated_partitions)
-                            if len(self.internal_partitions[free_slot_key])\
+                            assert (self.internal_partitions
+                                    [free_slots_key]
+                                    .get(key) is None)
+                            assert (self.saturated_partitions
+                                    .get(key) is not None)
+                            if len(self.internal_partitions[free_slots_key])\
                                == 0:
-                                del(self.internal_partitions[free_slot_key])
+                                del(self.internal_partitions[free_slots_key])
                         else:
-                            """The partition is not saturated but may need
-                            to be relocated, if its free slots count has
-                            changed.
-                            """
-                            if free_slots_count != self.global_view[key]:
+                            # The partition is not saturated but may need
+                            # to be relocated, if its free slots count has
+                            # changed.
+                            if free_slots_count != free_slots_key:
                                 self.__relocate_partition(
                                     self.internal_partitions,
-                                    self.global_view[key],
+                                    free_slots_key,
                                     free_slots_count,
                                     key
                                 )
+                                assert (self.internal_partitions
+                                        [free_slots_key]
+                                        .get(key) is None)
+                                assert (self.internal_partitions
+                                        [free_slots_count]
+                                        .get(key) is not None)
                         # Update the map
                         self.global_view[key] = free_slots_count
                     else:  # The partition is a saturated partition
@@ -266,11 +277,14 @@ class GM:
                                 self.saturated_partitions[key],
                                 partial_status["partitions"][gm_id]
                             )
-                        # Update the map
-                        self.global_view[key] = free_slots_count
-                        """Check if the partition needs to be moved to the
-                        `internal_partitions` dictionary"""
+                        assert self.global_view[key] == 0
+
+                        # Check if the partition needs to be moved to the
+                        # `internal_partitions` dictionary
                         if is_saturated is False:
+                            # Update the map if needed
+                            self.global_view[key] = free_slots_count
+                            assert self.global_view[key] != 0
                             if self.internal_partitions.get(free_slots_count)\
                                is None:
                                 self.internal_partitions[free_slots_count]\
@@ -279,40 +293,55 @@ class GM:
                                                   self.saturated_partitions,
                                                   (self.internal_partitions
                                                    [free_slots_count]))
+                            assert (self.saturated_partitions
+                                    .get(key) is None)
+                            assert (self.internal_partitions
+                                    [free_slots_count]
+                                    .get(key) is not None)
                 else:  # The partition is an external partition
                     # Check if the partition is an unsaturated partition
                     if self.global_view[key] != 0:
-                        free_slot_key = self.global_view[key]
+                        free_slots_key = self.global_view[key]
 
                         # Update each of the workers in the partition
                         is_saturated, free_slots_count = \
                             self.__update_partition(
-                                self.external_partitions[free_slot_key][key],
+                                self.external_partitions[free_slots_key][key],
                                 partial_status["partitions"][gm_id]
                             )
 
-                        """Check if the partition needs to be moved to the
-                        `saturated_partitions` dictionary"""
+                        # Check if the partition needs to be moved to the
+                        # `saturated_partitions` dictionary
                         if is_saturated is True:
                             self.__move_partition(key,
                                                   (self.external_partitions
-                                                   [free_slot_key]),
+                                                   [free_slots_key]),
                                                   self.saturated_partitions)
-                            if len(self.external_partitions[free_slot_key])\
+                            assert (self.external_partitions
+                                    [free_slots_key]
+                                    .get(key) is None)
+                            assert (self.saturated_partitions
+                                    .get(key) is not None)
+                            if len(self.external_partitions[free_slots_key])\
                                == 0:
-                                del(self.external_partitions[free_slot_key])
+                                del(self.external_partitions[free_slots_key])
                         else:
-                            """The partition is not saturated but may need
-                            to be relocated, if its free slots count has
-                            changed.
-                            """
-                            if free_slots_count != self.global_view[key]:
+                            # The partition is not saturated but may need
+                            # to be relocated, if its free slots count has
+                            # changed.
+                            if free_slots_count != free_slots_key:
                                 self.__relocate_partition(
                                     self.external_partitions,
-                                    self.global_view[key],
+                                    free_slots_key,
                                     free_slots_count,
                                     key
                                 )
+                                assert (self.external_partitions
+                                        [free_slots_key]
+                                        .get(key) is None)
+                                assert (self.external_partitions
+                                        [free_slots_count]
+                                        .get(key) is not None)
                         # Update the map
                         self.global_view[key] = free_slots_count
                     else:  # The partition is a saturated partition
@@ -322,12 +351,14 @@ class GM:
                                 self.saturated_partitions[key],
                                 partial_status["partitions"][gm_id]
                             )
+                        assert self.global_view[key] == 0
 
-                        # Update the map
-                        self.global_view[key] = free_slots_count
-                        """Check if the partition needs to be moved to the
-                        `external_partitions` dictionary"""
+                        # Check if the partition needs to be moved to the
+                        # `external_partitions` dictionary
                         if is_saturated is False:
+                            # Update the map, if needed
+                            self.global_view[key] = free_slots_count
+                            assert self.global_view[key] != 0
                             if self.external_partitions.get(free_slots_count)\
                                is None:
                                 self.external_partitions[free_slots_count]\
@@ -336,6 +367,11 @@ class GM:
                                                   self.saturated_partitions,
                                                   (self.external_partitions
                                                    [free_slots_count]))
+                            assert (self.saturated_partitions
+                                    .get(key) is None)
+                            assert (self.external_partitions
+                                    [free_slots_count]
+                                    .get(key) is not None)
             # -------------------------------------------
 
             # TODO: Check comment "Through Job object delete task"
@@ -480,7 +516,7 @@ class GM:
         """
         # We pick the dictionary of partitions with the most number of
         # free worker slots.
-        free_slot_key, partition_dict = partition.peekitem(index=0)
+        free_slots_key, partition_dict = partition.peekitem(index=0)
 
         # We randomly pick a non-saturated internal partition
         key_internal_partition = random.choice(list(partition_dict.keys()))
@@ -501,7 +537,7 @@ class GM:
         free_worker_node["CPU"] = 0
 
         assert internal_partition["busy_nodes"].get(free_worker_id) is None,\
-            "Worker ID is in 'busy_nodes' before insertion, itself!"
+            "Worker ID is in `busy_nodes` before insertion, itself!"
 
         # Move the worker node to the `busy_nodes` dictionary
         internal_partition["busy_nodes"][free_worker_id] =\
@@ -514,33 +550,33 @@ class GM:
         self.global_view[key_internal_partition] -= 1
         free_slots_count = self.global_view[key_internal_partition]
 
-        assert free_slots_count >= 0, "'free_slots_count' became negative!"
+        assert free_slots_count >= 0, "`free_slots_count` became negative!"
 
         # If this internal partition is now completely full then,
         # move it to the `saturated_partitions` dictionary
         if free_slots_count == 0:
             self.saturated_partitions[key_internal_partition] = \
-                partition[free_slot_key][key_internal_partition]
+                partition[free_slots_key][key_internal_partition]
 
             # Remove the internal partition from the
             # `internal_partitions` dictionary
-            del(partition[free_slot_key][key_internal_partition])
+            del(partition[free_slots_key][key_internal_partition])
         else:
             # Update the position of the node in the dictionary.
             if partition.get(free_slots_count) is None:
                 partition[free_slots_count] = dict()
 
             partition[free_slots_count][key_internal_partition] = \
-                partition[free_slot_key][key_internal_partition]
+                partition[free_slots_key][key_internal_partition]
 
             # Remove the internal partition from its previous
             # position in the `internal_partitions` dictionary
-            del(partition[free_slot_key][key_internal_partition])
+            del(partition[free_slots_key][key_internal_partition])
 
-        # Check if there are any remaining partitions with `free_slot_key`
+        # Check if there are any remaining partitions with `free_slots_key`
         # number of free slots
-        if len(partition[free_slot_key]) == 0:
-            del(partition[free_slot_key])
+        if len(partition[free_slots_key]) == 0:
+            del(partition[free_slots_key])
 
         return gm_id, lm_id, free_worker_id
 
