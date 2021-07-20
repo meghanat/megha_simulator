@@ -437,8 +437,8 @@ class GM:
                 assert_flag = True
                 break
 
-        assert assert_flag is True, ("`unverified_job` not found in "
-                                     "`self.jobs_scheduled`!")
+        # assert assert_flag is True, ("`unverified_job` not found in "
+        #                              "`self.jobs_scheduled`!")
 
     def repartition(self, current_time: float):
         """
