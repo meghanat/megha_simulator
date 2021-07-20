@@ -13,7 +13,9 @@ from typing import List, Dict, TYPE_CHECKING
 
 import simulator_utils.globals
 from events import MatchFoundEvent
-from simulation_logger import SimulatorLogger, MATCHING_LOGIC_MSG
+from simulation_logger import (SimulatorLogger, MATCHING_LOGIC_MSG,
+                               CLUSTER_SATURATED_MSG,
+                               MATCHING_LOGIC_REPARTITION_MSG)
 from .gm_types import (PartitionKey, LMResources, ConfigFile,
                        OrganizedPartitionResources, NodeResources,
                        PartitionResources)
@@ -313,6 +315,7 @@ class GM:
                     and hence we cannot allocate the task to any worker node.
                     """
                     print(current_time, "No resources available in cluster")
+                    logger.info(f"{CLUSTER_SATURATED_MSG} , {self.GM_id}")
                     return
 
                 # We randomly pick a non-saturated external partition
@@ -352,7 +355,7 @@ class GM:
                       job.job_id +
                       "_" +
                       task.task_id)
-                logger.info(f"{MATCHING_LOGIC_MSG} , "
+                logger.info(f"{MATCHING_LOGIC_REPARTITION_MSG} , "
                             f"{gm_id}_{lm_id}_{free_worker_id} , "
                             f"{job.job_id}_{task.task_id}")
 
