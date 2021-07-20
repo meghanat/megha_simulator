@@ -71,8 +71,7 @@ class GM:
         self.external_partitions: \
             Dict[FreeSlotsCount,
                  Dict[PartitionKey,
-                      OrganizedPartitionResources]] = SortedDict()
-        # SortedDict(POLICY)
+                      OrganizedPartitionResources]] = SortedDict(POLICY)
 
         # All saturated partitions have no free worker slots, hence no extra
         # information needs to be saved nor any ordering needs to be
@@ -263,6 +262,9 @@ class GM:
                                     key
                                 )
                                 assert (self.internal_partitions
+                                        .get(free_slots_key) is None
+                                        or
+                                        self.internal_partitions
                                         [free_slots_key]
                                         .get(key) is None)
                                 assert (self.internal_partitions
@@ -337,6 +339,9 @@ class GM:
                                     key
                                 )
                                 assert (self.external_partitions
+                                        .get(free_slots_key) is None
+                                        or
+                                        self.external_partitions
                                         [free_slots_key]
                                         .get(key) is None)
                                 assert (self.external_partitions
