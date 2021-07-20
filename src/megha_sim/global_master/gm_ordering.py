@@ -570,8 +570,12 @@ class GM:
                     return
 
                 # NOTE: This is not a type error
-                _, lm_id, free_worker_id = self\
+                _gm_id, lm_id, free_worker_id = self\
                     .__get_worker_node(self.internal_partitions)
+
+                assert _gm_id == self.GM_id, ("Internal partition worker node"
+                                              "is actually from external "
+                                              "partition!")
 
                 job.tasks[task_id].scheduled = True
                 if job.fully_scheduled():
