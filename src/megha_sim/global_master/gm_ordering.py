@@ -468,8 +468,8 @@ class GM:
         degree) the inaccuracies in the stale view of the cluster that the \
         GM has.
         """
-        """We pick the dictionary of partitions with the most number of
-        free worker slots."""
+        # We pick the dictionary of partitions with the most number of
+        # free worker slots.
         free_slot_key, partition_dict = partition.peekitem(index=0)
 
         # We randomly pick a non-saturated internal partition
@@ -490,43 +490,45 @@ class GM:
                             [free_worker_id])
         free_worker_node["CPU"] = 0
 
+        assert internal_partition["busy_nodes"].get(free_worker_id) is None,\
+            "Worker ID is in 'busy_nodes' before insertion, itself!"
+
         # Move the worker node to the `busy_nodes` dictionary
         internal_partition["busy_nodes"][free_worker_id] =\
             internal_partition["free_nodes"][free_worker_id]
 
-        """Remove the worker node from the `free_nodes`
-        dictionary"""
+        # Remove the worker node from the `free_nodes` dictionary
         del(internal_partition["free_nodes"][free_worker_id])
 
         # Update the mapping of partition to the number of free slots in it
         self.global_view[key_internal_partition] -= 1
         free_slots_count = self.global_view[key_internal_partition]
 
-        """If this internal partition is now completely full then,
-        move it to the `saturated_partitions` dictionary"""
+        assert free_slots_count >= 0, "'free_slots_count' became negative!"
+
+        # If this internal partition is now completely full then,
+        # move it to the `saturated_partitions` dictionary
         if free_slots_count == 0:
             self.saturated_partitions[key_internal_partition] = \
                 partition[free_slot_key][key_internal_partition]
 
-            """Remove the internal partition from the
-            `internal_partitions` dictionary"""
+            # Remove the internal partition from the
+            # `internal_partitions` dictionary
             del(partition[free_slot_key][key_internal_partition])
         else:
-            """
-            Update the position of the node in the dictionary.
-            """
+            # Update the position of the node in the dictionary.
             if partition.get(free_slots_count) is None:
                 partition[free_slots_count] = dict()
 
             partition[free_slots_count][key_internal_partition] = \
                 partition[free_slot_key][key_internal_partition]
 
-            """Remove the internal partition from its previous
-            position in the `internal_partitions` dictionary"""
+            # Remove the internal partition from its previous
+            # position in the `internal_partitions` dictionary
             del(partition[free_slot_key][key_internal_partition])
 
-        """Check if there are any remaining partitions with `free_slot_key`
-        number of free slots"""
+        # Check if there are any remaining partitions with `free_slot_key`
+        # number of free slots
         if len(partition[free_slot_key]) == 0:
             del(partition[free_slot_key])
 
