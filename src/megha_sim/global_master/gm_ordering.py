@@ -14,7 +14,9 @@ from operator import neg
 
 import simulator_utils.globals
 from events import MatchFoundEvent
-from simulation_logger import SimulatorLogger, MATCHING_LOGIC_MSG
+from simulation_logger import (SimulatorLogger, MATCHING_LOGIC_MSG,
+                               CLUSTER_SATURATED_MSG,
+                               MATCHING_LOGIC_REPARTITION_MSG)
 from .gm_types import (PartitionKey, LMResources, ConfigFile,
                        OrganizedPartitionResources, NodeResources,
                        PartitionResources, FreeSlotsCount,
@@ -416,26 +418,29 @@ class GM:
             # print("Scheduling Tasks from Job: ",job.job_id)
             for task_id in job.tasks:  # Go over the tasks for the job
                 task = job.tasks[task_id]
-                """Make sure that the 2 sources for `task_id` agree with each
-                other"""
+                # Make sure that the 2 sources for `task_id` agree with each
+                # other
                 assert task.task_id == task_id
 
-                """If the task is already scheduled then, there is
-                nothing to do."""
+                # If the task is already scheduled then, there is
+                # nothing to do.
                 if(job.tasks[task_id].scheduled):
                     continue
 
                 if len(self.external_partitions) == 0:
-                    """
-                    There are no free worker nodes in the external partitions
-                    and hence we cannot allocate the task to any worker node.
-                    """
+                    # There are no free worker nodes in the external partitions
+                    # and hence we cannot allocate the task to any worker node.
                     print(current_time, "No resources available in cluster")
+                    logger.info(f"{CLUSTER_SATURATED_MSG} , {self.GM_id}")
                     return
 
                 # NOTE: This is not a type error
                 gm_id, lm_id, free_worker_id = self.__get_worker_node(
                     self.external_partitions)
+
+                assert gm_id != self.GM_id, ("External partition worker node"
+                                             "is actually from internal "
+                                             "partition!")
 
                 job.tasks[task_id].scheduled = True
                 if(job.fully_scheduled()):
@@ -448,11 +453,11 @@ class GM:
                       job.job_id +
                       "_" +
                       task.task_id)
-                logger.info(f"{MATCHING_LOGIC_MSG} , "
+                # [DONE] May need to add processing overhead here if required
+                logger.info(f"{MATCHING_LOGIC_REPARTITION_MSG} , "
                             f"{gm_id}_{lm_id}_{free_worker_id} , "
                             f"{job.job_id}_{task.task_id}")
 
-                """May need to add processing overhead here if required"""
                 self.simulation.event_queue.put(
                     (current_time,
                         MatchFoundEvent(
