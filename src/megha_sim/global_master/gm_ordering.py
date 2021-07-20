@@ -391,11 +391,16 @@ class GM:
             unverified_job (Job): The job that needs to be moved, as it was \
                 assigned on a worker node not actually available at that time
         """
+        assert_flag: bool = False
         for index in range(0, len(self.jobs_scheduled)):
             if unverified_job.job_id == self.jobs_scheduled[index].job_id:
                 # Remove job from list and add to front of job_queue
                 self.job_queue.insert(0, self.jobs_scheduled.pop(index))
+                assert_flag = True
                 break
+
+        assert assert_flag is True, ("`unverified_job` not found in "
+                                     "`self.jobs_scheduled`!")
 
     def repartition(self, current_time: float):
         """
