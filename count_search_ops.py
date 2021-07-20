@@ -13,7 +13,8 @@ import sys
 from pathlib import Path
 from typing import List, NamedTuple, Dict, TypedDict
 
-from simulation_logger.msg_list import MATCHING_LOGIC_MSG
+from simulation_logger.msg_list import (MATCHING_LOGIC_MSG,
+                                        MATCHING_LOGIC_REPARTITION_MSG)
 
 
 class TColors():
@@ -106,7 +107,9 @@ with open(FULL_LOG_PATH) as file_handler:
     for line in file_handler:
         logged_line = LogLineType(*(line.strip().split(" : ")))
         # If the logging message is for processing delay
-        if logged_line.message.startswith(MATCHING_LOGIC_MSG) is True:
+        if logged_line.message.startswith(MATCHING_LOGIC_MSG) is True or \
+           logged_line.message.startswith(MATCHING_LOGIC_REPARTITION_MSG) \
+           is True:
             matching_logic_ops_count += 1
             matching_logic_details: List[str] = (logged_line
                                                  .message
