@@ -11,7 +11,9 @@ from typing import List, Dict, TYPE_CHECKING, TypedDict
 
 import simulator_utils.globals
 from events import MatchFoundEvent
-from simulation_logger import SimulatorLogger, MATCHING_LOGIC_MSG
+from simulation_logger import (SimulatorLogger, MATCHING_LOGIC_MSG,
+                               CLUSTER_SATURATED_MSG,
+                               MATCHING_LOGIC_REPARTITION_MSG)
 
 
 # Imports used only for type checking go here to avoid circular imports
@@ -172,8 +174,8 @@ class GM(object):
                                             ["partitions"]
                                             [GM_id]["nodes"]):
                                 node = self.__get_node(GM_id, LM_id, node_id)
-                                logger.info(f"{MATCHING_LOGIC_MSG} , "
-                                            f"{GM_id}_{LM_id}_{node_id} , "
+                                logger.info(f"{MATCHING_LOGIC_REPARTITION_MSG}"
+                                            f" , {GM_id}_{LM_id}_{node_id} , "
                                             f"{job.job_id}_{task_id}")
 
                                 # The worker node is unoccupied
@@ -227,6 +229,7 @@ class GM(object):
                     ...
                 else:
                     print(current_time, "No resources available in cluster")
+                    logger.info(f"{CLUSTER_SATURATED_MSG} , {self.GM_id}")
                     return
 
     def schedule_tasks(self, current_time: float):
