@@ -17,6 +17,7 @@ from simulation_logger import SimulatorLogger, MATCHING_LOGIC_MSG
 # Imports used only for type checking go here to avoid circular imports
 if TYPE_CHECKING:
     from job import Job
+    from local_master import LM
 
 
 class NodeResources(TypedDict):
@@ -62,7 +63,7 @@ class GM(object):
             current_time (float): The current time in the simulation.
         """
         for LM_id in self.simulation.lms:
-            lm = self.simulation.lms[LM_id]
+            lm: LM = self.simulation.lms[LM_id]
             p_partial_status, p_tasks_completed = lm.get_status(self)
             partial_status = json.loads(p_partial_status)
             tasks_completed = json.loads(p_tasks_completed)
