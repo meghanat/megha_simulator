@@ -545,19 +545,17 @@ class GM:
         while len(self.job_queue) > 0:
             job = self.job_queue[0]  # Get job from the head of queue
             for task_id in job.tasks:  # Go over the tasks for the job
-                """Make sure that the 2 sources for `task_id` agree with each
-                other"""
+                # Make sure that the 2 sources for `task_id` agree with each
+                # other
                 assert task_id == job.tasks[task_id].task_id
                 if(job.tasks[task_id].scheduled):
-                    """If the task is already scheduled, then there is
-                    nothing to do"""
+                    # If the task is already scheduled, then there is
+                    # nothing to do
                     continue
 
                 if len(self.internal_partitions) == 0:
-                    """
-                    There are no free worker nodes in the internal partitions
-                    and hence we perform the repartition operation.
-                    """
+                    # There are no free worker nodes in the internal partitions
+                    # and hence we perform the repartition operation.
                     self.repartition(current_time)
                     return
 
@@ -569,12 +567,12 @@ class GM:
                 if job.fully_scheduled():
                     self.jobs_scheduled.append(self.job_queue.pop(0))
 
+                # [DONE] May need to add processing overhead here if
+                # required
                 logger.info(f"{MATCHING_LOGIC_MSG} , "
                             f"{self.GM_id}_{lm_id}_{free_worker_id} , "
                             f"{job.job_id}_{task_id}")
 
-                """May need to add processing overhead here if
-                required"""
                 self.simulation.event_queue.put(
                     (current_time, MatchFoundEvent(
                         job.tasks[task_id],
