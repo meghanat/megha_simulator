@@ -229,7 +229,8 @@ class GM(object):
                     ...
                 else:
                     print(current_time, "No resources available in cluster")
-                    logger.info(f"{CLUSTER_SATURATED_MSG} , {self.GM_id}")
+                    logger.info(f"{current_time} , {CLUSTER_SATURATED_MSG} ,"
+                                f" {self.GM_id}")
                     return
 
     def schedule_tasks(self, current_time: float):
