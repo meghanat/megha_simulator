@@ -217,7 +217,7 @@ class Logger:
         # file
         with open(self.output_file_path, "w") as file_handler:
             for line in self.metadata_text:
-                file_handler.write(line)
+                file_handler.write(f"{line}\n")
 
             file_handler.write(Logger.LINE_SEPARATOR)
 
@@ -236,8 +236,8 @@ class Logger:
                                          self.data_points
                                          ['external_inconsistency_event'])
             file_handler\
-                .write("Total Inconsistency count : "
-                       f"{total_inconsistency_event}\n")
+                .write(f"{TColors.BOLD}Total Inconsistency count :"
+                       f"{TColors.END} {total_inconsistency_event}\n")
 
             # 2. Total matching logic operations
             total_matching_logic_op = (self.data_points
@@ -245,8 +245,8 @@ class Logger:
                                        self.data_points
                                        ["internal_matching_logic_op"])
             file_handler\
-                .write("Total matching logic operations : "
-                       f"{total_matching_logic_op}\n")
+                .write(f"{TColors.BOLD}Total matching logic operations :"
+                       f"{TColors.END} {total_matching_logic_op}\n")
 
             # 3. Success percentage of matching logic operation
             total_task_count = len(self.matching_logic_op_task_measurements
@@ -271,9 +271,9 @@ class Logger:
                         )
                 ) / total_task_count
 
-            file_handler.write("Percentage ratio of free worker found to"
-                               " number of workers searched"
-                               f" = {success_percent=:%}\n")
+            file_handler.write(f"{TColors.BOLD}Percentage ratio of free worker"
+                               f" found to number of workers searched"
+                               f"{TColors.END} = {success_percent=:%}\n")
 
             # 4. Average number of worker searched per task
             workers_searched_per_task = \
@@ -289,13 +289,14 @@ class Logger:
                         self.matching_logic_op_task_measurements
                         )
                     ) / total_task_count
-            file_handler.write("Average number of workers searched per "
-                               f"task = {avg_workers_searched_per_task}\n")
+            file_handler.write(f"{TColors.BOLD}Average number of workers "
+                               f"searched per task ={TColors.END}"
+                               f" {avg_workers_searched_per_task}\n")
 
             file_handler.write(Logger.LINE_SEPARATOR)
 
             file_handler.write(
-                f"{TColors.BOLD}Log sanity checks:{TColors.END}")
+                f"{TColors.BOLD}Log sanity checks:{TColors.END}\n\n")
 
             if self.has_integrity is True:
                 file_handler.write(Logger.INTEGRITY_MESSAGE)
