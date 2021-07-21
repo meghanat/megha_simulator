@@ -29,9 +29,12 @@ if __name__ == "__main__":
 
     logger = SimulatorLogger(__name__).get_logger()
 
-    logger.info("Simulator Info , Creating logs for trace file: "
-                f"{WORKLOAD_FILE_NAME}")
-    logger.info("Simulator Info , Received CMD line arguments.")
+    logger.metadata(f"Analysing logs for trace file: {WORKLOAD_FILE_NAME}")
+    logger.metadata(f"Number of GMs: {NUM_GMS}")
+    logger.metadata(f"Number of LMs: {NUM_LMS}")
+    logger.metadata(f"Number of Partition Size: {PARTITION_SIZE}")
+
+    logger.metadata("Simulator Info , Received CMD line arguments.")
 
     NETWORK_DELAY = 0.0005  # same as sparrow
 
@@ -40,17 +43,19 @@ if __name__ == "__main__":
     t1 = time.time()
     s = Simulation(WORKLOAD_FILE, CONFIG_FILE, NUM_GMS, NUM_LMS,
                    PARTITION_SIZE, SERVER_CPU, SERVER_RAM, SERVER_STORAGE)
-    print("Simulator Info , Simulation running")
-    logger.info("Simulator Info , Simulation running")
+    # print("Simulator Info , Simulation running")
+    logger.metadata("Simulator Info , Simulation running")
     s.run()
     time_elapsed = time.time() - t1
-    print("Simulation ended in ", time_elapsed, " s ")
-    logger.info(f"Simulator Info , Simulation ended in {time_elapsed} s ")
+    # print("Simulation ended in ", time_elapsed, " s ")
+    logger.metadata(f"Simulation ended in {time_elapsed} s ")
 
     print(simulator_globals.jobs_completed)
-    logger.info(f"Simulator Info , {simulator_globals.jobs_completed=}")
 
-    print(f"Number of Jobs completed: {len(simulator_globals.jobs_completed)}")
-    logger.info(
+    # print(f"Number of Jobs completed: {len(simulator_globals.jobs_completed)}")
+    logger.metadata(
         "Simulator Info , Number of Jobs completed: "
         f"{len(simulator_globals.jobs_completed)}")
+
+    logger.integrity()
+    logger.flush()
