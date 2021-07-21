@@ -67,3 +67,4 @@ SortedDict
 datetime
 strftime
 datefmt
+TColors
