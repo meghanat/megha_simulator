@@ -273,7 +273,24 @@ class Logger:
 
             file_handler.write("Percentage ratio of free worker found to"
                                " number of workers searched"
-                               f" = {success_percent=:%}")
+                               f" = {success_percent=:%}\n")
+
+            # 4. Average number of worker searched per task
+            workers_searched_per_task = \
+                (lambda task_id:
+                 (self.matching_logic_op_task_measurements
+                  [task_id]
+                  ["workers_searched"]
+                  )
+                 )
+            avg_workers_searched_per_task = \
+                sum(
+                    map(workers_searched_per_task,
+                        self.matching_logic_op_task_measurements
+                        )
+                    ) / total_task_count
+            file_handler.write("Average number of workers searched per "
+                               f"task = {avg_workers_searched_per_task}\n")
 
             file_handler.write(Logger.LINE_SEPARATOR)
 
