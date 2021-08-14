@@ -66,7 +66,7 @@ class MatchingOps(TypedDict):
 class Logger:
     """Class to analyses the generate logs during runtime."""
 
-    LINE_SEPARATOR = "\n\n" + "-"*80 + "\n\n"
+    LINE_SEPARATOR = "\n\n" + "-" * 80 + "\n\n"
     INTEGRITY_MESSAGE = ("The simulator statistics generated, are from a "
                          "successful run of the simulator over the trace "
                          "dataset.\n")
@@ -288,7 +288,7 @@ class Logger:
                     map(workers_searched_per_task,
                         self.matching_logic_op_task_measurements
                         )
-                    ) / total_task_count
+                ) / total_task_count
             file_handler.write(f"{TColors.BOLD}Average number of workers "
                                f"searched per task ={TColors.END}"
                                f" {avg_workers_searched_per_task}\n")
