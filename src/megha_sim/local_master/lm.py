@@ -77,12 +77,23 @@ class LM(object):
                     task, gm, InconsistencyType.INTERNAL_INCONSISTENCY, self.simulation)))
 
     def task_completed(self, task):
-        # reclaim resources
-        self.LM_config["partitions"][task.partition_id]["nodes"][task.node_id]["CPU"] = 1
+        # Reclaim resources in the worker node
+        (self.LM_config["partitions"]
+                       [task.partition_id]
+                       ["nodes"]
+                       [task.node_id]
+                       ["CPU"]) = 1
 
-    # Append the details of the task that was just completed to the list of tasks completed for the corresponding GM that sent it
+        # Append the details of the task that was just completed to the
+        # list of tasks completed for the corresponding GM that sent it
         # note GM_id used here, not partition, in case of repartitioning
         self.tasks_completed[task.GM_id].append(
             (task.job.job_id, task.task_id))
-        self.simulation.event_queue.put((task.end_time + NETWORK_DELAY, LMUpdateEvent(
-            self.simulation, periodic=False, gm=self.simulation.gms[task.GM_id])))
+        self.simulation.event_queue.put((task.end_time + NETWORK_DELAY,
+                                         LMUpdateEvent(
+                                             self.simulation,
+                                             periodic=False,
+                                             gm=self.simulation.gms[task.GM_id]
+                                         )
+                                         )
+                                        )
