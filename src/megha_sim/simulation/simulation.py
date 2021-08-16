@@ -5,7 +5,7 @@ from typing import Dict, Tuple
 
 
 from local_master import LM
-from global_master import GM
+from global_master import GM, ConfigFile
 from job import Job
 from simulation_logger import SimulatorLogger
 from simulator_utils.values import TaskDurationDistributions
@@ -27,7 +27,8 @@ class Simulation(object):
             memory,
             storage):
 
-        # Each localmaster has one partition per global master so the total number of partitions in the cluster are:
+        # Each localmaster has one partition per global master so the total
+        # number of partitions in the cluster are:
         # NUM_GMS * NUM_LMS
         # Given the number of worker nodes per partition is PARTITION_SIZE
         # so the total_nodes are NUM_GMS*NUM_LMS*PARTITION_SIZE
@@ -35,7 +36,7 @@ class Simulation(object):
         self.NUM_GMS: int = NUM_GMS
         self.NUM_LMS: int = NUM_LMS
         with open(config) as f_handler:
-            self.config = json.load(f_handler)
+            self.config: ConfigFile = json.load(f_handler)
         self.WORKLOAD_FILE = workload
 
         self.jobs = {}
@@ -72,7 +73,7 @@ class Simulation(object):
         self.scheduled_last_job = False
         print("Simulation instantiated")
 
- # Simulation class
+    # Simulation class
     def run(self):
         last_time = 0
 
