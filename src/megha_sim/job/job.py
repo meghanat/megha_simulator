@@ -20,7 +20,7 @@ class Job(object):
     job_count = 1  # To assign IDs
     job_start_tstamps: Dict[float, float] = {}
 
-    def __init__(self, task_distribution: TaskDurationDistributions, line: str,
+    def __init__(self, task_distribution: int, line: str,
                  simulation):
         """
         Retaining below logic as-is to compare with Sparrow.
