@@ -34,7 +34,8 @@ class Simulation(object):
         self.total_nodes = NUM_GMS * NUM_LMS * PARTITION_SIZE
         self.NUM_GMS: int = NUM_GMS
         self.NUM_LMS: int = NUM_LMS
-        self.config = json.load(open(config))
+        with open(config) as f_handler:
+            self.config = json.load(f_handler)
         self.WORKLOAD_FILE = workload
 
         self.jobs = {}
