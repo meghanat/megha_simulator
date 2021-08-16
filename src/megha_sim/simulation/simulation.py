@@ -1,7 +1,7 @@
 import pickle
 import queue
 import json
-from typing import Dict
+from typing import Dict, Tuple
 
 
 from local_master import LM
@@ -9,7 +9,7 @@ from global_master import GM
 from job import Job
 from simulation_logger import SimulatorLogger
 from simulator_utils.values import TaskDurationDistributions
-from events import JobArrival, LMUpdateEvent
+from events import JobArrival, LMUpdateEvent, Event
 
 
 logger = SimulatorLogger(__name__).get_logger()
@@ -39,10 +39,11 @@ class Simulation(object):
         self.WORKLOAD_FILE = workload
 
         self.jobs = {}
-        self.event_queue = queue.PriorityQueue()
+        self.event_queue: queue.PriorityQueue[Tuple[float, Event]] = \
+            queue.PriorityQueue()
 
         # initialise GMs
-        self.gms = {}
+        self.gms: Dict[str, GM] = {}
         counter = 1
         while len(self.gms) < self.NUM_GMS:
             self.gms[str(counter)] = GM(self, str(counter), pickle.loads(
@@ -54,8 +55,14 @@ class Simulation(object):
         counter = 1
 
         while len(self.lms) < self.NUM_LMS:
-            self.lms[str(counter)] = LM(self, str(counter), PARTITION_SIZE, pickle.loads(
-                pickle.dumps(self.config["LMs"][str(counter)])))  # create deep copy
+            self.lms[str(counter)] = LM(self, str(counter), PARTITION_SIZE,
+                                        pickle.loads(
+                                                     pickle.dumps(
+                                                         self.config["LMs"]
+                                                         [str(counter)]
+                                                         )
+                                                     )
+                                        )  # create deep copy
             counter += 1
 
         self.shared_cluster_status = {}
