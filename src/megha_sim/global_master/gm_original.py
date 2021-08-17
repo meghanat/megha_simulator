@@ -7,7 +7,7 @@ Megha scheduler architecture.
 from __future__ import annotations
 
 import json
-from typing import List, Dict, TYPE_CHECKING, TypedDict
+from typing import Final, List, Dict, TYPE_CHECKING, Tuple, TypedDict
 
 import simulator_utils.globals
 from events import MatchFoundEvent
@@ -57,6 +57,31 @@ class GM(object):
 
         print("GM", self.GM_id, "initialised")
 
+    def __update_global_view(self,
+                             current_global_view: Dict[str, LMResources],
+                             lm_id: str,
+                             r_new_lm_state: LMResources) -> None:
+        """
+        Update the global view of the GM for a particular LM.
+
+        This method is called by the update_status method of the GM.
+        """
+        lm_partitions = current_global_view[lm_id]["partitions"]
+        for partition_id in lm_partitions:
+            lm_partition_nodes = lm_partitions[partition_id]["nodes"]
+            for node_id in lm_partition_nodes:
+                node_resources = lm_partition_nodes[node_id]
+                new_node_resources = (r_new_lm_state["partitions"]
+                                      [partition_id]
+                                      ["nodes"]
+                                      [node_id])
+                node_resources["CPU"] = new_node_resources["CPU"]
+                node_resources["RAM"] = new_node_resources["RAM"]
+                node_resources["Disk"] = new_node_resources["Disk"]
+                node_resources["constraints"] = (new_node_resources
+                                                 ["constraints"]
+                                                 .copy())
+
     def update_status(self, current_time: float):
         """
         Update global view of GM by getting partial updates from each LM.
@@ -66,12 +91,17 @@ class GM(object):
         """
         for LM_id in self.simulation.lms:
             lm: LM = self.simulation.lms[LM_id]
-            p_partial_status, p_tasks_completed = lm.get_status(self)
-            partial_status = json.loads(p_partial_status)
-            tasks_completed = json.loads(p_tasks_completed)
-            self.global_view[lm.LM_id] = partial_status
+            r_partial_status, tasks_completed = lm.get_status(self)
+            # partial_status = json.loads(p_partial_status)
+            # tasks_completed = json.loads(p_tasks_completed)
+            self.__update_global_view(self.global_view,
+                                      lm.LM_id,
+                                      r_partial_status)
+            # self.global_view[lm.LM_id] = partial_status
+            # TODO: Add the fix here
             # Through Job object delete task
-            for record in tasks_completed:  # Iterate over the tasks completed and update each job's status
+            for record in tasks_completed:
+                # Iterate over the tasks completed and update each job's status
                 job_id = record[0]
                 task_id = record[1]
 
@@ -96,11 +126,13 @@ class GM(object):
                     if job.job_id == job_id:
                         task = job.tasks[task_id]
                         job.completed_tasks.append(task)
-                        if len(
-                                job.tasks) == len(
-                                job.completed_tasks):  # no more tasks left
+                        if len(job.tasks) == len(
+                                job.completed_tasks):
+                            # no more tasks left
                             # NOTE:job completion time = end time of last task
                             # === max of the task duration for a job
+                            assert task.end_time is not None
+                            assert job.completion_time is not None
                             job.completion_time = task.end_time
                             job.end_time = job.completion_time
                             print(job.completion_time)
@@ -108,6 +140,7 @@ class GM(object):
                             self.jobs_scheduled.remove(job)
                         break
 
+            tasks_completed.clear()  # Clear the tasks completed list at the LM
         self.schedule_tasks(current_time)
 
     def unschedule_job(self, unverified_job: Job):
