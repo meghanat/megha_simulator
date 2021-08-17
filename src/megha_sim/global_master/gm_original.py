@@ -6,8 +6,8 @@ Megha scheduler architecture.
 """
 from __future__ import annotations
 
-import json
-from typing import Final, List, Dict, TYPE_CHECKING, Tuple, TypedDict
+
+from typing import List, Dict, TYPE_CHECKING, TypedDict
 
 import simulator_utils.globals
 from events import MatchFoundEvent
@@ -98,7 +98,6 @@ class GM(object):
                                       lm.LM_id,
                                       r_partial_status)
             # self.global_view[lm.LM_id] = partial_status
-            # TODO: Add the fix here
             # Through Job object delete task
             for record in tasks_completed:
                 # Iterate over the tasks completed and update each job's status
