@@ -120,14 +120,14 @@ class GM:
 
     def __update_partition(self,
                            old_partition_data: OrganizedPartitionResources,
-                           new_partition_data: PartitionResources) \
+                           r_new_partition_data: PartitionResources) \
             -> Tuple[bool, int]:
         # Initially assume that the partition is saturated
         is_saturated: bool = True
 
-        for node_id in new_partition_data["nodes"]:
+        for node_id in r_new_partition_data["nodes"]:
             is_free = (True
-                       if new_partition_data["nodes"][node_id]["CPU"] == 1
+                       if r_new_partition_data["nodes"][node_id]["CPU"] == 1
                        else False)
 
             """A partition is actually saturated if each of its worker nodes
