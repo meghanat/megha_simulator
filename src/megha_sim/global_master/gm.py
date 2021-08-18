@@ -15,7 +15,7 @@ from simulation_logger import (SimulatorLogger, MATCHING_LOGIC_MSG,
                                CLUSTER_SATURATED_MSG,
                                MATCHING_LOGIC_REPARTITION_MSG)
 
-from .gm_types import NodeResources, PartitionResources
+from .gm_types import NodeResources, LMResources
 
 # Imports used only for type checking go here to avoid circular imports
 if TYPE_CHECKING:
