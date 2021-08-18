@@ -119,14 +119,14 @@ class GM:
 
     def __update_partition(self,
                            old_partition_data: OrganizedPartitionResources,
-                           new_partition_data: PartitionResources) \
+                           r_new_partition_data: PartitionResources) \
             -> Tuple[bool, int]:
         # Initially assume that the partition is saturated
         is_saturated: bool = True
 
-        for node_id in new_partition_data["nodes"]:
+        for node_id in r_new_partition_data["nodes"]:
             is_free = (True
-                       if new_partition_data["nodes"][node_id]["CPU"] == 1
+                       if r_new_partition_data["nodes"][node_id]["CPU"] == 1
                        else False)
 
             """A partition is actually saturated if each of its worker nodes
@@ -211,12 +211,12 @@ class GM:
         """
         for LM_id in self.simulation.lms:
             lm: LM = self.simulation.lms[LM_id]
-            p_partial_status, p_tasks_completed = lm.get_status(self)
-            partial_status: LMResources = json.loads(p_partial_status)
-            tasks_completed = json.loads(p_tasks_completed)
+            r_partial_status, tasks_completed = lm.get_status(self)
+            # partial_status: LMResources = json.loads(p_partial_status)
+            # tasks_completed = json.loads(p_tasks_completed)
 
             # NOTE: Iterate over all the LMs partitions
-            for gm_id in partial_status["partitions"]:
+            for gm_id in r_partial_status["partitions"]:
                 # NOTE: Find the partition in the 3 sets
                 key = PartitionKey(gm_id=gm_id, lm_id=LM_id)
 
@@ -232,7 +232,7 @@ class GM:
                         is_saturated, free_slots_count = \
                             self.__update_partition(
                                 self.internal_partitions[free_slots_key][key],
-                                partial_status["partitions"][gm_id]
+                                r_partial_status["partitions"][gm_id]
                             )
 
                         # Check if the partition needs to be moved to the
@@ -277,7 +277,7 @@ class GM:
                         is_saturated, free_slots_count = \
                             self.__update_partition(
                                 self.saturated_partitions[key],
-                                partial_status["partitions"][gm_id]
+                                r_partial_status["partitions"][gm_id]
                             )
                         assert self.global_view[key] == 0
 
@@ -309,7 +309,7 @@ class GM:
                         is_saturated, free_slots_count = \
                             self.__update_partition(
                                 self.external_partitions[free_slots_key][key],
-                                partial_status["partitions"][gm_id]
+                                r_partial_status["partitions"][gm_id]
                             )
 
                         # Check if the partition needs to be moved to the
@@ -354,7 +354,7 @@ class GM:
                         is_saturated, free_slots_count = \
                             self.__update_partition(
                                 self.saturated_partitions[key],
-                                partial_status["partitions"][gm_id]
+                                r_partial_status["partitions"][gm_id]
                             )
                         assert self.global_view[key] == 0
 
@@ -397,7 +397,7 @@ class GM:
                         job.completed_tasks.append(task)
                         break
 
-                if(job_unscheduled):
+                if job_unscheduled:
                     continue
 
                 # If all tasks in the job have been scheduled already
@@ -420,6 +420,8 @@ class GM:
                             simulator_utils.globals.jobs_completed.append(job)
                             self.jobs_scheduled.remove(job)
                         break
+
+            tasks_completed.clear()
 
         self.schedule_tasks(current_time)
 
