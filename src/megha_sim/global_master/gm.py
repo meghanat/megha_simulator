@@ -7,7 +7,7 @@ Megha scheduler architecture.
 from __future__ import annotations
 
 
-from typing import List, Dict, TYPE_CHECKING, TypedDict
+from typing import List, Dict, TYPE_CHECKING
 
 import simulator_utils.globals
 from events import MatchFoundEvent
@@ -61,9 +61,9 @@ class GM(object):
                 node_resources["CPU"] = new_node_resources["CPU"]
                 node_resources["RAM"] = new_node_resources["RAM"]
                 node_resources["DISK"] = new_node_resources["DISK"]
-                node_resources["constraints"] = (new_node_resources
-                                                 ["constraints"]
-                                                 .copy())
+                for ind, updated_constraint in \
+                        enumerate(new_node_resources["constraints"]):
+                    node_resources["constraints"][ind] = updated_constraint
 
     def update_status(self, current_time: float):
         """
