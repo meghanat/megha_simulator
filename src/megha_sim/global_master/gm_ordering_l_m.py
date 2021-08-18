@@ -6,7 +6,6 @@ modified scheduler architecture.
 """
 
 from __future__ import annotations
-import json
 import random
 from typing import List, Dict, TYPE_CHECKING, Tuple
 from sortedcontainers import SortedDict
@@ -17,7 +16,7 @@ from events import MatchFoundEvent
 from simulation_logger import (SimulatorLogger, MATCHING_LOGIC_MSG,
                                CLUSTER_SATURATED_MSG,
                                MATCHING_LOGIC_REPARTITION_MSG)
-from .gm_types import (PartitionKey, LMResources, ConfigFile,
+from .gm_types import (PartitionKey, ConfigFile,
                        OrganizedPartitionResources, NodeResources,
                        PartitionResources, FreeSlotsCount,
                        OrderedPartition)
