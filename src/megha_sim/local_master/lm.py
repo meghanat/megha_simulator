@@ -1,7 +1,7 @@
 """This module contains the Local Master class."""
 
-import json
-from typing import Dict, Final, List, TYPE_CHECKING, Tuple
+from __future__ import annotations
+from typing import Dict, List, TYPE_CHECKING, Tuple
 
 from simulator_utils.values import NETWORK_DELAY, InconsistencyType
 from events import LaunchOnNodeEvent, InconsistencyEvent, LMUpdateEvent
