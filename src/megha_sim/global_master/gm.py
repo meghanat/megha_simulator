@@ -15,29 +15,12 @@ from simulation_logger import (SimulatorLogger, MATCHING_LOGIC_MSG,
                                CLUSTER_SATURATED_MSG,
                                MATCHING_LOGIC_REPARTITION_MSG)
 
+from .gm_types import NodeResources, PartitionResources
 
 # Imports used only for type checking go here to avoid circular imports
 if TYPE_CHECKING:
     from job import Job
     from local_master import LM
-
-
-class NodeResources(TypedDict):
-    CPU: int
-    RAM: int
-    Disk: int
-    constraints: List[int]
-
-
-class PartitionResources(TypedDict):
-    partition_id: str
-    nodes: Dict[str, NodeResources]
-
-
-class LMResources(TypedDict):
-    LM_id: str
-    partitions: Dict[str, PartitionResources]
-
 
 logger = SimulatorLogger(__name__).get_logger()
 
@@ -77,7 +60,7 @@ class GM(object):
                                       [node_id])
                 node_resources["CPU"] = new_node_resources["CPU"]
                 node_resources["RAM"] = new_node_resources["RAM"]
-                node_resources["Disk"] = new_node_resources["Disk"]
+                node_resources["DISK"] = new_node_resources["DISK"]
                 node_resources["constraints"] = (new_node_resources
                                                  ["constraints"]
                                                  .copy())
