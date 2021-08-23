@@ -68,3 +68,4 @@ datetime
 strftime
 datefmt
 TColors
+LMResources
