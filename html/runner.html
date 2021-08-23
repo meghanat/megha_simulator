@@ -36,25 +36,38 @@ This program uses the `megha_sim` module to run the simulator as per the
 Megha architecture and display/log the actions and results of the simulation.
 &#34;&#34;&#34;
 
+import os
 import sys
 import time
+from typing import Final
+import cProfile, pstats, io
+from pstats import SortKey
 
 from megha_sim import Simulation, simulator_globals
 from megha_sim import SimulatorLogger
 
 if __name__ == &#34;__main__&#34;:
-    WORKLOAD_FILE = sys.argv[1]
-    CONFIG_FILE = sys.argv[2]
-    NUM_GMS = int(sys.argv[3])
-    NUM_LMS = int(sys.argv[4])
-    PARTITION_SIZE = int(sys.argv[5])
+    WORKLOAD_FILE: Final[str] = sys.argv[1]
+    CONFIG_FILE: Final[str] = sys.argv[2]
+    NUM_GMS: Final[int] = int(sys.argv[3])
+    NUM_LMS: Final[int] = int(sys.argv[4])
+    PARTITION_SIZE: Final[int] = int(sys.argv[5])
     # currently set to 1 because of comparison with Sparrow
-    SERVER_CPU = float(sys.argv[6])
-    SERVER_RAM = float(sys.argv[7])  # ditto
-    SERVER_STORAGE = float(sys.argv[8])  # ditto
+    SERVER_CPU: Final[float] = float(sys.argv[6])
+    SERVER_RAM: Final[float] = float(sys.argv[7])  # ditto
+    SERVER_STORAGE: Final[float] = float(sys.argv[8])  # ditto
+
+    WORKLOAD_FILE_NAME: Final[str] = (os.path.basename(WORKLOAD_FILE)
+                                      .split(&#34;.&#34;)[0])
 
     logger = SimulatorLogger(__name__).get_logger()
-    logger.info(&#34;Received CMD line arguments.&#34;)
+
+    logger.metadata(f&#34;Analysing logs for trace file: {WORKLOAD_FILE_NAME}&#34;)
+    logger.metadata(f&#34;Number of GMs: {NUM_GMS}&#34;)
+    logger.metadata(f&#34;Number of LMs: {NUM_LMS}&#34;)
+    logger.metadata(f&#34;Number of Partition Size: {PARTITION_SIZE}&#34;)
+
+    logger.metadata(&#34;Simulator Info , Received CMD line arguments.&#34;)
 
     NETWORK_DELAY = 0.0005  # same as sparrow
 
@@ -63,12 +76,30 @@ if __name__ == &#34;__main__&#34;:
     t1 = time.time()
     s = Simulation(WORKLOAD_FILE, CONFIG_FILE, NUM_GMS, NUM_LMS,
                    PARTITION_SIZE, SERVER_CPU, SERVER_RAM, SERVER_STORAGE)
-    print(&#34;Simulation running&#34;)
+    pr = cProfile.Profile()
+    pr.enable()
     s.run()
-    print(&#34;Simulation ended in &#34;, (time.time() - t1), &#34; s &#34;)
+    pr.disable()
+    text = io.StringIO()
+    sortby = SortKey.CUMULATIVE
+    ps = pstats.Stats(pr, stream=text).sort_stats(sortby)
+    ps.print_stats()
+    print(text.getvalue())
+    # print(&#34;Simulator Info , Simulation running&#34;)
+    logger.metadata(&#34;Simulator Info , Simulation running&#34;)
+    time_elapsed = time.time() - t1
+    # print(&#34;Simulation ended in &#34;, time_elapsed, &#34; s &#34;)
+    logger.metadata(f&#34;Simulation ended in {time_elapsed} s &#34;)
 
-    # print(simulator_utils.globals.jobs_completed)
-    print(simulator_globals.jobs_completed)</code></pre>
+    print(simulator_globals.jobs_completed)
+
+    # print(f&#34;Number of Jobs completed: {len(simulator_globals.jobs_completed)}&#34;)
+    logger.metadata(
+        &#34;Simulator Info , Number of Jobs completed: &#34;
+        f&#34;{len(simulator_globals.jobs_completed)}&#34;)
+
+    logger.integrity()
+    logger.flush()</code></pre>
 </details>
 </section>
 <section>

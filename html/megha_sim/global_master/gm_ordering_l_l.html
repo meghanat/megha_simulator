@@ -1,0 +1,1798 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.9.2" />
+<title>megha_sim.global_master.gm_ordering_l_l API documentation</title>
+<meta name="description" content="File containing the implementation of the Global master …" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>megha_sim.global_master.gm_ordering_l_l</code></h1>
+</header>
+<section id="section-intro">
+<p>File containing the implementation of the Global master.</p>
+<p>The file contains the implementation of the Global master module of the modified scheduler architecture.</p>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">&#34;&#34;&#34;
+File containing the implementation of the Global master.
+
+The file contains the implementation of the Global master module of the \
+modified scheduler architecture.
+&#34;&#34;&#34;
+
+from __future__ import annotations
+import random
+from typing import List, Dict, TYPE_CHECKING, Tuple
+from sortedcontainers import SortedDict
+from operator import neg
+
+import simulator_utils.globals
+from events import MatchFoundEvent
+from simulation_logger import (SimulatorLogger, MATCHING_LOGIC_MSG,
+                               CLUSTER_SATURATED_MSG,
+                               MATCHING_LOGIC_REPARTITION_MSG)
+from .gm_types import (PartitionKey, ConfigFile,
+                       OrganizedPartitionResources, NodeResources,
+                       PartitionResources, FreeSlotsCount,
+                       OrderedPartition)
+
+# Imports used only for type checking go here to avoid circular imports
+if TYPE_CHECKING:
+    from job import Job
+    from local_master import LM
+
+# Seed the random number generator
+random.seed(47)
+
+
+logger = SimulatorLogger(__name__).get_logger()
+
+
+class GM:
+    &#34;&#34;&#34;
+    Class defining the implementation of the Global Master.
+
+    This class provides the implementation of the different \
+    interfaces provided by the Global Master to the rest of \
+    the scheduler architecture.
+    &#34;&#34;&#34;
+
+    def __init__(self, simulation, GM_id: str, config: ConfigFile):
+        self.GM_id = GM_id
+        self.simulation = simulation
+        self.RR_counter: int = 0
+        self.job_queue: List[Job] = []
+        self.jobs_scheduled: List[Job] = []
+
+        # Map the partition to the number of free slots in it
+        self.global_view: Dict[PartitionKey, FreeSlotsCount] = {}
+
+        # The current `POLICY` ensures that the first choice is
+        # from amongst the partitions with the most number of free worker
+        # slots.
+        POLICY = neg
+        # 3 Dictionaries
+        self.internal_partitions: \
+            Dict[FreeSlotsCount,
+                 Dict[PartitionKey,
+                      OrganizedPartitionResources]] = SortedDict()
+
+        # TODO: [DONE] Experiment with ordering the external partition in
+        # reverse so as to not clash with the GM who owns that partition.
+        # NOTE: By &#39;reverse&#39; I mean: start from the partition with the
+        # least number of free worker slots and then move towards the ones
+        # with the most number of free worker slots.
+        self.external_partitions: \
+            Dict[FreeSlotsCount,
+                 Dict[PartitionKey,
+                      OrganizedPartitionResources]] = SortedDict()
+        # SortedDict(POLICY)
+
+        # All saturated partitions have no free worker slots, hence no extra
+        # information needs to be saved nor any ordering needs to be
+        # maintained.
+        self.saturated_partitions: \
+            Dict[PartitionKey,
+                 OrganizedPartitionResources] = dict()
+
+        # Populate the 3 sets with the cluster information
+        for LM_id in config[&#34;LMs&#34;]:
+            for partition_id in config[&#34;LMs&#34;][LM_id][&#34;partitions&#34;]:
+                partition_nodes: Dict[str, NodeResources] = (config[&#34;LMs&#34;]
+                                                             [LM_id]
+                                                             [&#34;partitions&#34;]
+                                                             [partition_id]
+                                                             [&#34;nodes&#34;])
+                # create partition object
+                partition_obj: OrganizedPartitionResources = \
+                    OrganizedPartitionResources(lm_id=LM_id,
+                                                partition_id=partition_id,
+                                                free_nodes=partition_nodes,
+                                                busy_nodes=dict())
+
+                free_slots_count = len(partition_obj[&#34;free_nodes&#34;])
+                key = PartitionKey(gm_id=partition_id, lm_id=LM_id)
+
+                self.global_view[key] = free_slots_count
+
+                if partition_id == self.GM_id:
+                    # If this `free_slots_count` value has not been recorded
+                    # before
+                    if self.internal_partitions.get(free_slots_count) is None:
+                        self.internal_partitions[free_slots_count] = dict()
+                    self.internal_partitions[free_slots_count][key] = \
+                        partition_obj
+                else:
+                    # If this `free_slots_count` value has not been recorded
+                    # before
+                    if self.external_partitions.get(free_slots_count) is None:
+                        self.external_partitions[free_slots_count] = dict()
+                    self.external_partitions[free_slots_count][key] = \
+                        partition_obj
+
+        print(&#34;GM&#34;, self.GM_id, &#34;initialised&#34;)
+
+    def __update_partition(self,
+                           old_partition_data: OrganizedPartitionResources,
+                           r_new_partition_data: PartitionResources) \
+            -&gt; Tuple[bool, int]:
+        # Initially assume that the partition is saturated
+        is_saturated: bool = True
+
+        for node_id in r_new_partition_data[&#34;nodes&#34;]:
+            is_free = (True
+                       if r_new_partition_data[&#34;nodes&#34;][node_id][&#34;CPU&#34;] == 1
+                       else False)
+
+            &#34;&#34;&#34;A partition is actually saturated if each of its worker nodes
+            are busy (i.e. `is_free` is False)&#34;&#34;&#34;
+            is_saturated = is_saturated and is_free is False
+
+            # If the worker node was earlier free but now it is busy
+            if node_id in old_partition_data[&#34;free_nodes&#34;].keys() and \
+               is_free is False:
+                # Move the worker node to the `busy_nodes` dictionary
+                old_partition_data[&#34;busy_nodes&#34;][node_id] =\
+                    old_partition_data[&#34;free_nodes&#34;][node_id]
+
+                &#34;&#34;&#34;Remove the worker node from the `free_nodes`
+                dictionary&#34;&#34;&#34;
+                del(old_partition_data[&#34;free_nodes&#34;][node_id])
+
+            # If the worker node was earlier busy but now it is free
+            elif node_id in old_partition_data[&#34;busy_nodes&#34;].keys() and \
+                    is_free is True:
+                # Move the worker node to `free_nodes` dictionary
+                old_partition_data[&#34;free_nodes&#34;][node_id] =\
+                    old_partition_data[&#34;busy_nodes&#34;][node_id]
+
+                &#34;&#34;&#34;Remove the worker node from the `busy_nodes`
+                dictionary&#34;&#34;&#34;
+                del(old_partition_data[&#34;busy_nodes&#34;][node_id])
+
+        return is_saturated, len(old_partition_data[&#34;free_nodes&#34;])
+
+    def __move_partition(self, key: PartitionKey,
+                         from_partition:
+                             Dict[PartitionKey, OrganizedPartitionResources],
+                         to_partition:
+                             Dict[PartitionKey, OrganizedPartitionResources]):
+        # Preconditions
+        assert from_partition.get(key) is not None
+        assert to_partition.get(key) is None
+
+        # Move the partition to the `to_partition` dictionary
+        to_partition[key] = from_partition[key]
+
+        &#34;&#34;&#34;Remove the worker node from the `free_nodes`
+        dictionary&#34;&#34;&#34;
+        del(from_partition[key])
+
+        # Postconditions
+        assert from_partition.get(key) is None
+        assert to_partition.get(key) is not None
+
+    def __relocate_partition(self,
+                             partition: Dict[FreeSlotsCount,
+                                             Dict[PartitionKey,
+                                                  OrganizedPartitionResources
+                                                  ]
+                                             ],
+                             old_free_slots_count: FreeSlotsCount,
+                             new_free_slots_count: FreeSlotsCount,
+                             partition_key: PartitionKey):
+        &#34;&#34;&#34;Update the position of the node in the dictionary.&#34;&#34;&#34;
+        if partition.get(new_free_slots_count) is None:
+            partition[new_free_slots_count] = dict()
+
+        partition[new_free_slots_count][partition_key] = \
+            partition[old_free_slots_count][partition_key]
+
+        &#34;&#34;&#34;Remove the partition from its previous
+        position in the `partitions` dictionary&#34;&#34;&#34;
+        del(partition[old_free_slots_count][partition_key])
+
+        &#34;&#34;&#34;Check if there are any remaining partitions with
+        `old_free_slots_count` number of free slots&#34;&#34;&#34;
+        if len(partition[old_free_slots_count].keys()) == 0:
+            del(partition[old_free_slots_count])
+
+    def update_status(self, current_time: float):
+        &#34;&#34;&#34;
+        Update the global view of GM by getting partial updates from each LM.
+
+        Args:
+            current_time (float): The current time in the simulation.
+        &#34;&#34;&#34;
+        for LM_id in self.simulation.lms:
+            lm: LM = self.simulation.lms[LM_id]
+            r_partial_status, tasks_completed = lm.get_status(self)
+            # partial_status: LMResources = json.loads(p_partial_status)
+            # tasks_completed = json.loads(p_tasks_completed)
+
+            # NOTE: Iterate over all the LMs partitions
+            for gm_id in r_partial_status[&#34;partitions&#34;]:
+                # NOTE: Find the partition in the 3 sets
+                key = PartitionKey(gm_id=gm_id, lm_id=LM_id)
+
+                # NOTE: Update the data in the LM
+                # NOTE: Check if the LM needs to be moved around
+                # Check if the partition is an internal partition
+                if gm_id == self.GM_id:
+                    # Check if the partition is an unsaturated partition
+                    if self.global_view[key] != 0:
+                        free_slots_key = self.global_view[key]
+
+                        # Update each of the workers in the partition
+                        is_saturated, free_slots_count = \
+                            self.__update_partition(
+                                self.internal_partitions[free_slots_key][key],
+                                r_partial_status[&#34;partitions&#34;][gm_id]
+                            )
+
+                        # Check if the partition needs to be moved to the
+                        # `saturated_partitions` dictionary
+                        if is_saturated is True:
+                            self.__move_partition(key,
+                                                  (self.internal_partitions
+                                                   [free_slots_key]),
+                                                  self.saturated_partitions)
+                            assert (self.internal_partitions
+                                    [free_slots_key]
+                                    .get(key) is None)
+                            assert (self.saturated_partitions
+                                    .get(key) is not None)
+                            if len(self.internal_partitions[free_slots_key])\
+                               == 0:
+                                del(self.internal_partitions[free_slots_key])
+                        else:
+                            # The partition is not saturated but may need
+                            # to be relocated, if its free slots count has
+                            # changed.
+                            if free_slots_count != free_slots_key:
+                                self.__relocate_partition(
+                                    self.internal_partitions,
+                                    free_slots_key,
+                                    free_slots_count,
+                                    key
+                                )
+                                assert (self.internal_partitions
+                                        .get(free_slots_key) is None
+                                        or
+                                        self.internal_partitions
+                                        [free_slots_key]
+                                        .get(key) is None)
+                                assert (self.internal_partitions
+                                        [free_slots_count]
+                                        .get(key) is not None)
+                        # Update the map
+                        self.global_view[key] = free_slots_count
+                    else:  # The partition is a saturated partition
+                        # Update each of the workers in the partition
+                        is_saturated, free_slots_count = \
+                            self.__update_partition(
+                                self.saturated_partitions[key],
+                                r_partial_status[&#34;partitions&#34;][gm_id]
+                            )
+                        assert self.global_view[key] == 0
+
+                        # Check if the partition needs to be moved to the
+                        # `internal_partitions` dictionary
+                        if is_saturated is False:
+                            # Update the map if needed
+                            self.global_view[key] = free_slots_count
+                            assert self.global_view[key] != 0
+                            if self.internal_partitions.get(free_slots_count)\
+                               is None:
+                                self.internal_partitions[free_slots_count]\
+                                    = dict()
+                            self.__move_partition(key,
+                                                  self.saturated_partitions,
+                                                  (self.internal_partitions
+                                                   [free_slots_count]))
+                            assert (self.saturated_partitions
+                                    .get(key) is None)
+                            assert (self.internal_partitions
+                                    [free_slots_count]
+                                    .get(key) is not None)
+                else:  # The partition is an external partition
+                    # Check if the partition is an unsaturated partition
+                    if self.global_view[key] != 0:
+                        free_slots_key = self.global_view[key]
+
+                        # Update each of the workers in the partition
+                        is_saturated, free_slots_count = \
+                            self.__update_partition(
+                                self.external_partitions[free_slots_key][key],
+                                r_partial_status[&#34;partitions&#34;][gm_id]
+                            )
+
+                        # Check if the partition needs to be moved to the
+                        # `saturated_partitions` dictionary
+                        if is_saturated is True:
+                            self.__move_partition(key,
+                                                  (self.external_partitions
+                                                   [free_slots_key]),
+                                                  self.saturated_partitions)
+                            assert (self.external_partitions
+                                    [free_slots_key]
+                                    .get(key) is None)
+                            assert (self.saturated_partitions
+                                    .get(key) is not None)
+                            if len(self.external_partitions[free_slots_key])\
+                               == 0:
+                                del(self.external_partitions[free_slots_key])
+                        else:
+                            # The partition is not saturated but may need
+                            # to be relocated, if its free slots count has
+                            # changed.
+                            if free_slots_count != free_slots_key:
+                                self.__relocate_partition(
+                                    self.external_partitions,
+                                    free_slots_key,
+                                    free_slots_count,
+                                    key
+                                )
+                                assert (self.external_partitions
+                                        .get(free_slots_key) is None
+                                        or
+                                        self.external_partitions
+                                        [free_slots_key]
+                                        .get(key) is None)
+                                assert (self.external_partitions
+                                        [free_slots_count]
+                                        .get(key) is not None)
+                        # Update the map
+                        self.global_view[key] = free_slots_count
+                    else:  # The partition is a saturated partition
+                        # Update each of the workers in the partition
+                        is_saturated, free_slots_count = \
+                            self.__update_partition(
+                                self.saturated_partitions[key],
+                                r_partial_status[&#34;partitions&#34;][gm_id]
+                            )
+                        assert self.global_view[key] == 0
+
+                        # Check if the partition needs to be moved to the
+                        # `external_partitions` dictionary
+                        if is_saturated is False:
+                            # Update the map, if needed
+                            self.global_view[key] = free_slots_count
+                            assert self.global_view[key] != 0
+                            if self.external_partitions.get(free_slots_count)\
+                               is None:
+                                self.external_partitions[free_slots_count]\
+                                    = dict()
+                            self.__move_partition(key,
+                                                  self.saturated_partitions,
+                                                  (self.external_partitions
+                                                   [free_slots_count]))
+                            assert (self.saturated_partitions
+                                    .get(key) is None)
+                            assert (self.external_partitions
+                                    [free_slots_count]
+                                    .get(key) is not None)
+            # -------------------------------------------
+
+            # TODO: Check comment &#34;Through Job object delete task&#34;
+
+            # Iterate over the tasks completed and update each job&#39;s status
+            for record in tasks_completed:
+                job_id = record[0]
+                task_id = record[1]
+
+                job_unscheduled = False
+
+                # if not all tasks in the job have been scheduled
+                for index in range(0, len(self.job_queue)):
+                    job = self.job_queue[index]
+                    if job.job_id == job_id:
+                        job_unscheduled = True
+                        task = job.tasks[task_id]
+                        job.completed_tasks.append(task)
+                        break
+
+                if job_unscheduled:
+                    continue
+
+                # If all tasks in the job have been scheduled already
+                for index in range(0, len(self.jobs_scheduled)):
+                    job = self.jobs_scheduled[index]
+
+                    if job.job_id == job_id:
+                        task = job.tasks[task_id]
+                        job.completed_tasks.append(task)
+                        if len(
+                                job.tasks) == len(
+                                job.completed_tasks):  # no more tasks left
+                            # NOTE:job completion time = end time of last task
+                            # === max of the task duration for a job
+                            assert task.end_time is not None, \
+                                &#34;Task end time not recorded!&#34;
+                            job.completion_time = task.end_time
+                            job.end_time = job.completion_time
+                            print(job.completion_time)
+                            simulator_utils.globals.jobs_completed.append(job)
+                            self.jobs_scheduled.remove(job)
+                        break
+
+            tasks_completed.clear()
+
+        self.schedule_tasks(current_time)
+
+    def unschedule_job(self, unverified_job: Job):
+        &#34;&#34;&#34;
+        Job is inserted back into the job_queue of the GM.
+
+        The job is inserted back into the job_queue of the GM from the \
+        job_scheduled queue of the GM.
+
+        Args:
+            unverified_job (Job): The job that needs to be moved, as it was \
+                assigned on a worker node not actually available at that time
+        &#34;&#34;&#34;
+        assert_flag: bool = False
+        for index in range(0, len(self.jobs_scheduled)):
+            if unverified_job.job_id == self.jobs_scheduled[index].job_id:
+                # Remove job from list and add to front of job_queue
+                self.job_queue.insert(0, self.jobs_scheduled.pop(index))
+                assert_flag = True
+                break
+
+        # assert assert_flag is True, (&#34;`unverified_job` not found in &#34;
+        #                              &#34;`self.jobs_scheduled`!&#34;)
+
+    def repartition(self, current_time: float):
+        &#34;&#34;&#34;
+        Search the external partitions for a free worker node.
+
+        Args:
+            current_time (float): The current time in the simulation.
+        &#34;&#34;&#34;
+        # While the job_queue for the current GM is not empty
+        while len(self.job_queue) &gt; 0:
+            job = self.job_queue[0]  # Get the Job from the head of the queue
+
+            # print(&#34;Scheduling Tasks from Job: &#34;,job.job_id)
+            for task_id in job.tasks:  # Go over the tasks for the job
+                task = job.tasks[task_id]
+                # Make sure that the 2 sources for `task_id` agree with each
+                # other
+                assert task.task_id == task_id
+
+                # If the task is already scheduled then, there is
+                # nothing to do.
+                if(job.tasks[task_id].scheduled):
+                    continue
+
+                if len(self.external_partitions) == 0:
+                    # There are no free worker nodes in the external partitions
+                    # and hence we cannot allocate the task to any worker node.
+                    print(current_time, &#34;No resources available in cluster&#34;)
+                    logger.info(f&#34;{current_time} , {CLUSTER_SATURATED_MSG} ,&#34;
+                                f&#34; {self.GM_id}&#34;)
+                    return
+
+                # NOTE: This is not a type error
+                gm_id, lm_id, free_worker_id = self.__get_worker_node(
+                    self.external_partitions)
+
+                assert gm_id != self.GM_id, (&#34;External partition worker node&#34;
+                                             &#34;is actually from internal &#34;
+                                             &#34;partition!&#34;)
+
+                job.tasks[task_id].scheduled = True
+                if(job.fully_scheduled()):
+                    self.jobs_scheduled.append(self.job_queue.pop(0))
+
+                print(current_time, &#34;, RepartitionEvent ,&#34;,
+                      self.GM_id, &#34;,&#34;,
+                      gm_id,
+                      &#34;,&#34;,
+                      job.job_id +
+                      &#34;_&#34; +
+                      task.task_id)
+                # [DONE] May need to add processing overhead here if required
+                logger.info(f&#34;{MATCHING_LOGIC_REPARTITION_MSG} , &#34;
+                            f&#34;{gm_id}_{lm_id}_{free_worker_id} , &#34;
+                            f&#34;{job.job_id}_{task.task_id}&#34;)
+
+                self.simulation.event_queue.put(
+                    (current_time,
+                        MatchFoundEvent(
+                            job.tasks[task_id],
+                            self,
+                            self.simulation.lms[lm_id],
+                            free_worker_id,
+                            current_time,
+                            external_partition=gm_id)))
+
+    def __get_worker_node(self, partition: OrderedPartition) \
+            -&gt; Tuple[str, str, str]:
+        &#34;&#34;&#34;
+        Select the worker node with the highest chances of actually begin free.
+
+        Select the worker node from the partition with most number of \
+        free worker slots. This is aimed to help overcome (to a certain \
+        degree) the inaccuracies in the stale view of the cluster that the \
+        GM has.
+        &#34;&#34;&#34;
+        # We pick the dictionary of partitions with the most number of
+        # free worker slots.
+        free_slots_key, partition_dict = partition.peekitem(index=0)
+
+        # We randomly pick a non-saturated internal partition
+        key_internal_partition = random.choice(list(partition_dict.keys()))
+        internal_partition = partition_dict[key_internal_partition]
+
+        # Get the GM id to verify with the LM later
+        gm_id = internal_partition[&#34;partition_id&#34;]
+
+        # Get the LM id to verify with the LM later
+        lm_id = internal_partition[&#34;lm_id&#34;]
+
+        # We randomly pick a free worker node
+        free_worker_id = random.choice(
+            list(internal_partition[&#34;free_nodes&#34;].keys()))
+
+        free_worker_node = (internal_partition[&#34;free_nodes&#34;]
+                            [free_worker_id])
+        free_worker_node[&#34;CPU&#34;] = 0
+
+        assert internal_partition[&#34;busy_nodes&#34;].get(free_worker_id) is None,\
+            &#34;Worker ID is in `busy_nodes` before insertion, itself!&#34;
+
+        # Move the worker node to the `busy_nodes` dictionary
+        internal_partition[&#34;busy_nodes&#34;][free_worker_id] =\
+            internal_partition[&#34;free_nodes&#34;][free_worker_id]
+
+        # Remove the worker node from the `free_nodes` dictionary
+        del(internal_partition[&#34;free_nodes&#34;][free_worker_id])
+
+        # Update the mapping of partition to the number of free slots in it
+        self.global_view[key_internal_partition] -= 1
+        free_slots_count = self.global_view[key_internal_partition]
+
+        assert free_slots_count &gt;= 0, &#34;`free_slots_count` became negative!&#34;
+
+        # If this internal partition is now completely full then,
+        # move it to the `saturated_partitions` dictionary
+        if free_slots_count == 0:
+            self.saturated_partitions[key_internal_partition] = \
+                partition[free_slots_key][key_internal_partition]
+
+            # Remove the internal partition from the
+            # `internal_partitions` dictionary
+            del(partition[free_slots_key][key_internal_partition])
+        else:
+            # Update the position of the node in the dictionary.
+            if partition.get(free_slots_count) is None:
+                partition[free_slots_count] = dict()
+
+            partition[free_slots_count][key_internal_partition] = \
+                partition[free_slots_key][key_internal_partition]
+
+            # Remove the internal partition from its previous
+            # position in the `internal_partitions` dictionary
+            del(partition[free_slots_key][key_internal_partition])
+
+        # Check if there are any remaining partitions with `free_slots_key`
+        # number of free slots
+        if len(partition[free_slots_key]) == 0:
+            del(partition[free_slots_key])
+
+        return gm_id, lm_id, free_worker_id
+
+    def schedule_tasks(self, current_time: float):
+        &#34;&#34;&#34;
+        Search the internal partitions of the GM to find a free worker node.
+
+        Args:
+            current_time (float): The current time in the simulation.
+        &#34;&#34;&#34;
+        # While the job_queue for the current GM is not empty
+        while len(self.job_queue) &gt; 0:
+            job = self.job_queue[0]  # Get job from the head of queue
+            for task_id in job.tasks:  # Go over the tasks for the job
+                # Make sure that the 2 sources for `task_id` agree with each
+                # other
+                assert task_id == job.tasks[task_id].task_id
+                if(job.tasks[task_id].scheduled):
+                    # If the task is already scheduled, then there is
+                    # nothing to do
+                    continue
+
+                if len(self.internal_partitions) == 0:
+                    # There are no free worker nodes in the internal partitions
+                    # and hence we perform the repartition operation.
+                    self.repartition(current_time)
+                    return
+
+                # NOTE: This is not a type error
+                _gm_id, lm_id, free_worker_id = self\
+                    .__get_worker_node(self.internal_partitions)
+
+                assert _gm_id == self.GM_id, (&#34;Internal partition worker node&#34;
+                                              &#34;is actually from external &#34;
+                                              &#34;partition!&#34;)
+
+                job.tasks[task_id].scheduled = True
+                if job.fully_scheduled():
+                    self.jobs_scheduled.append(self.job_queue.pop(0))
+
+                # [DONE] May need to add processing overhead here if
+                # required
+                logger.info(f&#34;{MATCHING_LOGIC_MSG} , &#34;
+                            f&#34;{self.GM_id}_{lm_id}_{free_worker_id} , &#34;
+                            f&#34;{job.job_id}_{task_id}&#34;)
+
+                self.simulation.event_queue.put(
+                    (current_time, MatchFoundEvent(
+                        job.tasks[task_id],
+                        self,
+                        self.simulation.lms[lm_id],
+                        free_worker_id,
+                        current_time)))
+
+    def queue_job(self, job, current_time):
+        print(current_time, &#34;,&#34;, &#34;JobArrivalEvent&#34;,
+              &#34;,&#34;, job.job_id, &#34;,&#34;, self.GM_id)
+        job.gm = self
+        self.job_queue.append(job)
+        if(len(self.job_queue) == 1):  # first job
+            self.schedule_tasks(current_time)</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="megha_sim.global_master.gm_ordering_l_l.GM"><code class="flex name class">
+<span>class <span class="ident">GM</span></span>
+<span>(</span><span>simulation, GM_id: str, config: ConfigFile)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Class defining the implementation of the Global Master.</p>
+<p>This class provides the implementation of the different
+interfaces provided by the Global Master to the rest of
+the scheduler architecture.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class GM:
+    &#34;&#34;&#34;
+    Class defining the implementation of the Global Master.
+
+    This class provides the implementation of the different \
+    interfaces provided by the Global Master to the rest of \
+    the scheduler architecture.
+    &#34;&#34;&#34;
+
+    def __init__(self, simulation, GM_id: str, config: ConfigFile):
+        self.GM_id = GM_id
+        self.simulation = simulation
+        self.RR_counter: int = 0
+        self.job_queue: List[Job] = []
+        self.jobs_scheduled: List[Job] = []
+
+        # Map the partition to the number of free slots in it
+        self.global_view: Dict[PartitionKey, FreeSlotsCount] = {}
+
+        # The current `POLICY` ensures that the first choice is
+        # from amongst the partitions with the most number of free worker
+        # slots.
+        POLICY = neg
+        # 3 Dictionaries
+        self.internal_partitions: \
+            Dict[FreeSlotsCount,
+                 Dict[PartitionKey,
+                      OrganizedPartitionResources]] = SortedDict()
+
+        # TODO: [DONE] Experiment with ordering the external partition in
+        # reverse so as to not clash with the GM who owns that partition.
+        # NOTE: By &#39;reverse&#39; I mean: start from the partition with the
+        # least number of free worker slots and then move towards the ones
+        # with the most number of free worker slots.
+        self.external_partitions: \
+            Dict[FreeSlotsCount,
+                 Dict[PartitionKey,
+                      OrganizedPartitionResources]] = SortedDict()
+        # SortedDict(POLICY)
+
+        # All saturated partitions have no free worker slots, hence no extra
+        # information needs to be saved nor any ordering needs to be
+        # maintained.
+        self.saturated_partitions: \
+            Dict[PartitionKey,
+                 OrganizedPartitionResources] = dict()
+
+        # Populate the 3 sets with the cluster information
+        for LM_id in config[&#34;LMs&#34;]:
+            for partition_id in config[&#34;LMs&#34;][LM_id][&#34;partitions&#34;]:
+                partition_nodes: Dict[str, NodeResources] = (config[&#34;LMs&#34;]
+                                                             [LM_id]
+                                                             [&#34;partitions&#34;]
+                                                             [partition_id]
+                                                             [&#34;nodes&#34;])
+                # create partition object
+                partition_obj: OrganizedPartitionResources = \
+                    OrganizedPartitionResources(lm_id=LM_id,
+                                                partition_id=partition_id,
+                                                free_nodes=partition_nodes,
+                                                busy_nodes=dict())
+
+                free_slots_count = len(partition_obj[&#34;free_nodes&#34;])
+                key = PartitionKey(gm_id=partition_id, lm_id=LM_id)
+
+                self.global_view[key] = free_slots_count
+
+                if partition_id == self.GM_id:
+                    # If this `free_slots_count` value has not been recorded
+                    # before
+                    if self.internal_partitions.get(free_slots_count) is None:
+                        self.internal_partitions[free_slots_count] = dict()
+                    self.internal_partitions[free_slots_count][key] = \
+                        partition_obj
+                else:
+                    # If this `free_slots_count` value has not been recorded
+                    # before
+                    if self.external_partitions.get(free_slots_count) is None:
+                        self.external_partitions[free_slots_count] = dict()
+                    self.external_partitions[free_slots_count][key] = \
+                        partition_obj
+
+        print(&#34;GM&#34;, self.GM_id, &#34;initialised&#34;)
+
+    def __update_partition(self,
+                           old_partition_data: OrganizedPartitionResources,
+                           r_new_partition_data: PartitionResources) \
+            -&gt; Tuple[bool, int]:
+        # Initially assume that the partition is saturated
+        is_saturated: bool = True
+
+        for node_id in r_new_partition_data[&#34;nodes&#34;]:
+            is_free = (True
+                       if r_new_partition_data[&#34;nodes&#34;][node_id][&#34;CPU&#34;] == 1
+                       else False)
+
+            &#34;&#34;&#34;A partition is actually saturated if each of its worker nodes
+            are busy (i.e. `is_free` is False)&#34;&#34;&#34;
+            is_saturated = is_saturated and is_free is False
+
+            # If the worker node was earlier free but now it is busy
+            if node_id in old_partition_data[&#34;free_nodes&#34;].keys() and \
+               is_free is False:
+                # Move the worker node to the `busy_nodes` dictionary
+                old_partition_data[&#34;busy_nodes&#34;][node_id] =\
+                    old_partition_data[&#34;free_nodes&#34;][node_id]
+
+                &#34;&#34;&#34;Remove the worker node from the `free_nodes`
+                dictionary&#34;&#34;&#34;
+                del(old_partition_data[&#34;free_nodes&#34;][node_id])
+
+            # If the worker node was earlier busy but now it is free
+            elif node_id in old_partition_data[&#34;busy_nodes&#34;].keys() and \
+                    is_free is True:
+                # Move the worker node to `free_nodes` dictionary
+                old_partition_data[&#34;free_nodes&#34;][node_id] =\
+                    old_partition_data[&#34;busy_nodes&#34;][node_id]
+
+                &#34;&#34;&#34;Remove the worker node from the `busy_nodes`
+                dictionary&#34;&#34;&#34;
+                del(old_partition_data[&#34;busy_nodes&#34;][node_id])
+
+        return is_saturated, len(old_partition_data[&#34;free_nodes&#34;])
+
+    def __move_partition(self, key: PartitionKey,
+                         from_partition:
+                             Dict[PartitionKey, OrganizedPartitionResources],
+                         to_partition:
+                             Dict[PartitionKey, OrganizedPartitionResources]):
+        # Preconditions
+        assert from_partition.get(key) is not None
+        assert to_partition.get(key) is None
+
+        # Move the partition to the `to_partition` dictionary
+        to_partition[key] = from_partition[key]
+
+        &#34;&#34;&#34;Remove the worker node from the `free_nodes`
+        dictionary&#34;&#34;&#34;
+        del(from_partition[key])
+
+        # Postconditions
+        assert from_partition.get(key) is None
+        assert to_partition.get(key) is not None
+
+    def __relocate_partition(self,
+                             partition: Dict[FreeSlotsCount,
+                                             Dict[PartitionKey,
+                                                  OrganizedPartitionResources
+                                                  ]
+                                             ],
+                             old_free_slots_count: FreeSlotsCount,
+                             new_free_slots_count: FreeSlotsCount,
+                             partition_key: PartitionKey):
+        &#34;&#34;&#34;Update the position of the node in the dictionary.&#34;&#34;&#34;
+        if partition.get(new_free_slots_count) is None:
+            partition[new_free_slots_count] = dict()
+
+        partition[new_free_slots_count][partition_key] = \
+            partition[old_free_slots_count][partition_key]
+
+        &#34;&#34;&#34;Remove the partition from its previous
+        position in the `partitions` dictionary&#34;&#34;&#34;
+        del(partition[old_free_slots_count][partition_key])
+
+        &#34;&#34;&#34;Check if there are any remaining partitions with
+        `old_free_slots_count` number of free slots&#34;&#34;&#34;
+        if len(partition[old_free_slots_count].keys()) == 0:
+            del(partition[old_free_slots_count])
+
+    def update_status(self, current_time: float):
+        &#34;&#34;&#34;
+        Update the global view of GM by getting partial updates from each LM.
+
+        Args:
+            current_time (float): The current time in the simulation.
+        &#34;&#34;&#34;
+        for LM_id in self.simulation.lms:
+            lm: LM = self.simulation.lms[LM_id]
+            r_partial_status, tasks_completed = lm.get_status(self)
+            # partial_status: LMResources = json.loads(p_partial_status)
+            # tasks_completed = json.loads(p_tasks_completed)
+
+            # NOTE: Iterate over all the LMs partitions
+            for gm_id in r_partial_status[&#34;partitions&#34;]:
+                # NOTE: Find the partition in the 3 sets
+                key = PartitionKey(gm_id=gm_id, lm_id=LM_id)
+
+                # NOTE: Update the data in the LM
+                # NOTE: Check if the LM needs to be moved around
+                # Check if the partition is an internal partition
+                if gm_id == self.GM_id:
+                    # Check if the partition is an unsaturated partition
+                    if self.global_view[key] != 0:
+                        free_slots_key = self.global_view[key]
+
+                        # Update each of the workers in the partition
+                        is_saturated, free_slots_count = \
+                            self.__update_partition(
+                                self.internal_partitions[free_slots_key][key],
+                                r_partial_status[&#34;partitions&#34;][gm_id]
+                            )
+
+                        # Check if the partition needs to be moved to the
+                        # `saturated_partitions` dictionary
+                        if is_saturated is True:
+                            self.__move_partition(key,
+                                                  (self.internal_partitions
+                                                   [free_slots_key]),
+                                                  self.saturated_partitions)
+                            assert (self.internal_partitions
+                                    [free_slots_key]
+                                    .get(key) is None)
+                            assert (self.saturated_partitions
+                                    .get(key) is not None)
+                            if len(self.internal_partitions[free_slots_key])\
+                               == 0:
+                                del(self.internal_partitions[free_slots_key])
+                        else:
+                            # The partition is not saturated but may need
+                            # to be relocated, if its free slots count has
+                            # changed.
+                            if free_slots_count != free_slots_key:
+                                self.__relocate_partition(
+                                    self.internal_partitions,
+                                    free_slots_key,
+                                    free_slots_count,
+                                    key
+                                )
+                                assert (self.internal_partitions
+                                        .get(free_slots_key) is None
+                                        or
+                                        self.internal_partitions
+                                        [free_slots_key]
+                                        .get(key) is None)
+                                assert (self.internal_partitions
+                                        [free_slots_count]
+                                        .get(key) is not None)
+                        # Update the map
+                        self.global_view[key] = free_slots_count
+                    else:  # The partition is a saturated partition
+                        # Update each of the workers in the partition
+                        is_saturated, free_slots_count = \
+                            self.__update_partition(
+                                self.saturated_partitions[key],
+                                r_partial_status[&#34;partitions&#34;][gm_id]
+                            )
+                        assert self.global_view[key] == 0
+
+                        # Check if the partition needs to be moved to the
+                        # `internal_partitions` dictionary
+                        if is_saturated is False:
+                            # Update the map if needed
+                            self.global_view[key] = free_slots_count
+                            assert self.global_view[key] != 0
+                            if self.internal_partitions.get(free_slots_count)\
+                               is None:
+                                self.internal_partitions[free_slots_count]\
+                                    = dict()
+                            self.__move_partition(key,
+                                                  self.saturated_partitions,
+                                                  (self.internal_partitions
+                                                   [free_slots_count]))
+                            assert (self.saturated_partitions
+                                    .get(key) is None)
+                            assert (self.internal_partitions
+                                    [free_slots_count]
+                                    .get(key) is not None)
+                else:  # The partition is an external partition
+                    # Check if the partition is an unsaturated partition
+                    if self.global_view[key] != 0:
+                        free_slots_key = self.global_view[key]
+
+                        # Update each of the workers in the partition
+                        is_saturated, free_slots_count = \
+                            self.__update_partition(
+                                self.external_partitions[free_slots_key][key],
+                                r_partial_status[&#34;partitions&#34;][gm_id]
+                            )
+
+                        # Check if the partition needs to be moved to the
+                        # `saturated_partitions` dictionary
+                        if is_saturated is True:
+                            self.__move_partition(key,
+                                                  (self.external_partitions
+                                                   [free_slots_key]),
+                                                  self.saturated_partitions)
+                            assert (self.external_partitions
+                                    [free_slots_key]
+                                    .get(key) is None)
+                            assert (self.saturated_partitions
+                                    .get(key) is not None)
+                            if len(self.external_partitions[free_slots_key])\
+                               == 0:
+                                del(self.external_partitions[free_slots_key])
+                        else:
+                            # The partition is not saturated but may need
+                            # to be relocated, if its free slots count has
+                            # changed.
+                            if free_slots_count != free_slots_key:
+                                self.__relocate_partition(
+                                    self.external_partitions,
+                                    free_slots_key,
+                                    free_slots_count,
+                                    key
+                                )
+                                assert (self.external_partitions
+                                        .get(free_slots_key) is None
+                                        or
+                                        self.external_partitions
+                                        [free_slots_key]
+                                        .get(key) is None)
+                                assert (self.external_partitions
+                                        [free_slots_count]
+                                        .get(key) is not None)
+                        # Update the map
+                        self.global_view[key] = free_slots_count
+                    else:  # The partition is a saturated partition
+                        # Update each of the workers in the partition
+                        is_saturated, free_slots_count = \
+                            self.__update_partition(
+                                self.saturated_partitions[key],
+                                r_partial_status[&#34;partitions&#34;][gm_id]
+                            )
+                        assert self.global_view[key] == 0
+
+                        # Check if the partition needs to be moved to the
+                        # `external_partitions` dictionary
+                        if is_saturated is False:
+                            # Update the map, if needed
+                            self.global_view[key] = free_slots_count
+                            assert self.global_view[key] != 0
+                            if self.external_partitions.get(free_slots_count)\
+                               is None:
+                                self.external_partitions[free_slots_count]\
+                                    = dict()
+                            self.__move_partition(key,
+                                                  self.saturated_partitions,
+                                                  (self.external_partitions
+                                                   [free_slots_count]))
+                            assert (self.saturated_partitions
+                                    .get(key) is None)
+                            assert (self.external_partitions
+                                    [free_slots_count]
+                                    .get(key) is not None)
+            # -------------------------------------------
+
+            # TODO: Check comment &#34;Through Job object delete task&#34;
+
+            # Iterate over the tasks completed and update each job&#39;s status
+            for record in tasks_completed:
+                job_id = record[0]
+                task_id = record[1]
+
+                job_unscheduled = False
+
+                # if not all tasks in the job have been scheduled
+                for index in range(0, len(self.job_queue)):
+                    job = self.job_queue[index]
+                    if job.job_id == job_id:
+                        job_unscheduled = True
+                        task = job.tasks[task_id]
+                        job.completed_tasks.append(task)
+                        break
+
+                if job_unscheduled:
+                    continue
+
+                # If all tasks in the job have been scheduled already
+                for index in range(0, len(self.jobs_scheduled)):
+                    job = self.jobs_scheduled[index]
+
+                    if job.job_id == job_id:
+                        task = job.tasks[task_id]
+                        job.completed_tasks.append(task)
+                        if len(
+                                job.tasks) == len(
+                                job.completed_tasks):  # no more tasks left
+                            # NOTE:job completion time = end time of last task
+                            # === max of the task duration for a job
+                            assert task.end_time is not None, \
+                                &#34;Task end time not recorded!&#34;
+                            job.completion_time = task.end_time
+                            job.end_time = job.completion_time
+                            print(job.completion_time)
+                            simulator_utils.globals.jobs_completed.append(job)
+                            self.jobs_scheduled.remove(job)
+                        break
+
+            tasks_completed.clear()
+
+        self.schedule_tasks(current_time)
+
+    def unschedule_job(self, unverified_job: Job):
+        &#34;&#34;&#34;
+        Job is inserted back into the job_queue of the GM.
+
+        The job is inserted back into the job_queue of the GM from the \
+        job_scheduled queue of the GM.
+
+        Args:
+            unverified_job (Job): The job that needs to be moved, as it was \
+                assigned on a worker node not actually available at that time
+        &#34;&#34;&#34;
+        assert_flag: bool = False
+        for index in range(0, len(self.jobs_scheduled)):
+            if unverified_job.job_id == self.jobs_scheduled[index].job_id:
+                # Remove job from list and add to front of job_queue
+                self.job_queue.insert(0, self.jobs_scheduled.pop(index))
+                assert_flag = True
+                break
+
+        # assert assert_flag is True, (&#34;`unverified_job` not found in &#34;
+        #                              &#34;`self.jobs_scheduled`!&#34;)
+
+    def repartition(self, current_time: float):
+        &#34;&#34;&#34;
+        Search the external partitions for a free worker node.
+
+        Args:
+            current_time (float): The current time in the simulation.
+        &#34;&#34;&#34;
+        # While the job_queue for the current GM is not empty
+        while len(self.job_queue) &gt; 0:
+            job = self.job_queue[0]  # Get the Job from the head of the queue
+
+            # print(&#34;Scheduling Tasks from Job: &#34;,job.job_id)
+            for task_id in job.tasks:  # Go over the tasks for the job
+                task = job.tasks[task_id]
+                # Make sure that the 2 sources for `task_id` agree with each
+                # other
+                assert task.task_id == task_id
+
+                # If the task is already scheduled then, there is
+                # nothing to do.
+                if(job.tasks[task_id].scheduled):
+                    continue
+
+                if len(self.external_partitions) == 0:
+                    # There are no free worker nodes in the external partitions
+                    # and hence we cannot allocate the task to any worker node.
+                    print(current_time, &#34;No resources available in cluster&#34;)
+                    logger.info(f&#34;{current_time} , {CLUSTER_SATURATED_MSG} ,&#34;
+                                f&#34; {self.GM_id}&#34;)
+                    return
+
+                # NOTE: This is not a type error
+                gm_id, lm_id, free_worker_id = self.__get_worker_node(
+                    self.external_partitions)
+
+                assert gm_id != self.GM_id, (&#34;External partition worker node&#34;
+                                             &#34;is actually from internal &#34;
+                                             &#34;partition!&#34;)
+
+                job.tasks[task_id].scheduled = True
+                if(job.fully_scheduled()):
+                    self.jobs_scheduled.append(self.job_queue.pop(0))
+
+                print(current_time, &#34;, RepartitionEvent ,&#34;,
+                      self.GM_id, &#34;,&#34;,
+                      gm_id,
+                      &#34;,&#34;,
+                      job.job_id +
+                      &#34;_&#34; +
+                      task.task_id)
+                # [DONE] May need to add processing overhead here if required
+                logger.info(f&#34;{MATCHING_LOGIC_REPARTITION_MSG} , &#34;
+                            f&#34;{gm_id}_{lm_id}_{free_worker_id} , &#34;
+                            f&#34;{job.job_id}_{task.task_id}&#34;)
+
+                self.simulation.event_queue.put(
+                    (current_time,
+                        MatchFoundEvent(
+                            job.tasks[task_id],
+                            self,
+                            self.simulation.lms[lm_id],
+                            free_worker_id,
+                            current_time,
+                            external_partition=gm_id)))
+
+    def __get_worker_node(self, partition: OrderedPartition) \
+            -&gt; Tuple[str, str, str]:
+        &#34;&#34;&#34;
+        Select the worker node with the highest chances of actually begin free.
+
+        Select the worker node from the partition with most number of \
+        free worker slots. This is aimed to help overcome (to a certain \
+        degree) the inaccuracies in the stale view of the cluster that the \
+        GM has.
+        &#34;&#34;&#34;
+        # We pick the dictionary of partitions with the most number of
+        # free worker slots.
+        free_slots_key, partition_dict = partition.peekitem(index=0)
+
+        # We randomly pick a non-saturated internal partition
+        key_internal_partition = random.choice(list(partition_dict.keys()))
+        internal_partition = partition_dict[key_internal_partition]
+
+        # Get the GM id to verify with the LM later
+        gm_id = internal_partition[&#34;partition_id&#34;]
+
+        # Get the LM id to verify with the LM later
+        lm_id = internal_partition[&#34;lm_id&#34;]
+
+        # We randomly pick a free worker node
+        free_worker_id = random.choice(
+            list(internal_partition[&#34;free_nodes&#34;].keys()))
+
+        free_worker_node = (internal_partition[&#34;free_nodes&#34;]
+                            [free_worker_id])
+        free_worker_node[&#34;CPU&#34;] = 0
+
+        assert internal_partition[&#34;busy_nodes&#34;].get(free_worker_id) is None,\
+            &#34;Worker ID is in `busy_nodes` before insertion, itself!&#34;
+
+        # Move the worker node to the `busy_nodes` dictionary
+        internal_partition[&#34;busy_nodes&#34;][free_worker_id] =\
+            internal_partition[&#34;free_nodes&#34;][free_worker_id]
+
+        # Remove the worker node from the `free_nodes` dictionary
+        del(internal_partition[&#34;free_nodes&#34;][free_worker_id])
+
+        # Update the mapping of partition to the number of free slots in it
+        self.global_view[key_internal_partition] -= 1
+        free_slots_count = self.global_view[key_internal_partition]
+
+        assert free_slots_count &gt;= 0, &#34;`free_slots_count` became negative!&#34;
+
+        # If this internal partition is now completely full then,
+        # move it to the `saturated_partitions` dictionary
+        if free_slots_count == 0:
+            self.saturated_partitions[key_internal_partition] = \
+                partition[free_slots_key][key_internal_partition]
+
+            # Remove the internal partition from the
+            # `internal_partitions` dictionary
+            del(partition[free_slots_key][key_internal_partition])
+        else:
+            # Update the position of the node in the dictionary.
+            if partition.get(free_slots_count) is None:
+                partition[free_slots_count] = dict()
+
+            partition[free_slots_count][key_internal_partition] = \
+                partition[free_slots_key][key_internal_partition]
+
+            # Remove the internal partition from its previous
+            # position in the `internal_partitions` dictionary
+            del(partition[free_slots_key][key_internal_partition])
+
+        # Check if there are any remaining partitions with `free_slots_key`
+        # number of free slots
+        if len(partition[free_slots_key]) == 0:
+            del(partition[free_slots_key])
+
+        return gm_id, lm_id, free_worker_id
+
+    def schedule_tasks(self, current_time: float):
+        &#34;&#34;&#34;
+        Search the internal partitions of the GM to find a free worker node.
+
+        Args:
+            current_time (float): The current time in the simulation.
+        &#34;&#34;&#34;
+        # While the job_queue for the current GM is not empty
+        while len(self.job_queue) &gt; 0:
+            job = self.job_queue[0]  # Get job from the head of queue
+            for task_id in job.tasks:  # Go over the tasks for the job
+                # Make sure that the 2 sources for `task_id` agree with each
+                # other
+                assert task_id == job.tasks[task_id].task_id
+                if(job.tasks[task_id].scheduled):
+                    # If the task is already scheduled, then there is
+                    # nothing to do
+                    continue
+
+                if len(self.internal_partitions) == 0:
+                    # There are no free worker nodes in the internal partitions
+                    # and hence we perform the repartition operation.
+                    self.repartition(current_time)
+                    return
+
+                # NOTE: This is not a type error
+                _gm_id, lm_id, free_worker_id = self\
+                    .__get_worker_node(self.internal_partitions)
+
+                assert _gm_id == self.GM_id, (&#34;Internal partition worker node&#34;
+                                              &#34;is actually from external &#34;
+                                              &#34;partition!&#34;)
+
+                job.tasks[task_id].scheduled = True
+                if job.fully_scheduled():
+                    self.jobs_scheduled.append(self.job_queue.pop(0))
+
+                # [DONE] May need to add processing overhead here if
+                # required
+                logger.info(f&#34;{MATCHING_LOGIC_MSG} , &#34;
+                            f&#34;{self.GM_id}_{lm_id}_{free_worker_id} , &#34;
+                            f&#34;{job.job_id}_{task_id}&#34;)
+
+                self.simulation.event_queue.put(
+                    (current_time, MatchFoundEvent(
+                        job.tasks[task_id],
+                        self,
+                        self.simulation.lms[lm_id],
+                        free_worker_id,
+                        current_time)))
+
+    def queue_job(self, job, current_time):
+        print(current_time, &#34;,&#34;, &#34;JobArrivalEvent&#34;,
+              &#34;,&#34;, job.job_id, &#34;,&#34;, self.GM_id)
+        job.gm = self
+        self.job_queue.append(job)
+        if(len(self.job_queue) == 1):  # first job
+            self.schedule_tasks(current_time)</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="megha_sim.global_master.gm_ordering_l_l.GM.queue_job"><code class="name flex">
+<span>def <span class="ident">queue_job</span></span>(<span>self, job, current_time)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def queue_job(self, job, current_time):
+    print(current_time, &#34;,&#34;, &#34;JobArrivalEvent&#34;,
+          &#34;,&#34;, job.job_id, &#34;,&#34;, self.GM_id)
+    job.gm = self
+    self.job_queue.append(job)
+    if(len(self.job_queue) == 1):  # first job
+        self.schedule_tasks(current_time)</code></pre>
+</details>
+</dd>
+<dt id="megha_sim.global_master.gm_ordering_l_l.GM.repartition"><code class="name flex">
+<span>def <span class="ident">repartition</span></span>(<span>self, current_time: float)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Search the external partitions for a free worker node.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>current_time</code></strong> :&ensp;<code>float</code></dt>
+<dd>The current time in the simulation.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def repartition(self, current_time: float):
+    &#34;&#34;&#34;
+    Search the external partitions for a free worker node.
+
+    Args:
+        current_time (float): The current time in the simulation.
+    &#34;&#34;&#34;
+    # While the job_queue for the current GM is not empty
+    while len(self.job_queue) &gt; 0:
+        job = self.job_queue[0]  # Get the Job from the head of the queue
+
+        # print(&#34;Scheduling Tasks from Job: &#34;,job.job_id)
+        for task_id in job.tasks:  # Go over the tasks for the job
+            task = job.tasks[task_id]
+            # Make sure that the 2 sources for `task_id` agree with each
+            # other
+            assert task.task_id == task_id
+
+            # If the task is already scheduled then, there is
+            # nothing to do.
+            if(job.tasks[task_id].scheduled):
+                continue
+
+            if len(self.external_partitions) == 0:
+                # There are no free worker nodes in the external partitions
+                # and hence we cannot allocate the task to any worker node.
+                print(current_time, &#34;No resources available in cluster&#34;)
+                logger.info(f&#34;{current_time} , {CLUSTER_SATURATED_MSG} ,&#34;
+                            f&#34; {self.GM_id}&#34;)
+                return
+
+            # NOTE: This is not a type error
+            gm_id, lm_id, free_worker_id = self.__get_worker_node(
+                self.external_partitions)
+
+            assert gm_id != self.GM_id, (&#34;External partition worker node&#34;
+                                         &#34;is actually from internal &#34;
+                                         &#34;partition!&#34;)
+
+            job.tasks[task_id].scheduled = True
+            if(job.fully_scheduled()):
+                self.jobs_scheduled.append(self.job_queue.pop(0))
+
+            print(current_time, &#34;, RepartitionEvent ,&#34;,
+                  self.GM_id, &#34;,&#34;,
+                  gm_id,
+                  &#34;,&#34;,
+                  job.job_id +
+                  &#34;_&#34; +
+                  task.task_id)
+            # [DONE] May need to add processing overhead here if required
+            logger.info(f&#34;{MATCHING_LOGIC_REPARTITION_MSG} , &#34;
+                        f&#34;{gm_id}_{lm_id}_{free_worker_id} , &#34;
+                        f&#34;{job.job_id}_{task.task_id}&#34;)
+
+            self.simulation.event_queue.put(
+                (current_time,
+                    MatchFoundEvent(
+                        job.tasks[task_id],
+                        self,
+                        self.simulation.lms[lm_id],
+                        free_worker_id,
+                        current_time,
+                        external_partition=gm_id)))</code></pre>
+</details>
+</dd>
+<dt id="megha_sim.global_master.gm_ordering_l_l.GM.schedule_tasks"><code class="name flex">
+<span>def <span class="ident">schedule_tasks</span></span>(<span>self, current_time: float)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Search the internal partitions of the GM to find a free worker node.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>current_time</code></strong> :&ensp;<code>float</code></dt>
+<dd>The current time in the simulation.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def schedule_tasks(self, current_time: float):
+    &#34;&#34;&#34;
+    Search the internal partitions of the GM to find a free worker node.
+
+    Args:
+        current_time (float): The current time in the simulation.
+    &#34;&#34;&#34;
+    # While the job_queue for the current GM is not empty
+    while len(self.job_queue) &gt; 0:
+        job = self.job_queue[0]  # Get job from the head of queue
+        for task_id in job.tasks:  # Go over the tasks for the job
+            # Make sure that the 2 sources for `task_id` agree with each
+            # other
+            assert task_id == job.tasks[task_id].task_id
+            if(job.tasks[task_id].scheduled):
+                # If the task is already scheduled, then there is
+                # nothing to do
+                continue
+
+            if len(self.internal_partitions) == 0:
+                # There are no free worker nodes in the internal partitions
+                # and hence we perform the repartition operation.
+                self.repartition(current_time)
+                return
+
+            # NOTE: This is not a type error
+            _gm_id, lm_id, free_worker_id = self\
+                .__get_worker_node(self.internal_partitions)
+
+            assert _gm_id == self.GM_id, (&#34;Internal partition worker node&#34;
+                                          &#34;is actually from external &#34;
+                                          &#34;partition!&#34;)
+
+            job.tasks[task_id].scheduled = True
+            if job.fully_scheduled():
+                self.jobs_scheduled.append(self.job_queue.pop(0))
+
+            # [DONE] May need to add processing overhead here if
+            # required
+            logger.info(f&#34;{MATCHING_LOGIC_MSG} , &#34;
+                        f&#34;{self.GM_id}_{lm_id}_{free_worker_id} , &#34;
+                        f&#34;{job.job_id}_{task_id}&#34;)
+
+            self.simulation.event_queue.put(
+                (current_time, MatchFoundEvent(
+                    job.tasks[task_id],
+                    self,
+                    self.simulation.lms[lm_id],
+                    free_worker_id,
+                    current_time)))</code></pre>
+</details>
+</dd>
+<dt id="megha_sim.global_master.gm_ordering_l_l.GM.unschedule_job"><code class="name flex">
+<span>def <span class="ident">unschedule_job</span></span>(<span>self, unverified_job: Job)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Job is inserted back into the job_queue of the GM.</p>
+<p>The job is inserted back into the job_queue of the GM from the
+job_scheduled queue of the GM.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>unverified_job</code></strong> :&ensp;<code>Job</code></dt>
+<dd>The job that needs to be moved, as it was
+assigned on a worker node not actually available at that time</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def unschedule_job(self, unverified_job: Job):
+    &#34;&#34;&#34;
+    Job is inserted back into the job_queue of the GM.
+
+    The job is inserted back into the job_queue of the GM from the \
+    job_scheduled queue of the GM.
+
+    Args:
+        unverified_job (Job): The job that needs to be moved, as it was \
+            assigned on a worker node not actually available at that time
+    &#34;&#34;&#34;
+    assert_flag: bool = False
+    for index in range(0, len(self.jobs_scheduled)):
+        if unverified_job.job_id == self.jobs_scheduled[index].job_id:
+            # Remove job from list and add to front of job_queue
+            self.job_queue.insert(0, self.jobs_scheduled.pop(index))
+            assert_flag = True
+            break
+
+    # assert assert_flag is True, (&#34;`unverified_job` not found in &#34;
+    #                              &#34;`self.jobs_scheduled`!&#34;)</code></pre>
+</details>
+</dd>
+<dt id="megha_sim.global_master.gm_ordering_l_l.GM.update_status"><code class="name flex">
+<span>def <span class="ident">update_status</span></span>(<span>self, current_time: float)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Update the global view of GM by getting partial updates from each LM.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>current_time</code></strong> :&ensp;<code>float</code></dt>
+<dd>The current time in the simulation.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def update_status(self, current_time: float):
+    &#34;&#34;&#34;
+    Update the global view of GM by getting partial updates from each LM.
+
+    Args:
+        current_time (float): The current time in the simulation.
+    &#34;&#34;&#34;
+    for LM_id in self.simulation.lms:
+        lm: LM = self.simulation.lms[LM_id]
+        r_partial_status, tasks_completed = lm.get_status(self)
+        # partial_status: LMResources = json.loads(p_partial_status)
+        # tasks_completed = json.loads(p_tasks_completed)
+
+        # NOTE: Iterate over all the LMs partitions
+        for gm_id in r_partial_status[&#34;partitions&#34;]:
+            # NOTE: Find the partition in the 3 sets
+            key = PartitionKey(gm_id=gm_id, lm_id=LM_id)
+
+            # NOTE: Update the data in the LM
+            # NOTE: Check if the LM needs to be moved around
+            # Check if the partition is an internal partition
+            if gm_id == self.GM_id:
+                # Check if the partition is an unsaturated partition
+                if self.global_view[key] != 0:
+                    free_slots_key = self.global_view[key]
+
+                    # Update each of the workers in the partition
+                    is_saturated, free_slots_count = \
+                        self.__update_partition(
+                            self.internal_partitions[free_slots_key][key],
+                            r_partial_status[&#34;partitions&#34;][gm_id]
+                        )
+
+                    # Check if the partition needs to be moved to the
+                    # `saturated_partitions` dictionary
+                    if is_saturated is True:
+                        self.__move_partition(key,
+                                              (self.internal_partitions
+                                               [free_slots_key]),
+                                              self.saturated_partitions)
+                        assert (self.internal_partitions
+                                [free_slots_key]
+                                .get(key) is None)
+                        assert (self.saturated_partitions
+                                .get(key) is not None)
+                        if len(self.internal_partitions[free_slots_key])\
+                           == 0:
+                            del(self.internal_partitions[free_slots_key])
+                    else:
+                        # The partition is not saturated but may need
+                        # to be relocated, if its free slots count has
+                        # changed.
+                        if free_slots_count != free_slots_key:
+                            self.__relocate_partition(
+                                self.internal_partitions,
+                                free_slots_key,
+                                free_slots_count,
+                                key
+                            )
+                            assert (self.internal_partitions
+                                    .get(free_slots_key) is None
+                                    or
+                                    self.internal_partitions
+                                    [free_slots_key]
+                                    .get(key) is None)
+                            assert (self.internal_partitions
+                                    [free_slots_count]
+                                    .get(key) is not None)
+                    # Update the map
+                    self.global_view[key] = free_slots_count
+                else:  # The partition is a saturated partition
+                    # Update each of the workers in the partition
+                    is_saturated, free_slots_count = \
+                        self.__update_partition(
+                            self.saturated_partitions[key],
+                            r_partial_status[&#34;partitions&#34;][gm_id]
+                        )
+                    assert self.global_view[key] == 0
+
+                    # Check if the partition needs to be moved to the
+                    # `internal_partitions` dictionary
+                    if is_saturated is False:
+                        # Update the map if needed
+                        self.global_view[key] = free_slots_count
+                        assert self.global_view[key] != 0
+                        if self.internal_partitions.get(free_slots_count)\
+                           is None:
+                            self.internal_partitions[free_slots_count]\
+                                = dict()
+                        self.__move_partition(key,
+                                              self.saturated_partitions,
+                                              (self.internal_partitions
+                                               [free_slots_count]))
+                        assert (self.saturated_partitions
+                                .get(key) is None)
+                        assert (self.internal_partitions
+                                [free_slots_count]
+                                .get(key) is not None)
+            else:  # The partition is an external partition
+                # Check if the partition is an unsaturated partition
+                if self.global_view[key] != 0:
+                    free_slots_key = self.global_view[key]
+
+                    # Update each of the workers in the partition
+                    is_saturated, free_slots_count = \
+                        self.__update_partition(
+                            self.external_partitions[free_slots_key][key],
+                            r_partial_status[&#34;partitions&#34;][gm_id]
+                        )
+
+                    # Check if the partition needs to be moved to the
+                    # `saturated_partitions` dictionary
+                    if is_saturated is True:
+                        self.__move_partition(key,
+                                              (self.external_partitions
+                                               [free_slots_key]),
+                                              self.saturated_partitions)
+                        assert (self.external_partitions
+                                [free_slots_key]
+                                .get(key) is None)
+                        assert (self.saturated_partitions
+                                .get(key) is not None)
+                        if len(self.external_partitions[free_slots_key])\
+                           == 0:
+                            del(self.external_partitions[free_slots_key])
+                    else:
+                        # The partition is not saturated but may need
+                        # to be relocated, if its free slots count has
+                        # changed.
+                        if free_slots_count != free_slots_key:
+                            self.__relocate_partition(
+                                self.external_partitions,
+                                free_slots_key,
+                                free_slots_count,
+                                key
+                            )
+                            assert (self.external_partitions
+                                    .get(free_slots_key) is None
+                                    or
+                                    self.external_partitions
+                                    [free_slots_key]
+                                    .get(key) is None)
+                            assert (self.external_partitions
+                                    [free_slots_count]
+                                    .get(key) is not None)
+                    # Update the map
+                    self.global_view[key] = free_slots_count
+                else:  # The partition is a saturated partition
+                    # Update each of the workers in the partition
+                    is_saturated, free_slots_count = \
+                        self.__update_partition(
+                            self.saturated_partitions[key],
+                            r_partial_status[&#34;partitions&#34;][gm_id]
+                        )
+                    assert self.global_view[key] == 0
+
+                    # Check if the partition needs to be moved to the
+                    # `external_partitions` dictionary
+                    if is_saturated is False:
+                        # Update the map, if needed
+                        self.global_view[key] = free_slots_count
+                        assert self.global_view[key] != 0
+                        if self.external_partitions.get(free_slots_count)\
+                           is None:
+                            self.external_partitions[free_slots_count]\
+                                = dict()
+                        self.__move_partition(key,
+                                              self.saturated_partitions,
+                                              (self.external_partitions
+                                               [free_slots_count]))
+                        assert (self.saturated_partitions
+                                .get(key) is None)
+                        assert (self.external_partitions
+                                [free_slots_count]
+                                .get(key) is not None)
+        # -------------------------------------------
+
+        # TODO: Check comment &#34;Through Job object delete task&#34;
+
+        # Iterate over the tasks completed and update each job&#39;s status
+        for record in tasks_completed:
+            job_id = record[0]
+            task_id = record[1]
+
+            job_unscheduled = False
+
+            # if not all tasks in the job have been scheduled
+            for index in range(0, len(self.job_queue)):
+                job = self.job_queue[index]
+                if job.job_id == job_id:
+                    job_unscheduled = True
+                    task = job.tasks[task_id]
+                    job.completed_tasks.append(task)
+                    break
+
+            if job_unscheduled:
+                continue
+
+            # If all tasks in the job have been scheduled already
+            for index in range(0, len(self.jobs_scheduled)):
+                job = self.jobs_scheduled[index]
+
+                if job.job_id == job_id:
+                    task = job.tasks[task_id]
+                    job.completed_tasks.append(task)
+                    if len(
+                            job.tasks) == len(
+                            job.completed_tasks):  # no more tasks left
+                        # NOTE:job completion time = end time of last task
+                        # === max of the task duration for a job
+                        assert task.end_time is not None, \
+                            &#34;Task end time not recorded!&#34;
+                        job.completion_time = task.end_time
+                        job.end_time = job.completion_time
+                        print(job.completion_time)
+                        simulator_utils.globals.jobs_completed.append(job)
+                        self.jobs_scheduled.remove(job)
+                    break
+
+        tasks_completed.clear()
+
+    self.schedule_tasks(current_time)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="megha_sim.global_master" href="index.html">megha_sim.global_master</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="megha_sim.global_master.gm_ordering_l_l.GM" href="#megha_sim.global_master.gm_ordering_l_l.GM">GM</a></code></h4>
+<ul class="">
+<li><code><a title="megha_sim.global_master.gm_ordering_l_l.GM.queue_job" href="#megha_sim.global_master.gm_ordering_l_l.GM.queue_job">queue_job</a></code></li>
+<li><code><a title="megha_sim.global_master.gm_ordering_l_l.GM.repartition" href="#megha_sim.global_master.gm_ordering_l_l.GM.repartition">repartition</a></code></li>
+<li><code><a title="megha_sim.global_master.gm_ordering_l_l.GM.schedule_tasks" href="#megha_sim.global_master.gm_ordering_l_l.GM.schedule_tasks">schedule_tasks</a></code></li>
+<li><code><a title="megha_sim.global_master.gm_ordering_l_l.GM.unschedule_job" href="#megha_sim.global_master.gm_ordering_l_l.GM.unschedule_job">unschedule_job</a></code></li>
+<li><code><a title="megha_sim.global_master.gm_ordering_l_l.GM.update_status" href="#megha_sim.global_master.gm_ordering_l_l.GM.update_status">update_status</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.2</a>.</p>
+</footer>
+</body>
+</html>

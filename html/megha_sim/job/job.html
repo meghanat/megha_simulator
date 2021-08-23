@@ -52,7 +52,7 @@ class Job(object):
     job_count = 1  # To assign IDs
     job_start_tstamps: Dict[float, float] = {}
 
-    def __init__(self, task_distribution: TaskDurationDistributions, line: str,
+    def __init__(self, task_distribution: int, line: str,
                  simulation):
         &#34;&#34;&#34;
         Retaining below logic as-is to compare with Sparrow.
@@ -77,7 +77,7 @@ class Job(object):
         self.task_counter = 0
         self.completed_tasks = []
         self.gm: Optional[GM] = None
-        self.completion_time = -1
+        self.completion_time: float = -1.
 
         # IF the job&#39;s start_time has never been seen before
         if self.start_time not in self.job_start_tstamps:
@@ -131,7 +131,7 @@ class Job(object):
 <dl>
 <dt id="megha_sim.job.job.Job"><code class="flex name class">
 <span>class <span class="ident">Job</span></span>
-<span>(</span><span>task_distribution: simulator_utils.values.TaskDurationDistributions, line: str, simulation)</span>
+<span>(</span><span>task_distribution: int, line: str, simulation)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Retaining below logic as-is to compare with Sparrow.</p>
@@ -157,7 +157,7 @@ case it has the exact submission time as another already submitted job</p>
     job_count = 1  # To assign IDs
     job_start_tstamps: Dict[float, float] = {}
 
-    def __init__(self, task_distribution: TaskDurationDistributions, line: str,
+    def __init__(self, task_distribution: int, line: str,
                  simulation):
         &#34;&#34;&#34;
         Retaining below logic as-is to compare with Sparrow.
@@ -182,7 +182,7 @@ case it has the exact submission time as another already submitted job</p>
         self.task_counter = 0
         self.completed_tasks = []
         self.gm: Optional[GM] = None
-        self.completion_time = -1
+        self.completion_time: float = -1.
 
         # IF the job&#39;s start_time has never been seen before
         if self.start_time not in self.job_start_tstamps:

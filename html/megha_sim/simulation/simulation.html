@@ -29,13 +29,18 @@
 <pre><code class="python">import pickle
 import queue
 import json
+from typing import Dict, Tuple
 
 
 from local_master import LM
-from global_master import GM
+from global_master import GM, ConfigFile
 from job import Job
+from simulation_logger import SimulatorLogger
 from simulator_utils.values import TaskDurationDistributions
-from events import JobArrival, LMUpdateEvent
+from events import JobArrival, LMUpdateEvent, Event
+
+
+logger = SimulatorLogger(__name__).get_logger()
 
 
 class Simulation(object):
@@ -44,27 +49,30 @@ class Simulation(object):
             workload,
             config,
             NUM_GMS,
-            NUM_LMS,
+            NUM_LMS: int,
             PARTITION_SIZE,
             cpu,
             memory,
             storage):
 
-        # Each localmaster has one partition per global master so the total number of partitions in the cluster are:
+        # Each localmaster has one partition per global master so the total
+        # number of partitions in the cluster are:
         # NUM_GMS * NUM_LMS
         # Given the number of worker nodes per partition is PARTITION_SIZE
         # so the total_nodes are NUM_GMS*NUM_LMS*PARTITION_SIZE
         self.total_nodes = NUM_GMS * NUM_LMS * PARTITION_SIZE
-        self.NUM_GMS = NUM_GMS
-        self.NUM_LMS = NUM_LMS
-        self.config = json.load(open(config))
+        self.NUM_GMS: int = NUM_GMS
+        self.NUM_LMS: int = NUM_LMS
+        with open(config) as f_handler:
+            self.config: ConfigFile = json.load(f_handler)
         self.WORKLOAD_FILE = workload
 
         self.jobs = {}
-        self.event_queue = queue.PriorityQueue()
+        self.event_queue: queue.PriorityQueue[Tuple[float, Event]] = \
+            queue.PriorityQueue()
 
         # initialise GMs
-        self.gms = {}
+        self.gms: Dict[str, GM] = {}
         counter = 1
         while len(self.gms) &lt; self.NUM_GMS:
             self.gms[str(counter)] = GM(self, str(counter), pickle.loads(
@@ -72,12 +80,18 @@ class Simulation(object):
             counter += 1
 
         # initialise LMs
-        self.lms = {}
+        self.lms: Dict[str, LM] = {}
         counter = 1
 
         while len(self.lms) &lt; self.NUM_LMS:
-            self.lms[str(counter)] = LM(self, str(counter), PARTITION_SIZE, pickle.loads(
-                pickle.dumps(self.config[&#34;LMs&#34;][str(counter)])))  # create deep copy
+            self.lms[str(counter)] = LM(self, str(counter), PARTITION_SIZE,
+                                        pickle.loads(
+                                                     pickle.dumps(
+                                                         self.config[&#34;LMs&#34;]
+                                                         [str(counter)]
+                                                         )
+                                                     )
+                                        )  # create deep copy
             counter += 1
 
         self.shared_cluster_status = {}
@@ -87,7 +101,7 @@ class Simulation(object):
         self.scheduled_last_job = False
         print(&#34;Simulation instantiated&#34;)
 
- # Simulation class
+    # Simulation class
     def run(self):
         last_time = 0
 
@@ -117,6 +131,7 @@ class Simulation(object):
                 self.event_queue.put(new_event)
 
         print(&#34;Simulation ending, no more events&#34;)
+        logger.info(&#34;Simulator Info , Simulation ending, no more events&#34;)
         self.jobs_file.close()</code></pre>
 </details>
 </section>
@@ -131,7 +146,7 @@ class Simulation(object):
 <dl>
 <dt id="megha_sim.simulation.simulation.Simulation"><code class="flex name class">
 <span>class <span class="ident">Simulation</span></span>
-<span>(</span><span>workload, config, NUM_GMS, NUM_LMS, PARTITION_SIZE, cpu, memory, storage)</span>
+<span>(</span><span>workload, config, NUM_GMS, NUM_LMS: int, PARTITION_SIZE, cpu, memory, storage)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -145,27 +160,30 @@ class Simulation(object):
             workload,
             config,
             NUM_GMS,
-            NUM_LMS,
+            NUM_LMS: int,
             PARTITION_SIZE,
             cpu,
             memory,
             storage):
 
-        # Each localmaster has one partition per global master so the total number of partitions in the cluster are:
+        # Each localmaster has one partition per global master so the total
+        # number of partitions in the cluster are:
         # NUM_GMS * NUM_LMS
         # Given the number of worker nodes per partition is PARTITION_SIZE
         # so the total_nodes are NUM_GMS*NUM_LMS*PARTITION_SIZE
         self.total_nodes = NUM_GMS * NUM_LMS * PARTITION_SIZE
-        self.NUM_GMS = NUM_GMS
-        self.NUM_LMS = NUM_LMS
-        self.config = json.load(open(config))
+        self.NUM_GMS: int = NUM_GMS
+        self.NUM_LMS: int = NUM_LMS
+        with open(config) as f_handler:
+            self.config: ConfigFile = json.load(f_handler)
         self.WORKLOAD_FILE = workload
 
         self.jobs = {}
-        self.event_queue = queue.PriorityQueue()
+        self.event_queue: queue.PriorityQueue[Tuple[float, Event]] = \
+            queue.PriorityQueue()
 
         # initialise GMs
-        self.gms = {}
+        self.gms: Dict[str, GM] = {}
         counter = 1
         while len(self.gms) &lt; self.NUM_GMS:
             self.gms[str(counter)] = GM(self, str(counter), pickle.loads(
@@ -173,12 +191,18 @@ class Simulation(object):
             counter += 1
 
         # initialise LMs
-        self.lms = {}
+        self.lms: Dict[str, LM] = {}
         counter = 1
 
         while len(self.lms) &lt; self.NUM_LMS:
-            self.lms[str(counter)] = LM(self, str(counter), PARTITION_SIZE, pickle.loads(
-                pickle.dumps(self.config[&#34;LMs&#34;][str(counter)])))  # create deep copy
+            self.lms[str(counter)] = LM(self, str(counter), PARTITION_SIZE,
+                                        pickle.loads(
+                                                     pickle.dumps(
+                                                         self.config[&#34;LMs&#34;]
+                                                         [str(counter)]
+                                                         )
+                                                     )
+                                        )  # create deep copy
             counter += 1
 
         self.shared_cluster_status = {}
@@ -188,7 +212,7 @@ class Simulation(object):
         self.scheduled_last_job = False
         print(&#34;Simulation instantiated&#34;)
 
- # Simulation class
+    # Simulation class
     def run(self):
         last_time = 0
 
@@ -218,6 +242,7 @@ class Simulation(object):
                 self.event_queue.put(new_event)
 
         print(&#34;Simulation ending, no more events&#34;)
+        logger.info(&#34;Simulator Info , Simulation ending, no more events&#34;)
         self.jobs_file.close()</code></pre>
 </details>
 <h3>Methods</h3>
@@ -260,6 +285,7 @@ class Simulation(object):
             self.event_queue.put(new_event)
 
     print(&#34;Simulation ending, no more events&#34;)
+    logger.info(&#34;Simulator Info , Simulation ending, no more events&#34;)
     self.jobs_file.close()</code></pre>
 </details>
 </dd>
