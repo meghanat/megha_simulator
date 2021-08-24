@@ -124,8 +124,9 @@ class TaskEndEvent(Event):
         Args:
             current_time (float): The current time in the simulation.
         """
-        print(current_time, ",", "TaskEndEvent", ",", self.task.job.job_id +
-              "_" + self.task.task_id + "___", self.task.duration)
+        # Log the TaskEndEvent
+        logger.info(f"{current_time} , TaskEndEvent , {self.task.job.job_id}"
+                    f"_{self.task.task_id}_{self.task.duration}")
         self.task.end_time = current_time
         if self.task.lm is not None:
             self.task.lm.task_completed(self.task)
@@ -171,18 +172,15 @@ class LaunchOnNodeEvent(Event):
         assert self.task.partition_id is not None
         assert self.task.node_id is not None
 
-        print(
-            current_time,
-            ",",
-            "LaunchOnNodeEvent",
-            ",",
-            self.task.job.job_id +
-            "_" +
-            self.task.task_id,
-            ",",
-            self.task.partition_id +
-            "_" +
-            self.task.node_id)
+        # Log the LaunchOnNodeEvent
+        logger.info(
+            f"{current_time} , "
+            "LaunchOnNodeEvent , "
+            f"{self.task.job.job_id}_"
+            f"{self.task.task_id} , "
+            f"{self.task.partition_id}_"
+            f"{self.task.node_id}")
+
         # launching requires network transfer
         self.simulation.event_queue.put(
             (current_time + self.task.duration, TaskEndEvent(self.task)))
@@ -233,11 +231,11 @@ class InconsistencyEvent(Event):
         if(self.type == InconsistencyType.INTERNAL_INCONSISTENCY):
             """Internal inconsistency -> failed to place task on an internal
                partition."""
-            print(current_time, ",", "InternalInconsistencyEvent")
+            logger.info(f"{current_time} , InternalInconsistencyEvent")
         else:
             """External inconsistency -> failed to place task on an external
                partition."""
-            print(current_time, ",", "ExternalInconsistencyEvent")
+            logger.info(f"{current_time} , ExternalInconsistencyEvent")
         self.task.scheduled = False
 
         """
@@ -300,16 +298,13 @@ class MatchFoundEvent(Event):
         Args:
             current_time (float): The current time in the simulation.
         """
-        # add network delay to LM, similar to sparrow:
-        print(current_time,
-              ",",
-              "MatchFoundEvent",
-              ",",
-              self.task.job.job_id + "_" + self.task.task_id,
-              ",",
-              self.gm.GM_id + "_" + self.node_id,
-              "_",
-              self.lm.LM_id)
+        # Log the MatchFoundEvent
+        logger.info(f"{current_time} , "
+                    "MatchFoundEvent , "
+                    f"{self.task.job.job_id}_{self.task.task_id} , "
+                    f"{self.gm.GM_id}_{self.lm.LM_id}_{self.node_id}")
+
+        # Add network delay to LM, similar to sparrow:
         self.lm.verify_request(
             self.task,
             self.gm,
@@ -373,7 +368,8 @@ class LMUpdateEvent(Event):
         Args:
             current_time (float): The current time in the simulation.
         """
-        print(current_time, ",", "LMUpdateEvent", ",", self.periodic)
+        # Log the LMUpdateEvent
+        logger.info(f"{current_time} , LMUpdateEvent , {self.periodic}")
 
         # update only that GM which is inconsistent or if the GM's task has
         # completed
@@ -449,6 +445,9 @@ class JobArrival(Event):
         Args:
             current_time (float): The current time in the simulation.
         """
+        # Log the JobArrival
+        logger.info(f"{current_time} , JobArrival , {self.task_distribution}")
+
         new_events: List[Tuple[float, Event]] = []
         # needs to be assigned to a GM - RR
         JobArrival.gm_counter = (

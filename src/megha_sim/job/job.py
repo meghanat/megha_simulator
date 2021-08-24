@@ -45,7 +45,7 @@ class Job(object):
         self.task_counter = 0
         self.completed_tasks = []
         self.gm: Optional[GM] = None
-        self.completion_time = -1
+        self.completion_time: float = -1.
 
         # IF the job's start_time has never been seen before
         if self.start_time not in self.job_start_tstamps:

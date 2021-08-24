@@ -1,13 +1,18 @@
 import pickle
 import queue
 import json
+from typing import Dict
 
 
 from local_master import LM
 from global_master import GM
 from job import Job
+from simulation_logger import SimulatorLogger
 from simulator_utils.values import TaskDurationDistributions
 from events import JobArrival, LMUpdateEvent
+
+
+logger = SimulatorLogger(__name__).get_logger()
 
 
 class Simulation(object):
@@ -16,7 +21,7 @@ class Simulation(object):
             workload,
             config,
             NUM_GMS,
-            NUM_LMS,
+            NUM_LMS: int,
             PARTITION_SIZE,
             cpu,
             memory,
@@ -27,8 +32,8 @@ class Simulation(object):
         # Given the number of worker nodes per partition is PARTITION_SIZE
         # so the total_nodes are NUM_GMS*NUM_LMS*PARTITION_SIZE
         self.total_nodes = NUM_GMS * NUM_LMS * PARTITION_SIZE
-        self.NUM_GMS = NUM_GMS
-        self.NUM_LMS = NUM_LMS
+        self.NUM_GMS: int = NUM_GMS
+        self.NUM_LMS: int = NUM_LMS
         self.config = json.load(open(config))
         self.WORKLOAD_FILE = workload
 
@@ -44,7 +49,7 @@ class Simulation(object):
             counter += 1
 
         # initialise LMs
-        self.lms = {}
+        self.lms: Dict[str, LM] = {}
         counter = 1
 
         while len(self.lms) < self.NUM_LMS:
@@ -89,4 +94,5 @@ class Simulation(object):
                 self.event_queue.put(new_event)
 
         print("Simulation ending, no more events")
+        logger.info("Simulator Info , Simulation ending, no more events")
         self.jobs_file.close()

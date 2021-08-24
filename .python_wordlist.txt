@@ -58,3 +58,13 @@ len
 Initialise
 Enum
 enum
+FileNotFoundError
+NamedTuple
+namedtuple
+TypedDict
+json
+SortedDict
+datetime
+strftime
+datefmt
+TColors

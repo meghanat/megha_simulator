@@ -1,4 +1,5 @@
 import json
+from typing import List
 
 from simulator_utils.values import NETWORK_DELAY, InconsistencyType
 from events import LaunchOnNodeEvent, InconsistencyEvent, LMUpdateEvent
@@ -18,7 +19,7 @@ class LM(object):
         for GM_id in self.simulation.gms:
             self.tasks_completed[GM_id] = []
 
-    def get_status(self, gm):
+    def get_status(self, gm) -> List[str]:
         # """
         # One we have sent the response, the LM clears the list of tasks the LM
         # has completed for the particular GM.

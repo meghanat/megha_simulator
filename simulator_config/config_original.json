@@ -1,0 +1,170 @@
+{
+    "LMs":{
+        "1":{
+            "LM_id":"1",
+            "partitions":{
+               "1": {
+                    "partition_id":"1",
+                    "nodes":{
+                        "1":{
+                            
+                            "CPU":1,
+                            "RAM":1,
+                            "Disk":1,
+                            "constraints":[]
+                        },
+                        "2":{
+                                
+                            "CPU":1,
+                            "RAM":1,
+                            "Disk":1,
+                            "constraints":[]
+                        },
+                        "3":{
+                            
+                            "CPU":1,
+                            "RAM":1,
+                            "Disk":1,
+                            "constraints":[]
+                        }
+                    }
+                },
+                "2":{
+                    "partition_id":"2",
+                    "nodes":{
+                        "4":{
+                            
+                            "CPU":1,
+                            "RAM":1,
+                            "Disk":1,
+                            "constraints":[]
+                        },
+                        "5":{
+                            
+                            "CPU":1,
+                            "RAM":1,
+                            "Disk":1,
+                            "constraints":[]
+                        },
+                        "6":{
+                            
+                            "CPU":1,
+                            "RAM":1,
+                            "Disk":1,
+                            "constraints":[]
+                        }
+                    }
+                },
+               "3": {
+                    "partition_id":"3",
+                    "nodes":{
+                        "7":{
+                            
+                            "CPU":1,
+                            "RAM":1,
+                            "Disk":1,
+                            "constraints":[]
+                        },
+                        "8":{
+                            
+                            "CPU":1,
+                            "RAM":1,
+                            "Disk":1,
+                            "constraints":[]
+                        },
+                        "9":{
+                            
+                            "CPU":1,
+                            "RAM":1,
+                            "Disk":1,
+                            "constraints":[]
+                        }
+                    }
+                }
+            }
+        },
+        "2":{
+            "LM_id": "2",
+            "partitions":{
+               "1": {
+                    "partition_id":"1",
+                    "nodes":{
+                        "10":{
+                            
+                            "CPU":1,
+                            "RAM":1,
+                            "Disk":1,
+                            "constraints":[]
+                        },
+                        "11":{
+                            
+                            "CPU":1,
+                            "RAM":1,
+                            "Disk":1,
+                            "constraints":[]
+                        },
+                        "12":{
+                            
+                            "CPU":1,
+                            "RAM":1,
+                            "Disk":1,
+                            "constraints":[]
+                        }
+                    }
+                },
+                "2":{
+                    "partition_id":"2",
+                    "nodes":{
+                        "13":{
+                            
+                            "CPU":1,
+                            "RAM":1,
+                            "Disk":1,
+                            "constraints":[]
+                        },
+                        "14":{
+                            
+                            "CPU":1,
+                            "RAM":1,
+                            "Disk":1,
+                            "constraints":[]
+                        },
+                        "15":{
+                            
+                            "CPU":1,
+                            "RAM":1,
+                            "Disk":1,
+                            "constraints":[]
+                        }
+                    }
+                },
+               "3": {
+                    "partition_id":"3",
+                    "nodes":{
+                        "16":{
+                            
+                            "CPU":1,
+                            "RAM":1,
+                            "Disk":1,
+                            "constraints":[]
+                        },
+                        "17":{
+                            
+                            "CPU":1,
+                            "RAM":1,
+                            "Disk":1,
+                            "constraints":[]
+                        },
+                        "18":{
+                            
+                            "CPU":1,
+                            "RAM":1,
+                            "Disk":1,
+                            "constraints":[]
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

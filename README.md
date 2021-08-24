@@ -11,6 +11,8 @@
 [![First interaction greeter](https://github.com/meghanat/megha_simulator/actions/workflows/user_eng.yml/badge.svg)](https://github.com/meghanat/megha_simulator/actions/workflows/user_eng.yml)
 [![Format python code](https://github.com/meghanat/megha_simulator/actions/workflows/linting.yml/badge.svg)](https://github.com/meghanat/megha_simulator/actions/workflows/linting.yml)
 
+![](https://estruyf-github.azurewebsites.net/api/VisitorHit?user=meghanat&repo=megha_simulator&countColorcountColor&countColor=%237B1E7A&label=VISITOR+COUNT)
+
 ## About
 A simple simulator for the Megha Federated Scheduling Framework. This simulator enables comparison with other frameworks such as Sparrow, Eagle and Pigeon for which simulators already exist.
 
@@ -54,13 +56,13 @@ A simple simulator for the Megha Federated Scheduling Framework. This simulator 
 Sample command to run with 3 GMs and 2 LMs, and PARTITION_SIZE 3:
 
 ```bash
-$ python3 ./src/runner.py ./traces/input/YH.tr ./simulator_config/config.json 3 2 3 1 1 1 
+$ python3 ./src/runner.py ./traces/input/YH_small.tr ./simulator_config/config_original.json 3 2 3 1 1 1 
 ```
 
 By convention, the output of the simulator, after running on a trace must always be saved in the folder `traces/output`. In our example, to save the output of the simulator, after running it on the trace `YH.tr`, into the folder `traces/output`, use the command:
 
 ```bash
-$ python3 ./src/runner.py ./traces/input/YH.tr ./simulator_config/config.json 3 2 3 1 1 1 > traces/output/YH_OP.tr
+$ python3 ./src/runner.py ./traces/input/YH_small.tr ./simulator_config/config_original.json 3 2 3 1 1 1 > traces/output/YH_OP.tr
 ```
 
 **NOTE:** The general convention for naming the output of the simulator, after running it on the trace file is:
@@ -134,4 +136,15 @@ This rule applies to all other such classes and code as well. Below is the reaso
 ## Link to the Paper
 
 - [Link to the preprint on arXiv.org](https://arxiv.org/abs/2103.08413)
+
+## Link to the Trace Datasets
+
+- All credits go to the [**EPFL LABOS team**](https://github.com/epfl-labos) for making this link available to everyone
+  - [Link to the original repository](https://github.com/epfl-labos/eagle)
+- The traces used for evaluating Hawk and Eagle are at:
+  - [Dropbox link](https://www.dropbox.com/sh/bhk5zxreyplus73/AADxmp60oqxh7jq9qkCzoJX5a?dl=0)
+  - [Link to the original repository notes](https://github.com/epfl-labos/eagle/blob/master/simulation/LOCATION_OF_TRACES.txt)
+  - We do not own this (Dropbox) link nor the data hosted on it.
+
+> **NOTE:** that these links may change in the future.
 ---

@@ -5,25 +5,36 @@ This program uses the `megha_sim` module to run the simulator as per the
 Megha architecture and display/log the actions and results of the simulation.
 """
 
+import os
 import sys
 import time
+from typing import Final
 
 from megha_sim import Simulation, simulator_globals
 from megha_sim import SimulatorLogger
 
 if __name__ == "__main__":
-    WORKLOAD_FILE = sys.argv[1]
-    CONFIG_FILE = sys.argv[2]
-    NUM_GMS = int(sys.argv[3])
-    NUM_LMS = int(sys.argv[4])
-    PARTITION_SIZE = int(sys.argv[5])
+    WORKLOAD_FILE: Final[str] = sys.argv[1]
+    CONFIG_FILE: Final[str] = sys.argv[2]
+    NUM_GMS: Final[int] = int(sys.argv[3])
+    NUM_LMS: Final[int] = int(sys.argv[4])
+    PARTITION_SIZE: Final[int] = int(sys.argv[5])
     # currently set to 1 because of comparison with Sparrow
-    SERVER_CPU = float(sys.argv[6])
-    SERVER_RAM = float(sys.argv[7])  # ditto
-    SERVER_STORAGE = float(sys.argv[8])  # ditto
+    SERVER_CPU: Final[float] = float(sys.argv[6])
+    SERVER_RAM: Final[float] = float(sys.argv[7])  # ditto
+    SERVER_STORAGE: Final[float] = float(sys.argv[8])  # ditto
+
+    WORKLOAD_FILE_NAME: Final[str] = (os.path.basename(WORKLOAD_FILE)
+                                      .split(".")[0])
 
     logger = SimulatorLogger(__name__).get_logger()
-    logger.info("Received CMD line arguments.")
+
+    logger.metadata(f"Analysing logs for trace file: {WORKLOAD_FILE_NAME}")
+    logger.metadata(f"Number of GMs: {NUM_GMS}")
+    logger.metadata(f"Number of LMs: {NUM_LMS}")
+    logger.metadata(f"Number of Partition Size: {PARTITION_SIZE}")
+
+    logger.metadata("Simulator Info , Received CMD line arguments.")
 
     NETWORK_DELAY = 0.0005  # same as sparrow
 
@@ -32,8 +43,19 @@ if __name__ == "__main__":
     t1 = time.time()
     s = Simulation(WORKLOAD_FILE, CONFIG_FILE, NUM_GMS, NUM_LMS,
                    PARTITION_SIZE, SERVER_CPU, SERVER_RAM, SERVER_STORAGE)
-    print("Simulation running")
+    # print("Simulator Info , Simulation running")
+    logger.metadata("Simulator Info , Simulation running")
     s.run()
-    print("Simulation ended in ", (time.time() - t1), " s ")
+    time_elapsed = time.time() - t1
+    # print("Simulation ended in ", time_elapsed, " s ")
+    logger.metadata(f"Simulation ended in {time_elapsed} s ")
 
     print(simulator_globals.jobs_completed)
+
+    # print(f"Number of Jobs completed: {len(simulator_globals.jobs_completed)}")
+    logger.metadata(
+        "Simulator Info , Number of Jobs completed: "
+        f"{len(simulator_globals.jobs_completed)}")
+
+    logger.integrity()
+    logger.flush()
