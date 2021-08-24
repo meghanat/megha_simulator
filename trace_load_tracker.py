@@ -51,7 +51,7 @@ def set_timeline_value(timeline: List[Union[int, float]],
 
 
 # The units of every element in the list is: servers per second
-timeline: List[Union[int, float]] = [0] * 1_000_000_000
+timeline: List[Union[int, float]] = [0] * 10_000_000
 
 with open(FULL_TRACE_FILE_PATH) as file_handler:
     for job in file_handler:
