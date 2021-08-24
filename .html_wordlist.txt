@@ -88,3 +88,8 @@ initialized
 iterable
 kwargs
 LMResources
+parameterized
+getitem
+KeyError
+PartitionKey
+namedtuple

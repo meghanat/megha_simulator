@@ -69,3 +69,4 @@ strftime
 datefmt
 TColors
 LMResources
+namedtuple
