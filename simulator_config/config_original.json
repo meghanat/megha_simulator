@@ -10,21 +10,21 @@
                             
                             "CPU":1,
                             "RAM":1,
-                            "Disk":1,
+                            "DISK":1,
                             "constraints":[]
                         },
                         "2":{
                                 
                             "CPU":1,
                             "RAM":1,
-                            "Disk":1,
+                            "DISK":1,
                             "constraints":[]
                         },
                         "3":{
                             
                             "CPU":1,
                             "RAM":1,
-                            "Disk":1,
+                            "DISK":1,
                             "constraints":[]
                         }
                     }
@@ -36,21 +36,21 @@
                             
                             "CPU":1,
                             "RAM":1,
-                            "Disk":1,
+                            "DISK":1,
                             "constraints":[]
                         },
                         "5":{
                             
                             "CPU":1,
                             "RAM":1,
-                            "Disk":1,
+                            "DISK":1,
                             "constraints":[]
                         },
                         "6":{
                             
                             "CPU":1,
                             "RAM":1,
-                            "Disk":1,
+                            "DISK":1,
                             "constraints":[]
                         }
                     }
@@ -62,21 +62,21 @@
                             
                             "CPU":1,
                             "RAM":1,
-                            "Disk":1,
+                            "DISK":1,
                             "constraints":[]
                         },
                         "8":{
                             
                             "CPU":1,
                             "RAM":1,
-                            "Disk":1,
+                            "DISK":1,
                             "constraints":[]
                         },
                         "9":{
                             
                             "CPU":1,
                             "RAM":1,
-                            "Disk":1,
+                            "DISK":1,
                             "constraints":[]
                         }
                     }
@@ -93,21 +93,21 @@
                             
                             "CPU":1,
                             "RAM":1,
-                            "Disk":1,
+                            "DISK":1,
                             "constraints":[]
                         },
                         "11":{
                             
                             "CPU":1,
                             "RAM":1,
-                            "Disk":1,
+                            "DISK":1,
                             "constraints":[]
                         },
                         "12":{
                             
                             "CPU":1,
                             "RAM":1,
-                            "Disk":1,
+                            "DISK":1,
                             "constraints":[]
                         }
                     }
@@ -119,21 +119,21 @@
                             
                             "CPU":1,
                             "RAM":1,
-                            "Disk":1,
+                            "DISK":1,
                             "constraints":[]
                         },
                         "14":{
                             
                             "CPU":1,
                             "RAM":1,
-                            "Disk":1,
+                            "DISK":1,
                             "constraints":[]
                         },
                         "15":{
                             
                             "CPU":1,
                             "RAM":1,
-                            "Disk":1,
+                            "DISK":1,
                             "constraints":[]
                         }
                     }
@@ -145,21 +145,21 @@
                             
                             "CPU":1,
                             "RAM":1,
-                            "Disk":1,
+                            "DISK":1,
                             "constraints":[]
                         },
                         "17":{
                             
                             "CPU":1,
                             "RAM":1,
-                            "Disk":1,
+                            "DISK":1,
                             "constraints":[]
                         },
                         "18":{
                             
                             "CPU":1,
                             "RAM":1,
-                            "Disk":1,
+                            "DISK":1,
                             "constraints":[]
                         }
                     }
