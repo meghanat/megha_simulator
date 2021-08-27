@@ -16,6 +16,13 @@
 ## About
 A simple simulator for the Megha Federated Scheduling Framework. This simulator enables comparison with other frameworks such as Sparrow, Eagle and Pigeon for which simulators already exist.
 
+# Target Performance
+- 10,000 node cluster running on 20,000 Jobs and about 50 times more tasks than jobs totally.
+  - Estimated to complete in about 50 minutes.
+- Comparing with Sparrow and Pigeon scheduler.
+  - Hence the state on only models the CPU and not the RAM nor DISK nor any other constraints.
+- The granularity of the timeline is 1 second.
+
 ## Setting up your Environment
 
 1. Add the ```megha_sim``` folder to your ```PYTHONPATH``` environment variable by following steps:
