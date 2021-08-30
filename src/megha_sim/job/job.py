@@ -54,15 +54,16 @@ class Job(object):
         self.job_task_durations = [float(i) for i in job_args[3:]]
         self.avg_task_duration = float(job_args[2])
         self.total_job_duration = sum(self.job_task_durations)
-        self.job_standard_deviation = statistics.stdev(self.job_task_durations)
-        self.job_percentiles = statistics.quantiles(self.job_task_durations, n=100)
 
-        self.job_median = self.job_percentiles[49]
-        self.job_nnpercent = self.job_percentiles[-1]
-
-        print(self.job_standard_deviation)
-        print(self.job_median)
-        print(self.job_nnpercent)
+        try:
+            self.job_standard_deviation = statistics.stdev(self.job_task_durations)
+            self.job_percentiles = statistics.quantiles(self.job_task_durations, n=100)
+            self.job_median = self.job_percentiles[49]
+            self.job_nnpercent = self.job_percentiles[-1]
+        except:
+            self.job_standard_deviation = self.job_task_durations[0]
+            self.job_median = self.job_task_durations[0]
+            self.job_nnpercent = self.job_task_durations[0]
 
         # IF the job's start_time has never been seen before
         if self.start_time not in self.job_start_tstamps:

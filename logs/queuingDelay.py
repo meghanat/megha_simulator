@@ -2,19 +2,19 @@ import os
 import fnmatch
 
 
-# def newest(path):
-#     all_files = os.listdir(path)
-#     # log_files = [file for file in all_files if re.match(r'*.log', file)]
-#     log_files = fnmatch.filter(all_files, '*.log')
-#     paths = [os.path.join(path, basename) for basename in log_files]
-#     return max(paths, key=os.path.getctime)
+def newest(path):
+    all_files = os.listdir(path)
+    # log_files = [file for file in all_files if re.match(r'*.log', file)]
+    log_files = fnmatch.filter(all_files, '*.log')
+    paths = [os.path.join(path, basename) for basename in log_files]
+    return max(paths, key=os.path.getctime)
 
 
-# curr_path = os.getcwd()
+curr_path = os.getcwd()
 
-# file = newest(curr_path)
+file = newest(curr_path)
 
-file = '/home/paradigm/Documents/PESU/Capstone/Simulators/megha_simulator/logs/record-2021-07-05-04-51-16_lifo.log'
+# file = '/home/paradigm/Documents/PESU/Capstone/Simulators/megha_simulator/logs/record-2021-07-05-04-51-16_lifo.log'
 
 print(file)
 

@@ -1,166 +1,2350 @@
 {
-    "LMs":{
-        "1":{
-            "LM_id":"1",
-            "partitions":{
-               "1": {
-                    "partition_id":"1",
-                    "nodes":{
-                        "1":{
-                            
-                            "CPU":1,
-                            "RAM":1,
-                            "Disk":1,
-                            "constraints":[]
+    "LMs": {
+        "1": {
+            "LM_id": "1",
+            "partitions": {
+                "1": {
+                    "partition_id": "1",
+                    "nodes": {
+                        "1": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
                         },
-                        "2":{
-                                
-                            "CPU":1,
-                            "RAM":1,
-                            "Disk":1,
-                            "constraints":[]
+                        "2": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
                         },
-                        "3":{
-                            
-                            "CPU":1,
-                            "RAM":1,
-                            "Disk":1,
-                            "constraints":[]
+                        "3": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
                         }
                     }
                 },
-                "2":{
-                    "partition_id":"2",
-                    "nodes":{
-                        "4":{
-                            
-                            "CPU":1,
-                            "RAM":1,
-                            "Disk":1,
-                            "constraints":[]
+                "2": {
+                    "partition_id": "2",
+                    "nodes": {
+                        "1": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
                         },
-                        "5":{
-                            
-                            "CPU":1,
-                            "RAM":1,
-                            "Disk":1,
-                            "constraints":[]
+                        "2": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
                         },
-                        "6":{
-                            
-                            "CPU":1,
-                            "RAM":1,
-                            "Disk":1,
-                            "constraints":[]
+                        "3": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
                         }
                     }
                 },
-               "3": {
-                    "partition_id":"3",
-                    "nodes":{
-                        "7":{
-                            
-                            "CPU":1,
-                            "RAM":1,
-                            "Disk":1,
-                            "constraints":[]
+                "3": {
+                    "partition_id": "3",
+                    "nodes": {
+                        "1": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
                         },
-                        "8":{
-                            
-                            "CPU":1,
-                            "RAM":1,
-                            "Disk":1,
-                            "constraints":[]
+                        "2": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
                         },
-                        "9":{
-                            
-                            "CPU":1,
-                            "RAM":1,
-                            "Disk":1,
-                            "constraints":[]
+                        "3": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        }
+                    }
+                },
+                "4": {
+                    "partition_id": "4",
+                    "nodes": {
+                        "1": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "2": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "3": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        }
+                    }
+                },
+                "5": {
+                    "partition_id": "5",
+                    "nodes": {
+                        "1": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "2": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "3": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        }
+                    }
+                },
+                "6": {
+                    "partition_id": "6",
+                    "nodes": {
+                        "1": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "2": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "3": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        }
+                    }
+                },
+                "7": {
+                    "partition_id": "7",
+                    "nodes": {
+                        "1": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "2": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "3": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        }
+                    }
+                },
+                "8": {
+                    "partition_id": "8",
+                    "nodes": {
+                        "1": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "2": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "3": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        }
+                    }
+                },
+                "9": {
+                    "partition_id": "9",
+                    "nodes": {
+                        "1": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "2": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "3": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        }
+                    }
+                },
+                "10": {
+                    "partition_id": "10",
+                    "nodes": {
+                        "1": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "2": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "3": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
                         }
                     }
                 }
             }
         },
-        "2":{
+        "2": {
             "LM_id": "2",
-            "partitions":{
-               "1": {
-                    "partition_id":"1",
-                    "nodes":{
-                        "10":{
-                            
-                            "CPU":1,
-                            "RAM":1,
-                            "Disk":1,
-                            "constraints":[]
+            "partitions": {
+                "1": {
+                    "partition_id": "1",
+                    "nodes": {
+                        "1": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
                         },
-                        "11":{
-                            
-                            "CPU":1,
-                            "RAM":1,
-                            "Disk":1,
-                            "constraints":[]
+                        "2": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
                         },
-                        "12":{
-                            
-                            "CPU":1,
-                            "RAM":1,
-                            "Disk":1,
-                            "constraints":[]
+                        "3": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
                         }
                     }
                 },
-                "2":{
-                    "partition_id":"2",
-                    "nodes":{
-                        "13":{
-                            
-                            "CPU":1,
-                            "RAM":1,
-                            "Disk":1,
-                            "constraints":[]
+                "2": {
+                    "partition_id": "2",
+                    "nodes": {
+                        "1": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
                         },
-                        "14":{
-                            
-                            "CPU":1,
-                            "RAM":1,
-                            "Disk":1,
-                            "constraints":[]
+                        "2": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
                         },
-                        "15":{
-                            
-                            "CPU":1,
-                            "RAM":1,
-                            "Disk":1,
-                            "constraints":[]
+                        "3": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
                         }
                     }
                 },
-               "3": {
-                    "partition_id":"3",
-                    "nodes":{
-                        "16":{
-                            
-                            "CPU":1,
-                            "RAM":1,
-                            "Disk":1,
-                            "constraints":[]
+                "3": {
+                    "partition_id": "3",
+                    "nodes": {
+                        "1": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
                         },
-                        "17":{
-                            
-                            "CPU":1,
-                            "RAM":1,
-                            "Disk":1,
-                            "constraints":[]
+                        "2": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
                         },
-                        "18":{
-                            
-                            "CPU":1,
-                            "RAM":1,
-                            "Disk":1,
-                            "constraints":[]
+                        "3": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        }
+                    }
+                },
+                "4": {
+                    "partition_id": "4",
+                    "nodes": {
+                        "1": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "2": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "3": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        }
+                    }
+                },
+                "5": {
+                    "partition_id": "5",
+                    "nodes": {
+                        "1": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "2": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "3": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        }
+                    }
+                },
+                "6": {
+                    "partition_id": "6",
+                    "nodes": {
+                        "1": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "2": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "3": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        }
+                    }
+                },
+                "7": {
+                    "partition_id": "7",
+                    "nodes": {
+                        "1": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "2": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "3": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        }
+                    }
+                },
+                "8": {
+                    "partition_id": "8",
+                    "nodes": {
+                        "1": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "2": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "3": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        }
+                    }
+                },
+                "9": {
+                    "partition_id": "9",
+                    "nodes": {
+                        "1": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "2": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "3": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        }
+                    }
+                },
+                "10": {
+                    "partition_id": "10",
+                    "nodes": {
+                        "1": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "2": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "3": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        }
+                    }
+                }
+            }
+        },
+        "3": {
+            "LM_id": "3",
+            "partitions": {
+                "1": {
+                    "partition_id": "1",
+                    "nodes": {
+                        "1": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "2": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "3": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        }
+                    }
+                },
+                "2": {
+                    "partition_id": "2",
+                    "nodes": {
+                        "1": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "2": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "3": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        }
+                    }
+                },
+                "3": {
+                    "partition_id": "3",
+                    "nodes": {
+                        "1": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "2": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "3": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        }
+                    }
+                },
+                "4": {
+                    "partition_id": "4",
+                    "nodes": {
+                        "1": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "2": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "3": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        }
+                    }
+                },
+                "5": {
+                    "partition_id": "5",
+                    "nodes": {
+                        "1": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "2": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "3": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        }
+                    }
+                },
+                "6": {
+                    "partition_id": "6",
+                    "nodes": {
+                        "1": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "2": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "3": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        }
+                    }
+                },
+                "7": {
+                    "partition_id": "7",
+                    "nodes": {
+                        "1": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "2": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "3": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        }
+                    }
+                },
+                "8": {
+                    "partition_id": "8",
+                    "nodes": {
+                        "1": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "2": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "3": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        }
+                    }
+                },
+                "9": {
+                    "partition_id": "9",
+                    "nodes": {
+                        "1": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "2": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "3": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        }
+                    }
+                },
+                "10": {
+                    "partition_id": "10",
+                    "nodes": {
+                        "1": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "2": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "3": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        }
+                    }
+                }
+            }
+        },
+        "4": {
+            "LM_id": "4",
+            "partitions": {
+                "1": {
+                    "partition_id": "1",
+                    "nodes": {
+                        "1": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "2": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "3": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        }
+                    }
+                },
+                "2": {
+                    "partition_id": "2",
+                    "nodes": {
+                        "1": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "2": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "3": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        }
+                    }
+                },
+                "3": {
+                    "partition_id": "3",
+                    "nodes": {
+                        "1": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "2": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "3": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        }
+                    }
+                },
+                "4": {
+                    "partition_id": "4",
+                    "nodes": {
+                        "1": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "2": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "3": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        }
+                    }
+                },
+                "5": {
+                    "partition_id": "5",
+                    "nodes": {
+                        "1": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "2": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "3": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        }
+                    }
+                },
+                "6": {
+                    "partition_id": "6",
+                    "nodes": {
+                        "1": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "2": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "3": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        }
+                    }
+                },
+                "7": {
+                    "partition_id": "7",
+                    "nodes": {
+                        "1": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "2": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "3": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        }
+                    }
+                },
+                "8": {
+                    "partition_id": "8",
+                    "nodes": {
+                        "1": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "2": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "3": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        }
+                    }
+                },
+                "9": {
+                    "partition_id": "9",
+                    "nodes": {
+                        "1": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "2": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "3": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        }
+                    }
+                },
+                "10": {
+                    "partition_id": "10",
+                    "nodes": {
+                        "1": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "2": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "3": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        }
+                    }
+                }
+            }
+        },
+        "5": {
+            "LM_id": "5",
+            "partitions": {
+                "1": {
+                    "partition_id": "1",
+                    "nodes": {
+                        "1": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "2": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "3": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        }
+                    }
+                },
+                "2": {
+                    "partition_id": "2",
+                    "nodes": {
+                        "1": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "2": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "3": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        }
+                    }
+                },
+                "3": {
+                    "partition_id": "3",
+                    "nodes": {
+                        "1": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "2": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "3": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        }
+                    }
+                },
+                "4": {
+                    "partition_id": "4",
+                    "nodes": {
+                        "1": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "2": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "3": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        }
+                    }
+                },
+                "5": {
+                    "partition_id": "5",
+                    "nodes": {
+                        "1": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "2": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "3": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        }
+                    }
+                },
+                "6": {
+                    "partition_id": "6",
+                    "nodes": {
+                        "1": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "2": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "3": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        }
+                    }
+                },
+                "7": {
+                    "partition_id": "7",
+                    "nodes": {
+                        "1": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "2": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "3": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        }
+                    }
+                },
+                "8": {
+                    "partition_id": "8",
+                    "nodes": {
+                        "1": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "2": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "3": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        }
+                    }
+                },
+                "9": {
+                    "partition_id": "9",
+                    "nodes": {
+                        "1": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "2": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "3": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        }
+                    }
+                },
+                "10": {
+                    "partition_id": "10",
+                    "nodes": {
+                        "1": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "2": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "3": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        }
+                    }
+                }
+            }
+        },
+        "6": {
+            "LM_id": "6",
+            "partitions": {
+                "1": {
+                    "partition_id": "1",
+                    "nodes": {
+                        "1": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "2": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "3": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        }
+                    }
+                },
+                "2": {
+                    "partition_id": "2",
+                    "nodes": {
+                        "1": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "2": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "3": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        }
+                    }
+                },
+                "3": {
+                    "partition_id": "3",
+                    "nodes": {
+                        "1": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "2": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "3": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        }
+                    }
+                },
+                "4": {
+                    "partition_id": "4",
+                    "nodes": {
+                        "1": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "2": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "3": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        }
+                    }
+                },
+                "5": {
+                    "partition_id": "5",
+                    "nodes": {
+                        "1": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "2": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "3": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        }
+                    }
+                },
+                "6": {
+                    "partition_id": "6",
+                    "nodes": {
+                        "1": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "2": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "3": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        }
+                    }
+                },
+                "7": {
+                    "partition_id": "7",
+                    "nodes": {
+                        "1": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "2": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "3": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        }
+                    }
+                },
+                "8": {
+                    "partition_id": "8",
+                    "nodes": {
+                        "1": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "2": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "3": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        }
+                    }
+                },
+                "9": {
+                    "partition_id": "9",
+                    "nodes": {
+                        "1": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "2": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "3": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        }
+                    }
+                },
+                "10": {
+                    "partition_id": "10",
+                    "nodes": {
+                        "1": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "2": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "3": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        }
+                    }
+                }
+            }
+        },
+        "7": {
+            "LM_id": "7",
+            "partitions": {
+                "1": {
+                    "partition_id": "1",
+                    "nodes": {
+                        "1": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "2": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "3": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        }
+                    }
+                },
+                "2": {
+                    "partition_id": "2",
+                    "nodes": {
+                        "1": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "2": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "3": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        }
+                    }
+                },
+                "3": {
+                    "partition_id": "3",
+                    "nodes": {
+                        "1": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "2": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "3": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        }
+                    }
+                },
+                "4": {
+                    "partition_id": "4",
+                    "nodes": {
+                        "1": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "2": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "3": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        }
+                    }
+                },
+                "5": {
+                    "partition_id": "5",
+                    "nodes": {
+                        "1": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "2": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "3": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        }
+                    }
+                },
+                "6": {
+                    "partition_id": "6",
+                    "nodes": {
+                        "1": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "2": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "3": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        }
+                    }
+                },
+                "7": {
+                    "partition_id": "7",
+                    "nodes": {
+                        "1": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "2": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "3": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        }
+                    }
+                },
+                "8": {
+                    "partition_id": "8",
+                    "nodes": {
+                        "1": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "2": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "3": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        }
+                    }
+                },
+                "9": {
+                    "partition_id": "9",
+                    "nodes": {
+                        "1": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "2": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "3": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        }
+                    }
+                },
+                "10": {
+                    "partition_id": "10",
+                    "nodes": {
+                        "1": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "2": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "3": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        }
+                    }
+                }
+            }
+        },
+        "8": {
+            "LM_id": "8",
+            "partitions": {
+                "1": {
+                    "partition_id": "1",
+                    "nodes": {
+                        "1": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "2": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "3": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        }
+                    }
+                },
+                "2": {
+                    "partition_id": "2",
+                    "nodes": {
+                        "1": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "2": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "3": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        }
+                    }
+                },
+                "3": {
+                    "partition_id": "3",
+                    "nodes": {
+                        "1": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "2": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "3": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        }
+                    }
+                },
+                "4": {
+                    "partition_id": "4",
+                    "nodes": {
+                        "1": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "2": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "3": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        }
+                    }
+                },
+                "5": {
+                    "partition_id": "5",
+                    "nodes": {
+                        "1": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "2": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "3": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        }
+                    }
+                },
+                "6": {
+                    "partition_id": "6",
+                    "nodes": {
+                        "1": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "2": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "3": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        }
+                    }
+                },
+                "7": {
+                    "partition_id": "7",
+                    "nodes": {
+                        "1": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "2": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "3": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        }
+                    }
+                },
+                "8": {
+                    "partition_id": "8",
+                    "nodes": {
+                        "1": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "2": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "3": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        }
+                    }
+                },
+                "9": {
+                    "partition_id": "9",
+                    "nodes": {
+                        "1": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "2": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "3": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        }
+                    }
+                },
+                "10": {
+                    "partition_id": "10",
+                    "nodes": {
+                        "1": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "2": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "3": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        }
+                    }
+                }
+            }
+        },
+        "9": {
+            "LM_id": "9",
+            "partitions": {
+                "1": {
+                    "partition_id": "1",
+                    "nodes": {
+                        "1": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "2": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "3": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        }
+                    }
+                },
+                "2": {
+                    "partition_id": "2",
+                    "nodes": {
+                        "1": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "2": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "3": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        }
+                    }
+                },
+                "3": {
+                    "partition_id": "3",
+                    "nodes": {
+                        "1": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "2": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "3": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        }
+                    }
+                },
+                "4": {
+                    "partition_id": "4",
+                    "nodes": {
+                        "1": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "2": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "3": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        }
+                    }
+                },
+                "5": {
+                    "partition_id": "5",
+                    "nodes": {
+                        "1": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "2": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "3": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        }
+                    }
+                },
+                "6": {
+                    "partition_id": "6",
+                    "nodes": {
+                        "1": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "2": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "3": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        }
+                    }
+                },
+                "7": {
+                    "partition_id": "7",
+                    "nodes": {
+                        "1": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "2": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "3": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        }
+                    }
+                },
+                "8": {
+                    "partition_id": "8",
+                    "nodes": {
+                        "1": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "2": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "3": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        }
+                    }
+                },
+                "9": {
+                    "partition_id": "9",
+                    "nodes": {
+                        "1": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "2": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "3": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        }
+                    }
+                },
+                "10": {
+                    "partition_id": "10",
+                    "nodes": {
+                        "1": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "2": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "3": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        }
+                    }
+                }
+            }
+        },
+        "10": {
+            "LM_id": "10",
+            "partitions": {
+                "1": {
+                    "partition_id": "1",
+                    "nodes": {
+                        "1": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "2": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "3": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        }
+                    }
+                },
+                "2": {
+                    "partition_id": "2",
+                    "nodes": {
+                        "1": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "2": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "3": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        }
+                    }
+                },
+                "3": {
+                    "partition_id": "3",
+                    "nodes": {
+                        "1": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "2": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "3": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        }
+                    }
+                },
+                "4": {
+                    "partition_id": "4",
+                    "nodes": {
+                        "1": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "2": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "3": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        }
+                    }
+                },
+                "5": {
+                    "partition_id": "5",
+                    "nodes": {
+                        "1": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "2": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "3": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        }
+                    }
+                },
+                "6": {
+                    "partition_id": "6",
+                    "nodes": {
+                        "1": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "2": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "3": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        }
+                    }
+                },
+                "7": {
+                    "partition_id": "7",
+                    "nodes": {
+                        "1": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "2": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "3": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        }
+                    }
+                },
+                "8": {
+                    "partition_id": "8",
+                    "nodes": {
+                        "1": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "2": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "3": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        }
+                    }
+                },
+                "9": {
+                    "partition_id": "9",
+                    "nodes": {
+                        "1": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "2": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "3": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        }
+                    }
+                },
+                "10": {
+                    "partition_id": "10",
+                    "nodes": {
+                        "1": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "2": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
+                        },
+                        "3": {
+                            "CPU": 1,
+                            "RAM": 1,
+                            "DISK": 1,
+                            "constraints": []
                         }
                     }
                 }

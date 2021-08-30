@@ -124,7 +124,7 @@ class GM(object):
                 # SJF(Sorted job first)
                 # Need to sort it
                 # self.job_queue.insert(0, self.jobs_scheduled.pop(index))
-                # sorted(self.job_queue, key=lambda x: x.avg_task_duration)   # Sort by Average task duration
+                sorted(self.job_queue, key=lambda x: x.avg_task_duration)   # Sort by Average task duration
 
                 break
 
@@ -145,7 +145,8 @@ class GM(object):
 
                     # SJF
                     # job = self.job_queue[0]
-                    # print("Scheduling Tasks from Job: ",job.job_id)
+
+                    print("Scheduling Tasks from Job: ",job.job_id)
 
                     for task_id in job.tasks:  # Go over the tasks for the job
                         task = job.tasks[task_id]
