@@ -96,6 +96,21 @@ $ sudo chmod u+x enter_dev_env.sh
         ```
 3. Once finished using the container, run the command `exit` inside the container to exit it.
 
+## Sending files to and download files from the Development Server
+
+### To send files to the development server, use the command
+```
+$ scp -r <local_system_file_path> <ssh_username>@<server_ip_address>:<destination_path_on_server>
+```
+
+> **NOTE:** The `-r` flag is used to send the files recursively. This flag can be ignored if only a single file is to be sent.
+
+### To download files from the development server, use the command
+```
+$ scp -r <ssh_username>@<server_ip_address>:<source_path_on_server> <local_system_file_path>
+```
+
+> **NOTE:** The `-r` flag is used to send the files recursively. This flag can be ignore if only a single file is to be downloaded.
 
 ## How to Generate the Documentation
 
