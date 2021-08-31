@@ -1,5 +1,5 @@
 # Use the latest Python Image
-FROM pypy:3.7-7.3.5-buster
+FROM python:3.9.5-buster
 
 WORKDIR /Megha_Dev/
 
@@ -8,8 +8,7 @@ ENV PYTHONPATH="$PYTHONPATH:./src/megha_sim"
 # This is need for creating the dependency graph of the project
 RUN apt-get update && apt-get install -y --no-install-recommends \
     graphviz \
-    && rm -rf /var/lib/apt/lists/* \
-    && /opt/pypy/bin/pypy3 -m pip install --upgrade pip
+    && rm -rf /var/lib/apt/lists/*
 
 COPY ./requirements.txt /Megha_Dev/requirements.txt
 
