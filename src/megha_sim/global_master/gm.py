@@ -278,8 +278,13 @@ class GM:
         """
         for index in range(0, len(self.jobs_scheduled)):
             if unverified_job.job_id == self.jobs_scheduled[index].job_id:
+                # FIFO
                 # Remove job from list and add to front of job_queue
-                self.job_queue.insert(0, self.jobs_scheduled.pop(index))
+                # self.job_queue.insert(0, self.jobs_scheduled.pop(index))
+
+                # LIFO
+                # Remove the job from job_scheduled list and add it to the end of job_queue
+                self.job_queue.insert(len(self.job_queue), self.jobs_scheduled.pop(index))
                 break
 
     def __get_node(self, GM_id: str, LM_id: str, node_id: str) \
@@ -295,7 +300,11 @@ class GM:
         """
         # While the job_queue for the current GM is not empty
         while len(self.job_queue) > 0:
-            job = self.job_queue[0]  # Get the Job from the head of the queue
+            # FIFO
+            # job = self.job_queue[0]  # Get the Job from the head of the queue
+
+            # LIFO
+            job = self.job_queue[-1]    # Get the Job from the tail of the queue
 
             # print("Scheduling Tasks from Job: ",job.job_id)
             for task_id in job.tasks:  # Go over the tasks for the job
@@ -346,7 +355,11 @@ class GM:
 
                 job.tasks[task_id].scheduled = True
                 if(job.fully_scheduled()):
-                    self.jobs_scheduled.append(self.job_queue.pop(0))
+                    # FIFO
+                    # self.jobs_scheduled.append(self.job_queue.pop(0))
+                    
+                    # LIFO
+                    self.jobs_scheduled.append(self.job_queue.pop())
 
                 gm_id = external_partition["partition_id"]
                 print(current_time, ", RepartitionEvent ,",
@@ -488,7 +501,12 @@ class GM:
         """
         # While the job_queue for the current GM is not empty
         while len(self.job_queue) > 0:
-            job = self.job_queue[0]  # Get job from the head of queue
+            # FIFO
+            # job = self.job_queue[0]  # Get job from the head of queue
+
+            # LIFO
+            job = self.job_queue[-1]  # Get job from the tail of queue
+
             for task_id in job.tasks:  # Go over the tasks for the job
                 """Make sure that the 2 sources for `task_id` agree with each
                 other"""
@@ -533,7 +551,11 @@ class GM:
 
                 job.tasks[task_id].scheduled = True
                 if job.fully_scheduled():
-                    self.jobs_scheduled.append(self.job_queue.pop(0))
+                    # FIFO
+                    # self.jobs_scheduled.append(self.job_queue.pop(0))
+
+                    # LIFO
+                    self.jobs_scheduled.append(self.job_queue.pop())
 
                 """If this internal partition is now completely full then,
                 move it to the `saturated_partitions` dictionary"""
@@ -624,6 +646,8 @@ class GM:
         print(current_time, ",", "JobArrivalEvent",
               ",", job.job_id, ",", self.GM_id)
         job.gm = self
+        
+        # FIFO and LIFO
         self.job_queue.append(job)
         if(len(self.job_queue) == 1):  # first job
             self.schedule_tasks(current_time)
