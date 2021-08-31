@@ -89,7 +89,7 @@ $ sudo chmod u+x enter_dev_env.sh
         ```
 3. Once finished using the container, run the command `exit` inside the container to exit it.
 
-## Sending files to and download files from the Development Server
+## Sending files to and downloading files from the Development Server
 
 ### To send files to the development server, use the command
 ```
