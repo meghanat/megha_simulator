@@ -1,5 +1,5 @@
 # Use the latest Python Image
-FROM python:3.9.5-buster
+FROM python:3.9.6-buster
 
 WORKDIR /Megha_Dev/
 
