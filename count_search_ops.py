@@ -11,7 +11,8 @@ Raises:
 import os
 import sys
 from pathlib import Path
-from typing import List, NamedTuple, Dict, TypedDict
+from typing import List, NamedTuple, Dict
+from typing_extensions import TypedDict
 
 from simulation_logger.msg_list import (MATCHING_LOGIC_MSG,
                                         MATCHING_LOGIC_REPARTITION_MSG)
@@ -148,7 +149,7 @@ success_percent = sum(map(lambda task_id: 1 / (measurements[task_id]
                           measurements)) / len(measurements.keys())
 
 print("Percentage ratio of free worker found to number of workers searched"
-      f" = {success_percent=:%}")
+      f" = success_percent={success_percent:%}")
 
 print("LaunchOnNodeEvent count: "
       f"{TColors.BOLD}{launch_on_node_count}{TColors.END}")
