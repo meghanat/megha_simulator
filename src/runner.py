@@ -8,7 +8,7 @@ Megha architecture and display/log the actions and results of the simulation.
 import os
 import sys
 import time
-from typing import Final
+from typing_extensions import Final
 
 from megha_sim import Simulation, simulator_globals
 from megha_sim import SimulatorLogger
