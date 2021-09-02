@@ -92,14 +92,14 @@ $ sudo chmod u+x enter_dev_env.sh
 ## Sending files to and downloading files from the Development Server
 
 ### To send files to the development server, use the command
-```
+```bash
 $ scp -r <local_system_file_path> <ssh_username>@<server_ip_address>:<destination_path_on_server>
 ```
 
 > **NOTE:** The `-r` flag is used to send the files recursively. This flag can be ignored if only a single file is to be sent.
 
 ### To download files from the development server, use the command
-```
+```bash
 $ scp -r <ssh_username>@<server_ip_address>:<source_path_on_server> <local_system_file_path>
 ```
 
