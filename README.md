@@ -112,6 +112,9 @@ $ scp -r <ssh_username>@<server_ip_address>:<source_path_on_server> <local_syste
 - When specifying the Windows path for the `scp` command, use the `/` instead of the `\` character.
   - Also mention the Windows path within double quotes.
 
+## Working with Tmux
+- To use the development environment on the server effectively, you need to have the tmux client installed on your system. To install the tmux client, follow the instructions on the [tmux website](https://tmux.github.io/).
+- Instructions for getting started with Tmux: https://phoenixnap.com/kb/tmux-tutorial-install-commands
 ## How to Generate the Documentation
 
 1. Make the shell script `build_doc.sh` executable using the command:
