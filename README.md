@@ -105,6 +105,13 @@ $ scp -r <ssh_username>@<server_ip_address>:<source_path_on_server> <local_syste
 
 > **NOTE:** The `-r` flag is used to send the files recursively. This flag can be ignore if only a single file is to be downloaded.
 
+### Points to Keep In Mind When Using `scp` on a Windows Machine
+- To use the `scp` command on you Windows system, use the Git BASH terminal. This should be installed on your Windows machine, if you have Git installed.
+  - To install Git, follow the instructions on the [Git website](https://git-scm.com/downloads).
+- Also to use the `scp` command on you Windows system, you need to have the SSH client installed on your Windows machine. To install the SSH client, follow the instructions on the [SSH website](https://www.ssh.com/download/).
+- When specifying the Windows path for the `scp` command, use the `/` instead of the `\` character.
+  - Also mention the Windows path within double quotes.
+
 ## How to Generate the Documentation
 
 1. Make the shell script `build_doc.sh` executable using the command:
