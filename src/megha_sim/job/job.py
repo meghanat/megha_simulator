@@ -47,6 +47,9 @@ class Job(object):
         self.gm: Optional[GM] = None
         self.completion_time: float = -1.
 
+        # Job scheduling optimization
+        self.avg_task_duration = float(job_args[2])
+
         # IF the job's start_time has never been seen before
         if self.start_time not in self.job_start_tstamps:
             # Add it to the dict of start time stamps
