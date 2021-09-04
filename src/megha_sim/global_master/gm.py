@@ -1,6 +1,5 @@
 """
 File containing the implementation of the Global master.
-
 The file contains the implementation of the Global master module of the \
 modified scheduler architecture.
 """
@@ -35,7 +34,6 @@ logger = SimulatorLogger(__name__).get_logger()
 class GM:
     """
     Class defining the implementation of the Global Master.
-
     This class provides the implementation of the different \
     interfaces provided by the Global Master to the rest of \
     the scheduler architecture.
@@ -143,7 +141,6 @@ class GM:
     def update_status(self, current_time: float):
         """
         Update the global view of GM by getting partial updates from each LM.
-
         Args:
             current_time (float): The current time in the simulation.
         """
@@ -268,29 +265,16 @@ class GM:
     def unschedule_job(self, unverified_job: Job):
         """
         Job is inserted back into the job_queue of the GM.
-
         The job is inserted back into the job_queue of the GM from the \
         job_scheduled queue of the GM.
-
         Args:
             unverified_job (Job): The job that needs to be moved, as it was \
                 assigned on a worker node not actually available at that time
         """
         for index in range(0, len(self.jobs_scheduled)):
             if unverified_job.job_id == self.jobs_scheduled[index].job_id:
-                # FIFO
                 # Remove job from list and add to front of job_queue
-                # self.job_queue.insert(0, self.jobs_scheduled.pop(index))
-
-                # LIFO
-                # Remove the job from job_scheduled list and add it to the end of job_queue
-                # self.job_queue.insert(len(self.job_queue), self.jobs_scheduled.pop(index))
-
-                # SJF(Sorted job first)
-                # Need to sort it
                 self.job_queue.insert(0, self.jobs_scheduled.pop(index))
-                self.job_queue = sorted(self.job_queue, key=lambda x: x.avg_task_duration)   # Sort by Average task duration
-
                 break
 
     def __get_node(self, GM_id: str, LM_id: str, node_id: str) \
@@ -300,17 +284,12 @@ class GM:
     def repartition(self, current_time: float):
         """
         Search the external partitions for a free worker node.
-
         Args:
             current_time (float): The current time in the simulation.
         """
         # While the job_queue for the current GM is not empty
         while len(self.job_queue) > 0:
-            # FIFO and SJF
             job = self.job_queue[0]  # Get the Job from the head of the queue
-
-            # LIFO
-            # job = self.job_queue[-1]    # Get the Job from the tail of the queue
 
             # print("Scheduling Tasks from Job: ",job.job_id)
             for task_id in job.tasks:  # Go over the tasks for the job
@@ -361,11 +340,7 @@ class GM:
 
                 job.tasks[task_id].scheduled = True
                 if(job.fully_scheduled()):
-                    # FIFO and SJF
                     self.jobs_scheduled.append(self.job_queue.pop(0))
-                    
-                    # LIFO
-                    # self.jobs_scheduled.append(self.job_queue.pop())
 
                 gm_id = external_partition["partition_id"]
                 print(current_time, ", RepartitionEvent ,",
@@ -403,7 +378,6 @@ class GM:
     def __repartition(self, current_time):
         """
         Search the external partitions for a free worker node.
-
         Args:
             current_time (float): The current time in the simulation.
         """
@@ -501,18 +475,12 @@ class GM:
     def schedule_tasks(self, current_time: float):
         """
         Search the internal partitions of the GM to find a free worker node.
-
         Args:
             current_time (float): The current time in the simulation.
         """
         # While the job_queue for the current GM is not empty
         while len(self.job_queue) > 0:
-            # FIFO and SJF
             job = self.job_queue[0]  # Get job from the head of queue
-
-            # LIFO
-            # job = self.job_queue[-1]  # Get job from the tail of queue
-
             for task_id in job.tasks:  # Go over the tasks for the job
                 """Make sure that the 2 sources for `task_id` agree with each
                 other"""
@@ -557,11 +525,7 @@ class GM:
 
                 job.tasks[task_id].scheduled = True
                 if job.fully_scheduled():
-                    # FIFO and SJF
                     self.jobs_scheduled.append(self.job_queue.pop(0))
-
-                    # LIFO
-                    # self.jobs_scheduled.append(self.job_queue.pop())
 
                 """If this internal partition is now completely full then,
                 move it to the `saturated_partitions` dictionary"""
@@ -590,7 +554,6 @@ class GM:
     def __schedule_tasks(self, current_time: float):
         """
         Search the internal partitions of the GM to find a free worker node.
-
         Args:
             current_time (float): The current time in the simulation.
         """
@@ -652,11 +615,6 @@ class GM:
         print(current_time, ",", "JobArrivalEvent",
               ",", job.job_id, ",", self.GM_id)
         job.gm = self
-        
         self.job_queue.append(job)
-
-        # SJF
-        self.job_queue = sorted(self.job_queue, key=lambda x: x.avg_task_duration)   # Sort by Average task duration
-
         if(len(self.job_queue) == 1):  # first job
             self.schedule_tasks(current_time)
