@@ -379,16 +379,24 @@ class LMUpdateEvent(Event):
                                          " None!")
             self.gm.update_status(current_time + NETWORK_DELAY)
 
-        if self.periodic and not self.simulation.event_queue.empty():
+        if self.periodic: # and not self.simulation.event_queue.empty():
+            are_jobs_done = True
             for GM_id in self.simulation.gms:
-                self.simulation.gms[GM_id].update_status(
-                    current_time + NETWORK_DELAY)
-            """
-            Add the next heartbeat, network delay added because intuitively
-            we do not include it in the LM_HEARTBEAT INTERVAL.
-            """
-            self.simulation.event_queue.put(
-                (current_time + LM_HEARTBEAT_INTERVAL + NETWORK_DELAY, self))
+                if len(self.simulation.gms[GM_id].job_queue) > 0:
+                    are_jobs_done = False
+                    break
+
+            if (not are_jobs_done or not self.simulation.event_queue.empty()):
+                print("\nLOOK HERE:", self.simulation.event_queue.empty(), "\n")
+                for GM_id in self.simulation.gms:
+                    self.simulation.gms[GM_id].update_status(
+                        current_time + NETWORK_DELAY)
+                """
+                Add the next heartbeat, network delay added because intuitively
+                we do not include it in the LM_HEARTBEAT INTERVAL.
+                """
+                self.simulation.event_queue.put(
+                    (current_time + LM_HEARTBEAT_INTERVAL + NETWORK_DELAY, self))
 
 ##########################################################################
 ##########################################################################
@@ -450,8 +458,11 @@ class JobArrival(Event):
 
         new_events: List[Tuple[float, Event]] = []
         # needs to be assigned to a GM - RR
-        JobArrival.gm_counter = (
-            JobArrival.gm_counter % self.simulation.NUM_GMS + 1)
+        # JobArrival.gm_counter = (
+        #     JobArrival.gm_counter % self.simulation.NUM_GMS + 1)
+        JobArrival.gm_counter = (len(self.job.tasks) %
+                                 self.simulation.NUM_GMS) + 1
+
         # assigned_GM --> Handle to the global master object
         assigned_GM: GM = self.simulation.gms[str(JobArrival.gm_counter)]
         # GM needs to add job to its queue
