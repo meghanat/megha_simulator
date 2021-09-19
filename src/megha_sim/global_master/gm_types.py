@@ -1,7 +1,6 @@
 from typing import (List, Dict, NamedTuple, Optional,
-                    Tuple, TypedDict, Generic,
-                    TypeVar)
-
+                    Tuple, Generic, TypeVar)
+from typing_extensions import TypedDict
 
 class NodeResources(TypedDict):
     """

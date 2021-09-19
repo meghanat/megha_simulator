@@ -8,7 +8,8 @@ large log files.
 """
 from pathlib import Path
 from datetime import datetime
-from typing import Dict, List, Optional, TypedDict
+from typing import Dict, List, Optional
+from typing_extensions import TypedDict
 from simulation_logger.msg_list import (MATCHING_LOGIC_MSG,
                                         MATCHING_LOGIC_REPARTITION_MSG,
                                         CLUSTER_SATURATED_MSG)
@@ -273,7 +274,8 @@ class Logger:
 
             file_handler.write(f"{TColors.BOLD}Percentage ratio of free worker"
                                f" found to number of workers searched"
-                               f"{TColors.END} = {success_percent=:%}\n")
+                               f"{TColors.END} = success_percent="
+                               f"{success_percent:%}\n")
 
             # 4. Average number of worker searched per task
             workers_searched_per_task = \

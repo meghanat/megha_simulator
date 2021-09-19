@@ -5,7 +5,7 @@ This file contains the various constants and named constants used throughout\
  the project.
 """
 
-from typing import Final, Literal
+from typing_extensions import Final, Literal
 from enum import Enum, unique
 
 

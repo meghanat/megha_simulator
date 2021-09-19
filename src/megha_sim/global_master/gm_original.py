@@ -7,7 +7,8 @@ Megha scheduler architecture.
 from __future__ import annotations
 
 import json
-from typing import List, Dict, TYPE_CHECKING, TypedDict
+from typing import List, Dict, TYPE_CHECKING
+from typing_extensions import TypedDict
 
 import simulator_utils.globals
 from events import MatchFoundEvent
