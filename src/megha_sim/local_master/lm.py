@@ -46,7 +46,8 @@ class LM(object):
 
         # check if repartitioning
         if(external_partition is not None):
-            if(self.LM_config["partitions"][external_partition]["nodes"][node_id]["CPU"] == 1):
+            if (self.LM_config["partitions"][external_partition]["nodes"]
+                    [node_id]["CPU"] == 1):
                 self.LM_config["partitions"][external_partition]["nodes"][node_id]["CPU"] = 0
                 task.node_id = node_id
                 task.partition_id = external_partition
@@ -59,11 +60,15 @@ class LM(object):
                     (current_time + NETWORK_DELAY, LaunchOnNodeEvent(task, self.simulation)))
                 return True
             else:  # if inconsistent
-                self.simulation.event_queue.put((current_time, InconsistencyEvent(
-                    task, gm, InconsistencyType.EXTERNAL_INCONSISTENCY, self.simulation)))
+                self.simulation.event_queue.put((current_time,
+                                                 InconsistencyEvent(
+                                                     task, gm,
+                                                     InconsistencyType.EXTERNAL_INCONSISTENCY,
+                                                     self.simulation)))
         # internal partition
         else:
-            if(self.LM_config["partitions"][gm.GM_id]["nodes"][node_id]["CPU"] == 1):
+            if (self.LM_config["partitions"][gm.GM_id]["nodes"][node_id]["CPU"]
+                    == 1):
                 # allot node to task
                 self.LM_config["partitions"][gm.GM_id]["nodes"][node_id]["CPU"] = 0
                 task.node_id = node_id
@@ -71,18 +76,37 @@ class LM(object):
                 task.GM_id = gm.GM_id
                 task.lm = self
                 self.simulation.event_queue.put(
-                    (current_time + NETWORK_DELAY, LaunchOnNodeEvent(task, self.simulation)))
+                    (current_time + NETWORK_DELAY,
+                     LaunchOnNodeEvent(task,
+                                       self.simulation)))
             else:  # if inconsistent
-                self.simulation.event_queue.put((current_time, InconsistencyEvent(
-                    task, gm, InconsistencyType.INTERNAL_INCONSISTENCY, self.simulation)))
+                self.simulation.event_queue.put((current_time,
+                                                 InconsistencyEvent(
+                                                     task, gm,
+                                                     InconsistencyType.INTERNAL_INCONSISTENCY,
+                                                     self.simulation)))
 
     def task_completed(self, task):
         # reclaim resources
         self.LM_config["partitions"][task.partition_id]["nodes"][task.node_id]["CPU"] = 1
 
-    # Append the details of the task that was just completed to the list of tasks completed for the corresponding GM that sent it
+        # Append the details of the task that was just completed to the list of
+        # tasks completed for the corresponding GM that sent it
         # note GM_id used here, not partition, in case of repartitioning
         self.tasks_completed[task.GM_id].append(
             (task.job.job_id, task.task_id))
-        self.simulation.event_queue.put((task.end_time + NETWORK_DELAY, LMUpdateEvent(
-            self.simulation, periodic=False, gm=self.simulation.gms[task.GM_id])))
+        self.simulation.event_queue.put((task.end_time + NETWORK_DELAY,
+                                         LMUpdateEvent(
+                                             self.simulation, periodic=False,
+                                             gm=self.simulation.gms[task.GM_id])))
+
+    def get_free_cpu_count_per_gm(self):
+        free_cpu_count_per_gm = dict()
+        for gm_id in self.LM_config["partitions"].keys():
+            for node_id in self.LM_config["partitions"][gm_id]["nodes"].keys():
+                free_cpu_count_per_gm[gm_id] = (free_cpu_count_per_gm.get(
+                    gm_id, 0) +
+                    self.LM_config["partitions"][gm_id]["nodes"][node_id]
+                    ["CPU"])
+
+        return free_cpu_count_per_gm
