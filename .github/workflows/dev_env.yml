@@ -18,15 +18,15 @@ jobs:
     - uses: actions/checkout@v2
     - name: Build the Docker image
       run: |
-        docker build -t megha_dev_env .
+        docker build -t megha_dev_env_python .
     - name: Make the shell script executable
       run: |
         chmod u+x ./quick_run.sh
     - name: Run the Docker container with the shell script ./quick_run.sh
       run: |
-        docker run -it -d --rm --name megha_dev_env -v "${PWD}":/Megha_Dev megha_dev_env:latest bash
-        docker exec megha_dev_env ./quick_run.sh
-        docker container stop megha_dev_env
+        docker run -it -d --rm --name megha_dev_env_python -v "${PWD}":/Megha_Dev megha_dev_env_python:latest bash
+        docker exec megha_dev_env_python ./quick_run.sh
+        docker container stop megha_dev_env_python
 
   shell-script:
     name: Test the shell scripts in the Docker container
@@ -36,18 +36,18 @@ jobs:
     - uses: actions/checkout@v2
     - name: Build the Docker image
       run: |
-        docker build -t megha_dev_env .
+        docker build -t megha_dev_env_python .
     - name: Make the shell scripts executable
       run: |
         chmod u+x ./build_dep_graph.sh
         chmod u+x ./build_doc.sh
     - name: Run the Docker container with the shell script ./build_dep_graph.sh
       run: |
-        docker run -it -d --rm --name megha_dev_env -v "${PWD}":/Megha_Dev megha_dev_env:latest bash
-        docker exec megha_dev_env ./build_dep_graph.sh
-        docker container stop megha_dev_env
+        docker run -it -d --rm --name megha_dev_env_python -v "${PWD}":/Megha_Dev megha_dev_env_python:latest bash
+        docker exec megha_dev_env_python ./build_dep_graph.sh
+        docker container stop megha_dev_env_python
     - name: Run the Docker container with the shell script ./build_doc.sh
       run: |
-        docker run -it -d --rm --name megha_dev_env -v "${PWD}":/Megha_Dev megha_dev_env:latest bash
-        docker exec megha_dev_env ./build_doc.sh
-        docker container stop megha_dev_env
+        docker run -it -d --rm --name megha_dev_env_python -v "${PWD}":/Megha_Dev megha_dev_env_python:latest bash
+        docker exec megha_dev_env_python ./build_doc.sh
+        docker container stop megha_dev_env_python
