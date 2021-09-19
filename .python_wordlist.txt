@@ -68,3 +68,5 @@ datetime
 strftime
 datefmt
 TColors
+cpu
+lms
