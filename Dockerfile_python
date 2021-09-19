@@ -10,6 +10,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     graphviz \
     && rm -rf /var/lib/apt/lists/*
 
-COPY ./requirements.txt /Megha_Dev/requirements.txt
+COPY ./requirements_original.txt /Megha_Dev/requirements_original.txt
 
-RUN pip3 install --no-cache-dir -r requirements.txt
+RUN pip3 install --no-cache-dir -r requirements_original.txt
