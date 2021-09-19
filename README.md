@@ -137,6 +137,9 @@ $ sudo chmod u+x build_doc.sh
         1. This folder will contain the file called `index.html`.
         2. Open this file using any modern web browser to view the documentation for the entire `megha_sim` module.
 
+**NOTE:**
+- Use only the `Python` container for this.
+
 ## How to Generate the Dependency Graph
 
 1. Make the shell script `build_dep_graph.sh` executable using the command:
@@ -153,11 +156,10 @@ $ sudo chmod u+x build_dep_graph.sh
 
 **NOTE:**
 
-The dependency graph may not show some classes in the project. For example, the `TaskEndEvent` will not show in the dependency graph because it is not imported into any other file/module in the project.
-
-This rule applies to all other such classes and code as well. Below is the reason from the `pydeps` project which we are using:
-
-> `pydeps` finds imports by looking for import-opcodes in python bytecodes (think `.pyc` files). Therefore, only imported files will be found *(ie. `pydeps` will not look at files in your directory that are not imported).*
+- The dependency graph may not show some classes in the project. For example, the `TaskEndEvent` will not show in the dependency graph because it is not imported into any other file/module in the project.  
+This rule applies to all other such classes and code as well. Below is the reason from the `pydeps` project which we are using:  
+> `pydeps` finds imports by looking for import-opcodes in python bytecodes (think `.pyc` files). Therefore, only imported files will be found *(ie. `pydeps` will not look at files in your directory that are not imported).*  
+- Use only the `Python` container for this.
 
 ## Dependency Graph
 
