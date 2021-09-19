@@ -18,7 +18,7 @@ jobs:
     - uses: actions/checkout@v2
     - name: Build the Docker image
       run: |
-        docker build -t megha_dev_env_python .
+        docker build -t megha_dev_env_python -f Dockerfile_python .
     - name: Make the shell script executable
       run: |
         chmod u+x ./quick_run.sh
@@ -36,7 +36,7 @@ jobs:
     - uses: actions/checkout@v2
     - name: Build the Docker image
       run: |
-        docker build -t megha_dev_env_python .
+        docker build -t megha_dev_env_python -f Dockerfile_python .
     - name: Make the shell scripts executable
       run: |
         chmod u+x ./build_dep_graph.sh
