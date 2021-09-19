@@ -89,6 +89,11 @@ $ sudo chmod u+x enter_dev_env.sh
         ```
 3. Once finished using the container, run the command `exit` inside the container to exit it.
 
+**NOTE:**
+1. To use the container which runs `PyPy` use the shell script named `enter_dev_env_pypy.sh` instead of `enter_dev_env.sh`.
+1. To see examples of commands to run the simulator using `PyPy` refer to the file `quick_run_pypy.sh`.
+2. To see examples of commands to run the simulator using `Python` refer to the file `quick_run.sh`.
+
 ## Sending files to and downloading files from the Development Server
 
 ### To send files to the development server, use the command
