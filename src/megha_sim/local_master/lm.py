@@ -54,8 +54,8 @@ class LM(object):
                 task.lm = self
                 task.GM_id = gm.GM_id
 
-        # network delay as the request has to be sent from the LM to the
-        # selected worker node
+                # network delay as the request has to be sent from the LM to
+                # the selected worker node
                 self.simulation.event_queue.put(
                     (current_time + NETWORK_DELAY, LaunchOnNodeEvent(task, self.simulation)))
                 return True
