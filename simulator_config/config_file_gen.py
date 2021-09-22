@@ -1,7 +1,7 @@
 import os
 import json
 
-num_nodes = 1000
+num_nodes = 10000
 num_lms = 10
 num_partitions = 10  # This value is always equal to the number of GMs
 
