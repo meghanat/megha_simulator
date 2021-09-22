@@ -65,11 +65,13 @@ By convention, the output of the simulator, after running on a trace must always
 $ python3 ./src/runner.py ./traces/input/YH_small.tr ./simulator_config/config_original.json 3 2 3 1 1 1 > traces/output/YH_OP.tr
 ```
 
-**NOTE:** The general convention for naming the output of the simulator, after running it on the trace file is:
-
+**NOTE:** 
+1. The general convention for naming the output of the simulator, after running it on the trace file is:  
 ```
 <Name_of_the_trace_file>_OP.tr
 ```
+2. To see examples of commands to run the simulator using `PyPy` refer to the file `quick_run_pypy.sh`.
+3. To see examples of commands to run the simulator using `Python` refer to the file `quick_run.sh`.
 
 ## Using the Development Environment Container
 
@@ -91,8 +93,6 @@ $ sudo chmod u+x enter_dev_env.sh
 
 **NOTE:**
 1. To use the container which runs `PyPy` use the shell script named `enter_dev_env_pypy.sh` instead of `enter_dev_env.sh`.
-1. To see examples of commands to run the simulator using `PyPy` refer to the file `quick_run_pypy.sh`.
-2. To see examples of commands to run the simulator using `Python` refer to the file `quick_run.sh`.
 
 ## Sending files to and downloading files from the Development Server
 
