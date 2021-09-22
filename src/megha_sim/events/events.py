@@ -74,7 +74,7 @@ class Event(object):
             NotImplementedError: This exception is raised when attempting to \
             call `run` on an instance of the `Event` class.
         """
-        """Return any events that should be added to the queue."""
+        # Return any events that should be added to the queue.
         raise NotImplementedError(
             "The run() method must be implemented by each class subclassing "
             "Event")
@@ -229,19 +229,18 @@ class InconsistencyEvent(Event):
             current_time (float): The current time in the simulation.
         """
         if(self.type == InconsistencyType.INTERNAL_INCONSISTENCY):
-            """Internal inconsistency -> failed to place task on an internal
-               partition."""
+            # Internal inconsistency -> failed to place task on an internal
+            # partition.
             logger.info(f"{current_time} , InternalInconsistencyEvent")
         else:
-            """External inconsistency -> failed to place task on an external
-               partition."""
+            # External inconsistency -> failed to place task on an external
+            # partition.
             logger.info(f"{current_time} , ExternalInconsistencyEvent")
         self.task.scheduled = False
 
-        """
-        If the job is already moved to jobs_scheduled queue, then we need to
-        remove it and add it to the front of the queue.
-        """
+        
+        # If the job is already moved to jobs_scheduled queue, then we need to
+        # remove it and add it to the front of the queue.
         self.gm.unschedule_job(self.task.job)
         self.simulation.event_queue.put(
             (current_time, LMUpdateEvent(
@@ -379,7 +378,7 @@ class LMUpdateEvent(Event):
                                          " None!")
             self.gm.update_status(current_time + NETWORK_DELAY)
 
-        if self.periodic: # and not self.simulation.event_queue.empty():
+        if self.periodic:  # and not self.simulation.event_queue.empty():
             are_jobs_done = True
             for GM_id in self.simulation.gms:
                 if len(self.simulation.gms[GM_id].job_queue) > 0:
@@ -387,16 +386,18 @@ class LMUpdateEvent(Event):
                     break
 
             if (not are_jobs_done or not self.simulation.event_queue.empty()):
-                print("\nLOOK HERE:", self.simulation.event_queue.empty(), "\n")
+                print("\nLOOK HERE:", self.simulation.event_queue.empty(),
+                      "\n")
                 for GM_id in self.simulation.gms:
                     self.simulation.gms[GM_id].update_status(
                         current_time + NETWORK_DELAY)
-                """
-                Add the next heartbeat, network delay added because intuitively
-                we do not include it in the LM_HEARTBEAT INTERVAL.
-                """
+
+                # Add the next heartbeat, network delay added because
+                # intuitively we do not include it in the LM_HEARTBEAT
+                # INTERVAL.
                 self.simulation.event_queue.put(
-                    (current_time + LM_HEARTBEAT_INTERVAL + NETWORK_DELAY, self))
+                    (current_time + LM_HEARTBEAT_INTERVAL + NETWORK_DELAY,
+                     self))
 
 ##########################################################################
 ##########################################################################
