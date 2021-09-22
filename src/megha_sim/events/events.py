@@ -176,11 +176,12 @@ class LaunchOnNodeEvent(Event):
         logger.info(
             f"{current_time} , "
             "LaunchOnNodeEvent , "
-            f"{self.task.job.job_id}_"
+            f"{self.task.job.job_id} , "
             f"{self.task.task_id} , "
-            f"{self.task.partition_id}_"
-            f"{self.task.node_id}")
-
+            f"{self.task.partition_id} , "
+            f"{self.task.node_id} , "
+            f"{self.task.job.start_time}")
+        
         # launching requires network transfer
         self.simulation.event_queue.put(
             (current_time + self.task.duration, TaskEndEvent(self.task)))
