@@ -151,7 +151,7 @@ class GM(object):
         # While the job_queue for the current GM is not empty
         while len(self.job_queue) > 0:
             # SJF
-            job = self.job_queue[0]  # Get the Job from the head of the queue
+            job = self.job_queue[-1]  # Get the Job from the head of the queue
 
             # print("Scheduling Tasks from Job: ",job.job_id)
             for task_id in job.tasks:  # Go over the tasks for the job
@@ -196,7 +196,7 @@ class GM(object):
                                     if(job.fully_scheduled()):
                                         # SJF
                                         self.jobs_scheduled.append(
-                                            self.job_queue.pop(0))
+                                            self.job_queue.pop())
                                     print(
                                         current_time,
                                         "RepartitionEvent",
@@ -255,7 +255,7 @@ class GM(object):
         while len(self.job_queue) > 0:
             # While the job_queue for the current GM is not empty
             # SJF
-            job = self.job_queue[0]  # Get job from the head of queue
+            job = self.job_queue[-1]  # Get job from the head of queue
             for task_id in job.tasks:  # Go over the tasks for the job
                 if(job.tasks[task_id].scheduled):
                     # If the task is already scheduled, then there is
@@ -284,7 +284,7 @@ class GM(object):
                             if job.fully_scheduled():
                                 # SJF
                                 self.jobs_scheduled.append(self.job_queue
-                                                           .pop(0))
+                                                           .pop())
                             # May need to add processing overhead here if
                             # required
                             self.simulation.event_queue.put(

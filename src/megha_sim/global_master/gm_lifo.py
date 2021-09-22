@@ -104,6 +104,14 @@ class GM(object):
                             job.completion_time = task.end_time
                             job.end_time = job.completion_time
                             print(job.completion_time)
+
+                            # For job optimisation
+                            logger.info(
+                                f"{current_time} , "
+                                "UpdateStatusForGM , "
+                                f"{job.job_id} , "
+                                f"{job.completion_time}")
+                            
                             simulator_utils.globals.jobs_completed.append(job)
                             self.jobs_scheduled.remove(job)
                         break
