@@ -95,8 +95,8 @@ class GM:
                        if new_partition_data["nodes"][node_id]["CPU"] == 1
                        else False)
 
-            """A partition is actually saturated if each of its worker nodes
-            are busy (i.e. `not is_free`)"""
+            # A partition is actually saturated if each of its worker nodes
+            # are busy (i.e. `not is_free`)
             is_saturated = is_saturated and not is_free
 
             if node_id in old_partition_data["free_nodes"].keys() and \
@@ -105,8 +105,8 @@ class GM:
                 old_partition_data["busy_nodes"][node_id] =\
                     old_partition_data["free_nodes"][node_id]
 
-                """Remove the worker node from the `free_nodes`
-                dictionary"""
+                # Remove the worker node from the `free_nodes`
+                # dictionary
                 del(old_partition_data["free_nodes"][node_id])
             elif node_id in old_partition_data["busy_nodes"].keys() and \
                     is_free:
@@ -114,8 +114,8 @@ class GM:
                 old_partition_data["free_nodes"][node_id] =\
                     old_partition_data["busy_nodes"][node_id]
 
-                """Remove the worker node from the `busy_nodes`
-                dictionary"""
+                # Remove the worker node from the `busy_nodes`
+                # dictionary
                 del(old_partition_data["busy_nodes"][node_id])
 
         return is_saturated
@@ -132,8 +132,8 @@ class GM:
         # Move the partition to the `to_partition` dictionary
         to_partition[key] = from_partition[key]
 
-        """Remove the worker node from the `free_nodes`
-        dictionary"""
+        # Remove the worker node from the `free_nodes`
+        # dictionary
         del(from_partition[key])
 
         # Postconditions
@@ -173,8 +173,8 @@ class GM:
                                 partial_status["partitions"][gm_id]
                             )
 
-                        """Check if the partition needs to be moved to the
-                        `saturated_partitions` dictionary"""
+                        # Check if the partition needs to be moved to the
+                        # `saturated_partitions` dictionary
                         if is_saturated is True:
                             self.__move_partition(key,
                                                   self.internal_partitions,
@@ -187,8 +187,8 @@ class GM:
                                 partial_status["partitions"][gm_id]
                             )
 
-                        """Check if the partition needs to be moved to the
-                        `internal_partitions` dictionary"""
+                        # Check if the partition needs to be moved to the
+                        # `internal_partitions` dictionary
                         if is_saturated is False:
                             self.__move_partition(key,
                                                   self.saturated_partitions,
@@ -203,8 +203,8 @@ class GM:
                                 partial_status["partitions"][gm_id]
                             )
 
-                        """Check if the partition needs to be moved to the
-                        `saturated_partitions` dictionary"""
+                        # Check if the partition needs to be moved to the
+                        # `saturated_partitions` dictionary
                         if is_saturated is True:
                             self.__move_partition(key,
                                                   self.external_partitions,
@@ -217,8 +217,8 @@ class GM:
                                 partial_status["partitions"][gm_id]
                             )
 
-                        """Check if the partition needs to be moved to the
-                        `external_partitions` dictionary"""
+                        # Check if the partition needs to be moved to the
+                        # `external_partitions` dictionary
                         if is_saturated is False:
                             self.__move_partition(key,
                                                   self.saturated_partitions,
@@ -300,20 +300,18 @@ class GM:
             # print("Scheduling Tasks from Job: ",job.job_id)
             for task_id in job.tasks:  # Go over the tasks for the job
                 task = job.tasks[task_id]
-                """Make sure that the 2 sources for `task_id` agree with each
-                other"""
+                # Make sure that the 2 sources for `task_id` agree with each
+                # other
                 assert task.task_id == task_id
 
-                """If the task is already scheduled then, there is
-                nothing to do."""
+                # If the task is already scheduled then, there is
+                # nothing to do.
                 if(job.tasks[task_id].scheduled):
                     continue
 
                 if len(self.external_partitions) == 0:
-                    """
-                    There are no free worker nodes in the external partitions
-                    and hence we cannot allocate the task to any worker node.
-                    """
+                    # There are no free worker nodes in the external partitions
+                    # and hence we cannot allocate the task to any worker node.
                     print(current_time, "No resources available in cluster")
                     logger.info(f"{current_time} , {CLUSTER_SATURATED_MSG} ,"
                                 f" {self.GM_id}")
@@ -340,8 +338,8 @@ class GM:
                 external_partition["busy_nodes"][free_worker_id] =\
                     external_partition["free_nodes"][free_worker_id]
 
-                """Remove the worker node from the `free_nodes`
-                dictionary"""
+                # Remove the worker node from the `free_nodes`
+                # dictionary
                 del(external_partition["free_nodes"][free_worker_id])
 
                 job.tasks[task_id].scheduled = True
@@ -360,17 +358,17 @@ class GM:
                             f"{gm_id}_{lm_id}_{free_worker_id} , "
                             f"{job.job_id}_{task.task_id}")
 
-                """If this external partition is now completely full then,
-                move it to the `saturated_partitions` list"""
+                # If this external partition is now completely full then,
+                # move it to the `saturated_partitions` list
                 if len(external_partition["free_nodes"]) == 0:
                     self.saturated_partitions[key_external_partition] = \
                         self.external_partitions[key_external_partition]
 
-                    """Remove the external partition from the
-                    `external_partitions` dictionary"""
+                    # Remove the external partition from the
+                    # `external_partitions` dictionary
                     del(self.external_partitions[key_external_partition])
 
-                """May need to add processing overhead here if required"""
+                # May need to add processing overhead here if required
                 self.simulation.event_queue.put(
                     (current_time,
                         MatchFoundEvent(
@@ -395,8 +393,8 @@ class GM:
             # print("Scheduling Tasks from Job: ",job.job_id)
             for task_id in job.tasks:  # Go over the tasks for the job
                 task = job.tasks[task_id]
-                """If the task is already scheduled then, there is
-                nothing to do."""
+                # If the task is already scheduled then, there is
+                # nothing to do.
                 if(job.tasks[task_id].scheduled):
                     continue
 
@@ -406,20 +404,20 @@ class GM:
                 # Search in the GM's external partitions:
                 for GM_id in self.simulation.gms:
                     if GM_id == self.GM_id:
-                        """Skip the partitions of the GM searching for a free
-                        worker node in the external partitions."""
+                        # Skip the partitions of the GM searching for a free
+                        # worker node in the external partitions.
                         ...
                     else:
-                        """We search each of the other GM's internal
-                        partitions in each LM, for a free worker node."""
+                        # We search each of the other GM's internal
+                        # partitions in each LM, for a free worker node.
                         for _ in range(self.simulation.NUM_LMS):
                             # Which LM? searching the LMs in RR fashion
                             LM_id = str(self.RR_counter %
                                         self.simulation.NUM_LMS + 1)
                             self.RR_counter += 1
 
-                            """Search in external partitions, hence iterating
-                            over a dict."""
+                            # Search in external partitions, hence iterating
+                            # over a dict.
                             for node_id in (self.global_view[LM_id]
                                             ["partitions"]
                                             [GM_id]["nodes"]):
@@ -455,25 +453,25 @@ class GM:
                                                 current_time,
                                                 external_partition=GM_id)))
 
-                                    """We have found a free worker node and
-                                    hence, we do not need to search any
-                                    further."""
+                                    # We have found a free worker node and
+                                    # hence, we do not need to search any
+                                    # further.
                                     matchfound = True
                                     break
 
                             if matchfound is True:
-                                """If we found a free worker node then stop
-                                searching any more LMs."""
+                                # If we found a free worker node then stop
+                                # searching any more LMs.
                                 break
 
                         if matchfound is True:
-                            """If we found a free worker node then stop
-                            searching any more GMs."""
+                            # If we found a free worker node then stop
+                            # searching any more GMs.
                             break
 
                 if matchfound is True:
-                    """If this task was successfully placed then, move on to
-                    the next task."""
+                    # If this task was successfully placed then, move on to
+                    # the next task.
                     ...
                 else:
                     print(current_time, "No resources available in cluster")
@@ -490,19 +488,17 @@ class GM:
         while len(self.job_queue) > 0:
             job = self.job_queue[0]  # Get job from the head of queue
             for task_id in job.tasks:  # Go over the tasks for the job
-                """Make sure that the 2 sources for `task_id` agree with each
-                other"""
+                # Make sure that the 2 sources for `task_id` agree with each
+                # other
                 assert task_id == job.tasks[task_id].task_id
                 if(job.tasks[task_id].scheduled):
-                    """If the task is already scheduled, then there is
-                    nothing to do"""
+                    # If the task is already scheduled, then there is
+                    # nothing to do
                     continue
 
                 if len(self.internal_partitions) == 0:
-                    """
-                    There are no free worker nodes in the internal partitions
-                    and hence we perform the repartition operation.
-                    """
+                    # There are no free worker nodes in the internal partitions
+                    # and hence we perform the repartition operation.
                     self.repartition(current_time)
                     return
 
@@ -527,30 +523,30 @@ class GM:
                 internal_partition["busy_nodes"][free_worker_id] =\
                     internal_partition["free_nodes"][free_worker_id]
 
-                """Remove the worker node from the `free_nodes`
-                dictionary"""
+                # Remove the worker node from the `free_nodes`
+                # dictionary
                 del(internal_partition["free_nodes"][free_worker_id])
 
                 job.tasks[task_id].scheduled = True
                 if job.fully_scheduled():
                     self.jobs_scheduled.append(self.job_queue.pop(0))
 
-                """If this internal partition is now completely full then,
-                move it to the `saturated_partitions` dictionary"""
+                # If this internal partition is now completely full then,
+                # move it to the `saturated_partitions` dictionary
                 if len(internal_partition["free_nodes"]) == 0:
                     self.saturated_partitions[key_internal_partition] = \
                         self.internal_partitions[key_internal_partition]
 
-                    """Remove the internal partition from the
-                    `internal_partitions` dictionary"""
+                    # Remove the internal partition from the
+                    # `internal_partitions` dictionary
                     del(self.internal_partitions[key_internal_partition])
 
                 logger.info(f"{MATCHING_LOGIC_MSG} , "
                             f"{self.GM_id}_{lm_id}_{free_worker_id} , "
                             f"{job.job_id}_{task_id}")
 
-                """May need to add processing overhead here if
-                required"""
+                # May need to add processing overhead here if
+                # required
                 self.simulation.event_queue.put(
                     (current_time, MatchFoundEvent(
                         job.tasks[task_id],
