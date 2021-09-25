@@ -179,4 +179,9 @@ This rule applies to all other such classes and code as well. Below is the reaso
   - We do not own this (Dropbox) link nor the data hosted on it.
 
 > **NOTE:** that these links may change in the future.
+
+
+## References:
+1. [Using tmux](https://phoenixnap.com/kb/tmux-tutorial-install-commands)
+
 ---
