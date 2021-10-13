@@ -9,6 +9,10 @@ import os
 import sys
 import time
 from typing_extensions import Final
+import cProfile
+import pstats
+import io
+from pstats import SortKey
 
 from megha_sim import Simulation, simulator_globals
 from megha_sim import SimulatorLogger
@@ -45,7 +49,16 @@ if __name__ == "__main__":
                    PARTITION_SIZE, SERVER_CPU, SERVER_RAM, SERVER_STORAGE)
     # print("Simulator Info , Simulation running")
     logger.metadata("Simulator Info , Simulation running")
+    pr = cProfile.Profile()
+    pr.enable()
     s.run()
+    pr.disable()
+    text = io.StringIO()
+    sortby = SortKey.CUMULATIVE
+    ps = pstats.Stats(pr, stream=text).sort_stats(sortby)
+    ps.print_stats()
+    print(text.getvalue())
+    # s.run()
     time_elapsed = time.time() - t1
     # print("Simulation ended in ", time_elapsed, " s ")
     logger.metadata(f"Simulation ended in {time_elapsed} s ")
