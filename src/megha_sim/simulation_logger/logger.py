@@ -98,6 +98,9 @@ class Logger:
         self.matching_logic_op_task_measurements: Dict[str, MatchingOps] = \
             dict()
 
+        self.internal_inconsistency_per_task_count: Dict[str, int] = dict()
+        self.external_inconsistency_per_task_count: Dict[str, int] = dict()
+
         # Create the output file to test the path and create the empty file.
         # Any path related errors will now be generated at the beginning of
         # simulation rather than at the end of the simulation.
@@ -135,14 +138,28 @@ class Logger:
             # Get the event name from the log message
             event_name = msg.split(" , ")[1]
 
+            # String with the format x_y
+            # Where,
+            # x is the job ID
+            # y is the task ID
+            job_id_task_id: str
+
             if event_name == "TaskEndEvent":
                 self.data_points["task_end_event"] += 1
             elif event_name == "LaunchOnNodeEvent":
                 self.data_points["launch_on_node_event"] += 1
             elif event_name == "InternalInconsistencyEvent":
                 self.data_points["internal_inconsistency_event"] += 1
+                job_id_task_id = msg.split(" , ")[2]
+                self.internal_inconsistency_per_task_count[job_id_task_id] = \
+                    self.internal_inconsistency_per_task_count.get(
+                        job_id_task_id, 0) + 1
             elif event_name == "ExternalInconsistencyEvent":
                 self.data_points["external_inconsistency_event"] += 1
+                job_id_task_id = msg.split(" , ")[2]
+                self.external_inconsistency_per_task_count[job_id_task_id] = \
+                    self.external_inconsistency_per_task_count.get(
+                        job_id_task_id, 0) + 1
             elif event_name == "MatchFoundEvent":
                 self.data_points["match_found_event"] += 1
             elif event_name == "LMUpdateEvent":
