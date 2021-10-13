@@ -228,17 +228,22 @@ class InconsistencyEvent(Event):
         Args:
             current_time (float): The current time in the simulation.
         """
+        task_id: str = self.task.task_id
+        job_id: str = self.task.job.job_id
+        job_id_task_id = f"{job_id}_{task_id}"
         if(self.type == InconsistencyType.INTERNAL_INCONSISTENCY):
             # Internal inconsistency -> failed to place task on an internal
             # partition.
-            logger.info(f"{current_time} , InternalInconsistencyEvent")
+            logger.info(f"{current_time} , InternalInconsistencyEvent , "
+                        f"{job_id_task_id}")
         else:
             # External inconsistency -> failed to place task on an external
             # partition.
-            logger.info(f"{current_time} , ExternalInconsistencyEvent")
+            logger.info(f"{current_time} , ExternalInconsistencyEvent , "
+                        f"{job_id_task_id}")
+
         self.task.scheduled = False
 
-        
         # If the job is already moved to jobs_scheduled queue, then we need to
         # remove it and add it to the front of the queue.
         self.gm.unschedule_job(self.task.job)
@@ -246,9 +251,10 @@ class InconsistencyEvent(Event):
             (current_time, LMUpdateEvent(
                 self.simulation, periodic=False, gm=self.gm)))
 
+##########################################################################
+##########################################################################
 
-##########################################################################
-##########################################################################
+
 # created when GM finds a match in the external or internal partition
 class MatchFoundEvent(Event):
     """
@@ -386,8 +392,8 @@ class LMUpdateEvent(Event):
                     break
 
             if (not are_jobs_done or not self.simulation.event_queue.empty()):
-                print("\nLOOK HERE:", self.simulation.event_queue.empty(),
-                      "\n")
+                # print("\nLOOK HERE:", self.simulation.event_queue.empty(),
+                #       "\n")
                 for GM_id in self.simulation.gms:
                     self.simulation.gms[GM_id].update_status(
                         current_time + NETWORK_DELAY)
