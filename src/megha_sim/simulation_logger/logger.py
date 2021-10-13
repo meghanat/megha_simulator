@@ -98,8 +98,8 @@ class Logger:
         self.matching_logic_op_task_measurements: Dict[str, MatchingOps] = \
             dict()
 
-        self.internal_inconsistency_per_task_count: Dict[str, int] = dict()
-        self.external_inconsistency_per_task_count: Dict[str, int] = dict()
+        self.internal_inconsistency_count_per_task: Dict[str, int] = dict()
+        self.external_inconsistency_count_per_task: Dict[str, int] = dict()
 
         # Create the output file to test the path and create the empty file.
         # Any path related errors will now be generated at the beginning of
@@ -151,14 +151,14 @@ class Logger:
             elif event_name == "InternalInconsistencyEvent":
                 self.data_points["internal_inconsistency_event"] += 1
                 job_id_task_id = msg.split(" , ")[2]
-                self.internal_inconsistency_per_task_count[job_id_task_id] = \
-                    self.internal_inconsistency_per_task_count.get(
+                self.internal_inconsistency_count_per_task[job_id_task_id] = \
+                    self.internal_inconsistency_count_per_task.get(
                         job_id_task_id, 0) + 1
             elif event_name == "ExternalInconsistencyEvent":
                 self.data_points["external_inconsistency_event"] += 1
                 job_id_task_id = msg.split(" , ")[2]
-                self.external_inconsistency_per_task_count[job_id_task_id] = \
-                    self.external_inconsistency_per_task_count.get(
+                self.external_inconsistency_count_per_task[job_id_task_id] = \
+                    self.external_inconsistency_count_per_task.get(
                         job_id_task_id, 0) + 1
             elif event_name == "MatchFoundEvent":
                 self.data_points["match_found_event"] += 1
@@ -338,6 +338,30 @@ class Logger:
                            f"({len(self.matching_logic_op_task_measurements)})"
                            " != tasks_completed_count "
                            f"({self.data_points['task_end_event']})\n")
+
+        # External inconsistency count per task has the extension "exi"
+        external_inconsistency_file_count = str(self.
+                                                output_file_path.
+                                                resolve()).split('.')[0] + \
+            "_exi.txt"
+        with open(external_inconsistency_file_count, "w") as file_handler:
+            for key in self.external_inconsistency_count_per_task:
+                file_handler.\
+                    write(f"{key} : "
+                          f"{self.external_inconsistency_count_per_task[key]}"
+                          "\n")
+        
+        # Internal inconsistency count per task has the extension "ini"
+        internal_inconsistency_file_count = str(self.
+                                                output_file_path.
+                                                resolve()).split('.')[0] + \
+            "_ini.txt"
+        with open(internal_inconsistency_file_count, "w") as file_handler:
+            for key in self.internal_inconsistency_count_per_task:
+                file_handler.\
+                    write(f"{key} : "
+                          f"{self.internal_inconsistency_count_per_task[key]}"
+                          "\n")
 
 
 class SimulatorLogger:
