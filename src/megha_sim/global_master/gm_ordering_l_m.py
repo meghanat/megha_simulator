@@ -28,7 +28,7 @@ if TYPE_CHECKING:
     from local_master import LM
 
 # Seed the random number generator
-random.seed(47)
+# random.seed(47)
 
 
 logger = SimulatorLogger(__name__).get_logger()
@@ -43,12 +43,19 @@ class GM:
     the scheduler architecture.
     """
 
+    # Starting value for the seeds for the Random objects
+    SEED_VALUE = 13
+
     def __init__(self, simulation, GM_id: str, config: ConfigFile):
         self.GM_id = GM_id
         self.simulation = simulation
         self.RR_counter: int = 0
         self.job_queue: List[Job] = []
         self.jobs_scheduled: List[Job] = []
+
+        self.random_obj = random.Random()
+        self.random_obj.seed(GM.SEED_VALUE)
+        GM.SEED_VALUE += 13
 
         # Map the partition to the number of free slots in it
         self.global_view: Dict[PartitionKey, FreeSlotsCount] = {}
@@ -526,7 +533,7 @@ class GM:
         free_slots_key, partition_dict = partition.peekitem(index=0)
 
         # We randomly pick a non-saturated internal partition
-        key_internal_partition = random.choice(list(partition_dict.keys()))
+        key_internal_partition = self.random_obj.choice(list(partition_dict.keys()))
         internal_partition = partition_dict[key_internal_partition]
 
         # Get the GM id to verify with the LM later
@@ -536,7 +543,7 @@ class GM:
         lm_id = internal_partition["lm_id"]
 
         # We randomly pick a free worker node
-        free_worker_id = random.choice(
+        free_worker_id = self.random_obj.choice(
             list(internal_partition["free_nodes"].keys()))
 
         free_worker_node = (internal_partition["free_nodes"]

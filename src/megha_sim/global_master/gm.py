@@ -26,7 +26,7 @@ if TYPE_CHECKING:
     from local_master import LM
 
 # Seed the random number generator
-random.seed(47)
+# random.seed(47)
 
 
 logger = SimulatorLogger(__name__).get_logger()
@@ -41,6 +41,9 @@ class GM:
     the scheduler architecture.
     """
 
+    # Starting value for the seeds for the Random objects
+    SEED_VALUE = 13
+
     def __init__(self, simulation, GM_id: str, config: ConfigFile):
         self.GM_id = GM_id
         self.simulation = simulation
@@ -48,6 +51,10 @@ class GM:
         self.global_view: Dict[str, LMResources] = {}
         self.job_queue: List[Job] = []
         self.jobs_scheduled: List[Job] = []
+
+        self.random_obj = random.Random()
+        self.random_obj.seed(GM.SEED_VALUE)
+        GM.SEED_VALUE += 13
 
         # 3 Dictionaries
         self.internal_partitions: Dict[PartitionKey,
@@ -318,7 +325,7 @@ class GM:
                     return
 
                 # We randomly pick a non-saturated external partition
-                key_external_partition = random.choice(
+                key_external_partition = self.random_obj.choice(
                     list(self.external_partitions.keys()))
                 external_partition = (self.external_partitions
                                       [key_external_partition])
@@ -327,7 +334,7 @@ class GM:
                 lm_id = external_partition["lm_id"]
 
                 # We randomly pick a free worker node
-                free_worker_id = random.choice(
+                free_worker_id = self.random_obj.choice(
                     list(external_partition["free_nodes"].keys()))
 
                 free_worker_node = (external_partition["free_nodes"]
@@ -503,7 +510,7 @@ class GM:
                     return
 
                 # We randomly pick a non-saturated internal partition
-                key_internal_partition = random.choice(
+                key_internal_partition = self.random_obj.choice(
                     list(self.internal_partitions.keys()))
                 internal_partition = (self.internal_partitions
                                       [key_internal_partition])
@@ -512,7 +519,7 @@ class GM:
                 lm_id = internal_partition["lm_id"]
 
                 # We randomly pick a free worker node
-                free_worker_id = random.choice(
+                free_worker_id = self.random_obj.choice(
                     list(internal_partition["free_nodes"].keys()))
 
                 free_worker_node = (internal_partition["free_nodes"]
