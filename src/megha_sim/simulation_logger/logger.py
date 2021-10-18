@@ -363,6 +363,17 @@ class Logger:
                           f"{self.internal_inconsistency_count_per_task[key]}"
                           "\n")
 
+        # Write the worker nodes searched per task into a file
+        workers_searched_file_count = str(self.
+                                          output_file_path.
+                                          resolve()).split('.')[0] + \
+            "_workers_searched.txt"
+        with open(workers_searched_file_count, "w") as fHandler:
+            for key in self.matching_logic_op_task_measurements:
+                count = (self.matching_logic_op_task_measurements[key]
+                         ["workers_searched"])
+                fHandler.write(f"{key} : {count}\n")
+
 
 class SimulatorLogger:
     """This class is to define and create instances of the logging class."""
