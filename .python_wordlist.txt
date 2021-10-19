@@ -70,3 +70,7 @@ datefmt
 TColors
 cpu
 lms
+nLOOK
+ini
+exi
+txt
