@@ -5,13 +5,20 @@ import sys
 import pathlib
 from typing import List, Union
 from math import ceil, floor
-
+import seaborn as sns
+import pandas as pd
 
 PATH_TO_TRACE_FOLDER = pathlib.Path("./traces/input/")
 PATH_TO_OUTPUT_FOLDER = pathlib.Path("./traces/demand/")
 
+if len(sys.argv) not in [2, 3]:
+    print("ERROR: Invalid Number of Arguments Specified!")
 
 NAME_OF_TRACE_FILE = sys.argv[1].strip()
+CLUSTER_SIZE = 1
+
+if len(sys.argv) == 3:
+    CLUSTER_SIZE = int(sys.argv[2].strip())
 
 FULL_TRACE_FILE_PATH = PATH_TO_TRACE_FOLDER / NAME_OF_TRACE_FILE
 
@@ -128,6 +135,32 @@ for i in range(len(timeline)):
 
 name_of_file, extension = NAME_OF_TRACE_FILE.split('.')
 NAME_OF_OUTPUT_FILE = f"{name_of_file}_demand_{extension}"
+
+print("---")
+
+if len(sys.argv) == 3:
+    NAME_OF_OUTPUT_FILE = (f"{name_of_file}_demand_{extension}_{CLUSTER_SIZE}"
+                           "_cluster_size")
+    timeline = [x / CLUSTER_SIZE * 100 for x in timeline]
+
+    first_index = 0
+    first_index_set = False
+    last_index = 0
+    for ind, time_point in enumerate(timeline):
+        if int(time_point) != 0:
+            last_index = ind
+            if first_index_set is False:
+                first_index = ind
+                first_index_set = True
+    # Create the line-graph plot
+    ax = sns.lineplot(data=pd.DataFrame(timeline[first_index:
+                      min(last_index + 1, len(timeline) - 1)],
+                      columns=['Percentage of Cluster Used']))
+    ax.set(xlabel='Time in Seconds',
+           ylabel='Percentage of Cluster Used',
+           title='Percentage of Cluster Used vs Time in Seconds')
+    fig = ax.get_figure()
+    fig.savefig(PATH_TO_OUTPUT_FOLDER / (NAME_OF_OUTPUT_FILE + "_plot"))
 
 with open(PATH_TO_OUTPUT_FOLDER / NAME_OF_OUTPUT_FILE, "w") as file_handler:
     for time_point in timeline:
