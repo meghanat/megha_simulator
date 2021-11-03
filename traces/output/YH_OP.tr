@@ -4,1195 +4,563 @@ GM 3 initialised
 LM  1 initialised
 LM  2 initialised
 Simulation instantiated
-Simulation running
-7.527 , LMUpdateEvent , True
 7.527 , JobArrivalEvent , 1 , 1
-7.527 RepartitionEvent 1 , 2 , 1_7
-7.527 RepartitionEvent 1 , 2 , 1_8
-7.527 RepartitionEvent 1 , 2 , 1_9
-7.527 RepartitionEvent 1 , 2 , 1_10
-7.527 RepartitionEvent 1 , 2 , 1_11
-7.527 RepartitionEvent 1 , 2 , 1_12
+7.527 , RepartitionEvent , 1 , 2 , 1_7
+7.527 , RepartitionEvent , 1 , 3 , 1_8
+7.527 , RepartitionEvent , 1 , 2 , 1_9
+7.527 , RepartitionEvent , 1 , 3 , 1_10
+7.527 , RepartitionEvent , 1 , 3 , 1_11
+7.527 , RepartitionEvent , 1 , 2 , 1_12
+7.527 , RepartitionEvent , 1 , 3 , 1_13
+7.527 , RepartitionEvent , 1 , 2 , 1_14
+7.527 , RepartitionEvent , 1 , 2 , 1_15
+7.527 , RepartitionEvent , 1 , 2 , 1_16
+7.527 , RepartitionEvent , 1 , 3 , 1_17
+7.527 , RepartitionEvent , 1 , 3 , 1_18
 7.527 No resources available in cluster
-7.527 , MatchFoundEvent , 1_12 , 1_6 _ 1
-7.527 , MatchFoundEvent , 1_9 , 1_14 _ 2
-7.527 , MatchFoundEvent , 1_6 , 1_12 _ 2
-7.527 , MatchFoundEvent , 1_3 , 1_2 _ 1
-7.527 , MatchFoundEvent , 1_8 , 1_4 _ 1
-7.527 , MatchFoundEvent , 1_2 , 1_10 _ 2
-7.527 , MatchFoundEvent , 1_7 , 1_13 _ 2
-7.527 , MatchFoundEvent , 1_11 , 1_15 _ 2
-7.527 , MatchFoundEvent , 1_10 , 1_5 _ 1
-7.527 , MatchFoundEvent , 1_1 , 1_1 _ 1
-7.527 , MatchFoundEvent , 1_5 , 1_3 _ 1
-7.527 , MatchFoundEvent , 1_4 , 1_11 _ 2
-7.528 , LaunchOnNodeEvent , 1_4 , 1_11
-7.528 , LaunchOnNodeEvent , 1_10 , 2_5
-7.528 , LaunchOnNodeEvent , 1_8 , 2_4
-7.528 , LaunchOnNodeEvent , 1_12 , 2_6
-7.528 , LaunchOnNodeEvent , 1_3 , 1_2
-7.528 , LaunchOnNodeEvent , 1_9 , 2_14
-7.528 , LaunchOnNodeEvent , 1_6 , 1_12
-7.528 , LaunchOnNodeEvent , 1_1 , 1_1
-7.528 , LaunchOnNodeEvent , 1_11 , 2_15
-7.528 , LaunchOnNodeEvent , 1_2 , 1_10
-7.528 , LaunchOnNodeEvent , 1_7 , 2_13
-7.528 , LaunchOnNodeEvent , 1_5 , 1_3
-12.527999999999999 , TaskEndEvent , 1_11___ 5
-12.5285 , LMUpdateEvent , False
-12.529 RepartitionEvent 1 , 2 , 1_13
+12.529 , RepartitionEvent , 1 , 3 , 1_19
 12.529 No resources available in cluster
-12.529 , MatchFoundEvent , 1_13 , 1_15 _ 2
-12.530000000000001 , LaunchOnNodeEvent , 1_13 , 2_15
-13.527999999999999 , TaskEndEvent , 1_1___ 6
-13.5285 , LMUpdateEvent , False
 13.529 No resources available in cluster
 15.092 , JobArrivalEvent , 2 , 2
-15.092 RepartitionEvent 2 , 1 , 2_7
-15.092 RepartitionEvent 2 , 1 , 2_8
-15.092 RepartitionEvent 2 , 1 , 2_9
-15.092 RepartitionEvent 2 , 1 , 2_10
-15.092 RepartitionEvent 2 , 1 , 2_11
-15.092 RepartitionEvent 2 , 1 , 2_12
+15.092 , RepartitionEvent , 2 , 1 , 2_7
+15.092 , RepartitionEvent , 2 , 3 , 2_8
+15.092 , RepartitionEvent , 2 , 3 , 2_9
+15.092 , RepartitionEvent , 2 , 1 , 2_10
+15.092 , RepartitionEvent , 2 , 3 , 2_11
+15.092 , RepartitionEvent , 2 , 3 , 2_12
+15.092 , RepartitionEvent , 2 , 3 , 2_13
+15.092 , RepartitionEvent , 2 , 1 , 2_14
+15.092 , RepartitionEvent , 2 , 3 , 2_15
+15.092 , RepartitionEvent , 2 , 1 , 2_16
+15.092 , RepartitionEvent , 2 , 1 , 2_17
+15.092 , RepartitionEvent , 2 , 1 , 2_18
 15.092 No resources available in cluster
-15.092 , MatchFoundEvent , 2_12 , 2_3 _ 1
-15.092 , MatchFoundEvent , 2_10 , 2_2 _ 1
-15.092 , MatchFoundEvent , 2_5 , 2_6 _ 1
-15.092 , MatchFoundEvent , 2_4 , 2_14 _ 2
-15.092 , MatchFoundEvent , 2_3 , 2_5 _ 1
-15.092 , MatchFoundEvent , 2_9 , 2_11 _ 2
-15.092 , MatchFoundEvent , 2_6 , 2_15 _ 2
-15.092 , MatchFoundEvent , 2_8 , 2_1 _ 1
-15.092 , MatchFoundEvent , 2_7 , 2_10 _ 2
-15.092 , MatchFoundEvent , 2_11 , 2_12 _ 2
-15.092 , MatchFoundEvent , 2_2 , 2_13 _ 2
-15.092 , MatchFoundEvent , 2_1 , 2_4 _ 1
-15.092500000000001 , InternalInconsistencyEvent
-15.092500000000001 , LMUpdateEvent , False
 15.093000000000002 No resources available in cluster
-15.092500000000001 , InternalInconsistencyEvent
-15.092500000000001 , LMUpdateEvent , False
 15.093000000000002 No resources available in cluster
-15.092500000000001 , InternalInconsistencyEvent
-15.092500000000001 , LMUpdateEvent , False
 15.093000000000002 No resources available in cluster
-15.092500000000001 , InternalInconsistencyEvent
-15.092500000000001 , LMUpdateEvent , False
 15.093000000000002 No resources available in cluster
-15.092500000000001 , InternalInconsistencyEvent
-15.092500000000001 , LMUpdateEvent , False
 15.093000000000002 No resources available in cluster
-15.092500000000001 , InternalInconsistencyEvent
-15.092500000000001 , LMUpdateEvent , False
 15.093000000000002 No resources available in cluster
-15.092500000000001 , ExternalInconsistencyEvent
-15.092500000000001 , LMUpdateEvent , False
 15.093000000000002 No resources available in cluster
-15.092500000000001 , ExternalInconsistencyEvent
-15.092500000000001 , LMUpdateEvent , False
 15.093000000000002 No resources available in cluster
-15.092500000000001 , ExternalInconsistencyEvent
-15.092500000000001 , LMUpdateEvent , False
 15.093000000000002 No resources available in cluster
-15.092500000000001 , ExternalInconsistencyEvent
-15.092500000000001 , LMUpdateEvent , False
 15.093000000000002 No resources available in cluster
-15.092500000000001 , ExternalInconsistencyEvent
-15.092500000000001 , LMUpdateEvent , False
 15.093000000000002 No resources available in cluster
-15.093000000000002 , LaunchOnNodeEvent , 2_8 , 1_1
-19.528 , TaskEndEvent , 1_7___ 12
-19.528 , TaskEndEvent , 1_2___ 12
-19.528499999999998 , LMUpdateEvent , False
-19.528999999999996 RepartitionEvent 1 , 2 , 1_15
+15.093000000000002 No resources available in cluster
+15.093000000000002 No resources available in cluster
+15.093000000000002 No resources available in cluster
+15.093000000000002 No resources available in cluster
+15.093000000000002 No resources available in cluster
+15.093000000000002 No resources available in cluster
+15.093000000000002 No resources available in cluster
+16.528999999999996 , RepartitionEvent , 1 , 3 , 1_21
+16.528999999999996 No resources available in cluster
+19.528999999999996 , RepartitionEvent , 1 , 2 , 1_23
 19.528999999999996 No resources available in cluster
-19.528499999999998 , LMUpdateEvent , False
-19.528999999999996 RepartitionEvent 1 , 2 , 1_17
+19.528999999999996 , RepartitionEvent , 1 , 2 , 1_25
 19.528999999999996 No resources available in cluster
-19.528999999999996 , MatchFoundEvent , 1_17 , 1_13 _ 2
-19.528999999999996 , MatchFoundEvent , 1_16 , 1_10 _ 2
-19.528999999999996 , MatchFoundEvent , 1_15 , 1_13 _ 2
-19.528999999999996 , MatchFoundEvent , 1_14 , 1_10 _ 2
-19.529499999999995 , InternalInconsistencyEvent
-19.529499999999995 , LMUpdateEvent , False
 19.529999999999994 No resources available in cluster
-19.529499999999995 , ExternalInconsistencyEvent
-19.529499999999995 , LMUpdateEvent , False
 19.529999999999994 No resources available in cluster
-19.529999999999994 , LaunchOnNodeEvent , 1_17 , 2_13
-19.529999999999994 , LaunchOnNodeEvent , 1_16 , 1_10
-21.528 , TaskEndEvent , 1_8___ 14
-21.528499999999998 , LMUpdateEvent , False
-21.528999999999996 RepartitionEvent 1 , 2 , 1_14
+21.528999999999996 , RepartitionEvent , 1 , 3 , 1_22
+21.528999999999996 , RepartitionEvent , 1 , 2 , 1_23
 21.528999999999996 No resources available in cluster
-21.528999999999996 , MatchFoundEvent , 1_14 , 1_4 _ 1
-21.529999999999994 , LaunchOnNodeEvent , 1_14 , 2_4
-22.528 , TaskEndEvent , 1_10___ 15
-22.528 , TaskEndEvent , 1_4___ 15
-22.528499999999998 , LMUpdateEvent , False
+21.528999999999996 , RepartitionEvent , 1 , 2 , 1_26
+21.528999999999996 , RepartitionEvent , 1 , 3 , 1_27
+21.528999999999996 No resources available in cluster
+21.529999999999994 No resources available in cluster
+21.529999999999994 No resources available in cluster
+22.528999999999996 , RepartitionEvent , 1 , 2 , 1_23
+22.528999999999996 , RepartitionEvent , 1 , 3 , 1_28
 22.528999999999996 No resources available in cluster
-22.528499999999998 , LMUpdateEvent , False
+22.528999999999996 , RepartitionEvent , 1 , 3 , 1_30
+22.528999999999996 , RepartitionEvent , 1 , 2 , 1_31
 22.528999999999996 No resources available in cluster
-22.65 , JobArrivalEvent , 3 , 3
-22.65 RepartitionEvent 3 , 1 , 3_7
-22.65 RepartitionEvent 3 , 1 , 3_8
-22.65 RepartitionEvent 3 , 1 , 3_9
-22.65 RepartitionEvent 3 , 1 , 3_10
-22.65 RepartitionEvent 3 , 1 , 3_11
-22.65 RepartitionEvent 3 , 1 , 3_12
-22.65 No resources available in cluster
-22.65 , MatchFoundEvent , 3_12 , 3_3 _ 1
-22.65 , MatchFoundEvent , 3_11 , 3_12 _ 2
-22.65 , MatchFoundEvent , 3_6 , 3_18 _ 2
-22.65 , MatchFoundEvent , 3_5 , 3_9 _ 1
-22.65 , MatchFoundEvent , 3_4 , 3_17 _ 2
-22.65 , MatchFoundEvent , 3_10 , 3_2 _ 1
-22.65 , MatchFoundEvent , 3_7 , 3_10 _ 2
-22.65 , MatchFoundEvent , 3_9 , 3_11 _ 2
-22.65 , MatchFoundEvent , 3_8 , 3_1 _ 1
-22.65 , MatchFoundEvent , 3_3 , 3_8 _ 1
-22.65 , MatchFoundEvent , 3_2 , 3_16 _ 2
-22.65 , MatchFoundEvent , 3_1 , 3_7 _ 1
-22.650499999999997 , ExternalInconsistencyEvent
-22.650499999999997 , LMUpdateEvent , False
-22.650999999999996 No resources available in cluster
-22.650499999999997 , ExternalInconsistencyEvent
-22.650499999999997 , LMUpdateEvent , False
-22.650999999999996 No resources available in cluster
-22.650499999999997 , ExternalInconsistencyEvent
-22.650499999999997 , LMUpdateEvent , False
-22.650999999999996 No resources available in cluster
-22.650499999999997 , ExternalInconsistencyEvent
-22.650499999999997 , LMUpdateEvent , False
-22.650999999999996 No resources available in cluster
-22.650499999999997 , ExternalInconsistencyEvent
-22.650499999999997 , LMUpdateEvent , False
-22.650999999999996 No resources available in cluster
-22.650999999999996 , LaunchOnNodeEvent , 3_6 , 3_18
-22.650999999999996 , LaunchOnNodeEvent , 3_3 , 3_8
-22.650999999999996 , LaunchOnNodeEvent , 3_4 , 3_17
-22.650999999999996 , LaunchOnNodeEvent , 3_2 , 3_16
-22.650999999999996 , LaunchOnNodeEvent , 3_5 , 3_9
-22.650999999999996 , LaunchOnNodeEvent , 3_1 , 3_7
-22.650999999999996 , LaunchOnNodeEvent , 3_9 , 1_11
-23.093000000000004 , TaskEndEvent , 2_8___ 8
-23.093500000000002 , LMUpdateEvent , False
-23.094 RepartitionEvent 2 , 1 , 2_2
-23.094 No resources available in cluster
-23.094 , MatchFoundEvent , 2_2 , 2_1 _ 1
-23.094 , MatchFoundEvent , 2_1 , 2_5 _ 1
-23.095 , LaunchOnNodeEvent , 2_1 , 2_5
-23.095 , LaunchOnNodeEvent , 2_2 , 1_1
-23.528 , TaskEndEvent , 1_6___ 16
-23.528499999999998 , LMUpdateEvent , False
+22.528999999999996 , RepartitionEvent , 1 , 3 , 1_33
+22.528999999999996 , RepartitionEvent , 1 , 2 , 1_34
+22.528999999999996 No resources available in cluster
+22.529999999999994 No resources available in cluster
+22.529999999999994 No resources available in cluster
+22.529999999999994 No resources available in cluster
+22.529999999999994 No resources available in cluster
+22.529999999999994 No resources available in cluster
+22.529999999999994 No resources available in cluster
+22.65 , JobArrivalEvent , 3 , 1
+23.528999999999996 , RepartitionEvent , 1 , 3 , 1_23
 23.528999999999996 No resources available in cluster
-24.528 , TaskEndEvent , 1_12___ 17
-24.528 , TaskEndEvent , 1_3___ 17
-24.528499999999998 , LMUpdateEvent , False
+23.528999999999996 , RepartitionEvent , 1 , 3 , 1_31
+23.528999999999996 No resources available in cluster
+23.529999999999994 No resources available in cluster
+23.529999999999994 No resources available in cluster
+24.528999999999996 , RepartitionEvent , 1 , 2 , 1_23
+24.528999999999996 , RepartitionEvent , 1 , 2 , 1_32
 24.528999999999996 No resources available in cluster
-24.528499999999998 , LMUpdateEvent , False
+24.528999999999996 , RepartitionEvent , 1 , 2 , 1_35
+24.528999999999996 , RepartitionEvent , 1 , 2 , 1_36
 24.528999999999996 No resources available in cluster
-24.528999999999996 , MatchFoundEvent , 1_20 , 1_12 _ 2
-24.528999999999996 , MatchFoundEvent , 1_19 , 1_2 _ 1
-24.528999999999996 , MatchFoundEvent , 1_18 , 1_12 _ 2
-24.528999999999996 , MatchFoundEvent , 1_15 , 1_2 _ 1
-24.529499999999995 , InternalInconsistencyEvent
-24.529499999999995 , LMUpdateEvent , False
+24.528999999999996 , RepartitionEvent , 1 , 2 , 1_38
+24.528999999999996 , RepartitionEvent , 1 , 2 , 1_39
+24.528999999999996 No resources available in cluster
 24.529999999999994 No resources available in cluster
-24.529499999999995 , InternalInconsistencyEvent
-24.529499999999995 , LMUpdateEvent , False
 24.529999999999994 No resources available in cluster
-24.529999999999994 , LaunchOnNodeEvent , 1_19 , 1_2
-24.529999999999994 , LaunchOnNodeEvent , 1_20 , 1_12
-28.095 , TaskEndEvent , 2_2___ 5
-28.095499999999998 , LMUpdateEvent , False
-28.095999999999997 RepartitionEvent 2 , 1 , 2_4
-28.095999999999997 No resources available in cluster
-28.095999999999997 , MatchFoundEvent , 2_4 , 2_1 _ 1
-28.095999999999997 , MatchFoundEvent , 2_3 , 2_6 _ 1
-28.096999999999994 , LaunchOnNodeEvent , 2_3 , 2_6
-28.096999999999994 , LaunchOnNodeEvent , 2_4 , 1_1
-30.004 , JobArrivalEvent , 4 , 1
-30.095 , TaskEndEvent , 2_1___ 7
-30.095499999999998 , LMUpdateEvent , False
-30.095999999999997 No resources available in cluster
-30.095999999999997 , MatchFoundEvent , 2_5 , 2_5 _ 1
-30.096999999999994 , LaunchOnNodeEvent , 2_5 , 2_5
-31.528 , TaskEndEvent , 1_9___ 24
-31.528499999999998 , LMUpdateEvent , False
-31.528999999999996 RepartitionEvent 1 , 2 , 1_15
+24.529999999999994 No resources available in cluster
+24.529999999999994 No resources available in cluster
+24.529999999999994 No resources available in cluster
+24.529999999999994 No resources available in cluster
+25.53099999999999 , RepartitionEvent , 1 , 3 , 1_22
+25.53099999999999 No resources available in cluster
+26.531 No resources available in cluster
+27.528999999999996 , RepartitionEvent , 1 , 3 , 1_35
+27.528999999999996 No resources available in cluster
+28.53099999999999 , RepartitionEvent , 1 , 3 , 1_37
+28.53099999999999 No resources available in cluster
+28.531 , RepartitionEvent , 1 , 3 , 1_40
+28.531 No resources available in cluster
+28.531999999999996 No resources available in cluster
+28.531999999999996 No resources available in cluster
+29.53099999999999 , RepartitionEvent , 1 , 2 , 1_38
+29.53099999999999 No resources available in cluster
+30.004 , JobArrivalEvent , 4 , 3
+30.005 No resources available in cluster
+30.005 No resources available in cluster
+30.005 No resources available in cluster
+30.005 No resources available in cluster
+30.005 No resources available in cluster
+31.528999999999996 , RepartitionEvent , 1 , 2 , 1_40
 31.528999999999996 No resources available in cluster
-31.528999999999996 , MatchFoundEvent , 1_15 , 1_14 _ 2
-31.529999999999994 , LaunchOnNodeEvent , 1_15 , 2_14
-32.528 , TaskEndEvent , 1_5___ 25
-32.5285 , LMUpdateEvent , False
 32.529 No resources available in cluster
-32.53 , TaskEndEvent , 1_13___ 20
-32.5305 , LMUpdateEvent , False
-32.531000000000006 No resources available in cluster
-34.529999999999994 , TaskEndEvent , 1_16___ 15
-34.530499999999996 , LMUpdateEvent , False
+33.531 , RepartitionEvent , 1 , 3 , 1_42
+33.531 No resources available in cluster
+34.531 , RepartitionEvent , 1 , 3 , 1_43
 34.531 No resources available in cluster
-34.531 , MatchFoundEvent , 1_21 , 1_3 _ 1
-34.531 , MatchFoundEvent , 1_18 , 1_10 _ 2
-34.532000000000004 , LaunchOnNodeEvent , 1_18 , 1_10
-34.532000000000004 , LaunchOnNodeEvent , 1_21 , 1_3
-34.650999999999996 , TaskEndEvent , 3_6___ 12
-34.6515 , LMUpdateEvent , False
-34.652 No resources available in cluster
-35.529999999999994 , TaskEndEvent , 1_17___ 16
-35.530499999999996 , LMUpdateEvent , False
-35.531 No resources available in cluster
-37.096999999999994 , TaskEndEvent , 2_4___ 9
-37.0975 , LMUpdateEvent , False
-37.098 No resources available in cluster
-37.098 , MatchFoundEvent , 2_6 , 2_13 _ 2
-37.099000000000004 , LaunchOnNodeEvent , 2_6 , 2_13
-37.425 , JobArrivalEvent , 5 , 2
-37.5275 , LMUpdateEvent , True
+37.425 , JobArrivalEvent , 5 , 1
 37.528000000000006 No resources available in cluster
 37.528000000000006 No resources available in cluster
 37.528000000000006 No resources available in cluster
-37.529999999999994 , TaskEndEvent , 1_20___ 13
-37.530499999999996 , LMUpdateEvent , False
-37.531 No resources available in cluster
-37.531 , MatchFoundEvent , 1_23 , 1_1 _ 1
-37.531 , MatchFoundEvent , 1_22 , 1_12 _ 2
-37.532000000000004 , LaunchOnNodeEvent , 1_22 , 1_12
-37.532000000000004 , LaunchOnNodeEvent , 1_23 , 1_1
-37.650999999999996 , TaskEndEvent , 3_2___ 15
-37.6515 , LMUpdateEvent , False
-37.652 No resources available in cluster
-38.529999999999994 , TaskEndEvent , 1_14___ 17
-38.530499999999996 , LMUpdateEvent , False
-38.531 RepartitionEvent 1 , 2 , 1_24
-38.531 RepartitionEvent 1 , 2 , 1_25
+38.531 , RepartitionEvent , 1 , 2 , 1_44
 38.531 No resources available in cluster
-38.531 , MatchFoundEvent , 1_25 , 1_15 _ 2
-38.531 , MatchFoundEvent , 1_24 , 1_4 _ 1
-38.532000000000004 , LaunchOnNodeEvent , 1_24 , 2_4
-38.532000000000004 , LaunchOnNodeEvent , 1_25 , 2_15
-38.650999999999996 , TaskEndEvent , 3_1___ 16
-38.6515 , LMUpdateEvent , False
-38.652 No resources available in cluster
-38.652 , MatchFoundEvent , 3_8 , 3_16 _ 2
-38.652 , MatchFoundEvent , 3_7 , 3_7 _ 1
-38.653000000000006 , LaunchOnNodeEvent , 3_7 , 3_7
-38.653000000000006 , LaunchOnNodeEvent , 3_8 , 3_16
-39.096999999999994 , TaskEndEvent , 2_3___ 11
-39.096999999999994 , TaskEndEvent , 2_5___ 9
-39.0975 , LMUpdateEvent , False
-39.098 No resources available in cluster
-39.0975 , LMUpdateEvent , False
-39.098 No resources available in cluster
-39.098 , MatchFoundEvent , 2_7 , 2_5 _ 1
-39.099000000000004 , LaunchOnNodeEvent , 2_7 , 2_5
-40.529999999999994 , TaskEndEvent , 1_19___ 16
-40.530499999999996 , LMUpdateEvent , False
-40.531 RepartitionEvent 1 , 2 , 1_26
+38.533 No resources available in cluster
+39.531 , RepartitionEvent , 1 , 3 , 1_46
+39.531 No resources available in cluster
+40.531 , RepartitionEvent , 1 , 2 , 1_47
 40.531 No resources available in cluster
-40.531 , MatchFoundEvent , 1_26 , 1_6 _ 1
-40.532000000000004 , LaunchOnNodeEvent , 1_26 , 2_6
-43.532000000000004 , TaskEndEvent , 1_18___ 9
-43.532000000000004 , TaskEndEvent , 1_21___ 9
-43.532500000000006 , LMUpdateEvent , False
-43.53300000000001 No resources available in cluster
-43.532500000000006 , LMUpdateEvent , False
-43.53300000000001 No resources available in cluster
-43.53300000000001 , MatchFoundEvent , 1_31 , 1_2 _ 1
-43.53300000000001 , MatchFoundEvent , 1_28 , 1_10 _ 2
-43.53300000000001 , MatchFoundEvent , 1_30 , 1_10 _ 2
-43.53300000000001 , MatchFoundEvent , 1_29 , 1_3 _ 1
-43.53300000000001 , MatchFoundEvent , 1_27 , 1_2 _ 1
-43.53350000000001 , InternalInconsistencyEvent
-43.53350000000001 , LMUpdateEvent , False
-43.53400000000001 No resources available in cluster
-43.53350000000001 , InternalInconsistencyEvent
-43.53350000000001 , LMUpdateEvent , False
-43.53400000000001 No resources available in cluster
-43.53400000000001 , LaunchOnNodeEvent , 1_29 , 1_3
-43.53400000000001 , LaunchOnNodeEvent , 1_28 , 1_10
-43.53400000000001 , LaunchOnNodeEvent , 1_31 , 1_2
-43.650999999999996 , TaskEndEvent , 3_4___ 21
-43.6515 , LMUpdateEvent , False
-43.652 No resources available in cluster
+41.531 , RepartitionEvent , 1 , 2 , 1_48
+41.531 No resources available in cluster
+41.532999999999994 , RepartitionEvent , 1 , 3 , 1_49
+41.532999999999994 No resources available in cluster
+42.532999999999994 No resources available in cluster
+43.531 No resources available in cluster
+43.531 No resources available in cluster
+43.532000000000004 No resources available in cluster
+43.532000000000004 No resources available in cluster
+43.532999999999994 , RepartitionEvent , 1 , 2 , 1_51
+43.532999999999994 No resources available in cluster
+44.531 , RepartitionEvent , 1 , 3 , 3_4
+44.531 No resources available in cluster
+44.531 , RepartitionEvent , 1 , 3 , 3_6
+44.531 No resources available in cluster
+44.532000000000004 No resources available in cluster
+44.532000000000004 No resources available in cluster
 44.846 , JobArrivalEvent , 6 , 3
-45.529999999999994 , TaskEndEvent , 1_15___ 14
-45.530499999999996 , LMUpdateEvent , False
-45.531 No resources available in cluster
-45.650999999999996 , TaskEndEvent , 3_5___ 23
-45.6515 , LMUpdateEvent , False
-45.652 No resources available in cluster
-45.652 , MatchFoundEvent , 3_11 , 3_17 _ 2
-45.652 , MatchFoundEvent , 3_10 , 3_9 _ 1
-45.653000000000006 , LaunchOnNodeEvent , 3_10 , 3_9
-45.653000000000006 , LaunchOnNodeEvent , 3_11 , 3_17
-46.099000000000004 , TaskEndEvent , 2_6___ 9
-46.099500000000006 , LMUpdateEvent , False
-46.10000000000001 No resources available in cluster
-46.10000000000001 , MatchFoundEvent , 2_9 , 2_13 _ 2
-46.10100000000001 , LaunchOnNodeEvent , 2_9 , 2_13
-46.650999999999996 , TaskEndEvent , 3_9___ 24
-46.6515 , LMUpdateEvent , False
-46.652 RepartitionEvent 3 , 1 , 3_12
-46.652 No resources available in cluster
-46.652 , MatchFoundEvent , 3_12 , 3_11 _ 2
-46.653000000000006 , LaunchOnNodeEvent , 3_12 , 1_11
-48.532000000000004 , TaskEndEvent , 1_25___ 10
-48.532500000000006 , LMUpdateEvent , False
+46.531 , RepartitionEvent , 1 , 2 , 3_1
+46.531 No resources available in cluster
+46.53300000000001 , RepartitionEvent , 1 , 2 , 3_4
+46.53300000000001 No resources available in cluster
+47.53500000000001 No resources available in cluster
+48.53300000000001 , RepartitionEvent , 1 , 3 , 3_8
 48.53300000000001 No resources available in cluster
-49.532000000000004 , TaskEndEvent , 1_23___ 12
-49.532500000000006 , LMUpdateEvent , False
-49.53300000000001 No resources available in cluster
-50.10100000000001 , TaskEndEvent , 2_9___ 4
-50.101500000000016 , LMUpdateEvent , False
-50.10200000000002 No resources available in cluster
-51.653000000000006 , TaskEndEvent , 3_8___ 13
-51.65350000000001 , LMUpdateEvent , False
-51.65400000000001 No resources available in cluster
-51.65400000000001 , MatchFoundEvent , 3_13 , 3_16 _ 2
-51.655000000000015 , LaunchOnNodeEvent , 3_13 , 3_16
-52.164 , JobArrivalEvent , 7 , 1
-52.650999999999996 , TaskEndEvent , 3_3___ 30
-52.6515 , LMUpdateEvent , False
-52.652 No resources available in cluster
-52.652 , MatchFoundEvent , 3_15 , 3_18 _ 2
-52.652 , MatchFoundEvent , 3_14 , 3_8 _ 1
-52.653000000000006 , LaunchOnNodeEvent , 3_14 , 3_8
-52.653000000000006 , LaunchOnNodeEvent , 3_15 , 3_18
-53.532000000000004 , TaskEndEvent , 1_22___ 16
-53.532500000000006 , LMUpdateEvent , False
-53.53300000000001 No resources available in cluster
-53.53300000000001 , MatchFoundEvent , 1_30 , 1_1 _ 1
-53.53300000000001 , MatchFoundEvent , 1_27 , 1_12 _ 2
-53.53400000000001 , LaunchOnNodeEvent , 1_27 , 1_12
-53.53400000000001 , LaunchOnNodeEvent , 1_30 , 1_1
-53.53400000000001 , TaskEndEvent , 1_31___ 10
-53.534500000000016 , LMUpdateEvent , False
-53.53500000000002 No resources available in cluster
-53.653000000000006 , TaskEndEvent , 3_11___ 8
-53.65350000000001 , LMUpdateEvent , False
-53.65400000000001 No resources available in cluster
-56.099000000000004 , TaskEndEvent , 2_7___ 17
-56.099500000000006 , LMUpdateEvent , False
-56.10000000000001 No resources available in cluster
-56.10000000000001 , MatchFoundEvent , 2_11 , 2_13 _ 2
-56.10000000000001 , MatchFoundEvent , 2_10 , 2_5 _ 1
-56.10100000000001 , LaunchOnNodeEvent , 2_10 , 2_5
-56.10100000000001 , LaunchOnNodeEvent , 2_11 , 2_13
-58.53400000000001 , TaskEndEvent , 1_30___ 5
-58.534500000000016 , LMUpdateEvent , False
-58.53500000000002 No resources available in cluster
-59.656 , JobArrivalEvent , 8 , 2
-60.532000000000004 , TaskEndEvent , 1_26___ 20
-60.532500000000006 , LMUpdateEvent , False
-60.53300000000001 RepartitionEvent 1 , 2 , 1_32
-60.53300000000001 RepartitionEvent 1 , 2 , 1_33
-60.53300000000001 No resources available in cluster
-60.53300000000001 , MatchFoundEvent , 1_33 , 1_14 _ 2
-60.53300000000001 , MatchFoundEvent , 1_32 , 1_6 _ 1
-60.53400000000001 , LaunchOnNodeEvent , 1_32 , 2_6
-60.53400000000001 , LaunchOnNodeEvent , 1_33 , 2_14
-60.53400000000001 , TaskEndEvent , 1_28___ 17
-60.534500000000016 , LMUpdateEvent , False
-60.53500000000002 No resources available in cluster
-60.53500000000002 , MatchFoundEvent , 1_35 , 1_1 _ 1
-60.53500000000002 , MatchFoundEvent , 1_34 , 1_10 _ 2
-60.53600000000002 , LaunchOnNodeEvent , 1_34 , 1_10
-60.53600000000002 , LaunchOnNodeEvent , 1_35 , 1_1
-62.532000000000004 , TaskEndEvent , 1_24___ 24
-62.532500000000006 , LMUpdateEvent , False
-62.53300000000001 RepartitionEvent 1 , 2 , 1_36
-62.53300000000001 RepartitionEvent 1 , 2 , 1_37
+49.531 , RepartitionEvent , 1 , 2 , 3_9
+49.531 No resources available in cluster
+51.53300000000001 , RepartitionEvent , 1 , 3 , 3_10
+51.53300000000001 No resources available in cluster
+52.164 , JobArrivalEvent , 7 , 3
+52.53100000000001 No resources available in cluster
+52.53300000000001 , RepartitionEvent , 1 , 2 , 3_12
+52.53300000000001 No resources available in cluster
+55.532999999999994 , RepartitionEvent , 1 , 3 , 3_13
+55.532999999999994 No resources available in cluster
+55.535000000000004 No resources available in cluster
+56.53300000000001 , RepartitionEvent , 1 , 3 , 3_15
+56.53300000000001 No resources available in cluster
+58.53300000000001 No resources available in cluster
+58.535000000000004 , RepartitionEvent , 1 , 3 , 3_17
+58.535000000000004 No resources available in cluster
+59.53300000000001 , RepartitionEvent , 1 , 3 , 3_18
+59.53300000000001 No resources available in cluster
+59.535000000000004 , RepartitionEvent , 1 , 2 , 3_19
+59.535000000000004 No resources available in cluster
+59.656 , JobArrivalEvent , 8 , 1
+60.53300000000002 No resources available in cluster
+61.532000000000004
+61.53300000000001 , RepartitionEvent , 1 , 2 , 3_21
+61.53300000000001 No resources available in cluster
+61.53500000000002 , RepartitionEvent , 1 , 3 , 3_22
+61.53500000000002 No resources available in cluster
+62.53300000000001 , RepartitionEvent , 1 , 2 , 3_23
 62.53300000000001 No resources available in cluster
-62.53300000000001 , MatchFoundEvent , 1_37 , 1_15 _ 2
-62.53300000000001 , MatchFoundEvent , 1_36 , 1_4 _ 1
-62.53400000000001 , LaunchOnNodeEvent , 1_36 , 2_4
-62.53400000000001 , LaunchOnNodeEvent , 1_37 , 2_15
-62.653000000000006 , TaskEndEvent , 3_7___ 24
-62.65350000000001 , LMUpdateEvent , False
-62.65400000000001 No resources available in cluster
-62.65400000000001 , MatchFoundEvent , 3_17 , 3_17 _ 2
-62.65400000000001 , MatchFoundEvent , 3_16 , 3_7 _ 1
-62.655000000000015 , LaunchOnNodeEvent , 3_16 , 3_7
-62.655000000000015 , LaunchOnNodeEvent , 3_17 , 3_17
-64.53400000000002 , TaskEndEvent , 1_29___ 21
-64.53450000000002 , LMUpdateEvent , False
-64.53500000000003 No resources available in cluster
-65.10100000000001 , TaskEndEvent , 2_10___ 9
-65.10100000000001 , TaskEndEvent , 2_11___ 9
-65.10150000000002 , LMUpdateEvent , False
-65.10200000000002 No resources available in cluster
-65.10150000000002 , LMUpdateEvent , False
-65.10200000000002 No resources available in cluster
-65.10200000000002 , MatchFoundEvent , 2_15 , 2_13 _ 2
-65.10200000000002 , MatchFoundEvent , 2_14 , 2_5 _ 1
-65.10200000000002 , MatchFoundEvent , 2_12 , 2_5 _ 1
-65.10200000000002 , MatchFoundEvent , 2_13 , 2_13 _ 2
-65.10250000000002 , InternalInconsistencyEvent
-65.10250000000002 , LMUpdateEvent , False
-65.10300000000002 No resources available in cluster
-65.10250000000002 , InternalInconsistencyEvent
-65.10250000000002 , LMUpdateEvent , False
-65.10300000000002 No resources available in cluster
-65.10300000000002 , LaunchOnNodeEvent , 2_14 , 2_5
-65.10300000000002 , LaunchOnNodeEvent , 2_15 , 2_13
 67.079 , JobArrivalEvent , 9 , 3
-67.528 , LMUpdateEvent , True
 67.52850000000001 No resources available in cluster
 67.52850000000001 No resources available in cluster
 67.52850000000001 No resources available in cluster
-67.53600000000003 , TaskEndEvent , 1_35___ 7
-67.53650000000003 , LMUpdateEvent , False
-67.53700000000003 No resources available in cluster
-68.653 , TaskEndEvent , 3_12___ 22
-68.653 , TaskEndEvent , 3_15___ 16
-68.65350000000001 , LMUpdateEvent , False
-68.65400000000001 RepartitionEvent 3 , 1 , 3_18
-68.65400000000001 RepartitionEvent 3 , 1 , 3_19
-68.65400000000001 No resources available in cluster
-68.65350000000001 , LMUpdateEvent , False
-68.65400000000001 RepartitionEvent 3 , 1 , 3_20
-68.65400000000001 RepartitionEvent 3 , 1 , 3_21
-68.65400000000001 No resources available in cluster
-68.65400000000001 , MatchFoundEvent , 3_21 , 3_1 _ 1
-68.65400000000001 , MatchFoundEvent , 3_20 , 3_11 _ 2
-68.65400000000001 , MatchFoundEvent , 3_19 , 3_1 _ 1
-68.65400000000001 , MatchFoundEvent , 3_18 , 3_11 _ 2
-68.65450000000001 , ExternalInconsistencyEvent
-68.65450000000001 , LMUpdateEvent , False
-68.65500000000002 No resources available in cluster
-68.65450000000001 , ExternalInconsistencyEvent
-68.65450000000001 , LMUpdateEvent , False
-68.65500000000002 No resources available in cluster
-68.65500000000002 , LaunchOnNodeEvent , 3_20 , 1_11
-68.65500000000002 , LaunchOnNodeEvent , 3_21 , 1_1
-71.65500000000002 , TaskEndEvent , 3_13___ 20
-71.65550000000002 , LMUpdateEvent , False
-71.65600000000002 No resources available in cluster
-72.10300000000002 , TaskEndEvent , 2_15___ 7
-72.10350000000003 , LMUpdateEvent , False
-72.10400000000003 No resources available in cluster
-72.653 , TaskEndEvent , 3_14___ 20
-72.65350000000001 , LMUpdateEvent , False
-72.65400000000001 No resources available in cluster
-72.65400000000001 , MatchFoundEvent , 3_19 , 3_16 _ 2
-72.65400000000001 , MatchFoundEvent , 3_18 , 3_8 _ 1
-72.65500000000002 , LaunchOnNodeEvent , 3_18 , 3_8
-72.65500000000002 , LaunchOnNodeEvent , 3_19 , 3_16
+67.53300000000002 No resources available in cluster
+67.53500000000003 , RepartitionEvent , 1 , 2 , 5_1
+67.53500000000003 No resources available in cluster
+71.53700000000002 No resources available in cluster
+72.53500000000003 , RepartitionEvent , 1 , 3 , 5_3
+72.53500000000003 No resources available in cluster
+73.53300000000002 , RepartitionEvent , 1 , 2 , 8_2
+73.53300000000002 No resources available in cluster
+73.53300000000002 , RepartitionEvent , 1 , 2 , 8_4
+73.53300000000002 No resources available in cluster
+73.53400000000002 No resources available in cluster
+73.53400000000002 No resources available in cluster
+74.53500000000003 , RepartitionEvent , 1 , 2 , 8_1
+74.53500000000003 , RepartitionEvent , 1 , 3 , 8_2
+74.53500000000003 No resources available in cluster
+74.53500000000003 , RepartitionEvent , 1 , 3 , 8_5
+74.53500000000003 , RepartitionEvent , 1 , 2 , 8_6
+74.53500000000003 No resources available in cluster
+74.53600000000003 No resources available in cluster
+74.53600000000003 No resources available in cluster
 74.573 , JobArrivalEvent , 10 , 1
-76.53400000000002 , TaskEndEvent , 1_27___ 23
-76.53400000000002 , TaskEndEvent , 1_36___ 14
-76.53450000000002 , LMUpdateEvent , False
-76.53500000000003 RepartitionEvent 1 , 2 , 1_40
-76.53500000000003 RepartitionEvent 1 , 2 , 1_41
-76.53500000000003 No resources available in cluster
-76.53450000000002 , LMUpdateEvent , False
-76.53500000000003 RepartitionEvent 1 , 2 , 1_44
-76.53500000000003 RepartitionEvent 1 , 2 , 1_45
-76.53500000000003 No resources available in cluster
-76.53500000000003 , MatchFoundEvent , 1_45 , 1_13 _ 2
-76.53500000000003 , MatchFoundEvent , 1_44 , 1_4 _ 1
-76.53500000000003 , MatchFoundEvent , 1_41 , 1_13 _ 2
-76.53500000000003 , MatchFoundEvent , 1_40 , 1_4 _ 1
-76.53500000000003 , MatchFoundEvent , 1_39 , 1_2 _ 1
-76.53500000000003 , MatchFoundEvent , 1_43 , 1_2 _ 1
-76.53500000000003 , MatchFoundEvent , 1_42 , 1_12 _ 2
-76.53500000000003 , MatchFoundEvent , 1_38 , 1_12 _ 2
-76.53550000000003 , InternalInconsistencyEvent
-76.53550000000003 , LMUpdateEvent , False
-76.53600000000003 No resources available in cluster
-76.53550000000003 , InternalInconsistencyEvent
-76.53550000000003 , LMUpdateEvent , False
-76.53600000000003 No resources available in cluster
-76.53550000000003 , ExternalInconsistencyEvent
-76.53550000000003 , LMUpdateEvent , False
-76.53600000000003 No resources available in cluster
-76.53550000000003 , ExternalInconsistencyEvent
-76.53550000000003 , LMUpdateEvent , False
-76.53600000000003 No resources available in cluster
-76.53600000000003 , LaunchOnNodeEvent , 1_44 , 2_4
-76.53600000000003 , LaunchOnNodeEvent , 1_45 , 2_13
-76.53600000000003 , LaunchOnNodeEvent , 1_42 , 1_12
-76.53600000000003 , LaunchOnNodeEvent , 1_39 , 1_2
-76.53600000000003 , TaskEndEvent , 1_34___ 16
-76.53650000000003 , LMUpdateEvent , False
-76.53700000000003 No resources available in cluster
-76.53700000000003 , MatchFoundEvent , 1_40 , 1_3 _ 1
-76.53700000000003 , MatchFoundEvent , 1_38 , 1_10 _ 2
-76.53800000000004 , LaunchOnNodeEvent , 1_38 , 1_10
-76.53800000000004 , LaunchOnNodeEvent , 1_40 , 1_3
-79.10300000000002 , TaskEndEvent , 2_14___ 14
-79.10350000000003 , LMUpdateEvent , False
-79.10400000000003 No resources available in cluster
-79.10400000000003 , MatchFoundEvent , 2_12 , 2_5 _ 1
-79.10500000000003 , LaunchOnNodeEvent , 2_12 , 2_5
-80.53400000000002 , TaskEndEvent , 1_33___ 20
-80.53450000000002 , LMUpdateEvent , False
-80.53500000000003 No resources available in cluster
-80.653 , TaskEndEvent , 3_10___ 35
-80.65350000000001 , LMUpdateEvent , False
-80.65400000000001 No resources available in cluster
-80.65400000000001 , MatchFoundEvent , 3_23 , 3_18 _ 2
-80.65400000000001 , MatchFoundEvent , 3_22 , 3_9 _ 1
-80.65500000000002 , LaunchOnNodeEvent , 3_22 , 3_9
-80.65500000000002 , LaunchOnNodeEvent , 3_23 , 3_18
-84.53600000000003 , TaskEndEvent , 1_44___ 8
-84.53650000000003 , LMUpdateEvent , False
-84.53700000000003 RepartitionEvent 1 , 2 , 1_41
-84.53700000000003 RepartitionEvent 1 , 2 , 1_43
-84.53700000000003 No resources available in cluster
-84.53700000000003 , MatchFoundEvent , 1_43 , 1_14 _ 2
-84.53700000000003 , MatchFoundEvent , 1_41 , 1_4 _ 1
-84.53800000000004 , LaunchOnNodeEvent , 1_41 , 2_4
-84.53800000000004 , LaunchOnNodeEvent , 1_43 , 2_14
-85.53400000000002 , TaskEndEvent , 1_32___ 25
-85.53450000000002 , LMUpdateEvent , False
-85.53500000000003 RepartitionEvent 1 , 2 , 1_46
-85.53500000000003 No resources available in cluster
-85.53500000000003 , MatchFoundEvent , 1_46 , 1_6 _ 1
-85.53600000000003 , LaunchOnNodeEvent , 1_46 , 2_6
-85.53600000000003 , TaskEndEvent , 1_45___ 9
-85.53650000000003 , LMUpdateEvent , False
-85.53700000000003 RepartitionEvent 1 , 2 , 1_47
-85.53700000000003 No resources available in cluster
-85.53700000000003 , MatchFoundEvent , 1_47 , 1_13 _ 2
-85.53800000000004 , LaunchOnNodeEvent , 1_47 , 2_13
-87.65500000000002 , TaskEndEvent , 3_18___ 15
-87.65550000000002 , LMUpdateEvent , False
-87.65600000000002 No resources available in cluster
-87.65600000000002 , MatchFoundEvent , 3_24 , 3_8 _ 1
-87.65700000000002 , LaunchOnNodeEvent , 3_24 , 3_8
-88.65500000000002 , TaskEndEvent , 3_17___ 26
-88.65550000000002 , LMUpdateEvent , False
-88.65600000000002 No resources available in cluster
-88.65600000000002 , MatchFoundEvent , 6_1 , 3_17 _ 2
-88.65700000000002 , LaunchOnNodeEvent , 6_1 , 3_17
-89.10500000000003 , TaskEndEvent , 2_12___ 10
-89.10550000000003 , LMUpdateEvent , False
-89.10600000000004 No resources available in cluster
-89.53400000000002 , TaskEndEvent , 1_37___ 27
-89.53450000000002 , LMUpdateEvent , False
-89.53500000000003 RepartitionEvent 1 , 2 , 1_48
-89.53500000000003 RepartitionEvent 1 , 2 , 1_49
-89.53500000000003 No resources available in cluster
-89.53500000000003 , MatchFoundEvent , 1_49 , 1_15 _ 2
-89.53500000000003 , MatchFoundEvent , 1_48 , 1_5 _ 1
-89.53600000000003 , LaunchOnNodeEvent , 1_48 , 2_5
-89.53600000000003 , LaunchOnNodeEvent , 1_49 , 2_15
-90.53800000000004 , TaskEndEvent , 1_38___ 14
-90.53850000000004 , LMUpdateEvent , False
-90.53900000000004 No resources available in cluster
-90.53900000000004 , MatchFoundEvent , 1_50 , 1_10 _ 2
-90.54000000000005 , LaunchOnNodeEvent , 1_50 , 1_10
-90.65500000000002 , TaskEndEvent , 3_20___ 22
-90.65550000000002 , LMUpdateEvent , False
-90.65600000000002 RepartitionEvent 3 , 1 , 6_2
-90.65600000000002 No resources available in cluster
-90.65600000000002 , MatchFoundEvent , 6_2 , 3_11 _ 2
-90.65700000000002 , LaunchOnNodeEvent , 6_2 , 1_11
-91.53800000000004 , TaskEndEvent , 1_40___ 15
-91.53850000000004 , LMUpdateEvent , False
-91.53900000000004 No resources available in cluster
-91.53900000000004 , MatchFoundEvent , 1_51 , 1_3 _ 1
-91.54000000000005 , LaunchOnNodeEvent , 1_51 , 1_3
-92.53600000000003 , TaskEndEvent , 1_39___ 16
-92.53650000000003 , LMUpdateEvent , False
-92.53700000000003 No resources available in cluster
-92.65500000000002 , TaskEndEvent , 3_16___ 30
-92.65550000000002 , LMUpdateEvent , False
-92.65600000000002 RepartitionEvent 3 , 1 , 6_3
-92.65600000000002 No resources available in cluster
-92.65600000000002 , MatchFoundEvent , 6_3 , 3_2 _ 1
-92.65700000000002 , LaunchOnNodeEvent , 6_3 , 1_2
-94.53600000000003 , TaskEndEvent , 1_46___ 9
-94.53650000000003 , LMUpdateEvent , False
-94.53700000000003 RepartitionEvent 1 , 2 , 4_1
+75.535 , RepartitionEvent , 1 , 3 , 8_1
+75.535 No resources available in cluster
+75.537 No resources available in cluster
+77.53700000000003 , RepartitionEvent , 1 , 3 , 8_7
+77.53700000000003 No resources available in cluster
+80.53700000000003 , RepartitionEvent , 1 , 2 , 8_8
+80.53700000000003 No resources available in cluster
+82.53500000000003 No resources available in cluster
+82.53700000000003 No resources available in cluster
+83.53500000000003 , RepartitionEvent , 1 , 2 , 8_11
+83.53500000000003 No resources available in cluster
+84.537 , RepartitionEvent , 1 , 3 , 8_12
+84.537 No resources available in cluster
+85.53900000000004 , RepartitionEvent , 1 , 2 , 8_13
+85.53900000000004 No resources available in cluster
+86.53500000000003 , RepartitionEvent , 1 , 3 , 8_15
+86.53500000000003 No resources available in cluster
+86.53500000000003 , RepartitionEvent , 1 , 3 , 8_17
+86.53500000000003 No resources available in cluster
+86.53600000000003 No resources available in cluster
+86.53600000000003 No resources available in cluster
+86.537 , RepartitionEvent , 1 , 3 , 8_14
+86.537 No resources available in cluster
+86.53900000000003 No resources available in cluster
+87.53900000000002 No resources available in cluster
+88.53500000000003 , RepartitionEvent , 1 , 2 , 8_20
+88.53500000000003 No resources available in cluster
+88.53500000000003 , RepartitionEvent , 1 , 2 , 10_1
+88.53500000000003 No resources available in cluster
+88.53600000000003 No resources available in cluster
+88.53600000000003 No resources available in cluster
+88.53900000000004 , RepartitionEvent , 1 , 3 , 8_19
+88.53900000000004 No resources available in cluster
+89.54100000000003 No resources available in cluster
+90.53500000000003 No resources available in cluster
+90.53700000000003 , RepartitionEvent , 1 , 3 , 10_3
+90.53700000000003 No resources available in cluster
+91.53500000000003 , RepartitionEvent , 1 , 2 , 10_4
+91.53500000000003 No resources available in cluster
+91.536
+91.537 , RepartitionEvent , 1 , 2 , 10_5
+91.537 No resources available in cluster
+93.54100000000005 , RepartitionEvent , 1 , 2 , 10_6
+93.54100000000005 No resources available in cluster
+94.53700000000003 , RepartitionEvent , 1 , 2 , 10_7
+94.53700000000003 , RepartitionEvent , 1 , 2 , 10_8
 94.53700000000003 No resources available in cluster
-94.53700000000003 , MatchFoundEvent , 4_1 , 1_6 _ 1
-94.53800000000004 , LaunchOnNodeEvent , 4_1 , 2_6
-94.53800000000004 , TaskEndEvent , 4_1___ 0
-94.53850000000004 , LMUpdateEvent , False
-94.53900000000004 No resources available in cluster
-95.65500000000002 , TaskEndEvent , 3_21___ 27
-95.65550000000002 , LMUpdateEvent , False
-95.65600000000002 RepartitionEvent 3 , 1 , 6_5
-95.65600000000002 No resources available in cluster
-95.65600000000002 , MatchFoundEvent , 6_5 , 3_1 _ 1
-95.65600000000002 , MatchFoundEvent , 6_4 , 3_7 _ 1
-95.65700000000002 , LaunchOnNodeEvent , 6_4 , 3_7
-95.65700000000002 , LaunchOnNodeEvent , 6_5 , 1_1
-96.65500000000002 , TaskEndEvent , 3_22___ 16
-96.65550000000002 , LMUpdateEvent , False
-96.65600000000002 No resources available in cluster
-96.65600000000002 , MatchFoundEvent , 6_6 , 3_9 _ 1
-96.65700000000002 , LaunchOnNodeEvent , 6_6 , 3_9
-97.52850000000001 , LMUpdateEvent , True
+94.53700000000003 , RepartitionEvent , 1 , 2 , 10_9
+94.53700000000003 , RepartitionEvent , 1 , 2 , 10_10
+94.53700000000003 No resources available in cluster
+94.53800000000004 No resources available in cluster
+94.53800000000004 No resources available in cluster
+94.53900000000002 , RepartitionEvent , 1 , 3 , 10_7
+94.53900000000002 No resources available in cluster
+96.53700000000003 , RepartitionEvent , 1 , 3 , 10_8
+96.53700000000003 , RepartitionEvent , 1 , 2 , 10_11
+96.53700000000003 No resources available in cluster
+96.53700000000003 , RepartitionEvent , 1 , 3 , 10_12
+96.53700000000003 , RepartitionEvent , 1 , 2 , 10_13
+96.53700000000003 No resources available in cluster
+96.53800000000004 No resources available in cluster
+96.53800000000004 No resources available in cluster
+96.53900000000002 , RepartitionEvent , 1 , 3 , 10_8
+96.53900000000002 No resources available in cluster
+96.54100000000005 , RepartitionEvent , 1 , 3 , 10_11
+96.54100000000005 No resources available in cluster
 97.52900000000001 No resources available in cluster
 97.52900000000001 No resources available in cluster
 97.52900000000001 No resources available in cluster
-100.53600000000003 , TaskEndEvent , 1_48___ 11
-100.53650000000003 , LMUpdateEvent , False
-100.53700000000003 No resources available in cluster
-101.53800000000004 , TaskEndEvent , 1_43___ 17
-101.53850000000004 , LMUpdateEvent , False
-101.53900000000004 RepartitionEvent 1 , 2 , 4_2
-101.53900000000004 RepartitionEvent 1 , 2 , 4_3
-101.53900000000004 No resources available in cluster
-101.53900000000004 , MatchFoundEvent , 4_3 , 1_5 _ 1
-101.53900000000004 , MatchFoundEvent , 4_2 , 1_14 _ 2
-101.54000000000005 , LaunchOnNodeEvent , 4_2 , 2_14
-101.54000000000005 , LaunchOnNodeEvent , 4_3 , 2_5
-101.54000000000005 , TaskEndEvent , 4_3___ 0
-101.54050000000005 , LMUpdateEvent , False
-101.54100000000005 No resources available in cluster
-102.53600000000003 , TaskEndEvent , 1_42___ 26
-102.53650000000003 , LMUpdateEvent , False
-102.53700000000003 No resources available in cluster
-103.54000000000005 , TaskEndEvent , 4_2___ 2
-103.54000000000005 , TaskEndEvent , 1_50___ 13
-103.54050000000005 , LMUpdateEvent , False
-103.54100000000005 RepartitionEvent 1 , 2 , 4_4
-103.54100000000005 RepartitionEvent 1 , 2 , 4_5
-103.54100000000005 No resources available in cluster
-103.54050000000005 , LMUpdateEvent , False
-103.54100000000005 RepartitionEvent 1 , 2 , 7_1
-103.54100000000005 RepartitionEvent 1 , 2 , 7_2
-103.54100000000005 No resources available in cluster
-103.54100000000005 , MatchFoundEvent , 7_2 , 1_5 _ 1
-103.54100000000005 , MatchFoundEvent , 7_1 , 1_14 _ 2
-103.54100000000005 , MatchFoundEvent , 4_5 , 1_5 _ 1
-103.54100000000005 , MatchFoundEvent , 4_4 , 1_14 _ 2
-103.54150000000006 , ExternalInconsistencyEvent
-103.54150000000006 , LMUpdateEvent , False
-103.54200000000006 No resources available in cluster
-103.54150000000006 , ExternalInconsistencyEvent
-103.54150000000006 , LMUpdateEvent , False
-103.54200000000006 No resources available in cluster
-103.54200000000006 , LaunchOnNodeEvent , 7_1 , 2_14
-103.54200000000006 , LaunchOnNodeEvent , 7_2 , 2_5
-104.53800000000004 , TaskEndEvent , 1_41___ 20
-104.53850000000004 , LMUpdateEvent , False
-104.53900000000004 No resources available in cluster
-104.65500000000002 , TaskEndEvent , 3_19___ 32
-104.65550000000002 , LMUpdateEvent , False
-104.65600000000002 RepartitionEvent 3 , 1 , 6_8
-104.65600000000002 No resources available in cluster
-104.65600000000002 , MatchFoundEvent , 6_8 , 3_10 _ 2
-104.65600000000002 , MatchFoundEvent , 6_7 , 3_16 _ 2
-104.65700000000002 , LaunchOnNodeEvent , 6_7 , 3_16
-104.65700000000002 , LaunchOnNodeEvent , 6_8 , 1_10
-106.53600000000003 , TaskEndEvent , 1_49___ 17
-106.53650000000003 , LMUpdateEvent , False
-106.53700000000003 RepartitionEvent 1 , 2 , 4_4
-106.53700000000003 RepartitionEvent 1 , 2 , 4_5
-106.53700000000003 No resources available in cluster
-106.53700000000003 , MatchFoundEvent , 4_5 , 1_4 _ 1
-106.53700000000003 , MatchFoundEvent , 4_4 , 1_15 _ 2
-106.53800000000004 , LaunchOnNodeEvent , 4_4 , 2_15
-106.53800000000004 , LaunchOnNodeEvent , 4_5 , 2_4
-106.53800000000004 , TaskEndEvent , 4_5___ 0
-106.53800000000004 , TaskEndEvent , 1_47___ 21
-106.53850000000004 , LMUpdateEvent , False
-106.53900000000004 RepartitionEvent 1 , 2 , 7_3
-106.53900000000004 RepartitionEvent 1 , 2 , 7_4
-106.53900000000004 No resources available in cluster
-106.53850000000004 , LMUpdateEvent , False
-106.53900000000004 RepartitionEvent 1 , 2 , 7_5
-106.53900000000004 RepartitionEvent 1 , 2 , 7_6
-106.53900000000004 No resources available in cluster
-106.53900000000004 , MatchFoundEvent , 7_6 , 1_4 _ 1
-106.53900000000004 , MatchFoundEvent , 7_5 , 1_13 _ 2
-106.53900000000004 , MatchFoundEvent , 7_4 , 1_4 _ 1
-106.53900000000004 , MatchFoundEvent , 7_3 , 1_13 _ 2
-106.53950000000005 , ExternalInconsistencyEvent
-106.53950000000005 , LMUpdateEvent , False
-106.54000000000005 No resources available in cluster
-106.53950000000005 , ExternalInconsistencyEvent
-106.53950000000005 , LMUpdateEvent , False
-106.54000000000005 No resources available in cluster
-106.54000000000005 , LaunchOnNodeEvent , 7_5 , 2_13
-106.54000000000005 , LaunchOnNodeEvent , 7_6 , 2_4
-107.53800000000004 , TaskEndEvent , 4_4___ 1
-107.53850000000004 , LMUpdateEvent , False
-107.53900000000004 RepartitionEvent 1 , 2 , 7_3
-107.53900000000004 RepartitionEvent 1 , 2 , 7_4
-107.53900000000004 No resources available in cluster
-107.53900000000004 , MatchFoundEvent , 7_4 , 1_6 _ 1
-107.53900000000004 , MatchFoundEvent , 7_3 , 1_15 _ 2
-107.54000000000005 , LaunchOnNodeEvent , 7_3 , 2_15
-107.54000000000005 , LaunchOnNodeEvent , 7_4 , 2_6
-107.54000000000005 , TaskEndEvent , 1_51___ 16
-107.54050000000005 , LMUpdateEvent , False
-107.54100000000005 No resources available in cluster
-107.54100000000005 , MatchFoundEvent , 7_8 , 1_12 _ 2
-107.54100000000005 , MatchFoundEvent , 7_7 , 1_3 _ 1
-107.54200000000006 , LaunchOnNodeEvent , 7_7 , 1_3
-107.54200000000006 , LaunchOnNodeEvent , 7_8 , 1_12
-109.65500000000002 , TaskEndEvent , 3_23___ 29
-109.65550000000002 , LMUpdateEvent , False
-109.65600000000002 No resources available in cluster
-109.65600000000002 , MatchFoundEvent , 9_1 , 3_18 _ 2
-109.65700000000002 , LaunchOnNodeEvent , 9_1 , 3_18
-110.65700000000002 , TaskEndEvent , 3_24___ 23
-110.65750000000003 , LMUpdateEvent , False
-110.65800000000003 No resources available in cluster
-110.65800000000003 , MatchFoundEvent , 9_2 , 3_8 _ 1
-110.65900000000003 , LaunchOnNodeEvent , 9_2 , 3_8
-112.65700000000002 , TaskEndEvent , 6_3___ 20
-112.65750000000003 , LMUpdateEvent , False
-112.65800000000003 RepartitionEvent 3 , 1 , 9_3
-112.65800000000003 No resources available in cluster
-112.65800000000003 , MatchFoundEvent , 9_3 , 3_2 _ 1
-112.65900000000003 , LaunchOnNodeEvent , 9_3 , 1_2
-113.65700000000002 , TaskEndEvent , 6_2___ 23
-113.65750000000003 , LMUpdateEvent , False
-113.65800000000003 RepartitionEvent 3 , 1 , 9_4
-113.65800000000003 No resources available in cluster
-113.65800000000003 , MatchFoundEvent , 9_4 , 3_11 _ 2
-113.65900000000003 , LaunchOnNodeEvent , 9_4 , 1_11
-114.65700000000002 , TaskEndEvent , 6_1___ 26
-114.65750000000003 , LMUpdateEvent , False
-114.65800000000003 No resources available in cluster
-114.65800000000003 , MatchFoundEvent , 9_5 , 3_17 _ 2
-114.65900000000003 , LaunchOnNodeEvent , 9_5 , 3_17
-115.65700000000002 , TaskEndEvent , 6_4___ 20
-115.65750000000003 , LMUpdateEvent , False
-115.65800000000003 No resources available in cluster
-115.65800000000003 , MatchFoundEvent , 9_6 , 3_7 _ 1
-115.65900000000003 , LaunchOnNodeEvent , 9_6 , 3_7
-118.65700000000002 , TaskEndEvent , 6_6___ 22
-118.65750000000003 , LMUpdateEvent , False
-118.65800000000003 No resources available in cluster
-119.65700000000002 , TaskEndEvent , 6_7___ 15
-119.65750000000003 , LMUpdateEvent , False
-119.65800000000003 No resources available in cluster
-119.65800000000003 , MatchFoundEvent , 9_8 , 3_9 _ 1
-119.65800000000003 , MatchFoundEvent , 9_7 , 3_16 _ 2
-119.65900000000003 , LaunchOnNodeEvent , 9_7 , 3_16
-119.65900000000003 , LaunchOnNodeEvent , 9_8 , 3_9
-121.65700000000002 , TaskEndEvent , 6_5___ 26
-121.65750000000003 , LMUpdateEvent , False
-121.65800000000003 RepartitionEvent 3 , 1 , 9_9
-121.65800000000003 No resources available in cluster
-121.65800000000003 , MatchFoundEvent , 9_9 , 3_1 _ 1
-121.65900000000003 , LaunchOnNodeEvent , 9_9 , 1_1
-125.65700000000002 , TaskEndEvent , 6_8___ 21
-125.65750000000003 , LMUpdateEvent , False
-125.65700000000002
-125.65800000000003 RepartitionEvent 3 , 1 , 9_10
-125.65800000000003 No resources available in cluster
-125.65800000000003 , MatchFoundEvent , 9_10 , 3_10 _ 2
-125.65900000000003 , LaunchOnNodeEvent , 9_10 , 1_10
-127.52900000000001 , LMUpdateEvent , True
+97.53700000000003 No resources available in cluster
+101.53600000000003
+106.53800000000004
+106.54200000000003
+127.52950000000001 , RepartitionEvent , 2 , 1 , 2_7
+127.52950000000001 , RepartitionEvent , 2 , 1 , 2_8
+127.52950000000001 , RepartitionEvent , 2 , 3 , 2_9
+127.52950000000001 , RepartitionEvent , 2 , 1 , 2_10
+127.52950000000001 , RepartitionEvent , 2 , 3 , 2_11
+127.52950000000001 , RepartitionEvent , 2 , 1 , 2_12
+127.52950000000001 , RepartitionEvent , 2 , 1 , 2_13
+127.52950000000001 , RepartitionEvent , 2 , 1 , 2_14
+127.52950000000001 , RepartitionEvent , 2 , 3 , 2_15
+127.52950000000001 , RepartitionEvent , 2 , 3 , 2_16
+127.52950000000001 , RepartitionEvent , 2 , 3 , 2_17
+127.52950000000001 , RepartitionEvent , 2 , 3 , 2_18
 127.52950000000001 No resources available in cluster
+127.52950000000001 , RepartitionEvent , 3 , 1 , 6_2
+127.52950000000001 , RepartitionEvent , 3 , 1 , 6_3
+127.52950000000001 , RepartitionEvent , 3 , 2 , 6_4
+127.52950000000001 , RepartitionEvent , 3 , 2 , 6_5
+127.52950000000001 , RepartitionEvent , 3 , 2 , 6_6
+127.52950000000001 , RepartitionEvent , 3 , 1 , 6_7
+127.52950000000001 , RepartitionEvent , 3 , 1 , 6_8
+127.52950000000001 , RepartitionEvent , 3 , 1 , 7_1
+127.52950000000001 , RepartitionEvent , 3 , 2 , 7_2
+127.52950000000001 , RepartitionEvent , 3 , 2 , 7_3
+127.52950000000001 , RepartitionEvent , 3 , 2 , 7_4
+127.52950000000001 , RepartitionEvent , 3 , 1 , 7_5
 127.52950000000001 No resources available in cluster
-127.52950000000001 No resources available in cluster
-137.65900000000005 , TaskEndEvent , 9_4___ 24
-137.65950000000004 , LMUpdateEvent , False
-137.66000000000003 No resources available in cluster
-142.54000000000005 , TaskEndEvent , 7_3___ 35
-142.54050000000004 , LMUpdateEvent , False
-142.54100000000003 RepartitionEvent 1 , 2 , 10_1
-142.54100000000003 No resources available in cluster
-142.54100000000003 , MatchFoundEvent , 10_1 , 1_15 _ 2
-142.542 , LaunchOnNodeEvent , 10_1 , 2_15
-142.54200000000006 , TaskEndEvent , 7_1___ 39
-142.54250000000005 , LMUpdateEvent , False
-142.54300000000003 RepartitionEvent 1 , 2 , 10_3
-142.54300000000003 No resources available in cluster
-142.54300000000003 , MatchFoundEvent , 10_3 , 1_14 _ 2
-142.54300000000003 , MatchFoundEvent , 10_2 , 1_11 _ 2
-142.544 , LaunchOnNodeEvent , 10_2 , 1_11
-142.544 , LaunchOnNodeEvent , 10_3 , 2_14
-143.65900000000005 , TaskEndEvent , 9_2___ 33
-143.65950000000004 , LMUpdateEvent , False
-143.66000000000003 No resources available in cluster
-144.65700000000004 , TaskEndEvent , 9_1___ 35
-144.65750000000003 , LMUpdateEvent , False
-144.65800000000002 No resources available in cluster
-144.65800000000002 , MatchFoundEvent , 9_12 , 3_8 _ 1
-144.65800000000002 , MatchFoundEvent , 9_11 , 3_18 _ 2
-144.659 , LaunchOnNodeEvent , 9_11 , 3_18
-144.659 , LaunchOnNodeEvent , 9_12 , 3_8
-146.65900000000005 , TaskEndEvent , 9_8___ 27
-146.65950000000004 , LMUpdateEvent , False
-146.66000000000003 No resources available in cluster
-149.544 , TaskEndEvent , 10_2___ 7
-149.5445 , LMUpdateEvent , False
-149.545 No resources available in cluster
-149.545 , MatchFoundEvent , 10_4 , 1_11 _ 2
-149.54599999999996 , LaunchOnNodeEvent , 10_4 , 1_11
-150.542 , TaskEndEvent , 10_1___ 8
-150.54200000000006 , TaskEndEvent , 7_7___ 43
-150.5425 , LMUpdateEvent , False
-150.54299999999998 No resources available in cluster
-150.54250000000005 , LMUpdateEvent , False
-150.54300000000003 No resources available in cluster
-150.54299999999998 , MatchFoundEvent , 10_5 , 1_3 _ 1
-150.54399999999995 , LaunchOnNodeEvent , 10_5 , 1_3
-152.54000000000005 , TaskEndEvent , 7_5___ 46
-152.54000000000005 , TaskEndEvent , 7_6___ 46
-152.54050000000004 , LMUpdateEvent , False
-152.54100000000003 RepartitionEvent 1 , 2 , 10_6
-152.54100000000003 RepartitionEvent 1 , 2 , 10_7
-152.54100000000003 No resources available in cluster
-152.54050000000004 , LMUpdateEvent , False
-152.54100000000003 RepartitionEvent 1 , 2 , 10_8
-152.54100000000003 RepartitionEvent 1 , 2 , 10_9
-152.54100000000003 No resources available in cluster
-152.54100000000003 , MatchFoundEvent , 10_9 , 1_13 _ 2
-152.54100000000003 , MatchFoundEvent , 10_8 , 1_4 _ 1
-152.54100000000003 , MatchFoundEvent , 10_7 , 1_13 _ 2
-152.54100000000003 , MatchFoundEvent , 10_6 , 1_4 _ 1
-152.5415 , ExternalInconsistencyEvent
-152.5415 , LMUpdateEvent , False
-152.542 No resources available in cluster
-152.5415 , ExternalInconsistencyEvent
-152.5415 , LMUpdateEvent , False
-152.542 No resources available in cluster
-152.542 , LaunchOnNodeEvent , 10_8 , 2_4
-152.542 , LaunchOnNodeEvent , 10_9 , 2_13
-152.544 , TaskEndEvent , 10_3___ 10
-152.5445 , LMUpdateEvent , False
-152.545 No resources available in cluster
-152.54599999999996 , TaskEndEvent , 10_4___ 3
-152.54649999999995 , LMUpdateEvent , False
-152.54699999999994 RepartitionEvent 1 , 2 , 10_7
-152.54699999999994 No resources available in cluster
-152.54699999999994 , MatchFoundEvent , 10_7 , 1_14 _ 2
-152.54699999999994 , MatchFoundEvent , 10_6 , 1_11 _ 2
-152.54799999999992 , LaunchOnNodeEvent , 10_6 , 1_11
-152.54799999999992 , LaunchOnNodeEvent , 10_7 , 2_14
-153.54000000000005 , TaskEndEvent , 7_4___ 46
-153.54050000000004 , LMUpdateEvent , False
-153.54100000000003 RepartitionEvent 1 , 2 , 10_10
-153.54100000000003 RepartitionEvent 1 , 2 , 10_11
-153.54100000000003 No resources available in cluster
-153.54100000000003 , MatchFoundEvent , 10_11 , 1_15 _ 2
-153.54100000000003 , MatchFoundEvent , 10_10 , 1_6 _ 1
-153.542 , LaunchOnNodeEvent , 10_10 , 2_6
-153.542 , LaunchOnNodeEvent , 10_11 , 2_15
-155.54200000000006 , TaskEndEvent , 7_2___ 52
-155.54250000000005 , LMUpdateEvent , False
-155.54300000000003 RepartitionEvent 1 , 2 , 10_12
-155.54300000000003 No resources available in cluster
-155.54300000000003 , MatchFoundEvent , 10_12 , 1_5 _ 1
-155.544 , LaunchOnNodeEvent , 10_12 , 2_5
-156.542 , TaskEndEvent , 10_11___ 3
-156.542 , TaskEndEvent , 10_9___ 4
-156.5425 , LMUpdateEvent , False
-156.54299999999998 RepartitionEvent 1 , 2 , 10_13
-156.54299999999998 No resources available in cluster
-156.5425 , LMUpdateEvent , False
-156.54299999999998 No resources available in cluster
-156.54299999999998 , MatchFoundEvent , 10_13 , 1_13 _ 2
-156.54399999999995 , LaunchOnNodeEvent , 10_13 , 2_13
-157.52949999999998 , LMUpdateEvent , True
+127.53050000000002 No resources available in cluster
+127.53050000000002 No resources available in cluster
+127.53050000000002 No resources available in cluster
+127.53050000000002 No resources available in cluster
+127.53050000000002 No resources available in cluster
+127.53050000000002 No resources available in cluster
+127.53050000000002 No resources available in cluster
+127.53050000000002 No resources available in cluster
+127.53050000000002 No resources available in cluster
+127.53050000000002 No resources available in cluster
+127.53050000000002 No resources available in cluster
+127.53050000000002 No resources available in cluster
+127.53050000000002 No resources available in cluster
+127.53050000000002 No resources available in cluster
+127.53050000000002 No resources available in cluster
+127.53050000000002 No resources available in cluster
+127.53050000000002 No resources available in cluster
+127.53050000000002 No resources available in cluster
+127.53150000000002 No resources available in cluster
+127.53350000000003 No resources available in cluster
+128.5315 No resources available in cluster
+128.53349999999995 No resources available in cluster
+129.53450000000004
+129.5355 No resources available in cluster
+131.5315 , RepartitionEvent , 2 , 3 , 2_2
+131.5315 No resources available in cluster
+134.5315 No resources available in cluster
+135.5315 , RepartitionEvent , 2 , 1 , 2_6
+135.5315 , RepartitionEvent , 2 , 3 , 2_11
+135.5315 No resources available in cluster
+135.5315 , RepartitionEvent , 2 , 1 , 2_12
+135.5315 , RepartitionEvent , 2 , 3 , 2_13
+135.5315 No resources available in cluster
+135.53249999999997 No resources available in cluster
+135.53249999999997 No resources available in cluster
+136.5315 , RepartitionEvent , 2 , 1 , 2_11
+136.5315 No resources available in cluster
+136.5315 , RepartitionEvent , 2 , 1 , 2_15
+136.5315 No resources available in cluster
+136.53249999999997 No resources available in cluster
+136.53249999999997 No resources available in cluster
+136.53349999999995 , RepartitionEvent , 2 , 3 , 2_6
+136.53349999999995 No resources available in cluster
+137.5315 , RepartitionEvent , 2 , 3 , 2_11
+137.5315 No resources available in cluster
+138.5315 No resources available in cluster
+139.5315 , RepartitionEvent , 2 , 3 , 2_20
+139.5315 No resources available in cluster
+143.53349999999995 , RepartitionEvent , 2 , 1 , 2_22
+143.53349999999995 , RepartitionEvent , 2 , 3 , 2_23
+143.53349999999995 No resources available in cluster
+143.53349999999995 , RepartitionEvent , 2 , 3 , 2_25
+143.53349999999995 , RepartitionEvent , 2 , 1 , 2_26
+143.53349999999995 No resources available in cluster
+143.53349999999995 , RepartitionEvent , 2 , 1 , 2_28
+143.53349999999995 , RepartitionEvent , 2 , 3 , 2_29
+143.53349999999995 No resources available in cluster
+143.53449999999992 No resources available in cluster
+143.53449999999992 No resources available in cluster
+143.53449999999992 No resources available in cluster
+143.53449999999992 No resources available in cluster
+143.53449999999992 No resources available in cluster
+143.53449999999992 No resources available in cluster
+143.5354999999999 No resources available in cluster
+144.5315 , RepartitionEvent , 2 , 1 , 2_23
+144.5315 No resources available in cluster
+144.53349999999995 No resources available in cluster
+145.53349999999995 , RepartitionEvent , 2 , 1 , 2_25
+145.53349999999995 , RepartitionEvent , 2 , 3 , 2_27
+145.53349999999995 No resources available in cluster
+145.53349999999995 , RepartitionEvent , 2 , 3 , 2_28
+145.53349999999995 , RepartitionEvent , 2 , 1 , 2_30
+145.53349999999995 No resources available in cluster
+145.53449999999992 No resources available in cluster
+145.53449999999992 No resources available in cluster
+145.5354999999999 , RepartitionEvent , 2 , 3 , 2_25
+145.5354999999999 No resources available in cluster
+145.53749999999985 , RepartitionEvent , 2 , 3 , 2_27
+145.53749999999985 No resources available in cluster
+146.53349999999995 , RepartitionEvent , 2 , 3 , 2_31
+146.53349999999995 No resources available in cluster
+147.53349999999995 , RepartitionEvent , 2 , 1 , 2_32
+147.53349999999995 No resources available in cluster
+148.5315 , RepartitionEvent , 3 , 1 , 6_3
+148.5315 No resources available in cluster
+148.5354999999999 , RepartitionEvent , 2 , 3 , 2_33
+148.5354999999999 No resources available in cluster
+149.5354999999999 , RepartitionEvent , 2 , 1 , 2_34
+152.53749999999997 , RepartitionEvent , 3 , 1 , 6_5
+152.53749999999997 , RepartitionEvent , 3 , 2 , 6_6
+152.53749999999997 No resources available in cluster
+154.5354999999999 , RepartitionEvent , 3 , 1 , 7_6
+154.5354999999999 No resources available in cluster
+157.52999999999997 , RepartitionEvent , 3 , 2 , 9_1
+157.52999999999997 , RepartitionEvent , 3 , 2 , 9_2
 157.52999999999997 No resources available in cluster
-157.52999999999997 No resources available in cluster
-157.52999999999997 No resources available in cluster
-157.52999999999997 , MatchFoundEvent , 2_13 , 2_15 _ 2
-157.53099999999995 , LaunchOnNodeEvent , 2_13 , 2_15
-158.542 , TaskEndEvent , 10_8___ 6
-158.5425 , LMUpdateEvent , False
-158.54299999999998 RepartitionEvent 1 , 2 , 10_14
-158.54299999999998 No resources available in cluster
-158.54299999999998 , MatchFoundEvent , 10_14 , 1_4 _ 1
-158.54399999999995 , LaunchOnNodeEvent , 10_14 , 2_4
-159.542 , TaskEndEvent , 10_10___ 6
-159.5425 , LMUpdateEvent , False
-159.54299999999998 No resources available in cluster
-159.54399999999995 , TaskEndEvent , 10_5___ 9
-159.54449999999994 , LMUpdateEvent , False
-159.54499999999993 , MatchFoundEvent , 10_15 , 1_3 _ 1
-159.5459999999999 , LaunchOnNodeEvent , 10_15 , 1_3
-159.54799999999992 , TaskEndEvent , 10_7___ 7
-159.5484999999999 , LMUpdateEvent , False
-159.65900000000005 , TaskEndEvent , 9_3___ 47
-159.65950000000004 , LMUpdateEvent , False
-159.66000000000003 RepartitionEvent 3 , 1 , 9_13
-159.66000000000003 No resources available in cluster
-159.66000000000003 , MatchFoundEvent , 9_13 , 3_2 _ 1
-159.661 , LaunchOnNodeEvent , 9_13 , 1_2
-160.65900000000005 , TaskEndEvent , 9_7___ 41
-160.65900000000005 , TaskEndEvent , 9_9___ 39
-160.65950000000004 , LMUpdateEvent , False
-160.65950000000004 , LMUpdateEvent , False
-160.66000000000003 , MatchFoundEvent , 9_14 , 3_9 _ 1
-160.661 , LaunchOnNodeEvent , 9_14 , 3_9
-161.54200000000006 , TaskEndEvent , 7_8___ 54
-161.54250000000005 , LMUpdateEvent , False
-161.54200000000006
-161.54399999999995 , TaskEndEvent , 10_14___ 3
-161.54449999999994 , LMUpdateEvent , False
-161.65900000000005 , TaskEndEvent , 9_6___ 46
-161.65900000000005 , TaskEndEvent , 9_5___ 47
-161.65950000000004 , LMUpdateEvent , False
-161.65950000000004 , LMUpdateEvent , False
-162.544 , TaskEndEvent , 10_12___ 7
-162.5445 , LMUpdateEvent , False
-162.54799999999992 , TaskEndEvent , 10_6___ 10
-162.5484999999999 , LMUpdateEvent , False
-165.53099999999995 , TaskEndEvent , 2_13___ 8
-165.53149999999994 , LMUpdateEvent , False
-165.53199999999993 RepartitionEvent 2 , 1 , 2_21
-165.53199999999993 RepartitionEvent 2 , 1 , 2_22
-165.53199999999993 No resources available in cluster
-165.53199999999993 , MatchFoundEvent , 2_22 , 2_11 _ 2
-165.53199999999993 , MatchFoundEvent , 2_19 , 2_15 _ 2
-165.53199999999993 , MatchFoundEvent , 2_17 , 2_14 _ 2
-165.53199999999993 , MatchFoundEvent , 2_16 , 2_4 _ 1
-165.53199999999993 , MatchFoundEvent , 2_21 , 2_1 _ 1
-165.53199999999993 , MatchFoundEvent , 2_18 , 2_5 _ 1
-165.53199999999993 , MatchFoundEvent , 2_20 , 2_6 _ 1
-165.5329999999999 , LaunchOnNodeEvent , 2_20 , 2_6
-165.5329999999999 , LaunchOnNodeEvent , 2_16 , 2_4
-165.5329999999999 , LaunchOnNodeEvent , 2_19 , 2_15
-165.5329999999999 , LaunchOnNodeEvent , 2_22 , 1_11
-165.5329999999999 , LaunchOnNodeEvent , 2_21 , 1_1
-165.5329999999999 , TaskEndEvent , 2_21___ 0
-165.5329999999999 , LaunchOnNodeEvent , 2_17 , 2_14
-165.5329999999999 , LaunchOnNodeEvent , 2_18 , 2_5
-165.5334999999999 , LMUpdateEvent , False
-165.53399999999988 RepartitionEvent 2 , 1 , 2_23
-165.53399999999988 RepartitionEvent 2 , 1 , 2_24
-165.53399999999988 No resources available in cluster
-165.53399999999988 , MatchFoundEvent , 2_24 , 2_12 _ 2
-165.53399999999988 , MatchFoundEvent , 2_23 , 2_1 _ 1
-165.53499999999985 , LaunchOnNodeEvent , 2_23 , 1_1
-165.53499999999985 , LaunchOnNodeEvent , 2_24 , 1_12
-165.65900000000005 , TaskEndEvent , 9_10___ 40
-165.65950000000004 , LMUpdateEvent , False
-166.54399999999995 , TaskEndEvent , 10_13___ 10
-166.54449999999994 , LMUpdateEvent , False
-167.5459999999999 , TaskEndEvent , 10_15___ 8
-167.5464999999999 , LMUpdateEvent , False
-168.53499999999985 , TaskEndEvent , 2_23___ 3
-168.53549999999984 , LMUpdateEvent , False
-168.53599999999983 RepartitionEvent 2 , 1 , 2_26
-168.53599999999983 RepartitionEvent 2 , 1 , 2_27
-168.53599999999983 No resources available in cluster
-168.53599999999983 , MatchFoundEvent , 2_27 , 2_1 _ 1
-168.53599999999983 , MatchFoundEvent , 2_26 , 2_10 _ 2
-168.53599999999983 , MatchFoundEvent , 2_25 , 2_13 _ 2
-168.5369999999998 , LaunchOnNodeEvent , 2_25 , 2_13
-168.5369999999998 , TaskEndEvent , 2_25___ 0
-168.5369999999998 , LaunchOnNodeEvent , 2_26 , 1_10
-168.5369999999998 , LaunchOnNodeEvent , 2_27 , 1_1
-168.5374999999998 , LMUpdateEvent , False
-168.53799999999978 No resources available in cluster
-171.5329999999999 , TaskEndEvent , 2_19___ 6
-171.5329999999999 , TaskEndEvent , 2_20___ 6
-171.5334999999999 , LMUpdateEvent , False
-171.53399999999988 No resources available in cluster
-171.5334999999999 , LMUpdateEvent , False
-171.53399999999988 No resources available in cluster
-171.53399999999988 , MatchFoundEvent , 2_31 , 2_13 _ 2
-171.53399999999988 , MatchFoundEvent , 2_30 , 2_6 _ 1
-171.53399999999988 , MatchFoundEvent , 2_29 , 2_13 _ 2
-171.53399999999988 , MatchFoundEvent , 2_28 , 2_6 _ 1
-171.53449999999987 , InternalInconsistencyEvent
-171.53449999999987 , LMUpdateEvent , False
-171.53499999999985 No resources available in cluster
-171.53449999999987 , InternalInconsistencyEvent
-171.53449999999987 , LMUpdateEvent , False
-171.53499999999985 No resources available in cluster
-171.53499999999985 , LaunchOnNodeEvent , 2_31 , 2_13
-171.53499999999985 , LaunchOnNodeEvent , 2_30 , 2_6
-173.5329999999999 , TaskEndEvent , 2_18___ 8
-173.5334999999999 , LMUpdateEvent , False
-173.53399999999988 No resources available in cluster
-173.53399999999988 , MatchFoundEvent , 2_29 , 2_15 _ 2
-173.53399999999988 , MatchFoundEvent , 2_28 , 2_5 _ 1
-173.53499999999985 , LaunchOnNodeEvent , 2_28 , 2_5
-173.53499999999985 , LaunchOnNodeEvent , 2_29 , 2_15
-174.5369999999998 , TaskEndEvent , 2_26___ 6
-174.5374999999998 , LMUpdateEvent , False
-174.53799999999978 RepartitionEvent 2 , 1 , 2_32
-174.53799999999978 RepartitionEvent 2 , 1 , 2_33
-174.53799999999978 No resources available in cluster
-174.53799999999978 , MatchFoundEvent , 2_33 , 2_3 _ 1
-174.53799999999978 , MatchFoundEvent , 2_32 , 2_10 _ 2
-174.53899999999976 , LaunchOnNodeEvent , 2_32 , 1_10
-174.53899999999976 , LaunchOnNodeEvent , 2_33 , 1_3
-175.5329999999999 , TaskEndEvent , 2_16___ 10
-175.5334999999999 , LMUpdateEvent , False
-175.53399999999988 No resources available in cluster
-175.53399999999988 , MatchFoundEvent , 2_34 , 2_4 _ 1
-175.53499999999985 , LaunchOnNodeEvent , 2_34 , 2_4
-176.53499999999985 , TaskEndEvent , 2_24___ 11
-176.53499999999985 , TaskEndEvent , 2_28___ 3
-176.53499999999985 , TaskEndEvent , 2_30___ 5
-176.53549999999984 , LMUpdateEvent , False
-176.53599999999983 No resources available in cluster
-176.53549999999984 , LMUpdateEvent , False
-176.53599999999983 No resources available in cluster
-176.53549999999984 , LMUpdateEvent , False
-176.53599999999983 No resources available in cluster
-177.5329999999999 , TaskEndEvent , 2_17___ 12
-177.5334999999999 , LMUpdateEvent , False
-177.53399999999988 No resources available in cluster
-177.53399999999988 , MatchFoundEvent , 5_2 , 2_5 _ 1
-177.53399999999988 , MatchFoundEvent , 5_1 , 2_14 _ 2
-177.53499999999985 , LaunchOnNodeEvent , 5_1 , 2_14
-177.53499999999985 , LaunchOnNodeEvent , 5_2 , 2_5
-178.5329999999999 , TaskEndEvent , 2_22___ 13
-178.5334999999999 , LMUpdateEvent , False
-178.53399999999988 No resources available in cluster
-179.5369999999998 , TaskEndEvent , 2_27___ 11
-179.5374999999998 , LMUpdateEvent , False
-179.53799999999978 RepartitionEvent 2 , 1 , 5_3
-179.53799999999978 RepartitionEvent 2 , 1 , 8_1
-179.53799999999978 No resources available in cluster
-179.53799999999978 , MatchFoundEvent , 8_1 , 2_11 _ 2
-179.53799999999978 , MatchFoundEvent , 5_3 , 2_1 _ 1
-179.53899999999976 , LaunchOnNodeEvent , 5_3 , 1_1
-179.53899999999976 , LaunchOnNodeEvent , 8_1 , 1_11
-180.53899999999976 , TaskEndEvent , 2_32___ 6
-180.53949999999975 , LMUpdateEvent , False
-180.53999999999974 No resources available in cluster
-183.661 , TaskEndEvent , 9_14___ 23
-183.6615 , LMUpdateEvent , False
-184.53499999999985 , TaskEndEvent , 2_34___ 9
-184.53499999999985 , TaskEndEvent , 2_31___ 13
-184.53549999999984 , LMUpdateEvent , False
-184.53599999999983 No resources available in cluster
-184.53549999999984 , LMUpdateEvent , False
-184.53599999999983 No resources available in cluster
-184.53599999999983 , MatchFoundEvent , 8_5 , 2_4 _ 1
-184.53599999999983 , MatchFoundEvent , 8_4 , 2_13 _ 2
-184.53599999999983 , MatchFoundEvent , 8_2 , 2_13 _ 2
-184.53599999999983 , MatchFoundEvent , 8_3 , 2_4 _ 1
-184.53649999999982 , InternalInconsistencyEvent
-184.53649999999982 , LMUpdateEvent , False
-184.5369999999998 No resources available in cluster
-184.53649999999982 , InternalInconsistencyEvent
-184.53649999999982 , LMUpdateEvent , False
-184.5369999999998 No resources available in cluster
-184.5369999999998 , LaunchOnNodeEvent , 8_4 , 2_13
-184.5369999999998 , LaunchOnNodeEvent , 8_5 , 2_4
-184.53899999999976 , TaskEndEvent , 2_33___ 10
-184.53949999999975 , LMUpdateEvent , False
-184.53999999999974 RepartitionEvent 2 , 1 , 8_2
-184.53999999999974 RepartitionEvent 2 , 1 , 8_3
-184.53999999999974 No resources available in cluster
-184.53999999999974 , MatchFoundEvent , 8_3 , 2_10 _ 2
-184.53999999999974 , MatchFoundEvent , 8_2 , 2_3 _ 1
-184.5409999999997 , LaunchOnNodeEvent , 8_2 , 1_3
-184.5409999999997 , LaunchOnNodeEvent , 8_3 , 1_10
-185.659 , TaskEndEvent , 9_11___ 41
-185.65949999999998 , LMUpdateEvent , False
-186.53499999999985 , TaskEndEvent , 2_29___ 13
-186.53549999999984 , LMUpdateEvent , False
-186.53599999999983 No resources available in cluster
-186.53599999999983 , MatchFoundEvent , 8_7 , 2_6 _ 1
-186.53599999999983 , MatchFoundEvent , 8_6 , 2_15 _ 2
-186.5369999999998 , LaunchOnNodeEvent , 8_6 , 2_15
-186.5369999999998 , LaunchOnNodeEvent , 8_7 , 2_6
-187.52999999999997 , LMUpdateEvent , True
-187.53049999999996 No resources available in cluster
-190.53499999999985 , TaskEndEvent , 5_1___ 13
-190.53549999999984 , LMUpdateEvent , False
-190.53599999999983 RepartitionEvent 2 , 1 , 8_9
-190.53599999999983 No resources available in cluster
-190.53599999999983 , MatchFoundEvent , 8_9 , 2_12 _ 2
-190.53599999999983 , MatchFoundEvent , 8_8 , 2_14 _ 2
-190.5369999999998 , LaunchOnNodeEvent , 8_8 , 2_14
-190.5369999999998 , LaunchOnNodeEvent , 8_9 , 1_12
-190.5369999999998 , TaskEndEvent , 8_9___ 0
-190.5374999999998 , LMUpdateEvent , False
-190.53799999999978 No resources available in cluster
-190.53899999999976 , TaskEndEvent , 8_1___ 11
-190.53949999999975 , LMUpdateEvent , False
-190.53999999999974 No resources available in cluster
-192.53499999999985 , TaskEndEvent , 5_2___ 15
-192.53549999999984 , LMUpdateEvent , False
-192.53599999999983 No resources available in cluster
-194.5369999999998 , TaskEndEvent , 8_4___ 10
-194.5374999999998 , LMUpdateEvent , False
-194.53799999999978 No resources available in cluster
-194.53799999999978 , MatchFoundEvent , 8_11 , 2_5 _ 1
-194.53799999999978 , MatchFoundEvent , 8_10 , 2_13 _ 2
-194.53899999999976 , LaunchOnNodeEvent , 8_10 , 2_13
-194.53899999999976 , LaunchOnNodeEvent , 8_11 , 2_5
-195.5369999999998 , TaskEndEvent , 8_8___ 5
-195.5374999999998 , LMUpdateEvent , False
-195.53799999999978 RepartitionEvent 2 , 1 , 8_13
-195.53799999999978 No resources available in cluster
-195.53799999999978 , MatchFoundEvent , 8_13 , 2_11 _ 2
-195.53799999999978 , MatchFoundEvent , 8_12 , 2_14 _ 2
-195.53899999999976 , LaunchOnNodeEvent , 8_12 , 2_14
-195.53899999999976 , LaunchOnNodeEvent , 8_13 , 1_11
-196.5409999999997 , TaskEndEvent , 8_2___ 12
-196.5414999999997 , LMUpdateEvent , False
-196.5419999999997 RepartitionEvent 2 , 1 , 8_14
-196.5419999999997 RepartitionEvent 2 , 1 , 8_15
-196.5419999999997 No resources available in cluster
-196.5419999999997 , MatchFoundEvent , 8_15 , 2_12 _ 2
-196.5419999999997 , MatchFoundEvent , 8_14 , 2_3 _ 1
-196.54299999999967 , LaunchOnNodeEvent , 8_14 , 1_3
-196.54299999999967 , LaunchOnNodeEvent , 8_15 , 1_12
-196.659 , TaskEndEvent , 9_12___ 52
-196.65949999999998 , LMUpdateEvent , False
-197.5369999999998 , TaskEndEvent , 8_7___ 11
-197.5374999999998 , LMUpdateEvent , False
-197.53799999999978 No resources available in cluster
-197.5409999999997 , TaskEndEvent , 8_3___ 13
-197.5414999999997 , LMUpdateEvent , False
-197.5419999999997 No resources available in cluster
-200.5369999999998 , TaskEndEvent , 8_5___ 16
-200.5374999999998 , LMUpdateEvent , False
-200.53799999999978 No resources available in cluster
-203.53899999999976 , TaskEndEvent , 8_13___ 8
-203.53949999999975 , LMUpdateEvent , False
-203.53999999999974 No resources available in cluster
-203.661 , TaskEndEvent , 9_13___ 44
-203.6615 , LMUpdateEvent , False
-205.53899999999976 , TaskEndEvent , 8_12___ 10
-205.53949999999975 , LMUpdateEvent , False
-205.53999999999974 RepartitionEvent 2 , 1 , 8_18
-205.53999999999974 RepartitionEvent 2 , 1 , 8_19
-205.53999999999974 No resources available in cluster
-205.53999999999974 , MatchFoundEvent , 8_19 , 2_10 _ 2
-205.53999999999974 , MatchFoundEvent , 8_16 , 2_14 _ 2
-205.53999999999974 , MatchFoundEvent , 8_18 , 2_2 _ 1
-205.53999999999974 , MatchFoundEvent , 8_17 , 2_4 _ 1
-205.5409999999997 , LaunchOnNodeEvent , 8_17 , 2_4
-205.5409999999997 , LaunchOnNodeEvent , 8_19 , 1_10
-205.5409999999997 , LaunchOnNodeEvent , 8_16 , 2_14
-205.5409999999997 , LaunchOnNodeEvent , 8_18 , 1_2
-206.5369999999998 , TaskEndEvent , 8_6___ 20
-206.5374999999998 , LMUpdateEvent , False
-206.53799999999978 , MatchFoundEvent , 8_21 , 2_6 _ 1
-206.53799999999978 , MatchFoundEvent , 8_20 , 2_15 _ 2
-206.53899999999976 , LaunchOnNodeEvent , 8_20 , 2_15
-206.53899999999976 , LaunchOnNodeEvent , 8_21 , 2_6
-206.54299999999967 , TaskEndEvent , 8_14___ 10
-206.54349999999965 , LMUpdateEvent , False
-207.5409999999997 , TaskEndEvent , 8_18___ 2
-207.5414999999997 , LMUpdateEvent , False
-208.53899999999976 , TaskEndEvent , 5_3___ 29
-208.53949999999975 , LMUpdateEvent , False
-208.53899999999976
-209.53899999999976 , TaskEndEvent , 8_10___ 15
-209.53949999999975 , LMUpdateEvent , False
-210.53899999999976 , TaskEndEvent , 8_11___ 16
-210.53949999999975 , LMUpdateEvent , False
-212.54299999999967 , TaskEndEvent , 8_15___ 16
-212.54349999999965 , LMUpdateEvent , False
-213.5409999999997 , TaskEndEvent , 8_19___ 8
-213.5414999999997 , LMUpdateEvent , False
-215.5409999999997 , TaskEndEvent , 8_17___ 10
-215.5414999999997 , LMUpdateEvent , False
-217.53049999999996 , LMUpdateEvent , True
-221.53899999999976 , TaskEndEvent , 8_21___ 15
-221.53949999999975 , LMUpdateEvent , False
-221.5409999999997 , TaskEndEvent , 8_16___ 16
-221.5414999999997 , LMUpdateEvent , False
-223.53899999999976 , TaskEndEvent , 8_20___ 17
-223.53949999999975 , LMUpdateEvent , False
-247.53099999999995 , LMUpdateEvent , True
+159.53449999999992
+162.5315 , RepartitionEvent , 3 , 1 , 9_5
+162.5315 , RepartitionEvent , 3 , 2 , 9_6
+162.5315 No resources available in cluster
+166.5315 , RepartitionEvent , 3 , 1 , 9_7
+166.5315 No resources available in cluster
+168.53349999999995 , RepartitionEvent , 3 , 1 , 9_8
+168.53349999999995 No resources available in cluster
+169.53749999999985 No resources available in cluster
+172.53949999999992 No resources available in cluster
+173.5315 , RepartitionEvent , 3 , 2 , 9_11
+173.5315 , RepartitionEvent , 3 , 1 , 9_12
+173.5315 No resources available in cluster
+173.5315 , RepartitionEvent , 3 , 1 , 9_13
+173.5315 , RepartitionEvent , 3 , 2 , 9_14
+173.53249999999997 No resources available in cluster
+173.53249999999997 No resources available in cluster
+174.53949999999992 , RepartitionEvent , 3 , 2 , 9_11
+174.53949999999992 No resources available in cluster
+178.53849999999994
+178.53949999999992 , RepartitionEvent , 3 , 1 , 9_12
+211.53099999999995
+230.5404999999999
 Simulation ending, no more events
-Simulation ended in  0.03355050086975098  s 
-[]
+         621201 function calls (577557 primitive calls) in 0.348 seconds
+
+   Ordered by: cumulative time
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    0.003    0.003    0.348    0.348 /Megha_Dev/src/megha_sim/simulation/simulation.py:71(run)
+      283    0.002    0.000    0.281    0.001 /Megha_Dev/src/megha_sim/events/events.py:362(run)
+      298    0.024    0.000    0.278    0.001 /Megha_Dev/src/megha_sim/global_master/gm.py:143(update_status)
+      596    0.002    0.000    0.174    0.000 /Megha_Dev/src/megha_sim/local_master/lm.py:22(get_status)
+     1192    0.001    0.000    0.172    0.000 /opt/pypy/lib-python/3/json/__init__.py:189(dumps)
+     1192    0.002    0.000    0.170    0.000 /opt/pypy/lib-python/3/json/encoder.py:177(encode)
+35117/1192    0.040    0.000    0.168    0.000 /opt/pypy/lib-python/3/json/encoder.py:208(__encode)
+10132/596    0.086    0.000    0.143    0.000 /opt/pypy/lib-python/3/json/encoder.py:260(__encode_dict)
+      301    0.006    0.000    0.054    0.000 /Megha_Dev/src/megha_sim/global_master/gm.py:480(schedule_tasks)
+      241    0.027    0.000    0.041    0.000 /Megha_Dev/src/megha_sim/global_master/gm.py:289(repartition)
+     1024    0.003    0.000    0.029    0.000 /opt/pypy/lib-python/3/queue.py:153(get)
+     1024    0.003    0.000    0.022    0.000 /opt/pypy/lib-python/3/queue.py:121(put)
+   144736    0.021    0.000    0.021    0.000 {built-in function isinstance}
+     1024    0.000    0.000    0.019    0.000 /opt/pypy/lib-python/3/queue.py:235(_get)
+     1788    0.017    0.000    0.019    0.000 /Megha_Dev/src/megha_sim/global_master/gm.py:87(__update_partition)
+     1024    0.001    0.000    0.019    0.000 /opt/pypy/lib-python/3/heapq.py:135(heappop)
+     1022    0.012    0.000    0.017    0.000 /opt/pypy/lib-python/3/heapq.py:258(_siftup)
+     2046    0.014    0.000    0.015    0.000 /opt/pypy/lib-python/3/heapq.py:205(_siftdown)
+      274    0.002    0.000    0.013    0.000 /Megha_Dev/src/megha_sim/events/events.py:296(run)
+     1024    0.001    0.000    0.012    0.000 /opt/pypy/lib-python/3/queue.py:232(_put)
+     1024    0.001    0.000    0.012    0.000 /opt/pypy/lib-python/3/heapq.py:130(heappush)
+      274    0.001    0.000    0.010    0.000 /Megha_Dev/src/megha_sim/local_master/lm.py:39(verify_request)
+     1537    0.005    0.000    0.009    0.000 /Megha_Dev/src/megha_sim/simulation_logger/logger.py:120(info)
+     2048    0.006    0.000    0.008    0.000 /opt/pypy/lib-python/3/threading.py:335(notify)
+  353/170    0.001    0.000    0.007    0.000 /opt/pypy/lib-python/3/json/encoder.py:243(__encode_list)
+     1192    0.003    0.000    0.007    0.000 /opt/pypy/lib-python/3/json/__init__.py:305(loads)
+   208046    0.006    0.000    0.006    0.000 {method 'append' of 'StringBuilder' objects}
+      183    0.001    0.000    0.006    0.000 /Megha_Dev/src/megha_sim/events/events.py:120(run)
+    10485    0.004    0.000    0.006    0.000 /opt/pypy/lib-python/3/json/encoder.py:344(__mark_markers)
+       10    0.000    0.000    0.005    0.001 /Megha_Dev/src/megha_sim/events/events.py:456(run)
+      183    0.001    0.000    0.004    0.000 /Megha_Dev/src/megha_sim/events/events.py:162(run)
+     3606    0.004    0.000    0.004    0.000 /opt/pypy/lib-python/3/encodings/utf_8.py:19(encode)
+      183    0.001    0.000    0.004    0.000 /Megha_Dev/src/megha_sim/local_master/lm.py:89(task_completed)
+       10    0.000    0.000    0.004    0.000 /Megha_Dev/src/megha_sim/global_master/gm.py:619(queue_job)
+     1192    0.004    0.000    0.004    0.000 {built-in function _pypyjson.loads}
+       91    0.001    0.000    0.003    0.000 /Megha_Dev/src/megha_sim/events/events.py:221(run)
+     1029    0.001    0.000    0.003    0.000 /opt/pypy/lib-python/3/queue.py:96(empty)
+     2048    0.002    0.000    0.003    0.000 /opt/pypy/lib-python/3/threading.py:240(__enter__)
+      548    0.001    0.000    0.003    0.000 /opt/pypy/lib-python/3/random.py:263(choice)
+     7133    0.002    0.000    0.002    0.000 {built-in function len}
+     2053    0.002    0.000    0.002    0.000 /opt/pypy/lib-python/3/queue.py:229(_qsize)
+    13024    0.002    0.000    0.002    0.000 {method 'keys' of 'dict' objects}
+    10485    0.002    0.000    0.002    0.000 /opt/pypy/lib-python/3/json/encoder.py:350(__remove_markers)
+      274    0.002    0.000    0.002    0.000 /Megha_Dev/src/megha_sim/job/job.py:71(fully_scheduled)
+     2048    0.001    0.000    0.002    0.000 /opt/pypy/lib-python/3/threading.py:255(_is_owned)
+      274    0.001    0.000    0.002    0.000 /Megha_Dev/src/megha_sim/simulation_logger/logger.py:182(__parse_matching_logic_stmt)
+    31455    0.002    0.000    0.002    0.000 {built-in function id}
+    36126    0.002    0.000    0.002    0.000 {built-in function _pypyjson.raw_encode_basestring_ascii}
+      548    0.001    0.000    0.002    0.000 /opt/pypy/lib-python/3/random.py:231(_randbelow)
+     2048    0.001    0.000    0.002    0.000 /opt/pypy/lib-python/3/threading.py:243(__exit__)
+    10485    0.002    0.000    0.002    0.000 /opt/pypy/lib-python/3/json/encoder.py:193(__emit_indent)
+     1788    0.001    0.000    0.002    0.000 <string>:1(__new__)
+      253    0.001    0.000    0.001    0.000 /Megha_Dev/src/megha_sim/global_master/gm.py:123(__move_partition)
+       10    0.000    0.000    0.001    0.000 /Megha_Dev/src/megha_sim/job/job.py:23(__init__)
+     4444    0.001    0.000    0.001    0.000 {method 'startswith' of 'str' objects}
+     2471    0.001    0.000    0.001    0.000 {method 'split' of 'str' objects}
+       10    0.001    0.000    0.001    0.000 /Megha_Dev/src/megha_sim/job/job.py:80(file_task_execution_time)
+     2048    0.001    0.000    0.001    0.000 {method 'acquire_lock' of '_thread.lock' objects}
+     2048    0.001    0.000    0.001    0.000 {method '__enter__' of '_thread.lock' objects}
+      183    0.001    0.000    0.001    0.000 /opt/pypy/site-packages/typing_extensions.py:1641(_dict_new)
+    10485    0.001    0.000    0.001    0.000 /opt/pypy/lib-python/3/json/encoder.py:203(__emit_unindent)
+     3606    0.001    0.000    0.001    0.000 {built-in function _codecs.utf_8_encode}
+    10132    0.001    0.000    0.001    0.000 {method 'items' of 'dict' objects}
+      274    0.001    0.000    0.001    0.000 /Megha_Dev/src/megha_sim/events/events.py:267(__init__)
+    16092    0.001    0.000    0.001    0.000 {method '__str__' of 'int' objects}
+     1105    0.001    0.000    0.001    0.000 {method 'get' of 'dict' objects}
+     1788    0.000    0.000    0.000    0.000 {method '__new__' of 'type' objects}
+     1435    0.000    0.000    0.000    0.000 {method 'append' of 'list' objects}
+      183    0.000    0.000    0.000    0.000 /Megha_Dev/src/megha_sim/task/task.py:20(__init__)
+     1192    0.000    0.000    0.000    0.000 {method 'build' of 'StringBuilder' objects}
+      275    0.000    0.000    0.000    0.000 /Megha_Dev/src/megha_sim/events/events.py:337(__init__)
+     1148    0.000    0.000    0.000    0.000 {method 'getrandbits' of 'Random' objects}
+     2048    0.000    0.000    0.000    0.000 {method '__exit__' of '_thread.lock' objects}
+     1046    0.000    0.000    0.000    0.000 {method 'pop' of 'list' objects}
+       91    0.000    0.000    0.000    0.000 /Megha_Dev/src/megha_sim/global_master/gm.py:268(unschedule_job)
+     1481    0.000    0.000    0.000    0.000 /Megha_Dev/src/megha_sim/events/events.py:53(__lt__)
+        1    0.000    0.000    0.000    0.000 {built-in function _io.open}
+      183    0.000    0.000    0.000    0.000 /Megha_Dev/src/megha_sim/events/events.py:150(__init__)
+      183    0.000    0.000    0.000    0.000 /Megha_Dev/src/megha_sim/events/events.py:97(__init__)
+      548    0.000    0.000    0.000    0.000 {method 'bit_length' of 'int' objects}
+       91    0.000    0.000    0.000    0.000 /Megha_Dev/src/megha_sim/events/events.py:204(__init__)
+       11    0.000    0.000    0.000    0.000 {method 'readline' of '_io.TextIOWrapper' objects}
+        1    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:1083(__import__)
+        2    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:1003(_gcd_import)
+        2    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:987(_find_and_load)
+        2    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:156(__enter__)
+        4    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:166(_get_module_lock)
+      123    0.000    0.000    0.000    0.000 /Megha_Dev/src/megha_sim/events/events.py:107(__lt__)
+        1    0.000    0.000    0.000    0.000 {method 'close' of '_io.TextIOWrapper' objects}
+        2    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:203(_lock_unlock_module)
+        3    0.000    0.000    0.000    0.000 /opt/pypy/lib-python/3/codecs.py:319(decode)
+        1    0.000    0.000    0.000    0.000 /opt/pypy/lib-python/3/_bootlocale.py:33(getpreferredencoding)
+        4    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:87(acquire)
+       10    0.000    0.000    0.000    0.000 {method 'remove' of 'list' objects}
+        4    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:112(release)
+       10    0.000    0.000    0.000    0.000 {method 'strip' of 'str' objects}
+        1    0.000    0.000    0.000    0.000 {method 'disable' of '_lsprof.Profiler' objects}
+        2    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:160(__exit__)
+        1    0.000    0.000    0.000    0.000 {built-in function _locale.nl_langinfo}
+        1    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:58(__init__)
+        2    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:938(_sanity_check)
+        4    0.000    0.000    0.000    0.000 {built-in function _codecs.utf_8_decode}
+        6    0.000    0.000    0.000    0.000 {method 'insert' of 'list' objects}
+        2    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:152(__init__)
+        1    0.000    0.000    0.000    0.000 /opt/pypy/lib-python/3/codecs.py:309(__init__)
+        1    0.000    0.000    0.000    0.000 /Megha_Dev/src/megha_sim/events/events.py:423(__init__)
+        1    0.000    0.000    0.000    0.000 /opt/pypy/lib-python/3/encodings/utf_8.py:15(decode)
+        4    0.000    0.000    0.000    0.000 {built-in function _imp.acquire_lock}
+        3    0.000    0.000    0.000    0.000 /opt/pypy/lib-python/3/codecs.py:331(getstate)
+        8    0.000    0.000    0.000    0.000 {built-in function _thread.get_ident}
+        1    0.000    0.000    0.000    0.000 /opt/pypy/lib-python/3/codecs.py:260(__init__)
+        4    0.000    0.000    0.000    0.000 {built-in function _imp.release_lock}
+        1    0.000    0.000    0.000    0.000 {method 'partition' of 'str' objects}
+        2    0.000    0.000    0.000    0.000 {built-in function _thread.allocate_lock}
+
+
+
+[<job.job.Job object at 0x00007f814939be18>, <job.job.Job object at 0x00007f8148cac678>, <job.job.Job object at 0x00007f8148809d70>, <job.job.Job object at 0x00007f8148742058>, <job.job.Job object at 0x00007f8148732de8>, <job.job.Job object at 0x00007f814890f830>, <job.job.Job object at 0x00007f814939bec0>, <job.job.Job object at 0x00007f8148707788>, <job.job.Job object at 0x00007f814871d408>, <job.job.Job object at 0x00007f8148733bb0>]
