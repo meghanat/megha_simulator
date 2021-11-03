@@ -153,12 +153,15 @@ if len(sys.argv) == 3:
                 first_index = ind
                 first_index_set = True
     # Create the line-graph plot
-    ax = sns.lineplot(data=pd.DataFrame(timeline[first_index:
+    df = pd.DataFrame(timeline[first_index:
                       min(last_index + 1, len(timeline) - 1)],
-                      columns=['Percentage of Cluster Used']))
+                      columns=['Percentage of Cluster Used'])
+    print("Mean %:", df["Percentage of Cluster Used"].mean())
+    print("Median %:", df["Percentage of Cluster Used"].median())
+    ax = sns.lineplot(data=df)
     ax.set(xlabel='Time in Seconds',
-           ylabel='Percentage of Cluster Used',
-           title='Percentage of Cluster Used vs Time in Seconds')
+           ylabel='Percentage of Cluster Utilized',
+           title='Percentage of Cluster Utilized vs Time in Seconds')
     fig = ax.get_figure()
     fig.savefig(PATH_TO_OUTPUT_FOLDER / (NAME_OF_OUTPUT_FILE + "_plot"))
 
