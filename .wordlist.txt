@@ -27,3 +27,5 @@ README.md
 phoenixnap
 kb
 FB
+Utilized
+durations
