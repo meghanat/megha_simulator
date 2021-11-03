@@ -60,11 +60,8 @@ class LM(object):
                     (current_time + NETWORK_DELAY, LaunchOnNodeEvent(task, self.simulation)))
                 return True
             else:  # if inconsistent
-                self.simulation.event_queue.put((current_time,
-                                                 InconsistencyEvent(
-                                                     task, gm,
-                                                     InconsistencyType.EXTERNAL_INCONSISTENCY,
-                                                     self.simulation)))
+                self.simulation.event_queue.put((current_time, InconsistencyEvent(
+                    task, gm, InconsistencyType.EXTERNAL_INCONSISTENCY, self.simulation)))
         # internal partition
         else:
             if (self.LM_config["partitions"][gm.GM_id]["nodes"][node_id]["CPU"]
@@ -80,11 +77,8 @@ class LM(object):
                      LaunchOnNodeEvent(task,
                                        self.simulation)))
             else:  # if inconsistent
-                self.simulation.event_queue.put((current_time,
-                                                 InconsistencyEvent(
-                                                     task, gm,
-                                                     InconsistencyType.INTERNAL_INCONSISTENCY,
-                                                     self.simulation)))
+                self.simulation.event_queue.put((current_time, InconsistencyEvent(
+                    task, gm, InconsistencyType.INTERNAL_INCONSISTENCY, self.simulation)))
 
     def task_completed(self, task):
         # reclaim resources

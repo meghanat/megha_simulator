@@ -2,6 +2,7 @@ from typing import (List, Dict, NamedTuple, Optional,
                     Tuple, Generic, TypeVar)
 from typing_extensions import TypedDict
 
+
 class NodeResources(TypedDict):
     """
     Typed dictionary class to describe the data format of each node resource.

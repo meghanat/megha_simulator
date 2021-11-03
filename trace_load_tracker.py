@@ -154,7 +154,7 @@ if len(sys.argv) == 3:
                 first_index_set = True
     # Create the line-graph plot
     df = pd.DataFrame(timeline[first_index:
-                      min(last_index + 1, len(timeline) - 1)],
+                               min(last_index + 1, len(timeline) - 1)],
                       columns=['Percentage of Cluster Used'])
     print("Mean %:", df["Percentage of Cluster Used"].mean())
     print("Median %:", df["Percentage of Cluster Used"].median())
