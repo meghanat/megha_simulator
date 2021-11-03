@@ -8,7 +8,7 @@
 ---
 - **Cluster Size:** 1000
 - **Cluster Trace Name:** FB_sub
-- **Parameter:** Number of Matching Logic Operations Performed.
+- **Parameter:** Total Number of Searches Performed.
 
 ![1000_FB_sub_matching_logic_operation_count_with_original_approach.png](1000_FB_sub_matching_logic_operation_count_with_original_approach.png)
 
@@ -29,7 +29,7 @@
 ---
 - **Cluster Size:** 10000
 - **Cluster Trace Name:** FB_sub
-- **Parameter:** Number of Matching Logic Operations Performed.
+- **Parameter:** Total Number of Searches Performed.
 
 ![10000_FB_sub_matching_logic_operation_count_with_original_approach.png](10000_FB_sub_matching_logic_operation_count_with_original_approach.png)
 
@@ -50,7 +50,7 @@
 ---
 - **Cluster Size:** 1000
 - **Cluster Trace Name:** YH1_sub
-- **Parameter:** Number of Matching Logic Operations Performed.
+- **Parameter:** Total Number of Searches Performed.
 
 ![1000_YH1_sub_matching_logic_operation_count_with_original_approach.png](1000_YH1_sub_matching_logic_operation_count_with_original_approach.png)
 
@@ -71,7 +71,7 @@
 ---
 - **Cluster Size:** 10000
 - **Cluster Trace Name:** YH1_sub
-- **Parameter:** Number of Matching Logic Operations Performed.
+- **Parameter:** Total Number of Searches Performed.
 
 ![10000_YH1_sub_matching_logic_operation_count_with_original_approach.png](10000_YH1_sub_matching_logic_operation_count_with_original_approach.png)
 
@@ -92,7 +92,7 @@
 ---
 - **Cluster Size:** 1000
 - **Cluster Trace Name:** YH2_sub
-- **Parameter:** Number of Matching Logic Operations Performed.
+- **Parameter:** Total Number of Searches Performed.
 
 ![1000_YH2_sub_matching_logic_operation_count_with_original_approach.png](1000_YH2_sub_matching_logic_operation_count_with_original_approach.png)
 
@@ -113,7 +113,7 @@
 ---
 - **Cluster Size:** 10000
 - **Cluster Trace Name:** YH2_sub
-- **Parameter:** Number of Matching Logic Operations Performed.
+- **Parameter:** Total Number of Searches Performed.
 
 ![10000_YH2_sub_matching_logic_operation_count_with_original_approach.png](10000_YH2_sub_matching_logic_operation_count_with_original_approach.png)
 
@@ -135,7 +135,7 @@
 ---
 - **Cluster Size:** 1000
 - **Cluster Trace Name:** FB_sub
-- **Parameter:** Number of Matching Logic Operations Performed.
+- **Parameter:** Total Number of Searches Performed.
 
 ![1000_FB_sub_matching_logic_operation_count_without_original_approach.png](1000_FB_sub_matching_logic_operation_count_without_original_approach.png)
 
@@ -156,7 +156,7 @@
 ---
 - **Cluster Size:** 10000
 - **Cluster Trace Name:** FB_sub
-- **Parameter:** Number of Matching Logic Operations Performed.
+- **Parameter:** Total Number of Searches Performed.
 
 ![10000_FB_sub_matching_logic_operation_count_without_original_approach.png](10000_FB_sub_matching_logic_operation_count_without_original_approach.png)
 
@@ -177,7 +177,7 @@
 ---
 - **Cluster Size:** 1000
 - **Cluster Trace Name:** YH1_sub
-- **Parameter:** Number of Matching Logic Operations Performed.
+- **Parameter:** Total Number of Searches Performed.
 
 ![1000_YH1_sub_matching_logic_operation_count_without_original_approach.png](1000_YH1_sub_matching_logic_operation_count_without_original_approach.png)
 
@@ -198,7 +198,7 @@
 ---
 - **Cluster Size:** 10000
 - **Cluster Trace Name:** YH1_sub
-- **Parameter:** Number of Matching Logic Operations Performed.
+- **Parameter:** Total Number of Searches Performed.
 
 ![10000_YH1_sub_matching_logic_operation_count_without_original_approach.png](10000_YH1_sub_matching_logic_operation_count_without_original_approach.png)
 
@@ -219,7 +219,7 @@
 ---
 - **Cluster Size:** 1000
 - **Cluster Trace Name:** YH2_sub
-- **Parameter:** Number of Matching Logic Operations Performed.
+- **Parameter:** Total Number of Searches Performed.
 
 ![1000_YH2_sub_matching_logic_operation_count_without_original_approach.png](1000_YH2_sub_matching_logic_operation_count_without_original_approach.png)
 
@@ -240,7 +240,7 @@
 ---
 - **Cluster Size:** 10000
 - **Cluster Trace Name:** YH2_sub
-- **Parameter:** Number of Matching Logic Operations Performed.
+- **Parameter:** Total Number of Searches Performed.
 
 ![10000_YH2_sub_matching_logic_operation_count_without_original_approach.png](10000_YH2_sub_matching_logic_operation_count_without_original_approach.png)
 
