@@ -350,7 +350,7 @@ class Logger:
                     write(f"{key} : "
                           f"{self.external_inconsistency_count_per_task[key]}"
                           "\n")
-        
+
         # Internal inconsistency count per task has the extension "ini"
         internal_inconsistency_file_count = str(self.
                                                 output_file_path.

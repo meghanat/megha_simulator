@@ -532,7 +532,8 @@ class GM:
         free_slots_key, partition_dict = partition.peekitem(index=0)
 
         # We randomly pick a non-saturated internal partition
-        key_internal_partition = self.random_obj.choice(list(partition_dict.keys()))
+        key_internal_partition = self.random_obj.choice(
+            list(partition_dict.keys()))
         internal_partition = partition_dict[key_internal_partition]
 
         # Get the GM id to verify with the LM later
