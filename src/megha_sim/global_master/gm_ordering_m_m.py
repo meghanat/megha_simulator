@@ -136,8 +136,8 @@ class GM:
                        if new_partition_data["nodes"][node_id]["CPU"] == 1
                        else False)
 
-            """A partition is actually saturated if each of its worker nodes
-            are busy (i.e. `is_free` is False)"""
+            # A partition is actually saturated if each of its worker nodes
+            # are busy (i.e. `is_free` is False)
             is_saturated = is_saturated and is_free is False
 
             # If the worker node was earlier free but now it is busy
@@ -147,8 +147,8 @@ class GM:
                 old_partition_data["busy_nodes"][node_id] =\
                     old_partition_data["free_nodes"][node_id]
 
-                """Remove the worker node from the `free_nodes`
-                dictionary"""
+                # Remove the worker node from the `free_nodes`
+                # dictionary
                 del(old_partition_data["free_nodes"][node_id])
 
             # If the worker node was earlier busy but now it is free
@@ -158,8 +158,8 @@ class GM:
                 old_partition_data["free_nodes"][node_id] =\
                     old_partition_data["busy_nodes"][node_id]
 
-                """Remove the worker node from the `busy_nodes`
-                dictionary"""
+                # Remove the worker node from the `busy_nodes`
+                # dictionary
                 del(old_partition_data["busy_nodes"][node_id])
 
         return is_saturated, len(old_partition_data["free_nodes"])
@@ -176,8 +176,8 @@ class GM:
         # Move the partition to the `to_partition` dictionary
         to_partition[key] = from_partition[key]
 
-        """Remove the worker node from the `free_nodes`
-        dictionary"""
+        # Remove the worker node from the `free_nodes`
+        # dictionary
         del(from_partition[key])
 
         # Postconditions
@@ -200,12 +200,12 @@ class GM:
         partition[new_free_slots_count][partition_key] = \
             partition[old_free_slots_count][partition_key]
 
-        """Remove the partition from its previous
-        position in the `partitions` dictionary"""
+        # Remove the partition from its previous
+        # position in the `partitions` dictionary
         del(partition[old_free_slots_count][partition_key])
 
-        """Check if there are any remaining partitions with
-        `old_free_slots_count` number of free slots"""
+        # Check if there are any remaining partitions with
+        # `old_free_slots_count` number of free slots
         if len(partition[old_free_slots_count].keys()) == 0:
             del(partition[old_free_slots_count])
 
