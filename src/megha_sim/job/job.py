@@ -47,6 +47,9 @@ class Job(object):
         self.gm: Optional[GM] = None
         self.completion_time: float = -1.
 
+        self.vals = [int(float(i)) for i in job_args[3:]]
+        self.ideal_completion_time = max(self.vals)
+
         # IF the job's start_time has never been seen before
         if self.start_time not in self.job_start_tstamps:
             # Add it to the dict of start time stamps

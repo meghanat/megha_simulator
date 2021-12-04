@@ -98,6 +98,10 @@ class Logger:
         self.matching_logic_op_task_measurements: Dict[str, MatchingOps] = \
             dict()
 
+        # For job optimization
+        self.queuingDelay = dict()
+        self.all_job_ct = dict()
+
         self.internal_inconsistency_count_per_task: Dict[str, int] = dict()
         self.external_inconsistency_count_per_task: Dict[str, int] = dict()
 
@@ -148,6 +152,19 @@ class Logger:
                 self.data_points["task_end_event"] += 1
             elif event_name == "LaunchOnNodeEvent":
                 self.data_points["launch_on_node_event"] += 1
+                vals = msg.split(" , ")
+                job_id = int(vals[2])
+                task_id = int(vals[3])
+                current_time = float(vals[0])
+                start_time = float(vals[-1])
+                task_qd = current_time - start_time
+
+                assert task_qd>=0, "Task_qd is negative"
+                
+                if(job_id not in self.queuingDelay):
+                    self.queuingDelay[job_id] = {}
+                self.queuingDelay[job_id][task_id] = task_qd
+
             elif event_name == "InternalInconsistencyEvent":
                 self.data_points["internal_inconsistency_event"] += 1
                 job_id_task_id = msg.split(" , ")[2]
@@ -173,6 +190,11 @@ class Logger:
                 self.data_points["job_arrival_event"] += 1
             elif event_name == CLUSTER_SATURATED_MSG:
                 self.data_points["cluster_saturated_event"] += 1
+            elif event_name == "UpdateStatusForGM":
+                vals = msg.split(" , ")
+                job_id = int(vals[2])
+                job_ct = float(vals[3])
+                self.all_job_ct[job_id] = job_ct
 
     def integrity(self) -> None:
         """Add a message at the end of the statistics file to mark \
@@ -373,7 +395,25 @@ class Logger:
                 count = (self.matching_logic_op_task_measurements[key]
                          ["workers_searched"])
                 fHandler.write(f"{key} : {count}\n")
+        
+        with open("queuing_delay.txt", "w") as f:
+            all_qds = []
 
+            for job in self.queuingDelay:
+                sort__job = sorted(self.queuingDelay[job].items(), key=lambda x: x[0])
+                for task in sort__job:
+                    all_qds.append(task[1])
+
+            f.write(str(all_qds))
+        
+        with open("job_completion_time.txt", "w") as f:
+            sort__job_ct = []
+            # print(self.all_job_ct)
+
+            for job_id in sorted(self.all_job_ct.keys()):
+                sort__job_ct.append(self.all_job_ct[job_id])
+
+            f.write(str(sort__job_ct))
 
 class SimulatorLogger:
     """This class is to define and create instances of the logging class."""
