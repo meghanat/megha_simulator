@@ -159,8 +159,8 @@ class Logger:
                 start_time = float(vals[-1])
                 task_qd = current_time - start_time
 
-                assert task_qd>=0, "Task_qd is negative"
-                
+                assert task_qd >= 0, "Task_qd is negative"
+
                 if(job_id not in self.queuingDelay):
                     self.queuingDelay[job_id] = {}
                 self.queuingDelay[job_id][task_id] = task_qd
@@ -395,17 +395,19 @@ class Logger:
                 count = (self.matching_logic_op_task_measurements[key]
                          ["workers_searched"])
                 fHandler.write(f"{key} : {count}\n")
-        
+
         with open("queuing_delay.txt", "w") as f:
             all_qds = []
 
             for job in self.queuingDelay:
-                sort__job = sorted(self.queuingDelay[job].items(), key=lambda x: x[0])
+                sort__job = sorted(
+                    self.queuingDelay[job].items(),
+                    key=lambda x: x[0])
                 for task in sort__job:
                     all_qds.append(task[1])
 
             f.write(str(all_qds))
-        
+
         with open("job_completion_time.txt", "w") as f:
             sort__job_ct = []
             # print(self.all_job_ct)
@@ -414,6 +416,7 @@ class Logger:
                 sort__job_ct.append(self.all_job_ct[job_id])
 
             f.write(str(sort__job_ct))
+
 
 class SimulatorLogger:
     """This class is to define and create instances of the logging class."""
