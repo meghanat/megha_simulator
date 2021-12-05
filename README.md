@@ -16,6 +16,13 @@
 ## About
 A simple simulator for the Megha Federated Scheduling Framework. This simulator enables comparison with other frameworks such as Sparrow, Eagle and Pigeon for which simulators already exist.
 
+## Links to Simulators of Other Scheduling Frameworks
+| S. No. | Name of Scheduler |            Simulator URL            |
+|:------:|:-----------------:|:-----------------------------------:|
+|   1.   |      Sparrow      | [Click Here](https://github.com/epfl-labos/eagle) |
+|   2.   |       Eagle       | [Click Here](https://github.com/epfl-labos/eagle) |
+|   3.   |       Pigeon      |    [Click Here](https://github.com/r5by/pigeon)   |
+
 ## Setting up your Environment
 
 1. Add the ```megha_sim``` folder to your ```PYTHONPATH``` environment variable by following steps:
