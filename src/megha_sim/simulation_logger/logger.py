@@ -98,7 +98,7 @@ class Logger:
         self.matching_logic_op_task_measurements: Dict[str, MatchingOps] = \
             dict()
 
-        # For job optimization
+        # For job optimisation
         self.queuingDelay = dict()
         self.all_job_ct = dict()
 
