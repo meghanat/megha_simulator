@@ -274,7 +274,7 @@ class GM:
                                 f"{(job.completion_time - job.start_time) - job.ideal_completion_time}")
                             assert ((job.completion_time - job.start_time)
                                     ) >= 0, "jct-st is negative"
-                            assert ((job.completion_time - job.start_time) - \
+                            assert ((job.completion_time - job.start_time) -
                                     job.ideal_completion_time) >= 0, "delay is negative"
 
                             simulator_utils.globals.jobs_completed.append(job)
@@ -299,9 +299,11 @@ class GM:
                 # Remove job from list and add to front of job_queue
                 self.job_queue.insert(0, self.jobs_scheduled.pop(index))
                 # Sort by total number of tasks remaining
-                self.job_queue.sort(key=lambda x: x.num_tasks - len(x.completed_tasks))
+                self.job_queue.sort(
+                    key=lambda x: x.num_tasks - len(x.completed_tasks))
                 # self.job_queue = sorted(
-                #     self.job_queue, key=lambda x: x.num_tasks - len(x.completed_tasks))
+                # self.job_queue, key=lambda x: x.num_tasks -
+                # len(x.completed_tasks))
                 break
 
     def __get_node(self, GM_id: str, LM_id: str, node_id: str) \
@@ -650,6 +652,6 @@ class GM:
         # Sort by least number of remaining tasks first
         self.job_queue.sort(key=lambda x: x.num_tasks - len(x.completed_tasks))
         # self.job_queue = sorted(self.job_queue,
-        #                         key=lambda x: x.num_tasks - len(x.completed_tasks))
+        # key=lambda x: x.num_tasks - len(x.completed_tasks))
         if(len(self.job_queue) == 1):  # first job
             self.schedule_tasks(current_time)
