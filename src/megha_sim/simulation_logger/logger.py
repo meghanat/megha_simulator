@@ -445,8 +445,8 @@ class Logger:
                            "Task Queuing Delay,"
                            "Task End Time On Node\n")
             f.write(HEADER_LINE)
-            for job_id in sorted(self.queuing_delay.keys()):
-                for task_id in sorted(self.queuing_delay[job_id].keys()):
+            for job_id in sorted(self.queuing_delay.keys(), key=int):
+                for task_id in sorted(self.queuing_delay[job_id].keys(), key=int):
                     task_info = self.queuing_delay[job_id][task_id]
                     TASK_LINE = (f"{job_id},"
                                  f"{task_id},"
