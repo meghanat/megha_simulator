@@ -13,6 +13,7 @@ from typing_extensions import TypedDict
 from simulation_logger.msg_list import (MATCHING_LOGIC_MSG,
                                         MATCHING_LOGIC_REPARTITION_MSG,
                                         CLUSTER_SATURATED_MSG)
+from simulator_utils.values import NETWORK_DELAY
 
 
 class TColors():
@@ -49,6 +50,21 @@ class DataPoints(TypedDict):
     aperiodic_lm_update_event: int
     job_arrival_event: int
     cluster_saturated_event: int
+
+
+class TaskInfo(TypedDict):
+    """
+    Store the information about the jobs.
+
+    Args:
+        TypedDict (TypedDict): The `TypedDict` base class.
+    """
+    job_arrival_time: float  # Job Arrival Time
+    task_launch_time: float  # Task Launch Time (launch on node event)
+    task_duration_trace: int  # Task Duration From trace
+    task_duration_gm: float  # Task Duration when GM realizes that task is completed
+    task_queuing_delay: float
+    task_end_time_node: float  # Task end time on node
 
 
 class MatchingOps(TypedDict):
@@ -99,7 +115,7 @@ class Logger:
             dict()
 
         # For job optimisation
-        self.queuingDelay = dict()
+        self.queuing_delay: Dict[str, Dict[str, TaskInfo]] = dict()
         self.all_job_ct = dict()
 
         self.internal_inconsistency_count_per_task: Dict[str, int] = dict()
@@ -150,20 +166,39 @@ class Logger:
 
             if event_name == "TaskEndEvent":
                 self.data_points["task_end_event"] += 1
+                split_msg = msg.split(" , ")
+                task_end_time_node = float(split_msg[0])
+                job_id = split_msg[2]
+                task_id = split_msg[3]
+                self.queuing_delay[job_id][task_id]["task_end_time_node"] = \
+                    task_end_time_node
+                self.queuing_delay[job_id][task_id]["task_duration_gm"] = \
+                    (task_end_time_node + 2 * NETWORK_DELAY) - \
+                    self.queuing_delay[job_id][task_id]["job_arrival_time"]
+
             elif event_name == "LaunchOnNodeEvent":
                 self.data_points["launch_on_node_event"] += 1
                 vals = msg.split(" , ")
-                job_id = int(vals[2])
-                task_id = int(vals[3])
-                current_time = float(vals[0])
+                current_time = float(vals[0])  # This is the task lauch time
+                job_id = vals[2]
+                task_id = vals[3]
+                # Task duration as per the trace dataset
+                duration = int(vals[-2])
+                # Job start time is the job arrival time
                 start_time = float(vals[-1])
                 task_qd = current_time - start_time
 
                 assert task_qd >= 0, "Task_qd is negative"
 
-                if(job_id not in self.queuingDelay):
-                    self.queuingDelay[job_id] = {}
-                self.queuingDelay[job_id][task_id] = task_qd
+                if job_id not in self.queuing_delay:
+                    self.queuing_delay[job_id] = dict()
+                self.queuing_delay[job_id][task_id] = TaskInfo(
+                    job_arrival_time=start_time,
+                    task_launch_time=current_time,
+                    task_duration_trace=duration,
+                    task_duration_gm=0,
+                    task_queuing_delay=task_qd,  # task_qd
+                    task_end_time_node=0)
 
             elif event_name == "InternalInconsistencyEvent":
                 self.data_points["internal_inconsistency_event"] += 1
@@ -396,17 +431,32 @@ class Logger:
                          ["workers_searched"])
                 fHandler.write(f"{key} : {count}\n")
 
-        with open("queuing_delay.txt", "w") as f:
-            all_qds = []
-
-            for job in self.queuingDelay:
-                sort__job = sorted(
-                    self.queuingDelay[job].items(),
-                    key=lambda x: x[0])
-                for task in sort__job:
-                    all_qds.append(task[1])
-
-            f.write(str(all_qds))
+        JOBS_INFO_FILE_NAME = str(self.output_file_path
+                                  .resolve()).split('.')[0] + \
+            "_jobs_info.csv"
+        with open(JOBS_INFO_FILE_NAME, "w") as f:
+            HEADER_LINE = ("Job ID,"
+                           "Task ID,"
+                           "Job Arrival Time,"
+                           "Task Launch Time,"  # launch on node event
+                           "Task Duration (Trace),"  # From trace
+                           # When GM realizes that task is completed
+                           "Task Duration (GM),"
+                           "Task Queuing Delay,"
+                           "Task End Time On Node")
+            f.write(HEADER_LINE)
+            for job_id in sorted(self.queuing_delay.keys()):
+                for task_id in sorted(self.queuing_delay[job_id].keys()):
+                    task_info = self.queuing_delay[job_id][task_id]
+                    TASK_LINE = (f"{job_id},"
+                                 f"{task_id},"
+                                 f"{task_info['job_arrival_time']},"
+                                 f"{task_info['task_launch_time']},"
+                                 f"{task_info['task_duration_trace']},"
+                                 f"{task_info['task_duration_gm']},"
+                                 f"{task_info['task_queuing_delay']},"
+                                 f"{task_info['task_end_time_node']}")
+                    f.write(TASK_LINE)
 
         with open("job_completion_time.txt", "w") as f:
             sort__job_ct = []
