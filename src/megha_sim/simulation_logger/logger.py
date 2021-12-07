@@ -443,7 +443,7 @@ class Logger:
                            # When GM realizes that task is completed
                            "Task Duration (GM),"
                            "Task Queuing Delay,"
-                           "Task End Time On Node")
+                           "Task End Time On Node\n")
             f.write(HEADER_LINE)
             for job_id in sorted(self.queuing_delay.keys()):
                 for task_id in sorted(self.queuing_delay[job_id].keys()):
@@ -455,7 +455,7 @@ class Logger:
                                  f"{task_info['task_duration_trace']},"
                                  f"{task_info['task_duration_gm']},"
                                  f"{task_info['task_queuing_delay']},"
-                                 f"{task_info['task_end_time_node']}")
+                                 f"{task_info['task_end_time_node']}\n")
                     f.write(TASK_LINE)
 
         with open("job_completion_time.txt", "w") as f:
