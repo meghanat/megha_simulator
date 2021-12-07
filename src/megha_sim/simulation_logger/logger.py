@@ -437,11 +437,12 @@ class SimulatorLogger:
         if SimulatorLogger.is_setup is False:
             # print(f'{datetime.now().strftime("record-%Y-%m-%d-%H-%M-%S.log")}'
             # ' Hello')
-            self.LOG_FILE_NAME = (self.LOG_FILE_PATH /
-                                  datetime.now().strftime("record-%Y-%m-%d-"
-                                                          "%H-%M-%S.log"))
+            SimulatorLogger.LOG_FILE_NAME = (SimulatorLogger.LOG_FILE_PATH /
+                                             datetime.now()
+                                             .strftime("record-%Y-%m-%d-"
+                                                       "%H-%M-%S.log"))
             SimulatorLogger.logger_obj = Logger(
-                output_file_path=self.LOG_FILE_NAME)
+                output_file_path=SimulatorLogger.LOG_FILE_NAME)
 
             # Makes sure that the root logger is setup only once
             SimulatorLogger.is_setup = True
