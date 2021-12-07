@@ -422,6 +422,7 @@ class SimulatorLogger:
     """This class is to define and create instances of the logging class."""
 
     LOG_FILE_PATH = Path("logs")
+    LOG_FILE_NAME = None
 
     is_setup: bool = False
     logger_obj: Optional[Logger] = None
