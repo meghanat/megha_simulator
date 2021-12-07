@@ -458,7 +458,10 @@ class Logger:
                                  f"{task_info['task_end_time_node']}\n")
                     f.write(TASK_LINE)
 
-        with open("job_completion_time.txt", "w") as f:
+        JOB_COMPLETION_TIME_FILE_NAME = str(self.output_file_path
+                                            .resolve()).split('.')[0] + \
+            "_job_completion_time.txt"
+        with open(JOB_COMPLETION_TIME_FILE_NAME, "w") as f:
             sort__job_ct = []
             # print(self.all_job_ct)
 
