@@ -62,7 +62,7 @@ class TaskInfo(TypedDict):
     job_arrival_time: float  # Job Arrival Time
     task_launch_time: float  # Task Launch Time (launch on node event)
     task_duration_trace: int  # Task Duration From trace
-    task_duration_gm: float  # Task Duration when GM realizes that task is completed
+    task_duration_gm: float  # Task Duration when GM realises that task is completed
     task_queuing_delay: float
     task_end_time_node: float  # Task end time on node
 
@@ -179,7 +179,7 @@ class Logger:
             elif event_name == "LaunchOnNodeEvent":
                 self.data_points["launch_on_node_event"] += 1
                 vals = msg.split(" , ")
-                current_time = float(vals[0])  # This is the task lauch time
+                current_time = float(vals[0])  # This is the task launch time
                 job_id = vals[2]
                 task_id = vals[3]
                 # Task duration as per the trace dataset
@@ -440,7 +440,7 @@ class Logger:
                            "Job Arrival Time,"
                            "Task Launch Time,"  # launch on node event
                            "Task Duration (Trace),"  # From trace
-                           # When GM realizes that task is completed
+                           # When GM realises that task is completed
                            "Task Duration (GM),"
                            "Task Queuing Delay,"
                            "Task End Time On Node\n")
