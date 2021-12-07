@@ -125,8 +125,11 @@ class TaskEndEvent(Event):
             current_time (float): The current time in the simulation.
         """
         # Log the TaskEndEvent
-        logger.info(f"{current_time} , TaskEndEvent , {self.task.job.job_id}"
-                    f"_{self.task.task_id}_{self.task.duration}")
+        logger.info(f"{current_time} , "
+                    "TaskEndEvent , "
+                    f"{self.task.job.job_id} , "
+                    f"{self.task.task_id} , "
+                    f"{self.task.duration}")
         self.task.end_time = current_time
         if self.task.lm is not None:
             self.task.lm.task_completed(self.task)
@@ -180,6 +183,7 @@ class LaunchOnNodeEvent(Event):
             f"{self.task.task_id} , "
             f"{self.task.partition_id} , "
             f"{self.task.node_id} , "
+            f"{self.task.duration} , "
             f"{self.task.job.start_time}")
 
         # launching requires network transfer
