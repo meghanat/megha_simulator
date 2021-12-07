@@ -73,17 +73,3 @@ if __name__ == "__main__":
 
     logger.integrity()
     logger.flush()
-
-    assert SimulatorLogger.LOG_FILE_NAME is not None
-    JOBS_INFO_FILE_NAME = str(SimulatorLogger.LOG_FILE_NAME
-                                             .resolve()).split('.')[0] + \
-        "_jobs_info.txt"
-
-    with open(JOBS_INFO_FILE_NAME, "w") as jobs_file:
-        for job in simulator_globals.jobs_completed:
-            JOB_LINE: Final = (f"{job.job_id} {job.end_time - job.start_time} "
-                               f"{job.ideal_completion_time} "
-                               f"{job.end_time - job.start_time - job.ideal_completion_time}\n")
-
-            # <job_id> <job_completion_time> <ideal_job_completion_time> <delay>
-            jobs_file.write(JOB_LINE)
