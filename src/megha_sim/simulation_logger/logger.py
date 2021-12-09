@@ -460,15 +460,14 @@ class Logger:
 
         JOB_COMPLETION_TIME_FILE_NAME = str(self.output_file_path
                                             .resolve()).split('.')[0] + \
-            "_job_completion_time.txt"
+            "_job_completion_time.csv"
         with open(JOB_COMPLETION_TIME_FILE_NAME, "w") as f:
-            sort__job_ct = []
+            HEADER_LINE = "Job ID,Job Completion Time"
+            f.write(HEADER_LINE)
             # print(self.all_job_ct)
-
             for job_id in sorted(self.all_job_ct.keys()):
-                sort__job_ct.append(self.all_job_ct[job_id])
-
-            f.write(str(sort__job_ct))
+                JOB_LINE = f"{job_id},{self.all_job_ct[job_id]}"
+                f.write(JOB_LINE)
 
 
 class SimulatorLogger:
