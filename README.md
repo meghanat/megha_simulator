@@ -31,7 +31,7 @@ A simple simulator for the Megha Federated Scheduling Framework. This simulator 
         ```bash
         $ pwd
         ```
-        - This will give you the complete path to the ```megha_sim``` folder your are currently in.
+        - This will give you the complete path to the ```megha_sim``` folder you are currently in.
         - Make sure to save this path returned, as it will be needed in the next steps
     1. Open your system's ```.bash_profile``` file using the command,
        ```bash
@@ -115,12 +115,12 @@ $ scp -r <local_system_file_path> <ssh_username>@<server_ip_address>:<destinatio
 $ scp -r <ssh_username>@<server_ip_address>:<source_path_on_server> <local_system_file_path>
 ```
 
-> **NOTE:** The `-r` flag is used to send the files recursively. This flag can be ignore if only a single file is to be downloaded.
+> **NOTE:** The `-r` flag is used to send the files recursively. This flag can be ignored if only a single file is to be downloaded.
 
 ### Points to Keep In Mind When Using `scp` on a Windows Machine
-- To use the `scp` command on you Windows system, use the Git BASH terminal. This should be installed on your Windows machine, if you have Git installed.
+- To use the `scp` command on your Windows system, use the Git BASH terminal. This should be installed on your Windows machine, if you have Git installed.
   - To install Git, follow the instructions on the [Git website](https://git-scm.com/downloads).
-- Also to use the `scp` command on you Windows system, you need to have the SSH client installed on your Windows machine. To install the SSH client, follow the instructions on the [SSH website](https://www.ssh.com/download/).
+- Also to use the `scp` command on your Windows system, you need to have the SSH client installed on your Windows machine. To install the SSH client, follow the instructions on the [SSH website](https://www.ssh.com/download/).
 - When specifying the Windows path for the `scp` command, use the `/` instead of the `\` character.
   - Also mention the Windows path within double quotes.
 
