@@ -87,3 +87,8 @@ builtins
 initialized
 iterable
 kwargs
+namedtuple
+parameterized
+getitem
+KeyError
+PartitionKey
