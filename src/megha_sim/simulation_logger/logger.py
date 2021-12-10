@@ -463,7 +463,7 @@ class Logger:
                                             .resolve()).split('.')[0] + \
             "_job_completion_time.csv"
         with open(JOB_COMPLETION_TIME_FILE_NAME, "w") as f:
-            HEADER_LINE = "Job ID,Job Completion Time"
+            HEADER_LINE = "Job ID,Job Completion Time\n"
             f.write(HEADER_LINE)
             # print(self.all_job_ct)
             for job_id in sorted(self.all_job_ct.keys()):
