@@ -467,7 +467,7 @@ class Logger:
             f.write(HEADER_LINE)
             # print(self.all_job_ct)
             for job_id in sorted(self.all_job_ct.keys()):
-                JOB_LINE = f"{job_id},{self.all_job_ct[job_id]}"
+                JOB_LINE = f"{job_id},{self.all_job_ct[job_id]}\n"
                 f.write(JOB_LINE)
 
 
