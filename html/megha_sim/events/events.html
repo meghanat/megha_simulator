@@ -112,7 +112,7 @@ class Event(object):
             NotImplementedError: This exception is raised when attempting to \
             call `run` on an instance of the `Event` class.
         &#34;&#34;&#34;
-        &#34;&#34;&#34;Return any events that should be added to the queue.&#34;&#34;&#34;
+        # Return any events that should be added to the queue.
         raise NotImplementedError(
             &#34;The run() method must be implemented by each class subclassing &#34;
             &#34;Event&#34;)
@@ -162,8 +162,12 @@ class TaskEndEvent(Event):
         Args:
             current_time (float): The current time in the simulation.
         &#34;&#34;&#34;
-        print(current_time, &#34;,&#34;, &#34;TaskEndEvent&#34;, &#34;,&#34;, self.task.job.job_id +
-              &#34;_&#34; + self.task.task_id + &#34;___&#34;, self.task.duration)
+        # Log the TaskEndEvent
+        logger.info(f&#34;{current_time} , &#34;
+                    &#34;TaskEndEvent , &#34;
+                    f&#34;{self.task.job.job_id} , &#34;
+                    f&#34;{self.task.task_id} , &#34;
+                    f&#34;{self.task.duration}&#34;)
         self.task.end_time = current_time
         if self.task.lm is not None:
             self.task.lm.task_completed(self.task)
@@ -209,18 +213,17 @@ class LaunchOnNodeEvent(Event):
         assert self.task.partition_id is not None
         assert self.task.node_id is not None
 
-        print(
-            current_time,
-            &#34;,&#34;,
-            &#34;LaunchOnNodeEvent&#34;,
-            &#34;,&#34;,
-            self.task.job.job_id +
-            &#34;_&#34; +
-            self.task.task_id,
-            &#34;,&#34;,
-            self.task.partition_id +
-            &#34;_&#34; +
-            self.task.node_id)
+        # Log the LaunchOnNodeEvent
+        logger.info(
+            f&#34;{current_time} , &#34;
+            &#34;LaunchOnNodeEvent , &#34;
+            f&#34;{self.task.job.job_id} , &#34;
+            f&#34;{self.task.task_id} , &#34;
+            f&#34;{self.task.partition_id} , &#34;
+            f&#34;{self.task.node_id} , &#34;
+            f&#34;{self.task.duration} , &#34;
+            f&#34;{self.task.job.start_time}&#34;)
+
         # launching requires network transfer
         self.simulation.event_queue.put(
             (current_time + self.task.duration, TaskEndEvent(self.task)))
@@ -268,28 +271,33 @@ class InconsistencyEvent(Event):
         Args:
             current_time (float): The current time in the simulation.
         &#34;&#34;&#34;
+        task_id: str = self.task.task_id
+        job_id: str = self.task.job.job_id
+        job_id_task_id = f&#34;{job_id}_{task_id}&#34;
         if(self.type == InconsistencyType.INTERNAL_INCONSISTENCY):
-            &#34;&#34;&#34;Internal inconsistency -&gt; failed to place task on an internal
-               partition.&#34;&#34;&#34;
-            print(current_time, &#34;,&#34;, &#34;InternalInconsistencyEvent&#34;)
+            # Internal inconsistency -&gt; failed to place task on an internal
+            # partition.
+            logger.info(f&#34;{current_time} , InternalInconsistencyEvent , &#34;
+                        f&#34;{job_id_task_id}&#34;)
         else:
-            &#34;&#34;&#34;External inconsistency -&gt; failed to place task on an external
-               partition.&#34;&#34;&#34;
-            print(current_time, &#34;,&#34;, &#34;ExternalInconsistencyEvent&#34;)
+            # External inconsistency -&gt; failed to place task on an external
+            # partition.
+            logger.info(f&#34;{current_time} , ExternalInconsistencyEvent , &#34;
+                        f&#34;{job_id_task_id}&#34;)
+
         self.task.scheduled = False
 
-        &#34;&#34;&#34;
-        If the job is already moved to jobs_scheduled queue, then we need to
-        remove it and add it to the front of the queue.
-        &#34;&#34;&#34;
+        # If the job is already moved to jobs_scheduled queue, then we need to
+        # remove it and add it to the front of the queue.
         self.gm.unschedule_job(self.task.job)
         self.simulation.event_queue.put(
             (current_time, LMUpdateEvent(
                 self.simulation, periodic=False, gm=self.gm)))
 
+##########################################################################
+##########################################################################
 
-##########################################################################
-##########################################################################
+
 # created when GM finds a match in the external or internal partition
 class MatchFoundEvent(Event):
     &#34;&#34;&#34;
@@ -338,16 +346,13 @@ class MatchFoundEvent(Event):
         Args:
             current_time (float): The current time in the simulation.
         &#34;&#34;&#34;
-        # add network delay to LM, similar to sparrow:
-        print(current_time,
-              &#34;,&#34;,
-              &#34;MatchFoundEvent&#34;,
-              &#34;,&#34;,
-              self.task.job.job_id + &#34;_&#34; + self.task.task_id,
-              &#34;,&#34;,
-              self.gm.GM_id + &#34;_&#34; + self.node_id,
-              &#34;_&#34;,
-              self.lm.LM_id)
+        # Log the MatchFoundEvent
+        logger.info(f&#34;{current_time} , &#34;
+                    &#34;MatchFoundEvent , &#34;
+                    f&#34;{self.task.job.job_id}_{self.task.task_id} , &#34;
+                    f&#34;{self.gm.GM_id}_{self.lm.LM_id}_{self.node_id}&#34;)
+
+        # Add network delay to LM, similar to sparrow:
         self.lm.verify_request(
             self.task,
             self.gm,
@@ -411,7 +416,8 @@ class LMUpdateEvent(Event):
         Args:
             current_time (float): The current time in the simulation.
         &#34;&#34;&#34;
-        print(current_time, &#34;,&#34;, &#34;LMUpdateEvent&#34;, &#34;,&#34;, self.periodic)
+        # Log the LMUpdateEvent
+        logger.info(f&#34;{current_time} , LMUpdateEvent , {self.periodic}&#34;)
 
         # update only that GM which is inconsistent or if the GM&#39;s task has
         # completed
@@ -421,16 +427,26 @@ class LMUpdateEvent(Event):
                                          &#34; None!&#34;)
             self.gm.update_status(current_time + NETWORK_DELAY)
 
-        if self.periodic and not self.simulation.event_queue.empty():
+        if self.periodic:  # and not self.simulation.event_queue.empty():
+            are_jobs_done = True
             for GM_id in self.simulation.gms:
-                self.simulation.gms[GM_id].update_status(
-                    current_time + NETWORK_DELAY)
-            &#34;&#34;&#34;
-            Add the next heartbeat, network delay added because intuitively
-            we do not include it in the LM_HEARTBEAT INTERVAL.
-            &#34;&#34;&#34;
-            self.simulation.event_queue.put(
-                (current_time + LM_HEARTBEAT_INTERVAL + NETWORK_DELAY, self))
+                if len(self.simulation.gms[GM_id].job_queue) &gt; 0:
+                    are_jobs_done = False
+                    break
+
+            if (not are_jobs_done or not self.simulation.event_queue.empty()):
+                # print(&#34;\nLOOK HERE:&#34;, self.simulation.event_queue.empty(),
+                #       &#34;\n&#34;)
+                for GM_id in self.simulation.gms:
+                    self.simulation.gms[GM_id].update_status(
+                        current_time + NETWORK_DELAY)
+
+                # Add the next heartbeat, network delay added because
+                # intuitively we do not include it in the LM_HEARTBEAT
+                # INTERVAL.
+                self.simulation.event_queue.put(
+                    (current_time + LM_HEARTBEAT_INTERVAL + NETWORK_DELAY,
+                     self))
 
 ##########################################################################
 ##########################################################################
@@ -487,10 +503,16 @@ class JobArrival(Event):
         Args:
             current_time (float): The current time in the simulation.
         &#34;&#34;&#34;
+        # Log the JobArrival
+        logger.info(f&#34;{current_time} , JobArrival , {self.task_distribution}&#34;)
+
         new_events: List[Tuple[float, Event]] = []
         # needs to be assigned to a GM - RR
-        JobArrival.gm_counter = (
-            JobArrival.gm_counter % self.simulation.NUM_GMS + 1)
+        # JobArrival.gm_counter = (
+        #     JobArrival.gm_counter % self.simulation.NUM_GMS + 1)
+        JobArrival.gm_counter = (len(self.job.tasks) %
+                                 self.simulation.NUM_GMS) + 1
+
         # assigned_GM --&gt; Handle to the global master object
         assigned_GM: GM = self.simulation.gms[str(JobArrival.gm_counter)]
         # GM needs to add job to its queue
@@ -585,7 +607,7 @@ create an instance of the <code><a title="megha_sim.events.events.Event" href="#
             NotImplementedError: This exception is raised when attempting to \
             call `run` on an instance of the `Event` class.
         &#34;&#34;&#34;
-        &#34;&#34;&#34;Return any events that should be added to the queue.&#34;&#34;&#34;
+        # Return any events that should be added to the queue.
         raise NotImplementedError(
             &#34;The run() method must be implemented by each class subclassing &#34;
             &#34;Event&#34;)</code></pre>
@@ -632,7 +654,7 @@ call <code>run</code> on an instance of the <code><a title="megha_sim.events.eve
         NotImplementedError: This exception is raised when attempting to \
         call `run` on an instance of the `Event` class.
     &#34;&#34;&#34;
-    &#34;&#34;&#34;Return any events that should be added to the queue.&#34;&#34;&#34;
+    # Return any events that should be added to the queue.
     raise NotImplementedError(
         &#34;The run() method must be implemented by each class subclassing &#34;
         &#34;Event&#34;)</code></pre>
@@ -708,20 +730,24 @@ into.</dd>
         Args:
             current_time (float): The current time in the simulation.
         &#34;&#34;&#34;
+        task_id: str = self.task.task_id
+        job_id: str = self.task.job.job_id
+        job_id_task_id = f&#34;{job_id}_{task_id}&#34;
         if(self.type == InconsistencyType.INTERNAL_INCONSISTENCY):
-            &#34;&#34;&#34;Internal inconsistency -&gt; failed to place task on an internal
-               partition.&#34;&#34;&#34;
-            print(current_time, &#34;,&#34;, &#34;InternalInconsistencyEvent&#34;)
+            # Internal inconsistency -&gt; failed to place task on an internal
+            # partition.
+            logger.info(f&#34;{current_time} , InternalInconsistencyEvent , &#34;
+                        f&#34;{job_id_task_id}&#34;)
         else:
-            &#34;&#34;&#34;External inconsistency -&gt; failed to place task on an external
-               partition.&#34;&#34;&#34;
-            print(current_time, &#34;,&#34;, &#34;ExternalInconsistencyEvent&#34;)
+            # External inconsistency -&gt; failed to place task on an external
+            # partition.
+            logger.info(f&#34;{current_time} , ExternalInconsistencyEvent , &#34;
+                        f&#34;{job_id_task_id}&#34;)
+
         self.task.scheduled = False
 
-        &#34;&#34;&#34;
-        If the job is already moved to jobs_scheduled queue, then we need to
-        remove it and add it to the front of the queue.
-        &#34;&#34;&#34;
+        # If the job is already moved to jobs_scheduled queue, then we need to
+        # remove it and add it to the front of the queue.
         self.gm.unschedule_job(self.task.job)
         self.simulation.event_queue.put(
             (current_time, LMUpdateEvent(
@@ -759,20 +785,24 @@ Master requesting to place a task on a busy worker node.</p>
     Args:
         current_time (float): The current time in the simulation.
     &#34;&#34;&#34;
+    task_id: str = self.task.task_id
+    job_id: str = self.task.job.job_id
+    job_id_task_id = f&#34;{job_id}_{task_id}&#34;
     if(self.type == InconsistencyType.INTERNAL_INCONSISTENCY):
-        &#34;&#34;&#34;Internal inconsistency -&gt; failed to place task on an internal
-           partition.&#34;&#34;&#34;
-        print(current_time, &#34;,&#34;, &#34;InternalInconsistencyEvent&#34;)
+        # Internal inconsistency -&gt; failed to place task on an internal
+        # partition.
+        logger.info(f&#34;{current_time} , InternalInconsistencyEvent , &#34;
+                    f&#34;{job_id_task_id}&#34;)
     else:
-        &#34;&#34;&#34;External inconsistency -&gt; failed to place task on an external
-           partition.&#34;&#34;&#34;
-        print(current_time, &#34;,&#34;, &#34;ExternalInconsistencyEvent&#34;)
+        # External inconsistency -&gt; failed to place task on an external
+        # partition.
+        logger.info(f&#34;{current_time} , ExternalInconsistencyEvent , &#34;
+                    f&#34;{job_id_task_id}&#34;)
+
     self.task.scheduled = False
 
-    &#34;&#34;&#34;
-    If the job is already moved to jobs_scheduled queue, then we need to
-    remove it and add it to the front of the queue.
-    &#34;&#34;&#34;
+    # If the job is already moved to jobs_scheduled queue, then we need to
+    # remove it and add it to the front of the queue.
     self.gm.unschedule_job(self.task.job)
     self.simulation.event_queue.put(
         (current_time, LMUpdateEvent(
@@ -860,10 +890,16 @@ distribution of the duration/run-time of the tasks of the Job</dd>
         Args:
             current_time (float): The current time in the simulation.
         &#34;&#34;&#34;
+        # Log the JobArrival
+        logger.info(f&#34;{current_time} , JobArrival , {self.task_distribution}&#34;)
+
         new_events: List[Tuple[float, Event]] = []
         # needs to be assigned to a GM - RR
-        JobArrival.gm_counter = (
-            JobArrival.gm_counter % self.simulation.NUM_GMS + 1)
+        # JobArrival.gm_counter = (
+        #     JobArrival.gm_counter % self.simulation.NUM_GMS + 1)
+        JobArrival.gm_counter = (len(self.job.tasks) %
+                                 self.simulation.NUM_GMS) + 1
+
         # assigned_GM --&gt; Handle to the global master object
         assigned_GM: GM = self.simulation.gms[str(JobArrival.gm_counter)]
         # GM needs to add job to its queue
@@ -913,10 +949,16 @@ distribution of the duration/run-time of the tasks of the Job</dd>
     Args:
         current_time (float): The current time in the simulation.
     &#34;&#34;&#34;
+    # Log the JobArrival
+    logger.info(f&#34;{current_time} , JobArrival , {self.task_distribution}&#34;)
+
     new_events: List[Tuple[float, Event]] = []
     # needs to be assigned to a GM - RR
-    JobArrival.gm_counter = (
-        JobArrival.gm_counter % self.simulation.NUM_GMS + 1)
+    # JobArrival.gm_counter = (
+    #     JobArrival.gm_counter % self.simulation.NUM_GMS + 1)
+    JobArrival.gm_counter = (len(self.job.tasks) %
+                             self.simulation.NUM_GMS) + 1
+
     # assigned_GM --&gt; Handle to the global master object
     assigned_GM: GM = self.simulation.gms[str(JobArrival.gm_counter)]
     # GM needs to add job to its queue
@@ -1015,7 +1057,8 @@ updated about the state of the cluster. Defaults to None.</dd>
         Args:
             current_time (float): The current time in the simulation.
         &#34;&#34;&#34;
-        print(current_time, &#34;,&#34;, &#34;LMUpdateEvent&#34;, &#34;,&#34;, self.periodic)
+        # Log the LMUpdateEvent
+        logger.info(f&#34;{current_time} , LMUpdateEvent , {self.periodic}&#34;)
 
         # update only that GM which is inconsistent or if the GM&#39;s task has
         # completed
@@ -1025,16 +1068,26 @@ updated about the state of the cluster. Defaults to None.</dd>
                                          &#34; None!&#34;)
             self.gm.update_status(current_time + NETWORK_DELAY)
 
-        if self.periodic and not self.simulation.event_queue.empty():
+        if self.periodic:  # and not self.simulation.event_queue.empty():
+            are_jobs_done = True
             for GM_id in self.simulation.gms:
-                self.simulation.gms[GM_id].update_status(
-                    current_time + NETWORK_DELAY)
-            &#34;&#34;&#34;
-            Add the next heartbeat, network delay added because intuitively
-            we do not include it in the LM_HEARTBEAT INTERVAL.
-            &#34;&#34;&#34;
-            self.simulation.event_queue.put(
-                (current_time + LM_HEARTBEAT_INTERVAL + NETWORK_DELAY, self))</code></pre>
+                if len(self.simulation.gms[GM_id].job_queue) &gt; 0:
+                    are_jobs_done = False
+                    break
+
+            if (not are_jobs_done or not self.simulation.event_queue.empty()):
+                # print(&#34;\nLOOK HERE:&#34;, self.simulation.event_queue.empty(),
+                #       &#34;\n&#34;)
+                for GM_id in self.simulation.gms:
+                    self.simulation.gms[GM_id].update_status(
+                        current_time + NETWORK_DELAY)
+
+                # Add the next heartbeat, network delay added because
+                # intuitively we do not include it in the LM_HEARTBEAT
+                # INTERVAL.
+                self.simulation.event_queue.put(
+                    (current_time + LM_HEARTBEAT_INTERVAL + NETWORK_DELAY,
+                     self))</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -1076,7 +1129,8 @@ time.</p>
     Args:
         current_time (float): The current time in the simulation.
     &#34;&#34;&#34;
-    print(current_time, &#34;,&#34;, &#34;LMUpdateEvent&#34;, &#34;,&#34;, self.periodic)
+    # Log the LMUpdateEvent
+    logger.info(f&#34;{current_time} , LMUpdateEvent , {self.periodic}&#34;)
 
     # update only that GM which is inconsistent or if the GM&#39;s task has
     # completed
@@ -1086,16 +1140,26 @@ time.</p>
                                      &#34; None!&#34;)
         self.gm.update_status(current_time + NETWORK_DELAY)
 
-    if self.periodic and not self.simulation.event_queue.empty():
+    if self.periodic:  # and not self.simulation.event_queue.empty():
+        are_jobs_done = True
         for GM_id in self.simulation.gms:
-            self.simulation.gms[GM_id].update_status(
-                current_time + NETWORK_DELAY)
-        &#34;&#34;&#34;
-        Add the next heartbeat, network delay added because intuitively
-        we do not include it in the LM_HEARTBEAT INTERVAL.
-        &#34;&#34;&#34;
-        self.simulation.event_queue.put(
-            (current_time + LM_HEARTBEAT_INTERVAL + NETWORK_DELAY, self))</code></pre>
+            if len(self.simulation.gms[GM_id].job_queue) &gt; 0:
+                are_jobs_done = False
+                break
+
+        if (not are_jobs_done or not self.simulation.event_queue.empty()):
+            # print(&#34;\nLOOK HERE:&#34;, self.simulation.event_queue.empty(),
+            #       &#34;\n&#34;)
+            for GM_id in self.simulation.gms:
+                self.simulation.gms[GM_id].update_status(
+                    current_time + NETWORK_DELAY)
+
+            # Add the next heartbeat, network delay added because
+            # intuitively we do not include it in the LM_HEARTBEAT
+            # INTERVAL.
+            self.simulation.event_queue.put(
+                (current_time + LM_HEARTBEAT_INTERVAL + NETWORK_DELAY,
+                 self))</code></pre>
 </details>
 </dd>
 </dl>
@@ -1164,18 +1228,17 @@ into.</dd>
         assert self.task.partition_id is not None
         assert self.task.node_id is not None
 
-        print(
-            current_time,
-            &#34;,&#34;,
-            &#34;LaunchOnNodeEvent&#34;,
-            &#34;,&#34;,
-            self.task.job.job_id +
-            &#34;_&#34; +
-            self.task.task_id,
-            &#34;,&#34;,
-            self.task.partition_id +
-            &#34;_&#34; +
-            self.task.node_id)
+        # Log the LaunchOnNodeEvent
+        logger.info(
+            f&#34;{current_time} , &#34;
+            &#34;LaunchOnNodeEvent , &#34;
+            f&#34;{self.task.job.job_id} , &#34;
+            f&#34;{self.task.task_id} , &#34;
+            f&#34;{self.task.partition_id} , &#34;
+            f&#34;{self.task.node_id} , &#34;
+            f&#34;{self.task.duration} , &#34;
+            f&#34;{self.task.job.start_time}&#34;)
+
         # launching requires network transfer
         self.simulation.event_queue.put(
             (current_time + self.task.duration, TaskEndEvent(self.task)))</code></pre>
@@ -1215,18 +1278,17 @@ node.</p>
     assert self.task.partition_id is not None
     assert self.task.node_id is not None
 
-    print(
-        current_time,
-        &#34;,&#34;,
-        &#34;LaunchOnNodeEvent&#34;,
-        &#34;,&#34;,
-        self.task.job.job_id +
-        &#34;_&#34; +
-        self.task.task_id,
-        &#34;,&#34;,
-        self.task.partition_id +
-        &#34;_&#34; +
-        self.task.node_id)
+    # Log the LaunchOnNodeEvent
+    logger.info(
+        f&#34;{current_time} , &#34;
+        &#34;LaunchOnNodeEvent , &#34;
+        f&#34;{self.task.job.job_id} , &#34;
+        f&#34;{self.task.task_id} , &#34;
+        f&#34;{self.task.partition_id} , &#34;
+        f&#34;{self.task.node_id} , &#34;
+        f&#34;{self.task.duration} , &#34;
+        f&#34;{self.task.job.start_time}&#34;)
+
     # launching requires network transfer
     self.simulation.event_queue.put(
         (current_time + self.task.duration, TaskEndEvent(self.task)))</code></pre>
@@ -1315,16 +1377,13 @@ belongs to. Defaults to None.</dd>
         Args:
             current_time (float): The current time in the simulation.
         &#34;&#34;&#34;
-        # add network delay to LM, similar to sparrow:
-        print(current_time,
-              &#34;,&#34;,
-              &#34;MatchFoundEvent&#34;,
-              &#34;,&#34;,
-              self.task.job.job_id + &#34;_&#34; + self.task.task_id,
-              &#34;,&#34;,
-              self.gm.GM_id + &#34;_&#34; + self.node_id,
-              &#34;_&#34;,
-              self.lm.LM_id)
+        # Log the MatchFoundEvent
+        logger.info(f&#34;{current_time} , &#34;
+                    &#34;MatchFoundEvent , &#34;
+                    f&#34;{self.task.job.job_id}_{self.task.task_id} , &#34;
+                    f&#34;{self.gm.GM_id}_{self.lm.LM_id}_{self.node_id}&#34;)
+
+        # Add network delay to LM, similar to sparrow:
         self.lm.verify_request(
             self.task,
             self.gm,
@@ -1365,16 +1424,13 @@ verify if the worker node is indeed free to take up a task.</p>
     Args:
         current_time (float): The current time in the simulation.
     &#34;&#34;&#34;
-    # add network delay to LM, similar to sparrow:
-    print(current_time,
-          &#34;,&#34;,
-          &#34;MatchFoundEvent&#34;,
-          &#34;,&#34;,
-          self.task.job.job_id + &#34;_&#34; + self.task.task_id,
-          &#34;,&#34;,
-          self.gm.GM_id + &#34;_&#34; + self.node_id,
-          &#34;_&#34;,
-          self.lm.LM_id)
+    # Log the MatchFoundEvent
+    logger.info(f&#34;{current_time} , &#34;
+                &#34;MatchFoundEvent , &#34;
+                f&#34;{self.task.job.job_id}_{self.task.task_id} , &#34;
+                f&#34;{self.gm.GM_id}_{self.lm.LM_id}_{self.node_id}&#34;)
+
+    # Add network delay to LM, similar to sparrow:
     self.lm.verify_request(
         self.task,
         self.gm,
@@ -1449,8 +1505,12 @@ completed.</dd>
         Args:
             current_time (float): The current time in the simulation.
         &#34;&#34;&#34;
-        print(current_time, &#34;,&#34;, &#34;TaskEndEvent&#34;, &#34;,&#34;, self.task.job.job_id +
-              &#34;_&#34; + self.task.task_id + &#34;___&#34;, self.task.duration)
+        # Log the TaskEndEvent
+        logger.info(f&#34;{current_time} , &#34;
+                    &#34;TaskEndEvent , &#34;
+                    f&#34;{self.task.job.job_id} , &#34;
+                    f&#34;{self.task.task_id} , &#34;
+                    f&#34;{self.task.duration}&#34;)
         self.task.end_time = current_time
         if self.task.lm is not None:
             self.task.lm.task_completed(self.task)</code></pre>
@@ -1482,8 +1542,12 @@ completed.</dd>
     Args:
         current_time (float): The current time in the simulation.
     &#34;&#34;&#34;
-    print(current_time, &#34;,&#34;, &#34;TaskEndEvent&#34;, &#34;,&#34;, self.task.job.job_id +
-          &#34;_&#34; + self.task.task_id + &#34;___&#34;, self.task.duration)
+    # Log the TaskEndEvent
+    logger.info(f&#34;{current_time} , &#34;
+                &#34;TaskEndEvent , &#34;
+                f&#34;{self.task.job.job_id} , &#34;
+                f&#34;{self.task.task_id} , &#34;
+                f&#34;{self.task.duration}&#34;)
     self.task.end_time = current_time
     if self.task.lm is not None:
         self.task.lm.task_completed(self.task)</code></pre>

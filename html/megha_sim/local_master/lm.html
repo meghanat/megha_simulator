@@ -27,6 +27,7 @@
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">import json
+from typing import List
 
 from simulator_utils.values import NETWORK_DELAY, InconsistencyType
 from events import LaunchOnNodeEvent, InconsistencyEvent, LMUpdateEvent
@@ -46,7 +47,7 @@ class LM(object):
         for GM_id in self.simulation.gms:
             self.tasks_completed[GM_id] = []
 
-    def get_status(self, gm):
+    def get_status(self, gm) -&gt; List[str]:
         # &#34;&#34;&#34;
         # One we have sent the response, the LM clears the list of tasks the LM
         # has completed for the particular GM.
@@ -73,15 +74,16 @@ class LM(object):
 
         # check if repartitioning
         if(external_partition is not None):
-            if(self.LM_config[&#34;partitions&#34;][external_partition][&#34;nodes&#34;][node_id][&#34;CPU&#34;] == 1):
+            if (self.LM_config[&#34;partitions&#34;][external_partition][&#34;nodes&#34;]
+                    [node_id][&#34;CPU&#34;] == 1):
                 self.LM_config[&#34;partitions&#34;][external_partition][&#34;nodes&#34;][node_id][&#34;CPU&#34;] = 0
                 task.node_id = node_id
                 task.partition_id = external_partition
                 task.lm = self
                 task.GM_id = gm.GM_id
 
-        # network delay as the request has to be sent from the LM to the
-        # selected worker node
+                # network delay as the request has to be sent from the LM to
+                # the selected worker node
                 self.simulation.event_queue.put(
                     (current_time + NETWORK_DELAY, LaunchOnNodeEvent(task, self.simulation)))
                 return True
@@ -90,7 +92,8 @@ class LM(object):
                     task, gm, InconsistencyType.EXTERNAL_INCONSISTENCY, self.simulation)))
         # internal partition
         else:
-            if(self.LM_config[&#34;partitions&#34;][gm.GM_id][&#34;nodes&#34;][node_id][&#34;CPU&#34;] == 1):
+            if (self.LM_config[&#34;partitions&#34;][gm.GM_id][&#34;nodes&#34;][node_id][&#34;CPU&#34;]
+                    == 1):
                 # allot node to task
                 self.LM_config[&#34;partitions&#34;][gm.GM_id][&#34;nodes&#34;][node_id][&#34;CPU&#34;] = 0
                 task.node_id = node_id
@@ -98,7 +101,9 @@ class LM(object):
                 task.GM_id = gm.GM_id
                 task.lm = self
                 self.simulation.event_queue.put(
-                    (current_time + NETWORK_DELAY, LaunchOnNodeEvent(task, self.simulation)))
+                    (current_time + NETWORK_DELAY,
+                     LaunchOnNodeEvent(task,
+                                       self.simulation)))
             else:  # if inconsistent
                 self.simulation.event_queue.put((current_time, InconsistencyEvent(
                     task, gm, InconsistencyType.INTERNAL_INCONSISTENCY, self.simulation)))
@@ -107,12 +112,26 @@ class LM(object):
         # reclaim resources
         self.LM_config[&#34;partitions&#34;][task.partition_id][&#34;nodes&#34;][task.node_id][&#34;CPU&#34;] = 1
 
-    # Append the details of the task that was just completed to the list of tasks completed for the corresponding GM that sent it
+        # Append the details of the task that was just completed to the list of
+        # tasks completed for the corresponding GM that sent it
         # note GM_id used here, not partition, in case of repartitioning
         self.tasks_completed[task.GM_id].append(
             (task.job.job_id, task.task_id))
-        self.simulation.event_queue.put((task.end_time + NETWORK_DELAY, LMUpdateEvent(
-            self.simulation, periodic=False, gm=self.simulation.gms[task.GM_id])))</code></pre>
+        self.simulation.event_queue.put((task.end_time + NETWORK_DELAY,
+                                         LMUpdateEvent(
+                                             self.simulation, periodic=False,
+                                             gm=self.simulation.gms[task.GM_id])))
+
+    def get_free_cpu_count_per_gm(self):
+        free_cpu_count_per_gm = dict()
+        for gm_id in self.LM_config[&#34;partitions&#34;].keys():
+            for node_id in self.LM_config[&#34;partitions&#34;][gm_id][&#34;nodes&#34;].keys():
+                free_cpu_count_per_gm[gm_id] = (free_cpu_count_per_gm.get(
+                    gm_id, 0) +
+                    self.LM_config[&#34;partitions&#34;][gm_id][&#34;nodes&#34;][node_id]
+                    [&#34;CPU&#34;])
+
+        return free_cpu_count_per_gm</code></pre>
 </details>
 </section>
 <section>
@@ -148,7 +167,7 @@ class LM(object):
         for GM_id in self.simulation.gms:
             self.tasks_completed[GM_id] = []
 
-    def get_status(self, gm):
+    def get_status(self, gm) -&gt; List[str]:
         # &#34;&#34;&#34;
         # One we have sent the response, the LM clears the list of tasks the LM
         # has completed for the particular GM.
@@ -175,15 +194,16 @@ class LM(object):
 
         # check if repartitioning
         if(external_partition is not None):
-            if(self.LM_config[&#34;partitions&#34;][external_partition][&#34;nodes&#34;][node_id][&#34;CPU&#34;] == 1):
+            if (self.LM_config[&#34;partitions&#34;][external_partition][&#34;nodes&#34;]
+                    [node_id][&#34;CPU&#34;] == 1):
                 self.LM_config[&#34;partitions&#34;][external_partition][&#34;nodes&#34;][node_id][&#34;CPU&#34;] = 0
                 task.node_id = node_id
                 task.partition_id = external_partition
                 task.lm = self
                 task.GM_id = gm.GM_id
 
-        # network delay as the request has to be sent from the LM to the
-        # selected worker node
+                # network delay as the request has to be sent from the LM to
+                # the selected worker node
                 self.simulation.event_queue.put(
                     (current_time + NETWORK_DELAY, LaunchOnNodeEvent(task, self.simulation)))
                 return True
@@ -192,7 +212,8 @@ class LM(object):
                     task, gm, InconsistencyType.EXTERNAL_INCONSISTENCY, self.simulation)))
         # internal partition
         else:
-            if(self.LM_config[&#34;partitions&#34;][gm.GM_id][&#34;nodes&#34;][node_id][&#34;CPU&#34;] == 1):
+            if (self.LM_config[&#34;partitions&#34;][gm.GM_id][&#34;nodes&#34;][node_id][&#34;CPU&#34;]
+                    == 1):
                 # allot node to task
                 self.LM_config[&#34;partitions&#34;][gm.GM_id][&#34;nodes&#34;][node_id][&#34;CPU&#34;] = 0
                 task.node_id = node_id
@@ -200,7 +221,9 @@ class LM(object):
                 task.GM_id = gm.GM_id
                 task.lm = self
                 self.simulation.event_queue.put(
-                    (current_time + NETWORK_DELAY, LaunchOnNodeEvent(task, self.simulation)))
+                    (current_time + NETWORK_DELAY,
+                     LaunchOnNodeEvent(task,
+                                       self.simulation)))
             else:  # if inconsistent
                 self.simulation.event_queue.put((current_time, InconsistencyEvent(
                     task, gm, InconsistencyType.INTERNAL_INCONSISTENCY, self.simulation)))
@@ -209,17 +232,31 @@ class LM(object):
         # reclaim resources
         self.LM_config[&#34;partitions&#34;][task.partition_id][&#34;nodes&#34;][task.node_id][&#34;CPU&#34;] = 1
 
-    # Append the details of the task that was just completed to the list of tasks completed for the corresponding GM that sent it
+        # Append the details of the task that was just completed to the list of
+        # tasks completed for the corresponding GM that sent it
         # note GM_id used here, not partition, in case of repartitioning
         self.tasks_completed[task.GM_id].append(
             (task.job.job_id, task.task_id))
-        self.simulation.event_queue.put((task.end_time + NETWORK_DELAY, LMUpdateEvent(
-            self.simulation, periodic=False, gm=self.simulation.gms[task.GM_id])))</code></pre>
+        self.simulation.event_queue.put((task.end_time + NETWORK_DELAY,
+                                         LMUpdateEvent(
+                                             self.simulation, periodic=False,
+                                             gm=self.simulation.gms[task.GM_id])))
+
+    def get_free_cpu_count_per_gm(self):
+        free_cpu_count_per_gm = dict()
+        for gm_id in self.LM_config[&#34;partitions&#34;].keys():
+            for node_id in self.LM_config[&#34;partitions&#34;][gm_id][&#34;nodes&#34;].keys():
+                free_cpu_count_per_gm[gm_id] = (free_cpu_count_per_gm.get(
+                    gm_id, 0) +
+                    self.LM_config[&#34;partitions&#34;][gm_id][&#34;nodes&#34;][node_id]
+                    [&#34;CPU&#34;])
+
+        return free_cpu_count_per_gm</code></pre>
 </details>
 <h3>Methods</h3>
 <dl>
-<dt id="megha_sim.local_master.lm.LM.get_status"><code class="name flex">
-<span>def <span class="ident">get_status</span></span>(<span>self, gm)</span>
+<dt id="megha_sim.local_master.lm.LM.get_free_cpu_count_per_gm"><code class="name flex">
+<span>def <span class="ident">get_free_cpu_count_per_gm</span></span>(<span>self)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -227,7 +264,28 @@ class LM(object):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def get_status(self, gm):
+<pre><code class="python">def get_free_cpu_count_per_gm(self):
+    free_cpu_count_per_gm = dict()
+    for gm_id in self.LM_config[&#34;partitions&#34;].keys():
+        for node_id in self.LM_config[&#34;partitions&#34;][gm_id][&#34;nodes&#34;].keys():
+            free_cpu_count_per_gm[gm_id] = (free_cpu_count_per_gm.get(
+                gm_id, 0) +
+                self.LM_config[&#34;partitions&#34;][gm_id][&#34;nodes&#34;][node_id]
+                [&#34;CPU&#34;])
+
+    return free_cpu_count_per_gm</code></pre>
+</details>
+</dd>
+<dt id="megha_sim.local_master.lm.LM.get_status"><code class="name flex">
+<span>def <span class="ident">get_status</span></span>(<span>self, gm) ‑> List[str]</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_status(self, gm) -&gt; List[str]:
     # &#34;&#34;&#34;
     # One we have sent the response, the LM clears the list of tasks the LM
     # has completed for the particular GM.
@@ -257,12 +315,15 @@ class LM(object):
     # reclaim resources
     self.LM_config[&#34;partitions&#34;][task.partition_id][&#34;nodes&#34;][task.node_id][&#34;CPU&#34;] = 1
 
-# Append the details of the task that was just completed to the list of tasks completed for the corresponding GM that sent it
+    # Append the details of the task that was just completed to the list of
+    # tasks completed for the corresponding GM that sent it
     # note GM_id used here, not partition, in case of repartitioning
     self.tasks_completed[task.GM_id].append(
         (task.job.job_id, task.task_id))
-    self.simulation.event_queue.put((task.end_time + NETWORK_DELAY, LMUpdateEvent(
-        self.simulation, periodic=False, gm=self.simulation.gms[task.GM_id])))</code></pre>
+    self.simulation.event_queue.put((task.end_time + NETWORK_DELAY,
+                                     LMUpdateEvent(
+                                         self.simulation, periodic=False,
+                                         gm=self.simulation.gms[task.GM_id])))</code></pre>
 </details>
 </dd>
 <dt id="megha_sim.local_master.lm.LM.verify_request"><code class="name flex">
@@ -284,15 +345,16 @@ class LM(object):
 
     # check if repartitioning
     if(external_partition is not None):
-        if(self.LM_config[&#34;partitions&#34;][external_partition][&#34;nodes&#34;][node_id][&#34;CPU&#34;] == 1):
+        if (self.LM_config[&#34;partitions&#34;][external_partition][&#34;nodes&#34;]
+                [node_id][&#34;CPU&#34;] == 1):
             self.LM_config[&#34;partitions&#34;][external_partition][&#34;nodes&#34;][node_id][&#34;CPU&#34;] = 0
             task.node_id = node_id
             task.partition_id = external_partition
             task.lm = self
             task.GM_id = gm.GM_id
 
-    # network delay as the request has to be sent from the LM to the
-    # selected worker node
+            # network delay as the request has to be sent from the LM to
+            # the selected worker node
             self.simulation.event_queue.put(
                 (current_time + NETWORK_DELAY, LaunchOnNodeEvent(task, self.simulation)))
             return True
@@ -301,7 +363,8 @@ class LM(object):
                 task, gm, InconsistencyType.EXTERNAL_INCONSISTENCY, self.simulation)))
     # internal partition
     else:
-        if(self.LM_config[&#34;partitions&#34;][gm.GM_id][&#34;nodes&#34;][node_id][&#34;CPU&#34;] == 1):
+        if (self.LM_config[&#34;partitions&#34;][gm.GM_id][&#34;nodes&#34;][node_id][&#34;CPU&#34;]
+                == 1):
             # allot node to task
             self.LM_config[&#34;partitions&#34;][gm.GM_id][&#34;nodes&#34;][node_id][&#34;CPU&#34;] = 0
             task.node_id = node_id
@@ -309,7 +372,9 @@ class LM(object):
             task.GM_id = gm.GM_id
             task.lm = self
             self.simulation.event_queue.put(
-                (current_time + NETWORK_DELAY, LaunchOnNodeEvent(task, self.simulation)))
+                (current_time + NETWORK_DELAY,
+                 LaunchOnNodeEvent(task,
+                                   self.simulation)))
         else:  # if inconsistent
             self.simulation.event_queue.put((current_time, InconsistencyEvent(
                 task, gm, InconsistencyType.INTERNAL_INCONSISTENCY, self.simulation)))</code></pre>
@@ -336,6 +401,7 @@ class LM(object):
 <li>
 <h4><code><a title="megha_sim.local_master.lm.LM" href="#megha_sim.local_master.lm.LM">LM</a></code></h4>
 <ul class="">
+<li><code><a title="megha_sim.local_master.lm.LM.get_free_cpu_count_per_gm" href="#megha_sim.local_master.lm.LM.get_free_cpu_count_per_gm">get_free_cpu_count_per_gm</a></code></li>
 <li><code><a title="megha_sim.local_master.lm.LM.get_status" href="#megha_sim.local_master.lm.LM.get_status">get_status</a></code></li>
 <li><code><a title="megha_sim.local_master.lm.LM.task_completed" href="#megha_sim.local_master.lm.LM.task_completed">task_completed</a></code></li>
 <li><code><a title="megha_sim.local_master.lm.LM.verify_request" href="#megha_sim.local_master.lm.LM.verify_request">verify_request</a></code></li>

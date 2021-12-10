@@ -23,8 +23,8 @@
 </header>
 <section id="section-intro">
 <p>Create the logging object to use in the different components of the simulator.</p>
-<p>The logging object is used to log different events in the scheduler in a
-detailed and uniform manner for analysis.</p>
+<p>The logging object is used to log different events and analyse them at runtime, as the simulator executes.
+This provides a detailed and uniform manner for analysis, without generating large log files.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -32,47 +32,514 @@ detailed and uniform manner for analysis.</p>
 <pre><code class="python">&#34;&#34;&#34;
 Create the logging object to use in the different components of the simulator.
 
-The logging object is used to log different events in the scheduler in a
-detailed and uniform manner for analysis.
+The logging object is used to log different events and analyse them at \
+runtime, as the simulator executes.
+This provides a detailed and uniform manner for analysis, without generating \
+large log files.
 &#34;&#34;&#34;
-import logging
 from pathlib import Path
 from datetime import datetime
+from typing import Dict, List, Optional
+from typing_extensions import TypedDict
+from simulation_logger.msg_list import (MATCHING_LOGIC_MSG,
+                                        MATCHING_LOGIC_REPARTITION_MSG,
+                                        CLUSTER_SATURATED_MSG)
+from simulator_utils.values import NETWORK_DELAY
+
+
+class TColors():
+    &#34;&#34;&#34;Class for declaring common ANSI escape sequences.&#34;&#34;&#34;
+
+    HEADER = &#39;\033[95m&#39;
+    OK_BLUE = &#39;\033[94m&#39;
+    OK_CYAN = &#39;\033[96m&#39;
+    OK_GREEN = &#39;\033[92m&#39;
+    SUCCESS = &#39;\033[92;1m&#39;
+    WARNING = &#39;\033[93m&#39;
+    FAIL = &#39;\033[91m&#39;
+    END = &#39;\033[0m&#39;
+    BOLD = &#39;\033[1m&#39;
+    UNDERLINE = &#39;\033[4m&#39;
+
+
+class DataPoints(TypedDict):
+    &#34;&#34;&#34;
+    Store the statistics of the data points measured.
+
+    Args:
+        TypedDict (TypedDict): The `TypedDict` base class.
+    &#34;&#34;&#34;
+
+    internal_matching_logic_op: int
+    external_matching_logic_op: int
+    task_end_event: int
+    launch_on_node_event: int
+    internal_inconsistency_event: int
+    external_inconsistency_event: int
+    match_found_event: int
+    periodic_lm_update_event: int
+    aperiodic_lm_update_event: int
+    job_arrival_event: int
+    cluster_saturated_event: int
+
+
+class TaskInfo(TypedDict):
+    &#34;&#34;&#34;
+    Store the information about the jobs.
+
+    Args:
+        TypedDict (TypedDict): The `TypedDict` base class.
+    &#34;&#34;&#34;
+    job_arrival_time: float  # Job Arrival Time
+    task_launch_time: float  # Task Launch Time (launch on node event)
+    task_duration_trace: int  # Task Duration From trace
+    task_duration_gm: float  # Task Duration when GM realises that task is completed
+    task_queuing_delay: float
+    task_end_time_node: float  # Task end time on node
+
+
+class MatchingOps(TypedDict):
+    &#34;&#34;&#34;
+    Format and types of each of the parameters measured per task.
+
+    Args:
+        NamedTuple (NamedTuple): Typed version of collections.namedtuple().
+    &#34;&#34;&#34;
+
+    job_id: str
+    task_id: str
+    workers_searched: int
+
+
+class Logger:
+    &#34;&#34;&#34;Class to analyses the generate logs during runtime.&#34;&#34;&#34;
+
+    LINE_SEPARATOR = &#34;\n\n&#34; + &#34;-&#34; * 80 + &#34;\n\n&#34;
+    INTEGRITY_MESSAGE = (&#34;The simulator statistics generated, are from a &#34;
+                         &#34;successful run of the simulator over the trace &#34;
+                         &#34;dataset.\n&#34;)
+
+    def __init__(self, output_file_path: Path) -&gt; None:
+        &#34;&#34;&#34;
+        Initialise the object.
+
+        Args:
+            output_file_path (Path): The path to the output file.
+        &#34;&#34;&#34;
+        self.output_file_path = output_file_path
+
+        self.has_integrity: bool = False
+        self.metadata_text: List[str] = list()
+        self.data_points: DataPoints = \
+            DataPoints(internal_matching_logic_op=0,
+                       external_matching_logic_op=0,
+                       task_end_event=0,
+                       launch_on_node_event=0,
+                       internal_inconsistency_event=0,
+                       external_inconsistency_event=0,
+                       match_found_event=0,
+                       periodic_lm_update_event=0,
+                       aperiodic_lm_update_event=0,
+                       job_arrival_event=0,
+                       cluster_saturated_event=0)
+        self.matching_logic_op_task_measurements: Dict[str, MatchingOps] = \
+            dict()
+
+        # For job optimisation
+        self.queuing_delay: Dict[str, Dict[str, TaskInfo]] = dict()
+        self.all_job_ct = dict()
+
+        self.internal_inconsistency_count_per_task: Dict[str, int] = dict()
+        self.external_inconsistency_count_per_task: Dict[str, int] = dict()
+
+        # Create the output file to test the path and create the empty file.
+        # Any path related errors will now be generated at the beginning of
+        # simulation rather than at the end of the simulation.
+        with open(self.output_file_path, &#34;w&#34;) as _:
+            ...
+
+    def metadata(self, msg: str) -&gt; None:
+        &#34;&#34;&#34;
+        Store the data to write out into the top of the generated statistics \
+        file.
+
+        Args:
+            msg (str): The metadata message to write.
+        &#34;&#34;&#34;
+        self.metadata_text.append(msg)
+
+    def info(self, msg: str) -&gt; None:
+        &#34;&#34;&#34;
+        Take the log message and run the analysis on it.
+
+        Args:
+            msg (str): The log message to run analysis on.
+        &#34;&#34;&#34;
+        if msg.startswith(MATCHING_LOGIC_MSG) is True or \
+           msg.startswith(MATCHING_LOGIC_REPARTITION_MSG) \
+           is True:
+            if msg.startswith(MATCHING_LOGIC_MSG) is True:
+                self.data_points[&#34;internal_matching_logic_op&#34;] += 1
+            else:
+                self.data_points[&#34;external_matching_logic_op&#34;] += 1
+            matching_logic_details: List[str] = (msg
+                                                 .split(&#34; , &#34;)[1:])
+            self.__parse_matching_logic_stmt(matching_logic_details)
+        else:  # The logging message if for an event in the simulator
+            # Get the event name from the log message
+            event_name = msg.split(&#34; , &#34;)[1]
+
+            # String with the format x_y
+            # Where,
+            # x is the job ID
+            # y is the task ID
+            job_id_task_id: str
+
+            if event_name == &#34;TaskEndEvent&#34;:
+                self.data_points[&#34;task_end_event&#34;] += 1
+                split_msg = msg.split(&#34; , &#34;)
+                task_end_time_node = float(split_msg[0])
+                job_id = split_msg[2]
+                task_id = split_msg[3]
+                self.queuing_delay[job_id][task_id][&#34;task_end_time_node&#34;] = \
+                    task_end_time_node
+                self.queuing_delay[job_id][task_id][&#34;task_duration_gm&#34;] = \
+                    (task_end_time_node + 2 * NETWORK_DELAY) - \
+                    self.queuing_delay[job_id][task_id][&#34;job_arrival_time&#34;]
+
+            elif event_name == &#34;LaunchOnNodeEvent&#34;:
+                self.data_points[&#34;launch_on_node_event&#34;] += 1
+                vals = msg.split(&#34; , &#34;)
+                current_time = float(vals[0])  # This is the task launch time
+                job_id = vals[2]
+                task_id = vals[3]
+                # Task duration as per the trace dataset
+                duration = int(vals[-2])
+                # Job start time is the job arrival time
+                start_time = float(vals[-1])
+                task_qd = current_time - start_time
+
+                assert task_qd &gt;= 0, &#34;Task_qd is negative&#34;
+
+                if job_id not in self.queuing_delay:
+                    self.queuing_delay[job_id] = dict()
+                self.queuing_delay[job_id][task_id] = TaskInfo(
+                    job_arrival_time=start_time,
+                    task_launch_time=current_time,
+                    task_duration_trace=duration,
+                    task_duration_gm=0,
+                    task_queuing_delay=task_qd,  # task_qd
+                    task_end_time_node=0)
+
+            elif event_name == &#34;InternalInconsistencyEvent&#34;:
+                self.data_points[&#34;internal_inconsistency_event&#34;] += 1
+                job_id_task_id = msg.split(&#34; , &#34;)[2]
+                self.internal_inconsistency_count_per_task[job_id_task_id] = \
+                    self.internal_inconsistency_count_per_task.get(
+                        job_id_task_id, 0) + 1
+            elif event_name == &#34;ExternalInconsistencyEvent&#34;:
+                self.data_points[&#34;external_inconsistency_event&#34;] += 1
+                job_id_task_id = msg.split(&#34; , &#34;)[2]
+                self.external_inconsistency_count_per_task[job_id_task_id] = \
+                    self.external_inconsistency_count_per_task.get(
+                        job_id_task_id, 0) + 1
+            elif event_name == &#34;MatchFoundEvent&#34;:
+                self.data_points[&#34;match_found_event&#34;] += 1
+            elif event_name == &#34;LMUpdateEvent&#34;:
+                is_periodic = msg.split(&#34; , &#34;)[2]
+                assert is_periodic == &#34;True&#34; or is_periodic == &#34;False&#34;
+                if is_periodic == &#34;True&#34;:
+                    self.data_points[&#34;periodic_lm_update_event&#34;] += 1
+                else:
+                    self.data_points[&#34;aperiodic_lm_update_event&#34;] += 1
+            elif event_name == &#34;JobArrival&#34;:
+                self.data_points[&#34;job_arrival_event&#34;] += 1
+            elif event_name == CLUSTER_SATURATED_MSG:
+                self.data_points[&#34;cluster_saturated_event&#34;] += 1
+            elif event_name == &#34;UpdateStatusForGM&#34;:
+                vals = msg.split(&#34; , &#34;)
+                job_id = int(vals[2])
+                job_ct = float(vals[3])
+                self.all_job_ct[job_id] = job_ct
+
+    def integrity(self) -&gt; None:
+        &#34;&#34;&#34;Add a message at the end of the statistics file to mark \
+        successful completion of the log analysis.&#34;&#34;&#34;
+        self.has_integrity = True
+
+    def __parse_matching_logic_stmt(self, matching_logic_details: List[str]):
+        &#34;&#34;&#34;
+        Parse and record details of the Matching Logic logs.
+
+        Args:
+            matching_logic_details (List[str]): List of the details to record.
+        &#34;&#34;&#34;
+        job_id, task_id = matching_logic_details[1].split(&#34;_&#34;)
+        key: str = f&#34;{job_id}_{task_id}&#34;
+
+        assert len(matching_logic_details[1].split(&#34;_&#34;)) == 2
+
+        if key in self.matching_logic_op_task_measurements:
+            self.matching_logic_op_task_measurements[key][&#34;workers_searched&#34;] \
+                += 1
+        else:
+            self.matching_logic_op_task_measurements[key] = \
+                MatchingOps(job_id=job_id,
+                            task_id=task_id,
+                            workers_searched=1)
+
+    def flush(self):
+        &#34;&#34;&#34;
+        Write out the generated statistics into an output file.
+
+        The output file is given by `self.output_file_path`.
+        &#34;&#34;&#34;
+
+        # Check if all the tasks have been accounted for
+        if (len(self.matching_logic_op_task_measurements) !=
+                self.data_points[&#34;task_end_event&#34;]):
+            self.has_integrity = False
+
+        # ---
+
+        sanity_matching_logic_ops_count: int = 0
+        for key in self.matching_logic_op_task_measurements:
+            sanity_matching_logic_ops_count += \
+                (self.matching_logic_op_task_measurements[key]
+                 [&#34;workers_searched&#34;])
+
+        # Check if all the &#39;matching logic&#39; events have been accounted for
+        measured_matching_logic_ops_count = (self.data_points
+                                             [&#34;external_matching_logic_op&#34;] +
+                                             self.data_points
+                                             [&#34;internal_matching_logic_op&#34;])
+        if (measured_matching_logic_ops_count !=
+                sanity_matching_logic_ops_count):
+            self.has_integrity = False
+
+        # ---
+
+        # Write all the metadata, statistics and other data into the output
+        # file
+        with open(self.output_file_path, &#34;w&#34;) as file_handler:
+            for line in self.metadata_text:
+                file_handler.write(f&#34;{line}\n&#34;)
+
+            file_handler.write(Logger.LINE_SEPARATOR)
+
+            for key in self.data_points:
+                file_handler.write(f&#34;{TColors.BOLD}{key}{TColors.END} :&#34;
+                                   f&#34; {self.data_points[key]}\n&#34;)
+
+            file_handler.write(Logger.LINE_SEPARATOR)
+
+            file_handler.write(&#34;Derived attributes:\n&#34;)
+
+            # Write out derived measurements.
+            # 1. Total inconsistency events
+            total_inconsistency_event = (self.data_points
+                                         [&#39;internal_inconsistency_event&#39;] +
+                                         self.data_points
+                                         [&#39;external_inconsistency_event&#39;])
+            file_handler\
+                .write(f&#34;{TColors.BOLD}Total Inconsistency count :&#34;
+                       f&#34;{TColors.END} {total_inconsistency_event}\n&#34;)
+
+            # 2. Total matching logic operations
+            total_matching_logic_op = (self.data_points
+                                       [&#34;external_matching_logic_op&#34;] +
+                                       self.data_points
+                                       [&#34;internal_matching_logic_op&#34;])
+            file_handler\
+                .write(f&#34;{TColors.BOLD}Total matching logic operations :&#34;
+                       f&#34;{TColors.END} {total_matching_logic_op}\n&#34;)
+
+            # 3. Success percentage of matching logic operation
+            total_task_count = len(self.matching_logic_op_task_measurements
+                                   .keys())
+
+            # Function to calculate ratio of free worker searched to
+            # total number of workers searched for a task
+            fraction_of_workers_searched_per_task = \
+                (lambda task_id: 1 /
+                 (self.matching_logic_op_task_measurements
+                  [task_id]
+                  [&#34;workers_searched&#34;]
+                  )
+                 )
+            # Find the average success percentage of finding a worker node
+            # Higher the value = Lesser workers searched to find a free worker
+            # node
+            success_percent = \
+                sum(
+                    map(fraction_of_workers_searched_per_task,
+                        self.matching_logic_op_task_measurements
+                        )
+                ) / total_task_count
+
+            file_handler.write(f&#34;{TColors.BOLD}Percentage ratio of free worker&#34;
+                               f&#34; found to number of workers searched&#34;
+                               f&#34;{TColors.END} = success_percent=&#34;
+                               f&#34;{success_percent:%}\n&#34;)
+
+            # 4. Average number of worker searched per task
+            workers_searched_per_task = \
+                (lambda task_id:
+                 (self.matching_logic_op_task_measurements
+                  [task_id]
+                  [&#34;workers_searched&#34;]
+                  )
+                 )
+            avg_workers_searched_per_task = \
+                sum(
+                    map(workers_searched_per_task,
+                        self.matching_logic_op_task_measurements
+                        )
+                ) / total_task_count
+            file_handler.write(f&#34;{TColors.BOLD}Average number of workers &#34;
+                               f&#34;searched per task ={TColors.END}&#34;
+                               f&#34; {avg_workers_searched_per_task}\n&#34;)
+
+            file_handler.write(Logger.LINE_SEPARATOR)
+
+            file_handler.write(
+                f&#34;{TColors.BOLD}Log sanity checks:{TColors.END}\n\n&#34;)
+
+            if self.has_integrity is True:
+                file_handler.write(Logger.INTEGRITY_MESSAGE)
+                file_handler.write(f&#34;{TColors.SUCCESS}SUCCESS:{TColors.END} &#34;
+                                   &#34;All Matching Logic &#34;
+                                   &#34;Operations have all been successfully &#34;
+                                   &#34;been accounted for!\n&#34;)
+                file_handler.write(f&#34;{TColors.SUCCESS}SUCCESS:{TColors.END} &#34;
+                                   &#34;The measurements have covered all tasks!&#34;
+                                   &#34;\n&#34;)
+            else:
+                file_handler.write(f&#34;{TColors.FAIL}FAILURE:{TColors.END}\n&#34;)
+                file_handler.write(&#34;Matching Logic Operations accounted for &#34;
+                                   f&#34;({measured_matching_logic_ops_count}) != &#34;
+                                   &#34;Sum of all Matching Logic Operations &#34;
+                                   &#34;across all tasks &#34;
+                                   f&#34;({sanity_matching_logic_ops_count})\n&#34;)
+                file_handler\
+                    .write(&#34;Measurements &#34;
+                           f&#34;({len(self.matching_logic_op_task_measurements)})&#34;
+                           &#34; != tasks_completed_count &#34;
+                           f&#34;({self.data_points[&#39;task_end_event&#39;]})\n&#34;)
+
+        # External inconsistency count per task has the extension &#34;exi&#34;
+        external_inconsistency_file_count = str(self.
+                                                output_file_path.
+                                                resolve()).split(&#39;.&#39;)[0] + \
+            &#34;_exi.txt&#34;
+        with open(external_inconsistency_file_count, &#34;w&#34;) as file_handler:
+            for key in self.external_inconsistency_count_per_task:
+                file_handler.\
+                    write(f&#34;{key} : &#34;
+                          f&#34;{self.external_inconsistency_count_per_task[key]}&#34;
+                          &#34;\n&#34;)
+
+        # Internal inconsistency count per task has the extension &#34;ini&#34;
+        internal_inconsistency_file_count = str(self.
+                                                output_file_path.
+                                                resolve()).split(&#39;.&#39;)[0] + \
+            &#34;_ini.txt&#34;
+        with open(internal_inconsistency_file_count, &#34;w&#34;) as file_handler:
+            for key in self.internal_inconsistency_count_per_task:
+                file_handler.\
+                    write(f&#34;{key} : &#34;
+                          f&#34;{self.internal_inconsistency_count_per_task[key]}&#34;
+                          &#34;\n&#34;)
+
+        # Write the worker nodes searched per task into a file
+        workers_searched_file_count = str(self.
+                                          output_file_path.
+                                          resolve()).split(&#39;.&#39;)[0] + \
+            &#34;_workers_searched.txt&#34;
+        with open(workers_searched_file_count, &#34;w&#34;) as fHandler:
+            for key in self.matching_logic_op_task_measurements:
+                count = (self.matching_logic_op_task_measurements[key]
+                         [&#34;workers_searched&#34;])
+                fHandler.write(f&#34;{key} : {count}\n&#34;)
+
+        JOBS_INFO_FILE_NAME = str(self.output_file_path
+                                  .resolve()).split(&#39;.&#39;)[0] + \
+            &#34;_jobs_info.csv&#34;
+        with open(JOBS_INFO_FILE_NAME, &#34;w&#34;) as f:
+            HEADER_LINE = (&#34;Job ID,&#34;
+                           &#34;Task ID,&#34;
+                           &#34;Job Arrival Time,&#34;
+                           &#34;Task Launch Time,&#34;  # launch on node event
+                           &#34;Task Duration (Trace),&#34;  # From trace
+                           # When GM realises that task is completed
+                           &#34;Task Duration (GM),&#34;
+                           &#34;Task Queuing Delay,&#34;
+                           &#34;Task End Time On Node\n&#34;)
+            f.write(HEADER_LINE)
+            for job_id in sorted(self.queuing_delay.keys(), key=int):
+                for task_id in sorted(
+                        self.queuing_delay[job_id].keys(), key=int):
+                    task_info = self.queuing_delay[job_id][task_id]
+                    TASK_LINE = (f&#34;{job_id},&#34;
+                                 f&#34;{task_id},&#34;
+                                 f&#34;{task_info[&#39;job_arrival_time&#39;]},&#34;
+                                 f&#34;{task_info[&#39;task_launch_time&#39;]},&#34;
+                                 f&#34;{task_info[&#39;task_duration_trace&#39;]},&#34;
+                                 f&#34;{task_info[&#39;task_duration_gm&#39;]},&#34;
+                                 f&#34;{task_info[&#39;task_queuing_delay&#39;]},&#34;
+                                 f&#34;{task_info[&#39;task_end_time_node&#39;]}\n&#34;)
+                    f.write(TASK_LINE)
+
+        JOB_COMPLETION_TIME_FILE_NAME = str(self.output_file_path
+                                            .resolve()).split(&#39;.&#39;)[0] + \
+            &#34;_job_completion_time.csv&#34;
+        with open(JOB_COMPLETION_TIME_FILE_NAME, &#34;w&#34;) as f:
+            HEADER_LINE = &#34;Job ID,Job Completion Time&#34;
+            f.write(HEADER_LINE)
+            # print(self.all_job_ct)
+            for job_id in sorted(self.all_job_ct.keys()):
+                JOB_LINE = f&#34;{job_id},{self.all_job_ct[job_id]}\n&#34;
+                f.write(JOB_LINE)
 
 
 class SimulatorLogger:
     &#34;&#34;&#34;This class is to define and create instances of the logging class.&#34;&#34;&#34;
 
     LOG_FILE_PATH = Path(&#34;logs&#34;)
-    LOG_FORMAT = (&#34;%(asctime)s : %(module)s : %(filename)s : %(funcName)s : &#34;
-                  &#34;%(lineno)d : %(levelname)s : %(message)s&#34;)
+    LOG_FILE_NAME = None
 
-    def __init__(self, module_name: str):
+    is_setup: bool = False
+    logger_obj: Optional[Logger] = None
+
+    def __init__(self, _: str):
         &#34;&#34;&#34;
-        Initialise the object with the name of the caller code&#39;s module name.
+        Initialise the object.
 
         Args:
-            module_name (str): Name of the caller code&#39;s module
+            _ (str): This parameter will be removed in a future release.
         &#34;&#34;&#34;
-        self.module_name = module_name
-        self.LOG_FILE_NAME = self.LOG_FILE_PATH / (datetime.now()
-                                                   .strftime(&#34;record-%Y-%m-%d-&#34;
-                                                             &#34;%H-%M-%S.log&#34;))
-        with open(self.LOG_FILE_NAME, &#34;a&#34;):
-            ...
-        logging.basicConfig(filename=self.LOG_FILE_NAME,
-                            format=self.LOG_FORMAT,
-                            # encoding=&#39;utf-8&#39;,  # Only for Python &gt;= 3.9
-                            level=logging.INFO)
+        if SimulatorLogger.is_setup is False:
+            # print(f&#39;{datetime.now().strftime(&#34;record-%Y-%m-%d-%H-%M-%S.log&#34;)}&#39;
+            # &#39; Hello&#39;)
+            SimulatorLogger.LOG_FILE_NAME = (SimulatorLogger.LOG_FILE_PATH /
+                                             datetime.now()
+                                             .strftime(&#34;record-%Y-%m-%d-&#34;
+                                                       &#34;%H-%M-%S.log&#34;))
+            SimulatorLogger.logger_obj = Logger(
+                output_file_path=SimulatorLogger.LOG_FILE_NAME)
 
-    def get_logger(self) -&gt; logging.Logger:
+            # Makes sure that the root logger is setup only once
+            SimulatorLogger.is_setup = True
+
+    def get_logger(self) -&gt; Logger:
         &#34;&#34;&#34;
-        Return a configured instance of the logging class to the caller.
+        Return an instance of the `Logger` class to the caller.
 
         Returns:
-            logging.Logger: Object used for logging runtime information.
+            Logger: Object used for logging runtime information.
         &#34;&#34;&#34;
-        return logging.getLogger(self.module_name)</code></pre>
+        assert SimulatorLogger.logger_obj is not None
+        return SimulatorLogger.logger_obj</code></pre>
 </details>
 </section>
 <section>
@@ -84,17 +551,947 @@ class SimulatorLogger:
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
+<dt id="megha_sim.simulation_logger.logger.DataPoints"><code class="flex name class">
+<span>class <span class="ident">DataPoints</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Store the statistics of the data points measured.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>TypedDict</code></strong> :&ensp;<code>TypedDict</code></dt>
+<dd>The <code>TypedDict</code> base class.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class DataPoints(TypedDict):
+    &#34;&#34;&#34;
+    Store the statistics of the data points measured.
+
+    Args:
+        TypedDict (TypedDict): The `TypedDict` base class.
+    &#34;&#34;&#34;
+
+    internal_matching_logic_op: int
+    external_matching_logic_op: int
+    task_end_event: int
+    launch_on_node_event: int
+    internal_inconsistency_event: int
+    external_inconsistency_event: int
+    match_found_event: int
+    periodic_lm_update_event: int
+    aperiodic_lm_update_event: int
+    job_arrival_event: int
+    cluster_saturated_event: int</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.dict</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="megha_sim.simulation_logger.logger.DataPoints.aperiodic_lm_update_event"><code class="name">var <span class="ident">aperiodic_lm_update_event</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="megha_sim.simulation_logger.logger.DataPoints.cluster_saturated_event"><code class="name">var <span class="ident">cluster_saturated_event</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="megha_sim.simulation_logger.logger.DataPoints.external_inconsistency_event"><code class="name">var <span class="ident">external_inconsistency_event</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="megha_sim.simulation_logger.logger.DataPoints.external_matching_logic_op"><code class="name">var <span class="ident">external_matching_logic_op</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="megha_sim.simulation_logger.logger.DataPoints.internal_inconsistency_event"><code class="name">var <span class="ident">internal_inconsistency_event</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="megha_sim.simulation_logger.logger.DataPoints.internal_matching_logic_op"><code class="name">var <span class="ident">internal_matching_logic_op</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="megha_sim.simulation_logger.logger.DataPoints.job_arrival_event"><code class="name">var <span class="ident">job_arrival_event</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="megha_sim.simulation_logger.logger.DataPoints.launch_on_node_event"><code class="name">var <span class="ident">launch_on_node_event</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="megha_sim.simulation_logger.logger.DataPoints.match_found_event"><code class="name">var <span class="ident">match_found_event</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="megha_sim.simulation_logger.logger.DataPoints.periodic_lm_update_event"><code class="name">var <span class="ident">periodic_lm_update_event</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="megha_sim.simulation_logger.logger.DataPoints.task_end_event"><code class="name">var <span class="ident">task_end_event</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="megha_sim.simulation_logger.logger.Logger"><code class="flex name class">
+<span>class <span class="ident">Logger</span></span>
+<span>(</span><span>output_file_path: pathlib.Path)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Class to analyses the generate logs during runtime.</p>
+<p>Initialise the object.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>output_file_path</code></strong> :&ensp;<code>Path</code></dt>
+<dd>The path to the output file.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Logger:
+    &#34;&#34;&#34;Class to analyses the generate logs during runtime.&#34;&#34;&#34;
+
+    LINE_SEPARATOR = &#34;\n\n&#34; + &#34;-&#34; * 80 + &#34;\n\n&#34;
+    INTEGRITY_MESSAGE = (&#34;The simulator statistics generated, are from a &#34;
+                         &#34;successful run of the simulator over the trace &#34;
+                         &#34;dataset.\n&#34;)
+
+    def __init__(self, output_file_path: Path) -&gt; None:
+        &#34;&#34;&#34;
+        Initialise the object.
+
+        Args:
+            output_file_path (Path): The path to the output file.
+        &#34;&#34;&#34;
+        self.output_file_path = output_file_path
+
+        self.has_integrity: bool = False
+        self.metadata_text: List[str] = list()
+        self.data_points: DataPoints = \
+            DataPoints(internal_matching_logic_op=0,
+                       external_matching_logic_op=0,
+                       task_end_event=0,
+                       launch_on_node_event=0,
+                       internal_inconsistency_event=0,
+                       external_inconsistency_event=0,
+                       match_found_event=0,
+                       periodic_lm_update_event=0,
+                       aperiodic_lm_update_event=0,
+                       job_arrival_event=0,
+                       cluster_saturated_event=0)
+        self.matching_logic_op_task_measurements: Dict[str, MatchingOps] = \
+            dict()
+
+        # For job optimisation
+        self.queuing_delay: Dict[str, Dict[str, TaskInfo]] = dict()
+        self.all_job_ct = dict()
+
+        self.internal_inconsistency_count_per_task: Dict[str, int] = dict()
+        self.external_inconsistency_count_per_task: Dict[str, int] = dict()
+
+        # Create the output file to test the path and create the empty file.
+        # Any path related errors will now be generated at the beginning of
+        # simulation rather than at the end of the simulation.
+        with open(self.output_file_path, &#34;w&#34;) as _:
+            ...
+
+    def metadata(self, msg: str) -&gt; None:
+        &#34;&#34;&#34;
+        Store the data to write out into the top of the generated statistics \
+        file.
+
+        Args:
+            msg (str): The metadata message to write.
+        &#34;&#34;&#34;
+        self.metadata_text.append(msg)
+
+    def info(self, msg: str) -&gt; None:
+        &#34;&#34;&#34;
+        Take the log message and run the analysis on it.
+
+        Args:
+            msg (str): The log message to run analysis on.
+        &#34;&#34;&#34;
+        if msg.startswith(MATCHING_LOGIC_MSG) is True or \
+           msg.startswith(MATCHING_LOGIC_REPARTITION_MSG) \
+           is True:
+            if msg.startswith(MATCHING_LOGIC_MSG) is True:
+                self.data_points[&#34;internal_matching_logic_op&#34;] += 1
+            else:
+                self.data_points[&#34;external_matching_logic_op&#34;] += 1
+            matching_logic_details: List[str] = (msg
+                                                 .split(&#34; , &#34;)[1:])
+            self.__parse_matching_logic_stmt(matching_logic_details)
+        else:  # The logging message if for an event in the simulator
+            # Get the event name from the log message
+            event_name = msg.split(&#34; , &#34;)[1]
+
+            # String with the format x_y
+            # Where,
+            # x is the job ID
+            # y is the task ID
+            job_id_task_id: str
+
+            if event_name == &#34;TaskEndEvent&#34;:
+                self.data_points[&#34;task_end_event&#34;] += 1
+                split_msg = msg.split(&#34; , &#34;)
+                task_end_time_node = float(split_msg[0])
+                job_id = split_msg[2]
+                task_id = split_msg[3]
+                self.queuing_delay[job_id][task_id][&#34;task_end_time_node&#34;] = \
+                    task_end_time_node
+                self.queuing_delay[job_id][task_id][&#34;task_duration_gm&#34;] = \
+                    (task_end_time_node + 2 * NETWORK_DELAY) - \
+                    self.queuing_delay[job_id][task_id][&#34;job_arrival_time&#34;]
+
+            elif event_name == &#34;LaunchOnNodeEvent&#34;:
+                self.data_points[&#34;launch_on_node_event&#34;] += 1
+                vals = msg.split(&#34; , &#34;)
+                current_time = float(vals[0])  # This is the task launch time
+                job_id = vals[2]
+                task_id = vals[3]
+                # Task duration as per the trace dataset
+                duration = int(vals[-2])
+                # Job start time is the job arrival time
+                start_time = float(vals[-1])
+                task_qd = current_time - start_time
+
+                assert task_qd &gt;= 0, &#34;Task_qd is negative&#34;
+
+                if job_id not in self.queuing_delay:
+                    self.queuing_delay[job_id] = dict()
+                self.queuing_delay[job_id][task_id] = TaskInfo(
+                    job_arrival_time=start_time,
+                    task_launch_time=current_time,
+                    task_duration_trace=duration,
+                    task_duration_gm=0,
+                    task_queuing_delay=task_qd,  # task_qd
+                    task_end_time_node=0)
+
+            elif event_name == &#34;InternalInconsistencyEvent&#34;:
+                self.data_points[&#34;internal_inconsistency_event&#34;] += 1
+                job_id_task_id = msg.split(&#34; , &#34;)[2]
+                self.internal_inconsistency_count_per_task[job_id_task_id] = \
+                    self.internal_inconsistency_count_per_task.get(
+                        job_id_task_id, 0) + 1
+            elif event_name == &#34;ExternalInconsistencyEvent&#34;:
+                self.data_points[&#34;external_inconsistency_event&#34;] += 1
+                job_id_task_id = msg.split(&#34; , &#34;)[2]
+                self.external_inconsistency_count_per_task[job_id_task_id] = \
+                    self.external_inconsistency_count_per_task.get(
+                        job_id_task_id, 0) + 1
+            elif event_name == &#34;MatchFoundEvent&#34;:
+                self.data_points[&#34;match_found_event&#34;] += 1
+            elif event_name == &#34;LMUpdateEvent&#34;:
+                is_periodic = msg.split(&#34; , &#34;)[2]
+                assert is_periodic == &#34;True&#34; or is_periodic == &#34;False&#34;
+                if is_periodic == &#34;True&#34;:
+                    self.data_points[&#34;periodic_lm_update_event&#34;] += 1
+                else:
+                    self.data_points[&#34;aperiodic_lm_update_event&#34;] += 1
+            elif event_name == &#34;JobArrival&#34;:
+                self.data_points[&#34;job_arrival_event&#34;] += 1
+            elif event_name == CLUSTER_SATURATED_MSG:
+                self.data_points[&#34;cluster_saturated_event&#34;] += 1
+            elif event_name == &#34;UpdateStatusForGM&#34;:
+                vals = msg.split(&#34; , &#34;)
+                job_id = int(vals[2])
+                job_ct = float(vals[3])
+                self.all_job_ct[job_id] = job_ct
+
+    def integrity(self) -&gt; None:
+        &#34;&#34;&#34;Add a message at the end of the statistics file to mark \
+        successful completion of the log analysis.&#34;&#34;&#34;
+        self.has_integrity = True
+
+    def __parse_matching_logic_stmt(self, matching_logic_details: List[str]):
+        &#34;&#34;&#34;
+        Parse and record details of the Matching Logic logs.
+
+        Args:
+            matching_logic_details (List[str]): List of the details to record.
+        &#34;&#34;&#34;
+        job_id, task_id = matching_logic_details[1].split(&#34;_&#34;)
+        key: str = f&#34;{job_id}_{task_id}&#34;
+
+        assert len(matching_logic_details[1].split(&#34;_&#34;)) == 2
+
+        if key in self.matching_logic_op_task_measurements:
+            self.matching_logic_op_task_measurements[key][&#34;workers_searched&#34;] \
+                += 1
+        else:
+            self.matching_logic_op_task_measurements[key] = \
+                MatchingOps(job_id=job_id,
+                            task_id=task_id,
+                            workers_searched=1)
+
+    def flush(self):
+        &#34;&#34;&#34;
+        Write out the generated statistics into an output file.
+
+        The output file is given by `self.output_file_path`.
+        &#34;&#34;&#34;
+
+        # Check if all the tasks have been accounted for
+        if (len(self.matching_logic_op_task_measurements) !=
+                self.data_points[&#34;task_end_event&#34;]):
+            self.has_integrity = False
+
+        # ---
+
+        sanity_matching_logic_ops_count: int = 0
+        for key in self.matching_logic_op_task_measurements:
+            sanity_matching_logic_ops_count += \
+                (self.matching_logic_op_task_measurements[key]
+                 [&#34;workers_searched&#34;])
+
+        # Check if all the &#39;matching logic&#39; events have been accounted for
+        measured_matching_logic_ops_count = (self.data_points
+                                             [&#34;external_matching_logic_op&#34;] +
+                                             self.data_points
+                                             [&#34;internal_matching_logic_op&#34;])
+        if (measured_matching_logic_ops_count !=
+                sanity_matching_logic_ops_count):
+            self.has_integrity = False
+
+        # ---
+
+        # Write all the metadata, statistics and other data into the output
+        # file
+        with open(self.output_file_path, &#34;w&#34;) as file_handler:
+            for line in self.metadata_text:
+                file_handler.write(f&#34;{line}\n&#34;)
+
+            file_handler.write(Logger.LINE_SEPARATOR)
+
+            for key in self.data_points:
+                file_handler.write(f&#34;{TColors.BOLD}{key}{TColors.END} :&#34;
+                                   f&#34; {self.data_points[key]}\n&#34;)
+
+            file_handler.write(Logger.LINE_SEPARATOR)
+
+            file_handler.write(&#34;Derived attributes:\n&#34;)
+
+            # Write out derived measurements.
+            # 1. Total inconsistency events
+            total_inconsistency_event = (self.data_points
+                                         [&#39;internal_inconsistency_event&#39;] +
+                                         self.data_points
+                                         [&#39;external_inconsistency_event&#39;])
+            file_handler\
+                .write(f&#34;{TColors.BOLD}Total Inconsistency count :&#34;
+                       f&#34;{TColors.END} {total_inconsistency_event}\n&#34;)
+
+            # 2. Total matching logic operations
+            total_matching_logic_op = (self.data_points
+                                       [&#34;external_matching_logic_op&#34;] +
+                                       self.data_points
+                                       [&#34;internal_matching_logic_op&#34;])
+            file_handler\
+                .write(f&#34;{TColors.BOLD}Total matching logic operations :&#34;
+                       f&#34;{TColors.END} {total_matching_logic_op}\n&#34;)
+
+            # 3. Success percentage of matching logic operation
+            total_task_count = len(self.matching_logic_op_task_measurements
+                                   .keys())
+
+            # Function to calculate ratio of free worker searched to
+            # total number of workers searched for a task
+            fraction_of_workers_searched_per_task = \
+                (lambda task_id: 1 /
+                 (self.matching_logic_op_task_measurements
+                  [task_id]
+                  [&#34;workers_searched&#34;]
+                  )
+                 )
+            # Find the average success percentage of finding a worker node
+            # Higher the value = Lesser workers searched to find a free worker
+            # node
+            success_percent = \
+                sum(
+                    map(fraction_of_workers_searched_per_task,
+                        self.matching_logic_op_task_measurements
+                        )
+                ) / total_task_count
+
+            file_handler.write(f&#34;{TColors.BOLD}Percentage ratio of free worker&#34;
+                               f&#34; found to number of workers searched&#34;
+                               f&#34;{TColors.END} = success_percent=&#34;
+                               f&#34;{success_percent:%}\n&#34;)
+
+            # 4. Average number of worker searched per task
+            workers_searched_per_task = \
+                (lambda task_id:
+                 (self.matching_logic_op_task_measurements
+                  [task_id]
+                  [&#34;workers_searched&#34;]
+                  )
+                 )
+            avg_workers_searched_per_task = \
+                sum(
+                    map(workers_searched_per_task,
+                        self.matching_logic_op_task_measurements
+                        )
+                ) / total_task_count
+            file_handler.write(f&#34;{TColors.BOLD}Average number of workers &#34;
+                               f&#34;searched per task ={TColors.END}&#34;
+                               f&#34; {avg_workers_searched_per_task}\n&#34;)
+
+            file_handler.write(Logger.LINE_SEPARATOR)
+
+            file_handler.write(
+                f&#34;{TColors.BOLD}Log sanity checks:{TColors.END}\n\n&#34;)
+
+            if self.has_integrity is True:
+                file_handler.write(Logger.INTEGRITY_MESSAGE)
+                file_handler.write(f&#34;{TColors.SUCCESS}SUCCESS:{TColors.END} &#34;
+                                   &#34;All Matching Logic &#34;
+                                   &#34;Operations have all been successfully &#34;
+                                   &#34;been accounted for!\n&#34;)
+                file_handler.write(f&#34;{TColors.SUCCESS}SUCCESS:{TColors.END} &#34;
+                                   &#34;The measurements have covered all tasks!&#34;
+                                   &#34;\n&#34;)
+            else:
+                file_handler.write(f&#34;{TColors.FAIL}FAILURE:{TColors.END}\n&#34;)
+                file_handler.write(&#34;Matching Logic Operations accounted for &#34;
+                                   f&#34;({measured_matching_logic_ops_count}) != &#34;
+                                   &#34;Sum of all Matching Logic Operations &#34;
+                                   &#34;across all tasks &#34;
+                                   f&#34;({sanity_matching_logic_ops_count})\n&#34;)
+                file_handler\
+                    .write(&#34;Measurements &#34;
+                           f&#34;({len(self.matching_logic_op_task_measurements)})&#34;
+                           &#34; != tasks_completed_count &#34;
+                           f&#34;({self.data_points[&#39;task_end_event&#39;]})\n&#34;)
+
+        # External inconsistency count per task has the extension &#34;exi&#34;
+        external_inconsistency_file_count = str(self.
+                                                output_file_path.
+                                                resolve()).split(&#39;.&#39;)[0] + \
+            &#34;_exi.txt&#34;
+        with open(external_inconsistency_file_count, &#34;w&#34;) as file_handler:
+            for key in self.external_inconsistency_count_per_task:
+                file_handler.\
+                    write(f&#34;{key} : &#34;
+                          f&#34;{self.external_inconsistency_count_per_task[key]}&#34;
+                          &#34;\n&#34;)
+
+        # Internal inconsistency count per task has the extension &#34;ini&#34;
+        internal_inconsistency_file_count = str(self.
+                                                output_file_path.
+                                                resolve()).split(&#39;.&#39;)[0] + \
+            &#34;_ini.txt&#34;
+        with open(internal_inconsistency_file_count, &#34;w&#34;) as file_handler:
+            for key in self.internal_inconsistency_count_per_task:
+                file_handler.\
+                    write(f&#34;{key} : &#34;
+                          f&#34;{self.internal_inconsistency_count_per_task[key]}&#34;
+                          &#34;\n&#34;)
+
+        # Write the worker nodes searched per task into a file
+        workers_searched_file_count = str(self.
+                                          output_file_path.
+                                          resolve()).split(&#39;.&#39;)[0] + \
+            &#34;_workers_searched.txt&#34;
+        with open(workers_searched_file_count, &#34;w&#34;) as fHandler:
+            for key in self.matching_logic_op_task_measurements:
+                count = (self.matching_logic_op_task_measurements[key]
+                         [&#34;workers_searched&#34;])
+                fHandler.write(f&#34;{key} : {count}\n&#34;)
+
+        JOBS_INFO_FILE_NAME = str(self.output_file_path
+                                  .resolve()).split(&#39;.&#39;)[0] + \
+            &#34;_jobs_info.csv&#34;
+        with open(JOBS_INFO_FILE_NAME, &#34;w&#34;) as f:
+            HEADER_LINE = (&#34;Job ID,&#34;
+                           &#34;Task ID,&#34;
+                           &#34;Job Arrival Time,&#34;
+                           &#34;Task Launch Time,&#34;  # launch on node event
+                           &#34;Task Duration (Trace),&#34;  # From trace
+                           # When GM realises that task is completed
+                           &#34;Task Duration (GM),&#34;
+                           &#34;Task Queuing Delay,&#34;
+                           &#34;Task End Time On Node\n&#34;)
+            f.write(HEADER_LINE)
+            for job_id in sorted(self.queuing_delay.keys(), key=int):
+                for task_id in sorted(
+                        self.queuing_delay[job_id].keys(), key=int):
+                    task_info = self.queuing_delay[job_id][task_id]
+                    TASK_LINE = (f&#34;{job_id},&#34;
+                                 f&#34;{task_id},&#34;
+                                 f&#34;{task_info[&#39;job_arrival_time&#39;]},&#34;
+                                 f&#34;{task_info[&#39;task_launch_time&#39;]},&#34;
+                                 f&#34;{task_info[&#39;task_duration_trace&#39;]},&#34;
+                                 f&#34;{task_info[&#39;task_duration_gm&#39;]},&#34;
+                                 f&#34;{task_info[&#39;task_queuing_delay&#39;]},&#34;
+                                 f&#34;{task_info[&#39;task_end_time_node&#39;]}\n&#34;)
+                    f.write(TASK_LINE)
+
+        JOB_COMPLETION_TIME_FILE_NAME = str(self.output_file_path
+                                            .resolve()).split(&#39;.&#39;)[0] + \
+            &#34;_job_completion_time.csv&#34;
+        with open(JOB_COMPLETION_TIME_FILE_NAME, &#34;w&#34;) as f:
+            HEADER_LINE = &#34;Job ID,Job Completion Time&#34;
+            f.write(HEADER_LINE)
+            # print(self.all_job_ct)
+            for job_id in sorted(self.all_job_ct.keys()):
+                JOB_LINE = f&#34;{job_id},{self.all_job_ct[job_id]}\n&#34;
+                f.write(JOB_LINE)</code></pre>
+</details>
+<h3>Class variables</h3>
+<dl>
+<dt id="megha_sim.simulation_logger.logger.Logger.INTEGRITY_MESSAGE"><code class="name">var <span class="ident">INTEGRITY_MESSAGE</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="megha_sim.simulation_logger.logger.Logger.LINE_SEPARATOR"><code class="name">var <span class="ident">LINE_SEPARATOR</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="megha_sim.simulation_logger.logger.Logger.flush"><code class="name flex">
+<span>def <span class="ident">flush</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Write out the generated statistics into an output file.</p>
+<p>The output file is given by <code>self.output_file_path</code>.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def flush(self):
+    &#34;&#34;&#34;
+    Write out the generated statistics into an output file.
+
+    The output file is given by `self.output_file_path`.
+    &#34;&#34;&#34;
+
+    # Check if all the tasks have been accounted for
+    if (len(self.matching_logic_op_task_measurements) !=
+            self.data_points[&#34;task_end_event&#34;]):
+        self.has_integrity = False
+
+    # ---
+
+    sanity_matching_logic_ops_count: int = 0
+    for key in self.matching_logic_op_task_measurements:
+        sanity_matching_logic_ops_count += \
+            (self.matching_logic_op_task_measurements[key]
+             [&#34;workers_searched&#34;])
+
+    # Check if all the &#39;matching logic&#39; events have been accounted for
+    measured_matching_logic_ops_count = (self.data_points
+                                         [&#34;external_matching_logic_op&#34;] +
+                                         self.data_points
+                                         [&#34;internal_matching_logic_op&#34;])
+    if (measured_matching_logic_ops_count !=
+            sanity_matching_logic_ops_count):
+        self.has_integrity = False
+
+    # ---
+
+    # Write all the metadata, statistics and other data into the output
+    # file
+    with open(self.output_file_path, &#34;w&#34;) as file_handler:
+        for line in self.metadata_text:
+            file_handler.write(f&#34;{line}\n&#34;)
+
+        file_handler.write(Logger.LINE_SEPARATOR)
+
+        for key in self.data_points:
+            file_handler.write(f&#34;{TColors.BOLD}{key}{TColors.END} :&#34;
+                               f&#34; {self.data_points[key]}\n&#34;)
+
+        file_handler.write(Logger.LINE_SEPARATOR)
+
+        file_handler.write(&#34;Derived attributes:\n&#34;)
+
+        # Write out derived measurements.
+        # 1. Total inconsistency events
+        total_inconsistency_event = (self.data_points
+                                     [&#39;internal_inconsistency_event&#39;] +
+                                     self.data_points
+                                     [&#39;external_inconsistency_event&#39;])
+        file_handler\
+            .write(f&#34;{TColors.BOLD}Total Inconsistency count :&#34;
+                   f&#34;{TColors.END} {total_inconsistency_event}\n&#34;)
+
+        # 2. Total matching logic operations
+        total_matching_logic_op = (self.data_points
+                                   [&#34;external_matching_logic_op&#34;] +
+                                   self.data_points
+                                   [&#34;internal_matching_logic_op&#34;])
+        file_handler\
+            .write(f&#34;{TColors.BOLD}Total matching logic operations :&#34;
+                   f&#34;{TColors.END} {total_matching_logic_op}\n&#34;)
+
+        # 3. Success percentage of matching logic operation
+        total_task_count = len(self.matching_logic_op_task_measurements
+                               .keys())
+
+        # Function to calculate ratio of free worker searched to
+        # total number of workers searched for a task
+        fraction_of_workers_searched_per_task = \
+            (lambda task_id: 1 /
+             (self.matching_logic_op_task_measurements
+              [task_id]
+              [&#34;workers_searched&#34;]
+              )
+             )
+        # Find the average success percentage of finding a worker node
+        # Higher the value = Lesser workers searched to find a free worker
+        # node
+        success_percent = \
+            sum(
+                map(fraction_of_workers_searched_per_task,
+                    self.matching_logic_op_task_measurements
+                    )
+            ) / total_task_count
+
+        file_handler.write(f&#34;{TColors.BOLD}Percentage ratio of free worker&#34;
+                           f&#34; found to number of workers searched&#34;
+                           f&#34;{TColors.END} = success_percent=&#34;
+                           f&#34;{success_percent:%}\n&#34;)
+
+        # 4. Average number of worker searched per task
+        workers_searched_per_task = \
+            (lambda task_id:
+             (self.matching_logic_op_task_measurements
+              [task_id]
+              [&#34;workers_searched&#34;]
+              )
+             )
+        avg_workers_searched_per_task = \
+            sum(
+                map(workers_searched_per_task,
+                    self.matching_logic_op_task_measurements
+                    )
+            ) / total_task_count
+        file_handler.write(f&#34;{TColors.BOLD}Average number of workers &#34;
+                           f&#34;searched per task ={TColors.END}&#34;
+                           f&#34; {avg_workers_searched_per_task}\n&#34;)
+
+        file_handler.write(Logger.LINE_SEPARATOR)
+
+        file_handler.write(
+            f&#34;{TColors.BOLD}Log sanity checks:{TColors.END}\n\n&#34;)
+
+        if self.has_integrity is True:
+            file_handler.write(Logger.INTEGRITY_MESSAGE)
+            file_handler.write(f&#34;{TColors.SUCCESS}SUCCESS:{TColors.END} &#34;
+                               &#34;All Matching Logic &#34;
+                               &#34;Operations have all been successfully &#34;
+                               &#34;been accounted for!\n&#34;)
+            file_handler.write(f&#34;{TColors.SUCCESS}SUCCESS:{TColors.END} &#34;
+                               &#34;The measurements have covered all tasks!&#34;
+                               &#34;\n&#34;)
+        else:
+            file_handler.write(f&#34;{TColors.FAIL}FAILURE:{TColors.END}\n&#34;)
+            file_handler.write(&#34;Matching Logic Operations accounted for &#34;
+                               f&#34;({measured_matching_logic_ops_count}) != &#34;
+                               &#34;Sum of all Matching Logic Operations &#34;
+                               &#34;across all tasks &#34;
+                               f&#34;({sanity_matching_logic_ops_count})\n&#34;)
+            file_handler\
+                .write(&#34;Measurements &#34;
+                       f&#34;({len(self.matching_logic_op_task_measurements)})&#34;
+                       &#34; != tasks_completed_count &#34;
+                       f&#34;({self.data_points[&#39;task_end_event&#39;]})\n&#34;)
+
+    # External inconsistency count per task has the extension &#34;exi&#34;
+    external_inconsistency_file_count = str(self.
+                                            output_file_path.
+                                            resolve()).split(&#39;.&#39;)[0] + \
+        &#34;_exi.txt&#34;
+    with open(external_inconsistency_file_count, &#34;w&#34;) as file_handler:
+        for key in self.external_inconsistency_count_per_task:
+            file_handler.\
+                write(f&#34;{key} : &#34;
+                      f&#34;{self.external_inconsistency_count_per_task[key]}&#34;
+                      &#34;\n&#34;)
+
+    # Internal inconsistency count per task has the extension &#34;ini&#34;
+    internal_inconsistency_file_count = str(self.
+                                            output_file_path.
+                                            resolve()).split(&#39;.&#39;)[0] + \
+        &#34;_ini.txt&#34;
+    with open(internal_inconsistency_file_count, &#34;w&#34;) as file_handler:
+        for key in self.internal_inconsistency_count_per_task:
+            file_handler.\
+                write(f&#34;{key} : &#34;
+                      f&#34;{self.internal_inconsistency_count_per_task[key]}&#34;
+                      &#34;\n&#34;)
+
+    # Write the worker nodes searched per task into a file
+    workers_searched_file_count = str(self.
+                                      output_file_path.
+                                      resolve()).split(&#39;.&#39;)[0] + \
+        &#34;_workers_searched.txt&#34;
+    with open(workers_searched_file_count, &#34;w&#34;) as fHandler:
+        for key in self.matching_logic_op_task_measurements:
+            count = (self.matching_logic_op_task_measurements[key]
+                     [&#34;workers_searched&#34;])
+            fHandler.write(f&#34;{key} : {count}\n&#34;)
+
+    JOBS_INFO_FILE_NAME = str(self.output_file_path
+                              .resolve()).split(&#39;.&#39;)[0] + \
+        &#34;_jobs_info.csv&#34;
+    with open(JOBS_INFO_FILE_NAME, &#34;w&#34;) as f:
+        HEADER_LINE = (&#34;Job ID,&#34;
+                       &#34;Task ID,&#34;
+                       &#34;Job Arrival Time,&#34;
+                       &#34;Task Launch Time,&#34;  # launch on node event
+                       &#34;Task Duration (Trace),&#34;  # From trace
+                       # When GM realises that task is completed
+                       &#34;Task Duration (GM),&#34;
+                       &#34;Task Queuing Delay,&#34;
+                       &#34;Task End Time On Node\n&#34;)
+        f.write(HEADER_LINE)
+        for job_id in sorted(self.queuing_delay.keys(), key=int):
+            for task_id in sorted(
+                    self.queuing_delay[job_id].keys(), key=int):
+                task_info = self.queuing_delay[job_id][task_id]
+                TASK_LINE = (f&#34;{job_id},&#34;
+                             f&#34;{task_id},&#34;
+                             f&#34;{task_info[&#39;job_arrival_time&#39;]},&#34;
+                             f&#34;{task_info[&#39;task_launch_time&#39;]},&#34;
+                             f&#34;{task_info[&#39;task_duration_trace&#39;]},&#34;
+                             f&#34;{task_info[&#39;task_duration_gm&#39;]},&#34;
+                             f&#34;{task_info[&#39;task_queuing_delay&#39;]},&#34;
+                             f&#34;{task_info[&#39;task_end_time_node&#39;]}\n&#34;)
+                f.write(TASK_LINE)
+
+    JOB_COMPLETION_TIME_FILE_NAME = str(self.output_file_path
+                                        .resolve()).split(&#39;.&#39;)[0] + \
+        &#34;_job_completion_time.csv&#34;
+    with open(JOB_COMPLETION_TIME_FILE_NAME, &#34;w&#34;) as f:
+        HEADER_LINE = &#34;Job ID,Job Completion Time&#34;
+        f.write(HEADER_LINE)
+        # print(self.all_job_ct)
+        for job_id in sorted(self.all_job_ct.keys()):
+            JOB_LINE = f&#34;{job_id},{self.all_job_ct[job_id]}\n&#34;
+            f.write(JOB_LINE)</code></pre>
+</details>
+</dd>
+<dt id="megha_sim.simulation_logger.logger.Logger.info"><code class="name flex">
+<span>def <span class="ident">info</span></span>(<span>self, msg: str) ‑> NoneType</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Take the log message and run the analysis on it.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>msg</code></strong> :&ensp;<code>str</code></dt>
+<dd>The log message to run analysis on.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def info(self, msg: str) -&gt; None:
+    &#34;&#34;&#34;
+    Take the log message and run the analysis on it.
+
+    Args:
+        msg (str): The log message to run analysis on.
+    &#34;&#34;&#34;
+    if msg.startswith(MATCHING_LOGIC_MSG) is True or \
+       msg.startswith(MATCHING_LOGIC_REPARTITION_MSG) \
+       is True:
+        if msg.startswith(MATCHING_LOGIC_MSG) is True:
+            self.data_points[&#34;internal_matching_logic_op&#34;] += 1
+        else:
+            self.data_points[&#34;external_matching_logic_op&#34;] += 1
+        matching_logic_details: List[str] = (msg
+                                             .split(&#34; , &#34;)[1:])
+        self.__parse_matching_logic_stmt(matching_logic_details)
+    else:  # The logging message if for an event in the simulator
+        # Get the event name from the log message
+        event_name = msg.split(&#34; , &#34;)[1]
+
+        # String with the format x_y
+        # Where,
+        # x is the job ID
+        # y is the task ID
+        job_id_task_id: str
+
+        if event_name == &#34;TaskEndEvent&#34;:
+            self.data_points[&#34;task_end_event&#34;] += 1
+            split_msg = msg.split(&#34; , &#34;)
+            task_end_time_node = float(split_msg[0])
+            job_id = split_msg[2]
+            task_id = split_msg[3]
+            self.queuing_delay[job_id][task_id][&#34;task_end_time_node&#34;] = \
+                task_end_time_node
+            self.queuing_delay[job_id][task_id][&#34;task_duration_gm&#34;] = \
+                (task_end_time_node + 2 * NETWORK_DELAY) - \
+                self.queuing_delay[job_id][task_id][&#34;job_arrival_time&#34;]
+
+        elif event_name == &#34;LaunchOnNodeEvent&#34;:
+            self.data_points[&#34;launch_on_node_event&#34;] += 1
+            vals = msg.split(&#34; , &#34;)
+            current_time = float(vals[0])  # This is the task launch time
+            job_id = vals[2]
+            task_id = vals[3]
+            # Task duration as per the trace dataset
+            duration = int(vals[-2])
+            # Job start time is the job arrival time
+            start_time = float(vals[-1])
+            task_qd = current_time - start_time
+
+            assert task_qd &gt;= 0, &#34;Task_qd is negative&#34;
+
+            if job_id not in self.queuing_delay:
+                self.queuing_delay[job_id] = dict()
+            self.queuing_delay[job_id][task_id] = TaskInfo(
+                job_arrival_time=start_time,
+                task_launch_time=current_time,
+                task_duration_trace=duration,
+                task_duration_gm=0,
+                task_queuing_delay=task_qd,  # task_qd
+                task_end_time_node=0)
+
+        elif event_name == &#34;InternalInconsistencyEvent&#34;:
+            self.data_points[&#34;internal_inconsistency_event&#34;] += 1
+            job_id_task_id = msg.split(&#34; , &#34;)[2]
+            self.internal_inconsistency_count_per_task[job_id_task_id] = \
+                self.internal_inconsistency_count_per_task.get(
+                    job_id_task_id, 0) + 1
+        elif event_name == &#34;ExternalInconsistencyEvent&#34;:
+            self.data_points[&#34;external_inconsistency_event&#34;] += 1
+            job_id_task_id = msg.split(&#34; , &#34;)[2]
+            self.external_inconsistency_count_per_task[job_id_task_id] = \
+                self.external_inconsistency_count_per_task.get(
+                    job_id_task_id, 0) + 1
+        elif event_name == &#34;MatchFoundEvent&#34;:
+            self.data_points[&#34;match_found_event&#34;] += 1
+        elif event_name == &#34;LMUpdateEvent&#34;:
+            is_periodic = msg.split(&#34; , &#34;)[2]
+            assert is_periodic == &#34;True&#34; or is_periodic == &#34;False&#34;
+            if is_periodic == &#34;True&#34;:
+                self.data_points[&#34;periodic_lm_update_event&#34;] += 1
+            else:
+                self.data_points[&#34;aperiodic_lm_update_event&#34;] += 1
+        elif event_name == &#34;JobArrival&#34;:
+            self.data_points[&#34;job_arrival_event&#34;] += 1
+        elif event_name == CLUSTER_SATURATED_MSG:
+            self.data_points[&#34;cluster_saturated_event&#34;] += 1
+        elif event_name == &#34;UpdateStatusForGM&#34;:
+            vals = msg.split(&#34; , &#34;)
+            job_id = int(vals[2])
+            job_ct = float(vals[3])
+            self.all_job_ct[job_id] = job_ct</code></pre>
+</details>
+</dd>
+<dt id="megha_sim.simulation_logger.logger.Logger.integrity"><code class="name flex">
+<span>def <span class="ident">integrity</span></span>(<span>self) ‑> NoneType</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Add a message at the end of the statistics file to mark
+successful completion of the log analysis.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def integrity(self) -&gt; None:
+    &#34;&#34;&#34;Add a message at the end of the statistics file to mark \
+    successful completion of the log analysis.&#34;&#34;&#34;
+    self.has_integrity = True</code></pre>
+</details>
+</dd>
+<dt id="megha_sim.simulation_logger.logger.Logger.metadata"><code class="name flex">
+<span>def <span class="ident">metadata</span></span>(<span>self, msg: str) ‑> NoneType</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Store the data to write out into the top of the generated statistics
+file.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>msg</code></strong> :&ensp;<code>str</code></dt>
+<dd>The metadata message to write.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def metadata(self, msg: str) -&gt; None:
+    &#34;&#34;&#34;
+    Store the data to write out into the top of the generated statistics \
+    file.
+
+    Args:
+        msg (str): The metadata message to write.
+    &#34;&#34;&#34;
+    self.metadata_text.append(msg)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="megha_sim.simulation_logger.logger.MatchingOps"><code class="flex name class">
+<span>class <span class="ident">MatchingOps</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Format and types of each of the parameters measured per task.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>NamedTuple</code></strong> :&ensp;<code>NamedTuple</code></dt>
+<dd>Typed version of collections.namedtuple().</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class MatchingOps(TypedDict):
+    &#34;&#34;&#34;
+    Format and types of each of the parameters measured per task.
+
+    Args:
+        NamedTuple (NamedTuple): Typed version of collections.namedtuple().
+    &#34;&#34;&#34;
+
+    job_id: str
+    task_id: str
+    workers_searched: int</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.dict</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="megha_sim.simulation_logger.logger.MatchingOps.job_id"><code class="name">var <span class="ident">job_id</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="megha_sim.simulation_logger.logger.MatchingOps.task_id"><code class="name">var <span class="ident">task_id</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="megha_sim.simulation_logger.logger.MatchingOps.workers_searched"><code class="name">var <span class="ident">workers_searched</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
 <dt id="megha_sim.simulation_logger.logger.SimulatorLogger"><code class="flex name class">
 <span>class <span class="ident">SimulatorLogger</span></span>
-<span>(</span><span>module_name: str)</span>
+<span>(</span><span>_: str)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>This class is to define and create instances of the logging class.</p>
-<p>Initialise the object with the name of the caller code's module name.</p>
+<p>Initialise the object.</p>
 <h2 id="args">Args</h2>
 <dl>
-<dt><strong><code>module_name</code></strong> :&ensp;<code>str</code></dt>
-<dd>Name of the caller code's module</dd>
+<dt><strong><code>_</code></strong> :&ensp;<code>str</code></dt>
+<dd>This parameter will be removed in a future release.</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -104,43 +1501,56 @@ class SimulatorLogger:
     &#34;&#34;&#34;This class is to define and create instances of the logging class.&#34;&#34;&#34;
 
     LOG_FILE_PATH = Path(&#34;logs&#34;)
-    LOG_FORMAT = (&#34;%(asctime)s : %(module)s : %(filename)s : %(funcName)s : &#34;
-                  &#34;%(lineno)d : %(levelname)s : %(message)s&#34;)
+    LOG_FILE_NAME = None
 
-    def __init__(self, module_name: str):
+    is_setup: bool = False
+    logger_obj: Optional[Logger] = None
+
+    def __init__(self, _: str):
         &#34;&#34;&#34;
-        Initialise the object with the name of the caller code&#39;s module name.
+        Initialise the object.
 
         Args:
-            module_name (str): Name of the caller code&#39;s module
+            _ (str): This parameter will be removed in a future release.
         &#34;&#34;&#34;
-        self.module_name = module_name
-        self.LOG_FILE_NAME = self.LOG_FILE_PATH / (datetime.now()
-                                                   .strftime(&#34;record-%Y-%m-%d-&#34;
-                                                             &#34;%H-%M-%S.log&#34;))
-        with open(self.LOG_FILE_NAME, &#34;a&#34;):
-            ...
-        logging.basicConfig(filename=self.LOG_FILE_NAME,
-                            format=self.LOG_FORMAT,
-                            # encoding=&#39;utf-8&#39;,  # Only for Python &gt;= 3.9
-                            level=logging.INFO)
+        if SimulatorLogger.is_setup is False:
+            # print(f&#39;{datetime.now().strftime(&#34;record-%Y-%m-%d-%H-%M-%S.log&#34;)}&#39;
+            # &#39; Hello&#39;)
+            SimulatorLogger.LOG_FILE_NAME = (SimulatorLogger.LOG_FILE_PATH /
+                                             datetime.now()
+                                             .strftime(&#34;record-%Y-%m-%d-&#34;
+                                                       &#34;%H-%M-%S.log&#34;))
+            SimulatorLogger.logger_obj = Logger(
+                output_file_path=SimulatorLogger.LOG_FILE_NAME)
 
-    def get_logger(self) -&gt; logging.Logger:
+            # Makes sure that the root logger is setup only once
+            SimulatorLogger.is_setup = True
+
+    def get_logger(self) -&gt; Logger:
         &#34;&#34;&#34;
-        Return a configured instance of the logging class to the caller.
+        Return an instance of the `Logger` class to the caller.
 
         Returns:
-            logging.Logger: Object used for logging runtime information.
+            Logger: Object used for logging runtime information.
         &#34;&#34;&#34;
-        return logging.getLogger(self.module_name)</code></pre>
+        assert SimulatorLogger.logger_obj is not None
+        return SimulatorLogger.logger_obj</code></pre>
 </details>
 <h3>Class variables</h3>
 <dl>
+<dt id="megha_sim.simulation_logger.logger.SimulatorLogger.LOG_FILE_NAME"><code class="name">var <span class="ident">LOG_FILE_NAME</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
 <dt id="megha_sim.simulation_logger.logger.SimulatorLogger.LOG_FILE_PATH"><code class="name">var <span class="ident">LOG_FILE_PATH</span></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="megha_sim.simulation_logger.logger.SimulatorLogger.LOG_FORMAT"><code class="name">var <span class="ident">LOG_FORMAT</span></code></dt>
+<dt id="megha_sim.simulation_logger.logger.SimulatorLogger.is_setup"><code class="name">var <span class="ident">is_setup</span> : bool</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="megha_sim.simulation_logger.logger.SimulatorLogger.logger_obj"><code class="name">var <span class="ident">logger_obj</span> : Union[<a title="megha_sim.simulation_logger.logger.Logger" href="#megha_sim.simulation_logger.logger.Logger">Logger</a>, NoneType]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -148,28 +1558,157 @@ class SimulatorLogger:
 <h3>Methods</h3>
 <dl>
 <dt id="megha_sim.simulation_logger.logger.SimulatorLogger.get_logger"><code class="name flex">
-<span>def <span class="ident">get_logger</span></span>(<span>self) ‑> logging.Logger</span>
+<span>def <span class="ident">get_logger</span></span>(<span>self) ‑> <a title="megha_sim.simulation_logger.logger.Logger" href="#megha_sim.simulation_logger.logger.Logger">Logger</a></span>
 </code></dt>
 <dd>
-<div class="desc"><p>Return a configured instance of the logging class to the caller.</p>
+<div class="desc"><p>Return an instance of the <code><a title="megha_sim.simulation_logger.logger.Logger" href="#megha_sim.simulation_logger.logger.Logger">Logger</a></code> class to the caller.</p>
 <h2 id="returns">Returns</h2>
 <dl>
-<dt><code>logging.Logger</code></dt>
+<dt><code><a title="megha_sim.simulation_logger.logger.Logger" href="#megha_sim.simulation_logger.logger.Logger">Logger</a></code></dt>
 <dd>Object used for logging runtime information.</dd>
 </dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def get_logger(self) -&gt; logging.Logger:
+<pre><code class="python">def get_logger(self) -&gt; Logger:
     &#34;&#34;&#34;
-    Return a configured instance of the logging class to the caller.
+    Return an instance of the `Logger` class to the caller.
 
     Returns:
-        logging.Logger: Object used for logging runtime information.
+        Logger: Object used for logging runtime information.
     &#34;&#34;&#34;
-    return logging.getLogger(self.module_name)</code></pre>
+    assert SimulatorLogger.logger_obj is not None
+    return SimulatorLogger.logger_obj</code></pre>
 </details>
+</dd>
+</dl>
+</dd>
+<dt id="megha_sim.simulation_logger.logger.TColors"><code class="flex name class">
+<span>class <span class="ident">TColors</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Class for declaring common ANSI escape sequences.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class TColors():
+    &#34;&#34;&#34;Class for declaring common ANSI escape sequences.&#34;&#34;&#34;
+
+    HEADER = &#39;\033[95m&#39;
+    OK_BLUE = &#39;\033[94m&#39;
+    OK_CYAN = &#39;\033[96m&#39;
+    OK_GREEN = &#39;\033[92m&#39;
+    SUCCESS = &#39;\033[92;1m&#39;
+    WARNING = &#39;\033[93m&#39;
+    FAIL = &#39;\033[91m&#39;
+    END = &#39;\033[0m&#39;
+    BOLD = &#39;\033[1m&#39;
+    UNDERLINE = &#39;\033[4m&#39;</code></pre>
+</details>
+<h3>Class variables</h3>
+<dl>
+<dt id="megha_sim.simulation_logger.logger.TColors.BOLD"><code class="name">var <span class="ident">BOLD</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="megha_sim.simulation_logger.logger.TColors.END"><code class="name">var <span class="ident">END</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="megha_sim.simulation_logger.logger.TColors.FAIL"><code class="name">var <span class="ident">FAIL</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="megha_sim.simulation_logger.logger.TColors.HEADER"><code class="name">var <span class="ident">HEADER</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="megha_sim.simulation_logger.logger.TColors.OK_BLUE"><code class="name">var <span class="ident">OK_BLUE</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="megha_sim.simulation_logger.logger.TColors.OK_CYAN"><code class="name">var <span class="ident">OK_CYAN</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="megha_sim.simulation_logger.logger.TColors.OK_GREEN"><code class="name">var <span class="ident">OK_GREEN</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="megha_sim.simulation_logger.logger.TColors.SUCCESS"><code class="name">var <span class="ident">SUCCESS</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="megha_sim.simulation_logger.logger.TColors.UNDERLINE"><code class="name">var <span class="ident">UNDERLINE</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="megha_sim.simulation_logger.logger.TColors.WARNING"><code class="name">var <span class="ident">WARNING</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="megha_sim.simulation_logger.logger.TaskInfo"><code class="flex name class">
+<span>class <span class="ident">TaskInfo</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Store the information about the jobs.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>TypedDict</code></strong> :&ensp;<code>TypedDict</code></dt>
+<dd>The <code>TypedDict</code> base class.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class TaskInfo(TypedDict):
+    &#34;&#34;&#34;
+    Store the information about the jobs.
+
+    Args:
+        TypedDict (TypedDict): The `TypedDict` base class.
+    &#34;&#34;&#34;
+    job_arrival_time: float  # Job Arrival Time
+    task_launch_time: float  # Task Launch Time (launch on node event)
+    task_duration_trace: int  # Task Duration From trace
+    task_duration_gm: float  # Task Duration when GM realises that task is completed
+    task_queuing_delay: float
+    task_end_time_node: float  # Task end time on node</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.dict</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="megha_sim.simulation_logger.logger.TaskInfo.job_arrival_time"><code class="name">var <span class="ident">job_arrival_time</span> : float</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="megha_sim.simulation_logger.logger.TaskInfo.task_duration_gm"><code class="name">var <span class="ident">task_duration_gm</span> : float</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="megha_sim.simulation_logger.logger.TaskInfo.task_duration_trace"><code class="name">var <span class="ident">task_duration_trace</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="megha_sim.simulation_logger.logger.TaskInfo.task_end_time_node"><code class="name">var <span class="ident">task_end_time_node</span> : float</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="megha_sim.simulation_logger.logger.TaskInfo.task_launch_time"><code class="name">var <span class="ident">task_launch_time</span> : float</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="megha_sim.simulation_logger.logger.TaskInfo.task_queuing_delay"><code class="name">var <span class="ident">task_queuing_delay</span> : float</code></dt>
+<dd>
+<div class="desc"></div>
 </dd>
 </dl>
 </dd>
@@ -190,11 +1729,74 @@ class SimulatorLogger:
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
 <li>
+<h4><code><a title="megha_sim.simulation_logger.logger.DataPoints" href="#megha_sim.simulation_logger.logger.DataPoints">DataPoints</a></code></h4>
+<ul class="">
+<li><code><a title="megha_sim.simulation_logger.logger.DataPoints.aperiodic_lm_update_event" href="#megha_sim.simulation_logger.logger.DataPoints.aperiodic_lm_update_event">aperiodic_lm_update_event</a></code></li>
+<li><code><a title="megha_sim.simulation_logger.logger.DataPoints.cluster_saturated_event" href="#megha_sim.simulation_logger.logger.DataPoints.cluster_saturated_event">cluster_saturated_event</a></code></li>
+<li><code><a title="megha_sim.simulation_logger.logger.DataPoints.external_inconsistency_event" href="#megha_sim.simulation_logger.logger.DataPoints.external_inconsistency_event">external_inconsistency_event</a></code></li>
+<li><code><a title="megha_sim.simulation_logger.logger.DataPoints.external_matching_logic_op" href="#megha_sim.simulation_logger.logger.DataPoints.external_matching_logic_op">external_matching_logic_op</a></code></li>
+<li><code><a title="megha_sim.simulation_logger.logger.DataPoints.internal_inconsistency_event" href="#megha_sim.simulation_logger.logger.DataPoints.internal_inconsistency_event">internal_inconsistency_event</a></code></li>
+<li><code><a title="megha_sim.simulation_logger.logger.DataPoints.internal_matching_logic_op" href="#megha_sim.simulation_logger.logger.DataPoints.internal_matching_logic_op">internal_matching_logic_op</a></code></li>
+<li><code><a title="megha_sim.simulation_logger.logger.DataPoints.job_arrival_event" href="#megha_sim.simulation_logger.logger.DataPoints.job_arrival_event">job_arrival_event</a></code></li>
+<li><code><a title="megha_sim.simulation_logger.logger.DataPoints.launch_on_node_event" href="#megha_sim.simulation_logger.logger.DataPoints.launch_on_node_event">launch_on_node_event</a></code></li>
+<li><code><a title="megha_sim.simulation_logger.logger.DataPoints.match_found_event" href="#megha_sim.simulation_logger.logger.DataPoints.match_found_event">match_found_event</a></code></li>
+<li><code><a title="megha_sim.simulation_logger.logger.DataPoints.periodic_lm_update_event" href="#megha_sim.simulation_logger.logger.DataPoints.periodic_lm_update_event">periodic_lm_update_event</a></code></li>
+<li><code><a title="megha_sim.simulation_logger.logger.DataPoints.task_end_event" href="#megha_sim.simulation_logger.logger.DataPoints.task_end_event">task_end_event</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="megha_sim.simulation_logger.logger.Logger" href="#megha_sim.simulation_logger.logger.Logger">Logger</a></code></h4>
+<ul class="two-column">
+<li><code><a title="megha_sim.simulation_logger.logger.Logger.INTEGRITY_MESSAGE" href="#megha_sim.simulation_logger.logger.Logger.INTEGRITY_MESSAGE">INTEGRITY_MESSAGE</a></code></li>
+<li><code><a title="megha_sim.simulation_logger.logger.Logger.LINE_SEPARATOR" href="#megha_sim.simulation_logger.logger.Logger.LINE_SEPARATOR">LINE_SEPARATOR</a></code></li>
+<li><code><a title="megha_sim.simulation_logger.logger.Logger.flush" href="#megha_sim.simulation_logger.logger.Logger.flush">flush</a></code></li>
+<li><code><a title="megha_sim.simulation_logger.logger.Logger.info" href="#megha_sim.simulation_logger.logger.Logger.info">info</a></code></li>
+<li><code><a title="megha_sim.simulation_logger.logger.Logger.integrity" href="#megha_sim.simulation_logger.logger.Logger.integrity">integrity</a></code></li>
+<li><code><a title="megha_sim.simulation_logger.logger.Logger.metadata" href="#megha_sim.simulation_logger.logger.Logger.metadata">metadata</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="megha_sim.simulation_logger.logger.MatchingOps" href="#megha_sim.simulation_logger.logger.MatchingOps">MatchingOps</a></code></h4>
+<ul class="">
+<li><code><a title="megha_sim.simulation_logger.logger.MatchingOps.job_id" href="#megha_sim.simulation_logger.logger.MatchingOps.job_id">job_id</a></code></li>
+<li><code><a title="megha_sim.simulation_logger.logger.MatchingOps.task_id" href="#megha_sim.simulation_logger.logger.MatchingOps.task_id">task_id</a></code></li>
+<li><code><a title="megha_sim.simulation_logger.logger.MatchingOps.workers_searched" href="#megha_sim.simulation_logger.logger.MatchingOps.workers_searched">workers_searched</a></code></li>
+</ul>
+</li>
+<li>
 <h4><code><a title="megha_sim.simulation_logger.logger.SimulatorLogger" href="#megha_sim.simulation_logger.logger.SimulatorLogger">SimulatorLogger</a></code></h4>
 <ul class="">
+<li><code><a title="megha_sim.simulation_logger.logger.SimulatorLogger.LOG_FILE_NAME" href="#megha_sim.simulation_logger.logger.SimulatorLogger.LOG_FILE_NAME">LOG_FILE_NAME</a></code></li>
 <li><code><a title="megha_sim.simulation_logger.logger.SimulatorLogger.LOG_FILE_PATH" href="#megha_sim.simulation_logger.logger.SimulatorLogger.LOG_FILE_PATH">LOG_FILE_PATH</a></code></li>
-<li><code><a title="megha_sim.simulation_logger.logger.SimulatorLogger.LOG_FORMAT" href="#megha_sim.simulation_logger.logger.SimulatorLogger.LOG_FORMAT">LOG_FORMAT</a></code></li>
 <li><code><a title="megha_sim.simulation_logger.logger.SimulatorLogger.get_logger" href="#megha_sim.simulation_logger.logger.SimulatorLogger.get_logger">get_logger</a></code></li>
+<li><code><a title="megha_sim.simulation_logger.logger.SimulatorLogger.is_setup" href="#megha_sim.simulation_logger.logger.SimulatorLogger.is_setup">is_setup</a></code></li>
+<li><code><a title="megha_sim.simulation_logger.logger.SimulatorLogger.logger_obj" href="#megha_sim.simulation_logger.logger.SimulatorLogger.logger_obj">logger_obj</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="megha_sim.simulation_logger.logger.TColors" href="#megha_sim.simulation_logger.logger.TColors">TColors</a></code></h4>
+<ul class="two-column">
+<li><code><a title="megha_sim.simulation_logger.logger.TColors.BOLD" href="#megha_sim.simulation_logger.logger.TColors.BOLD">BOLD</a></code></li>
+<li><code><a title="megha_sim.simulation_logger.logger.TColors.END" href="#megha_sim.simulation_logger.logger.TColors.END">END</a></code></li>
+<li><code><a title="megha_sim.simulation_logger.logger.TColors.FAIL" href="#megha_sim.simulation_logger.logger.TColors.FAIL">FAIL</a></code></li>
+<li><code><a title="megha_sim.simulation_logger.logger.TColors.HEADER" href="#megha_sim.simulation_logger.logger.TColors.HEADER">HEADER</a></code></li>
+<li><code><a title="megha_sim.simulation_logger.logger.TColors.OK_BLUE" href="#megha_sim.simulation_logger.logger.TColors.OK_BLUE">OK_BLUE</a></code></li>
+<li><code><a title="megha_sim.simulation_logger.logger.TColors.OK_CYAN" href="#megha_sim.simulation_logger.logger.TColors.OK_CYAN">OK_CYAN</a></code></li>
+<li><code><a title="megha_sim.simulation_logger.logger.TColors.OK_GREEN" href="#megha_sim.simulation_logger.logger.TColors.OK_GREEN">OK_GREEN</a></code></li>
+<li><code><a title="megha_sim.simulation_logger.logger.TColors.SUCCESS" href="#megha_sim.simulation_logger.logger.TColors.SUCCESS">SUCCESS</a></code></li>
+<li><code><a title="megha_sim.simulation_logger.logger.TColors.UNDERLINE" href="#megha_sim.simulation_logger.logger.TColors.UNDERLINE">UNDERLINE</a></code></li>
+<li><code><a title="megha_sim.simulation_logger.logger.TColors.WARNING" href="#megha_sim.simulation_logger.logger.TColors.WARNING">WARNING</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="megha_sim.simulation_logger.logger.TaskInfo" href="#megha_sim.simulation_logger.logger.TaskInfo">TaskInfo</a></code></h4>
+<ul class="two-column">
+<li><code><a title="megha_sim.simulation_logger.logger.TaskInfo.job_arrival_time" href="#megha_sim.simulation_logger.logger.TaskInfo.job_arrival_time">job_arrival_time</a></code></li>
+<li><code><a title="megha_sim.simulation_logger.logger.TaskInfo.task_duration_gm" href="#megha_sim.simulation_logger.logger.TaskInfo.task_duration_gm">task_duration_gm</a></code></li>
+<li><code><a title="megha_sim.simulation_logger.logger.TaskInfo.task_duration_trace" href="#megha_sim.simulation_logger.logger.TaskInfo.task_duration_trace">task_duration_trace</a></code></li>
+<li><code><a title="megha_sim.simulation_logger.logger.TaskInfo.task_end_time_node" href="#megha_sim.simulation_logger.logger.TaskInfo.task_end_time_node">task_end_time_node</a></code></li>
+<li><code><a title="megha_sim.simulation_logger.logger.TaskInfo.task_launch_time" href="#megha_sim.simulation_logger.logger.TaskInfo.task_launch_time">task_launch_time</a></code></li>
+<li><code><a title="megha_sim.simulation_logger.logger.TaskInfo.task_queuing_delay" href="#megha_sim.simulation_logger.logger.TaskInfo.task_queuing_delay">task_queuing_delay</a></code></li>
 </ul>
 </li>
 </ul>

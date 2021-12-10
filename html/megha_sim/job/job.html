@@ -39,6 +39,7 @@ track of various parameters related to task assignment and completion.
 &#34;&#34;&#34;
 
 from typing import Dict, List, Optional, TYPE_CHECKING
+from typing_extensions import Final
 
 from task import Task
 from simulator_utils.values import TaskDurationDistributions
@@ -77,7 +78,10 @@ class Job(object):
         self.task_counter = 0
         self.completed_tasks = []
         self.gm: Optional[GM] = None
-        self.completion_time = -1
+        self.completion_time: float = -1.
+
+        self.vals = [int(float(i)) for i in job_args[3:]]
+        self.ideal_completion_time: Final = max(self.vals)
 
         # IF the job&#39;s start_time has never been seen before
         if self.start_time not in self.job_start_tstamps:
@@ -182,7 +186,10 @@ case it has the exact submission time as another already submitted job</p>
         self.task_counter = 0
         self.completed_tasks = []
         self.gm: Optional[GM] = None
-        self.completion_time = -1
+        self.completion_time: float = -1.
+
+        self.vals = [int(float(i)) for i in job_args[3:]]
+        self.ideal_completion_time: Final = max(self.vals)
 
         # IF the job&#39;s start_time has never been seen before
         if self.start_time not in self.job_start_tstamps:
