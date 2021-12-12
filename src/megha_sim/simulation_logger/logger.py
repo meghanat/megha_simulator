@@ -64,7 +64,7 @@ class TaskInfo(TypedDict):
     task_duration_trace: int  # Task Duration From trace
     task_duration_gm: float  # Task Duration when GM realises that task is completed
     task_queuing_delay: float
-    task_end_time_node: float  # Task end time on node
+    task_end_time_gm: float  # Task end time when GM realises that task is completed
 
 
 class MatchingOps(TypedDict):
@@ -167,13 +167,16 @@ class Logger:
             if event_name == "TaskEndEvent":
                 self.data_points["task_end_event"] += 1
                 split_msg = msg.split(" , ")
-                task_end_time_node = float(split_msg[0])
+                # One NETWORK_DELAY is needed to send the message
+                # from the worker node to the GM.
+                task_end_time_gm = float(split_msg[0]) + NETWORK_DELAY
                 job_id = split_msg[2]
                 task_id = split_msg[3]
-                self.queuing_delay[job_id][task_id]["task_end_time_node"] = \
-                    task_end_time_node
+
+                self.queuing_delay[job_id][task_id]["task_end_time_gm"] = \
+                    task_end_time_gm
                 self.queuing_delay[job_id][task_id]["task_duration_gm"] = \
-                    (task_end_time_node + 2 * NETWORK_DELAY) - \
+                    task_end_time_gm - \
                     self.queuing_delay[job_id][task_id]["job_arrival_time"]
 
             elif event_name == "LaunchOnNodeEvent":
@@ -198,7 +201,7 @@ class Logger:
                     task_duration_trace=duration,
                     task_duration_gm=0,
                     task_queuing_delay=task_qd,  # task_qd
-                    task_end_time_node=0)
+                    task_end_time_gm=0)
 
             elif event_name == "InternalInconsistencyEvent":
                 self.data_points["internal_inconsistency_event"] += 1
@@ -456,7 +459,7 @@ class Logger:
                                  f"{task_info['task_duration_trace']},"
                                  f"{task_info['task_duration_gm']},"
                                  f"{task_info['task_queuing_delay']},"
-                                 f"{task_info['task_end_time_node']}\n")
+                                 f"{task_info['task_end_time_gm']}\n")
                     f.write(TASK_LINE)
 
         JOB_COMPLETION_TIME_FILE_NAME = str(self.output_file_path
