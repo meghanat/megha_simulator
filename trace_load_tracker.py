@@ -7,6 +7,9 @@ from typing import List, Union
 from math import ceil, floor
 import seaborn as sns
 import pandas as pd
+import numpy as np
+import matplotlib.pylab as plt
+
 
 PATH_TO_TRACE_FOLDER = pathlib.Path("./traces/input/")
 PATH_TO_OUTPUT_FOLDER = pathlib.Path("./traces/demand/")
@@ -162,7 +165,18 @@ if len(sys.argv) == 3:
     ax.set(xlabel='Time in Seconds',
            ylabel='Percentage of Cluster Utilized',
            title='Percentage of Cluster Utilized vs Time in Seconds')
+    ax.set_ylim(bottom=0)
+    ax.set_xlim(left=0)
+    ax.grid(True, linestyle='--')
+
+    ax.set_yticks(np.arange(0,
+                            max(df["Percentage of Cluster Used"].to_list())+10.0,
+                            10.0))
+    ax.set_xticks(np.arange(0,
+                            df["Percentage of Cluster Used"].count()+1e5,
+                            1e5))
     fig = ax.get_figure()
+    fig.set_size_inches(20, 15)
     fig.savefig(PATH_TO_OUTPUT_FOLDER / (NAME_OF_OUTPUT_FILE + "_plot"))
 
 with open(PATH_TO_OUTPUT_FOLDER / NAME_OF_OUTPUT_FILE, "w") as file_handler:
