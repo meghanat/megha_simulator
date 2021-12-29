@@ -177,7 +177,8 @@ if len(sys.argv) == 3:
                             1e5))
     fig = ax.get_figure()
     fig.set_size_inches(20, 15)
-    fig.savefig(PATH_TO_OUTPUT_FOLDER / (NAME_OF_OUTPUT_FILE + "_plot"))
+    fig.savefig(PATH_TO_OUTPUT_FOLDER / pathlib.Path("plots") /
+                (NAME_OF_OUTPUT_FILE + "_plot"))
 
 with open(PATH_TO_OUTPUT_FOLDER / NAME_OF_OUTPUT_FILE, "w") as file_handler:
     for time_point in timeline:
