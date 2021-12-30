@@ -12,6 +12,7 @@ from typing import List, Dict, TYPE_CHECKING
 
 
 import simulator_utils.globals
+from simulator_utils import debug_print
 from events import MatchFoundEvent
 from simulation_logger import (SimulatorLogger, MATCHING_LOGIC_MSG,
                                CLUSTER_SATURATED_MSG,
@@ -89,7 +90,7 @@ class GM:
                 else:
                     self.external_partitions[key] = partition_obj
 
-        print("GM", self.GM_id, "initialised")
+        debug_print(f"GM {self.GM_id} initialised")
 
     def __update_partition(self,
                            old_partition_data: OrganizedPartitionResources,
@@ -265,7 +266,7 @@ class GM:
                             # === max of the task duration for a job
                             job.completion_time = task.end_time
                             job.end_time = job.completion_time
-                            print(job.completion_time)
+                            debug_print(f"{job.completion_time}")
 
                             logger.info(
                                 f"{current_time} , "
@@ -322,7 +323,7 @@ class GM:
             # Job with the least number of remaining tasks first
             job = self.job_queue[0]  # Get the Job from the head of the queue
 
-            # print("Scheduling Tasks from Job: ",job.job_id)
+            debug_print("Scheduling Tasks from Job: ", job.job_id)
             for task_id in job.tasks:  # Go over the tasks for the job
                 task = job.tasks[task_id]
                 # Make sure that the 2 sources for `task_id` agree with each
@@ -337,7 +338,8 @@ class GM:
                 if len(self.external_partitions) == 0:
                     # There are no free worker nodes in the external partitions
                     # and hence we cannot allocate the task to any worker node.
-                    print(current_time, "No resources available in cluster")
+                    debug_print(
+                        current_time, "No resources available in cluster")
                     logger.info(f"{current_time} , {CLUSTER_SATURATED_MSG} ,"
                                 f" {self.GM_id}")
                     return
@@ -373,13 +375,13 @@ class GM:
                     self.jobs_scheduled.append(self.job_queue.pop(0))
 
                 gm_id = external_partition["partition_id"]
-                print(current_time, ", RepartitionEvent ,",
-                      self.GM_id, ",",
-                      gm_id,
-                      ",",
-                      job.job_id +
-                      "_" +
-                      task.task_id)
+                debug_print(current_time, ", RepartitionEvent ,",
+                            self.GM_id, ",",
+                            gm_id,
+                            ",",
+                            job.job_id +
+                            "_" +
+                            task.task_id)
                 logger.info(f"{MATCHING_LOGIC_REPARTITION_MSG} , "
                             f"{gm_id}_{lm_id}_{free_worker_id} , "
                             f"{job.job_id}_{task.task_id}")
@@ -416,7 +418,7 @@ class GM:
         while len(self.job_queue) > 0:
             job = self.job_queue[0]  # Get the Job from the head of the queue
 
-            # print("Scheduling Tasks from Job: ",job.job_id)
+            # debug_print("Scheduling Tasks from Job: ",job.job_id)
             for task_id in job.tasks:  # Go over the tasks for the job
                 task = job.tasks[task_id]
                 # If the task is already scheduled then, there is
@@ -425,7 +427,7 @@ class GM:
                     continue
 
                 matchfound: bool = False
-                # print("Scheduling Task:", task_id)
+                # debug_print("Scheduling Task:", task_id)
 
                 # Search in the GM's external partitions:
                 for GM_id in self.simulation.gms:
@@ -457,7 +459,7 @@ class GM:
                                     if(job.fully_scheduled()):
                                         self.jobs_scheduled.append(
                                             self.job_queue.pop(0))
-                                    print(
+                                    debug_print(
                                         current_time,
                                         "RepartitionEvent",
                                         self.GM_id,
@@ -500,7 +502,8 @@ class GM:
                     # the next task.
                     ...
                 else:
-                    print(current_time, "No resources available in cluster")
+                    debug_print(
+                        current_time, "No resources available in cluster")
                     return
 
     def schedule_tasks(self, current_time: float):
@@ -645,8 +648,8 @@ class GM:
                     return
 
     def queue_job(self, job, current_time):
-        print(current_time, ",", "JobArrivalEvent",
-              ",", job.job_id, ",", self.GM_id)
+        debug_print(current_time, ",", "JobArrivalEvent",
+                    ",", job.job_id, ",", self.GM_id)
         job.gm = self
         self.job_queue.append(job)
         # Sort by least number of remaining tasks first
