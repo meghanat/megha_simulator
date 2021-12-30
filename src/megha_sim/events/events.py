@@ -397,8 +397,6 @@ class LMUpdateEvent(Event):
                     break
 
             if (not are_jobs_done or not self.simulation.event_queue.empty()):
-                # print("\nLOOK HERE:", self.simulation.event_queue.empty(),
-                #       "\n")
                 for GM_id in self.simulation.gms:
                     self.simulation.gms[GM_id].update_status(
                         current_time + NETWORK_DELAY)
