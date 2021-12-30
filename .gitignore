@@ -143,3 +143,6 @@ roughpad/*
 # Ignore .zip and .tr.tgz files
 **/*.zip
 **/*.tr.tgz
+
+pypy3.8-v7.3.7-linux64/*
+pypy3.8-v7.3.7-linux64.tar.bz2
