@@ -16,7 +16,9 @@ from pstats import SortKey
 
 
 from megha_sim import Simulation, simulator_globals
-from megha_sim import SimulatorLogger
+from megha_sim import (SimulatorLogger,
+                       debug_print,
+                       DEBUG_MODE)
 
 if __name__ == "__main__":
     WORKLOAD_FILE: Final[str] = sys.argv[1]
@@ -48,28 +50,36 @@ if __name__ == "__main__":
     t1 = time.time()
     s = Simulation(WORKLOAD_FILE, CONFIG_FILE, NUM_GMS, NUM_LMS,
                    PARTITION_SIZE, SERVER_CPU, SERVER_RAM, SERVER_STORAGE)
-    # print("Simulator Info , Simulation running")
+    
+    print("Simulator Info , Simulation running")
     logger.metadata("Simulator Info , Simulation running")
-    pr = cProfile.Profile()
-    pr.enable()
+    
+    if DEBUG_MODE:
+        pr = cProfile.Profile()
+        pr.enable()
+
     s.run()
-    pr.disable()
-    text = io.StringIO()
-    sortby = SortKey.CUMULATIVE
-    ps = pstats.Stats(pr, stream=text).sort_stats(sortby)
-    ps.print_stats()
-    print(text.getvalue())
-    # s.run()
+
+    if DEBUG_MODE:
+        pr.disable()
+        text = io.StringIO()
+        sortby = SortKey.CUMULATIVE
+        ps = pstats.Stats(pr, stream=text).sort_stats(sortby)
+        ps.print_stats()
+        print(text.getvalue())
+
     time_elapsed = time.time() - t1
-    # print("Simulation ended in ", time_elapsed, " s ")
+    print("Simulation ended in ", time_elapsed, " s ")
     logger.metadata(f"Simulation ended in {time_elapsed} s ")
 
-    print(simulator_globals.jobs_completed)
+    debug_print(simulator_globals.jobs_completed)
 
-    # print(f"Number of Jobs completed: {len(simulator_globals.jobs_completed)}")
+    print(f"Number of Jobs completed: {len(simulator_globals.jobs_completed)}")
     logger.metadata(
         "Simulator Info , Number of Jobs completed: "
         f"{len(simulator_globals.jobs_completed)}")
 
     logger.integrity()
     logger.flush()
+
+    print("Simulator Info , Simulation ended")
