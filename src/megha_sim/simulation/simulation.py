@@ -10,7 +10,7 @@ from job import Job
 from simulation_logger import SimulatorLogger
 from simulator_utils.values import TaskDurationDistributions
 from events import JobArrival, LMUpdateEvent
-
+from simulator_utils import debug_print
 
 logger = SimulatorLogger(__name__).get_logger()
 
@@ -53,11 +53,14 @@ class Simulation(object):
         counter = 1
 
         while len(self.lms) < self.NUM_LMS:
-            self.lms[str(counter)] = LM(self, str(counter), PARTITION_SIZE, pickle.loads(
-                pickle.dumps(self.config["LMs"][str(counter)])))  # create deep copy
+            self.lms[str(counter)] = LM(self,
+                                        str(counter),
+                                        PARTITION_SIZE,
+                                        pickle.loads(
+                                            pickle.dumps(self.config["LMs"][str(counter)])))  # create deep copy
 
-            # print(f"LM - {counter}",
-            #       self.lms[str(counter)].get_free_cpu_count_per_gm())
+            debug_print(f"LM - {counter} "
+                        f"{self.lms[str(counter)].get_free_cpu_count_per_gm()}")
             counter += 1
 
         self.shared_cluster_status = {}
