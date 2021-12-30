@@ -14,6 +14,7 @@ from simulation_logger.msg_list import (MATCHING_LOGIC_MSG,
                                         MATCHING_LOGIC_REPARTITION_MSG,
                                         CLUSTER_SATURATED_MSG)
 from simulator_utils.values import NETWORK_DELAY
+from simulator_utils import debug_print
 
 
 class TColors():
@@ -468,7 +469,7 @@ class Logger:
         with open(JOB_COMPLETION_TIME_FILE_NAME, "w") as f:
             HEADER_LINE = "Job ID,Job Completion Time\n"
             f.write(HEADER_LINE)
-            # print(self.all_job_ct)
+            debug_print(f"{self.all_job_ct}")
             for job_id in sorted(self.all_job_ct.keys()):
                 JOB_LINE = f"{job_id},{self.all_job_ct[job_id]}\n"
                 f.write(JOB_LINE)
@@ -491,8 +492,6 @@ class SimulatorLogger:
             _ (str): This parameter will be removed in a future release.
         """
         if SimulatorLogger.is_setup is False:
-            # print(f'{datetime.now().strftime("record-%Y-%m-%d-%H-%M-%S.log")}'
-            # ' Hello')
             SimulatorLogger.LOG_FILE_NAME = (SimulatorLogger.LOG_FILE_PATH /
                                              datetime.now()
                                              .strftime("record-%Y-%m-%d-"
