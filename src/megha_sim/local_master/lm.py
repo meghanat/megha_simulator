@@ -2,6 +2,7 @@ import json
 from typing import List
 
 from simulator_utils.values import NETWORK_DELAY, InconsistencyType
+from simulator_utils import debug_print
 from events import LaunchOnNodeEvent, InconsistencyEvent, LMUpdateEvent
 
 
@@ -11,7 +12,7 @@ class LM(object):
         self.LM_id = LM_id
         self.partiton_size = partiton_size
         self.LM_config = LM_config
-        print("LM ", LM_id, "initialised")
+        debug_print(f"LM {LM_id} initialised")
         self.simulation = simulation
         # we hold the key-value pairs of the list of tasks completed (value)
         # for each GM (key)
