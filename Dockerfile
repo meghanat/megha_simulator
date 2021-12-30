@@ -1,5 +1,5 @@
 # Use the latest Python Image
-FROM pypy:3.7-7.3.5-buster
+FROM 3.8-7.3.7-bullseye
 
 WORKDIR /Megha_Dev/
 
