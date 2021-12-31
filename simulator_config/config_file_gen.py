@@ -2,8 +2,8 @@ import os
 import json
 
 num_nodes = 10_000
-num_lms = 10
-num_partitions = 10  # This value is always equal to the number of GMs
+num_lms = 25
+num_partitions = 4  # This value is always equal to the number of GMs
 
 assert num_nodes % (num_lms * num_partitions) == 0, ("Nodes cannot be equally "
                                                      "divided amongst all "
