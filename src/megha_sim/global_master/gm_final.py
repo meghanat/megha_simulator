@@ -66,8 +66,8 @@ class GM:
                                         OrganizedPartitionResources] = dict()
 
         # Populate internal_partitions info
-        # for LM_id in config["LMs"]:
-        #     self.global_view[LM_id] = config["LMs"][LM_id]
+        for LM_id in config["LMs"]:
+            self.global_view[LM_id] = config["LMs"][LM_id]
 
         # Populate the 3 sets with the cluster information
         for LM_id in config["LMs"]:
@@ -107,7 +107,7 @@ class GM:
             # are busy (i.e. `not is_free`)
             is_saturated = is_saturated and not is_free
 
-            if node_id in old_partition_data["free_nodes"].keys() and \
+            if node_id in old_partition_data["free_nodes"] and \
                not is_free:
                 # Move the worker node to the `busy_nodes` dictionary
                 old_partition_data["busy_nodes"][node_id] =\
@@ -116,7 +116,7 @@ class GM:
                 # Remove the worker node from the `free_nodes`
                 # dictionary
                 del(old_partition_data["free_nodes"][node_id])
-            elif node_id in old_partition_data["busy_nodes"].keys() and \
+            elif node_id in old_partition_data["busy_nodes"] and \
                     is_free:
                 # Move the worker node to `free_nodes` dictionary
                 old_partition_data["free_nodes"][node_id] =\
@@ -148,6 +148,30 @@ class GM:
         assert from_partition.get(key) is None
         assert to_partition.get(key) is not None
 
+    def __update_global_view(self,
+                             current_global_view: Dict[str, LMResources],
+                             lm_id: str,
+                             r_new_lm_state: LMResources) -> None:
+        """
+        Update the global view of the GM for a particular LM.
+        This method is called by the update_status method of the GM.
+        """
+        lm_partitions = current_global_view[lm_id]["partitions"]
+        for partition_id in lm_partitions:
+            lm_partition_nodes = lm_partitions[partition_id]["nodes"]
+            for node_id in lm_partition_nodes:
+                node_resources = lm_partition_nodes[node_id]
+                new_node_resources = (r_new_lm_state["partitions"]
+                                      [partition_id]
+                                      ["nodes"]
+                                      [node_id])
+                node_resources["CPU"] = new_node_resources["CPU"]
+                node_resources["RAM"] = new_node_resources["RAM"]
+                # node_resources["DISK"] = new_node_resources["DISK"]
+                for ind, updated_constraint in \
+                        enumerate(new_node_resources["constraints"]):
+                    node_resources["constraints"][ind] = updated_constraint
+
     def update_status(self, current_time: float):
         """
         Update the global view of GM by getting partial updates from each LM.
@@ -157,14 +181,18 @@ class GM:
         """
         for LM_id in self.simulation.lms:
             lm: LM = self.simulation.lms[LM_id]
-            p_partial_status, p_tasks_completed = lm.get_status(self)
-            partial_status: LMResources = json.loads(p_partial_status)
-            tasks_completed = json.loads(p_tasks_completed)
+            r_partial_status, tasks_completed = lm.get_status(self)
+            # partial_status: LMResources = json.loads(p_partial_status)
+            # tasks_completed = json.loads(p_tasks_completed)
 
-            self.global_view[lm.LM_id] = partial_status  # Original
+            self.__update_global_view(self.global_view,
+                                      lm.LM_id,
+                                      r_partial_status)
+
+            gm_partial_status = r_partial_status
 
             # Iterate over all the LMs partitions
-            for gm_id in partial_status["partitions"]:
+            for gm_id in gm_partial_status["partitions"]:
                 # Find the partition in the 3 sets
                 key = PartitionKey(gm_id=gm_id, lm_id=LM_id)
 
@@ -173,12 +201,12 @@ class GM:
                 # Check if the partition is an internal partition
                 if gm_id == self.GM_id:
                     # Check if the partition is an unsaturated partition
-                    if key in self.internal_partitions.keys():
+                    if key in self.internal_partitions:
                         # Update each of the workers in the partition
                         is_saturated = \
                             self.__update_partition(
                                 self.internal_partitions[key],
-                                partial_status["partitions"][gm_id]
+                                gm_partial_status["partitions"][gm_id]
                             )
 
                         # Check if the partition needs to be moved to the
@@ -192,7 +220,7 @@ class GM:
                         is_saturated = \
                             self.__update_partition(
                                 self.saturated_partitions[key],
-                                partial_status["partitions"][gm_id]
+                                gm_partial_status["partitions"][gm_id]
                             )
 
                         # Check if the partition needs to be moved to the
@@ -203,12 +231,12 @@ class GM:
                                                   self.internal_partitions)
                 else:  # The partition is an external partition
                     # Check if the partition is an unsaturated partition
-                    if key in self.external_partitions.keys():
+                    if key in self.external_partitions:
                         # Update each of the workers in the partition
                         is_saturated = \
                             self.__update_partition(
                                 self.external_partitions[key],
-                                partial_status["partitions"][gm_id]
+                                gm_partial_status["partitions"][gm_id]
                             )
 
                         # Check if the partition needs to be moved to the
@@ -222,7 +250,7 @@ class GM:
                         is_saturated = \
                             self.__update_partition(
                                 self.saturated_partitions[key],
-                                partial_status["partitions"][gm_id]
+                                gm_partial_status["partitions"][gm_id]
                             )
 
                         # Check if the partition needs to be moved to the
@@ -241,8 +269,9 @@ class GM:
                 job_unscheduled = False
 
                 # if not all tasks in the job have been scheduled
-                for index in range(0, len(self.job_queue)):
-                    job = self.job_queue[index]
+                # for index in range(0, len(self.job_queue)):
+                for index, job in enumerate(self.job_queue):
+                    # job = self.job_queue[index]
                     if job.job_id == job_id:
                         job_unscheduled = True
                         task = job.tasks[task_id]
@@ -253,8 +282,9 @@ class GM:
                     continue
 
                 # If all tasks in the job have been scheduled already
-                for index in range(0, len(self.jobs_scheduled)):
-                    job = self.jobs_scheduled[index]
+                # for index in range(0, len(self.jobs_scheduled)):
+                for index, job in enumerate(self.jobs_scheduled):
+                    # job = self.jobs_scheduled[index]
 
                     if job.job_id == job_id:
                         task = job.tasks[task_id]
@@ -264,9 +294,11 @@ class GM:
                                 job.completed_tasks):  # no more tasks left
                             # NOTE:job completion time = end time of last task
                             # === max of the task duration for a job
+                            assert task.end_time is not None
+                            assert job.completion_time is not None
                             job.completion_time = task.end_time
                             job.end_time = job.completion_time
-                            debug_print(f"{job.completion_time}")
+                            debug_print(f"{job_id} : {job.completion_time}")
 
                             logger.info(
                                 f"{current_time} , "
@@ -274,13 +306,17 @@ class GM:
                                 f"{job.job_id} , "
                                 f"{(job.completion_time - job.start_time) - job.ideal_completion_time}")
                             assert ((job.completion_time - job.start_time)
-                                    ) >= 0, "jct-st is negative"
+                                    ) >= 0, ("jct-st "
+                                             f"{(job.completion_time - job.start_time)}"
+                                             " is negative")
                             assert ((job.completion_time - job.start_time) -
-                                    job.ideal_completion_time) >= 0, "delay is negative"
+                                    job.ideal_completion_time) >= 0, (f"{(job.completion_time - job.start_time) - job.ideal_completion_time} delay is negative")
 
                             simulator_utils.globals.jobs_completed.append(job)
                             self.jobs_scheduled.remove(job)
                         break
+
+            tasks_completed.clear()
 
         self.schedule_tasks(current_time)
 
@@ -346,7 +382,7 @@ class GM:
 
                 # We randomly pick a non-saturated external partition
                 key_external_partition = self.random_obj.choice(
-                    list(self.external_partitions.keys()))
+                    list(self.external_partitions))
                 external_partition = (self.external_partitions
                                       [key_external_partition])
 
@@ -355,7 +391,7 @@ class GM:
 
                 # We randomly pick a free worker node
                 free_worker_id = self.random_obj.choice(
-                    list(external_partition["free_nodes"].keys()))
+                    list(external_partition["free_nodes"]))
 
                 free_worker_node = (external_partition["free_nodes"]
                                     [free_worker_id])
@@ -534,7 +570,7 @@ class GM:
 
                 # We randomly pick a non-saturated internal partition
                 key_internal_partition = self.random_obj.choice(
-                    list(self.internal_partitions.keys()))
+                    list(self.internal_partitions))
                 internal_partition = (self.internal_partitions
                                       [key_internal_partition])
 
@@ -543,7 +579,7 @@ class GM:
 
                 # We randomly pick a free worker node
                 free_worker_id = self.random_obj.choice(
-                    list(internal_partition["free_nodes"].keys()))
+                    list(internal_partition["free_nodes"]))
 
                 free_worker_node = (internal_partition["free_nodes"]
                                     [free_worker_id])

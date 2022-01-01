@@ -1,9 +1,10 @@
 import json
-from typing import List
+from typing import List, Tuple
 
 from simulator_utils.values import NETWORK_DELAY, InconsistencyType
 from simulator_utils import debug_print
 from events import LaunchOnNodeEvent, InconsistencyEvent, LMUpdateEvent
+from megha_sim.global_master.gm_types import LMResources
 
 
 class LM(object):
@@ -20,7 +21,8 @@ class LM(object):
         for GM_id in self.simulation.gms:
             self.tasks_completed[GM_id] = []
 
-    def get_status(self, gm) -> List[str]:
+    def get_status(self, gm) -> Tuple[LMResources,
+                                      List[Tuple[str, str]]]:
         # """
         # One we have sent the response, the LM clears the list of tasks the LM
         # has completed for the particular GM.
@@ -31,9 +33,10 @@ class LM(object):
         # :rtype: List[str, str]
         # """
         # deep copy to ensure GM's copy and LM's copy are separate
-        response = [json.dumps(self.LM_config), json.dumps(
-            self.tasks_completed[gm.GM_id])]
-        self.tasks_completed[gm.GM_id] = []
+        # response = [json.dumps(self.LM_config), json.dumps(
+        #     self.tasks_completed[gm.GM_id])]
+        # self.tasks_completed[gm.GM_id] = []
+        response = (self.LM_config, self.tasks_completed[gm.GM_id])
         return response
 
     # LM checks if GM's request is valid
@@ -97,8 +100,8 @@ class LM(object):
 
     def get_free_cpu_count_per_gm(self):
         free_cpu_count_per_gm = dict()
-        for gm_id in self.LM_config["partitions"].keys():
-            for node_id in self.LM_config["partitions"][gm_id]["nodes"].keys():
+        for gm_id in self.LM_config["partitions"]:
+            for node_id in self.LM_config["partitions"][gm_id]["nodes"]:
                 free_cpu_count_per_gm[gm_id] = (free_cpu_count_per_gm.get(
                     gm_id, 0) +
                     self.LM_config["partitions"][gm_id]["nodes"][node_id]

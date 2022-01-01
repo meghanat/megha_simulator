@@ -13,7 +13,7 @@ class NodeResources(TypedDict):
 
     CPU: int
     RAM: int
-    Disk: int
+    DISK: int
     constraints: List[int]
 
 

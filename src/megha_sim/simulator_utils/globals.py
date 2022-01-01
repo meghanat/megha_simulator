@@ -13,4 +13,4 @@ if TYPE_CHECKING:
     from job import Job
 
 jobs_completed: List[Job] = []
-DEBUG_MODE: bool = False
+DEBUG_MODE: bool = not False

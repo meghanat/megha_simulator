@@ -392,11 +392,12 @@ class LMUpdateEvent(Event):
         if self.periodic:  # and not self.simulation.event_queue.empty():
             are_jobs_done = True
             for GM_id in self.simulation.gms:
-                if len(self.simulation.gms[GM_id].job_queue) > 0:
+                # if len(self.simulation.gms[GM_id].job_queue) > 0:
+                if self.simulation.gms[GM_id].job_queue:
                     are_jobs_done = False
                     break
 
-            if (not are_jobs_done or not self.simulation.event_queue.empty()):
+            if not are_jobs_done or not self.simulation.event_queue.empty():
                 for GM_id in self.simulation.gms:
                     self.simulation.gms[GM_id].update_status(
                         current_time + NETWORK_DELAY)
