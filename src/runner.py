@@ -50,10 +50,10 @@ if __name__ == "__main__":
     t1 = time.time()
     s = Simulation(WORKLOAD_FILE, CONFIG_FILE, NUM_GMS, NUM_LMS,
                    PARTITION_SIZE, SERVER_CPU, SERVER_RAM, SERVER_STORAGE)
-    
+
     print("Simulator Info , Simulation running")
     logger.metadata("Simulator Info , Simulation running")
-    
+
     if DEBUG_MODE:
         pr = cProfile.Profile()
         pr.enable()

@@ -309,8 +309,8 @@ class GM:
                                     ) >= 0, ("jct-st "
                                              f"{(job.completion_time - job.start_time)}"
                                              " is negative")
-                            assert ((job.completion_time - job.start_time) -
-                                    job.ideal_completion_time) >= 0, (f"{(job.completion_time - job.start_time) - job.ideal_completion_time} delay is negative")
+                            assert ((job.completion_time - job.start_time) - job.ideal_completion_time) >= 0, (
+                                f"{(job.completion_time - job.start_time) - job.ideal_completion_time} delay is negative")
 
                             simulator_utils.globals.jobs_completed.append(job)
                             self.jobs_scheduled.remove(job)

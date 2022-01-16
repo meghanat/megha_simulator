@@ -53,14 +53,12 @@ class Simulation(object):
         counter = 1
 
         while len(self.lms) < self.NUM_LMS:
-            self.lms[str(counter)] = LM(self,
-                                        str(counter),
-                                        PARTITION_SIZE,
-                                        pickle.loads(
-                                            pickle.dumps(self.config["LMs"][str(counter)])))  # create deep copy
+            self.lms[str(counter)] = LM(self, str(counter), PARTITION_SIZE, pickle.loads(
+                pickle.dumps(self.config["LMs"][str(counter)])))  # create deep copy
 
-            debug_print(f"LM - {counter} "
-                        f"{self.lms[str(counter)].get_free_cpu_count_per_gm()}")
+            debug_print(
+                f"LM - {counter} "
+                f"{self.lms[str(counter)].get_free_cpu_count_per_gm()}")
             counter += 1
 
         self.shared_cluster_status = {}

@@ -169,11 +169,12 @@ if len(sys.argv) == 3:
     ax.set_xlim(left=0)
     ax.grid(True, linestyle='--')
 
-    ax.set_yticks(np.arange(0,
-                            max(df["Percentage of Cluster Used"].to_list())+10.0,
-                            10.0))
+    ax.set_yticks(
+        np.arange(
+            0, max(
+                df["Percentage of Cluster Used"].to_list()) + 10.0, 10.0))
     ax.set_xticks(np.arange(0,
-                            df["Percentage of Cluster Used"].count()+1e5,
+                            df["Percentage of Cluster Used"].count() + 1e5,
                             1e5))
     fig = ax.get_figure()
     fig.set_size_inches(20, 15)
